@@ -1,0 +1,8 @@
+/* Тема: переменные :root. На сервере можно переопределить dist/theme.css */
+
+:root {
+  --root--font-family: 'IBM Plex Sans', sans-serif;
+  --color-primary: #1677ff;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+}

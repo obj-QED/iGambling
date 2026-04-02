@@ -1,0 +1,78 @@
+/* Базовые стили — подключаются через <link> в index.html, не инжектируются в <style> */
+
+:root {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  --color-primary: #1677ff;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --font-sans: system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Глобальный прелоадер — грузится первым из base.css, скрывается после монтирования React */
+.global-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-text, #1f2937);
+  color: var(--color-text-muted, #6b7280);
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+
+  &--hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: global-preloader-spin 0.8s linear infinite;
+  }
+
+  &__text {
+    font-size: 0.875rem;
+  }
+}
+
+@keyframes global-preloader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

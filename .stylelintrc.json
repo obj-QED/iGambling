@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-scss"
+  ],
+  "rules": {
+    "no-descending-specificity": null,
+    "property-no-deprecated": null,
+    "custom-property-pattern": null
+  }
+}

@@ -1,0 +1,28 @@
+// Ширины задаются через CSS-переменные — легко переопределить в теме
+:root {
+  --sidebar-width-expanded: 260px;
+  --sidebar-width-collapsed: 64px;
+  --sidebar-transition-duration: 0.3s;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  flex-shrink: 0;
+  width: var(--sidebar-width-expanded);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  transition: width var(--sidebar-transition-duration, 0.3s) ease;
+
+  &--collapsed {
+    width: var(--sidebar-width-collapsed);
+  }
+
+  &__meta {
+    font-size: 12px;
+    color: var(--color-text-muted, #6b7280);
+  }
+}
