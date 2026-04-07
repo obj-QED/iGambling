@@ -1,0 +1,39 @@
+.providers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.providerLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 8px;
+  line-height: 0;
+  opacity: 0.92;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-border-focus, #3b82f6);
+    outline-offset: 2px;
+  }
+}
+
+.providerIcon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .providerLink {
+    transition: none;
+  }
+}

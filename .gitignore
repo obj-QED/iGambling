@@ -48,3 +48,10 @@ docs/
 .cursor/
 .cursorrules
 .yarn/*
+
+
+# Repositories
+.cursor/
+src/store/
+src/api/
+src/app/

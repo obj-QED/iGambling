@@ -1,0 +1,60 @@
+.root {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  gap: 0;
+}
+
+.section {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  align-items: center;
+  padding: 0 12px;
+
+  &:not(:first-child) {
+    border-left: 1px solid var(--app-header-brand-divider, rgba(255, 255, 255, 0.1));
+  }
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:last-child {
+    padding-right: 0;
+  }
+
+  &__inner {
+    display: flex;
+    min-width: 0;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &--left &__inner {
+    justify-content: flex-start;
+  }
+
+  &--center &__inner {
+    justify-content: center;
+  }
+
+  &--right &__inner {
+    justify-content: flex-end;
+  }
+
+  &--center {
+    flex-wrap: wrap;
+  }
+}
+
+.centerStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+}

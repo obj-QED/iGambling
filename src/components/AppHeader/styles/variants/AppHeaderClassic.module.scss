@@ -1,0 +1,66 @@
+.root {
+  background: var(--color-bg-header-classic, #0f172a);
+  border-bottom-color: var(--color-border-header-classic, #1e293b);
+
+  &__logo {
+    background: var(--color-bg-accent-classic, #f59e0b);
+    color: var(--color-text-on-accent-classic, #0f172a);
+  }
+
+  &__titlePreview {
+    display: none;
+  }
+}
+
+.shell {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  min-height: 56px;
+  padding: 12px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 16px;
+  border-right: 1px solid var(--color-border-header-classic, #1e293b);
+  flex-shrink: 0;
+}
+
+.brand:only-child {
+  flex: 1 1 auto;
+  border-right: none;
+  padding-right: 0;
+}
+
+.main {
+  --app-header-main-section-count: 2;
+
+  display: grid;
+  grid-template-columns: repeat(var(--app-header-main-section-count), minmax(0, 1fr));
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding-left: 16px;
+}
+
+.main-cell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.main-cell:first-child {
+  justify-content: flex-start;
+}
+
+.main-cell:last-child {
+  justify-content: flex-end;
+}
+
+.main-cell:not(:first-child):not(:last-child) {
+  justify-content: center;
+}
