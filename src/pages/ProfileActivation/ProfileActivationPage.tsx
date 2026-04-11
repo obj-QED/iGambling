@@ -1,19 +1,20 @@
-import { useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
 const REDIRECT_TIMEOUT_MS = 5000;
 
-export function ProfileActivationPage() {
+function ProfileActivationPageComponent() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate('/', { replace: true });
-    }, REDIRECT_TIMEOUT_MS);
-
-    return () => clearTimeout(timer);
+  const redirectHome = useCallback(() => {
+    navigate('/', { replace: true });
   }, [navigate]);
+
+  useEffect(() => {
+    const timer = setTimeout(redirectHome, REDIRECT_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+  }, [redirectHome]);
 
   return (
     <main>
@@ -23,4 +24,5 @@ export function ProfileActivationPage() {
   );
 }
 
+export const ProfileActivationPage = memo(ProfileActivationPageComponent);
 ProfileActivationPage.displayName = 'ProfileActivationPage';

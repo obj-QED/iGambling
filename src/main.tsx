@@ -17,23 +17,20 @@ const root = createRoot(document.getElementById('root')!);
 
 (async function bootstrap() {
   const language = getBrowserLanguage();
+  /** Первый URL захода (включая прямой переход на /profile, /auth и т.д.) — не «только главная». */
   const initialPath = typeof window !== 'undefined' ? (window.location.pathname || '/') : '/';
   setInitialPath(initialPath);
 
-  try {
-    // Параллельно: данные + JS-чанк страницы входа → нет мелькания Suspense при первом рендере
-    await Promise.all([
-      prefetchInitData(queryClient, language, initialPath),
-      import('@/pages/Home/HomePage'),
-      import('@/pages/Login/LoginPage'),
-    ]);
-  } catch (error) {
-    // Не блокируем первый рендер при временных сетевых ошибках bootstrap.
+  // Prefetch init/translation для этого же initialPath; не ждём до render — скелетон хедера видит pending/fetching.
+  void prefetchInitData(queryClient, language, initialPath).catch((error) => {
     console.error('[bootstrap] prefetch failed', error);
-    if (typeof window !== 'undefined' && window.location.pathname !== '/500') {
-      window.history.replaceState({}, '', '/500');
-      setInitialPath('/500');
-    }
+  });
+
+  try {
+    // Прогрев частых страниц; маршрут при заходе не с Home всё равно подгрузит свой lazy-чанк из routes.
+    await Promise.all([import('@/pages/Home/HomePage'), import('@/pages/Login/LoginPage')]);
+  } catch (error) {
+    console.error('[bootstrap] chunk load failed', error);
   }
 
   root.render(

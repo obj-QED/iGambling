@@ -1,11 +1,9 @@
 export type {
-  AppHeaderBaseStyles,
+  AppHeaderData,
   AppHeaderLayout,
-  AppHeaderProps,
-  AppHeaderRenderContext,
-  AppHeaderSectionSlot,
-  AppHeaderSlotCount,
+  AppHeaderMenuItem,
+  AppHeaderParams,
   AppHeaderVariant,
-  HeaderProviderItem,
+  AppHeaderViewProps,
 } from './types/AppHeader.types';
 export { AppHeader } from './ui/AppHeader';

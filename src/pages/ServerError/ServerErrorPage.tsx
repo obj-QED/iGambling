@@ -1,6 +1,8 @@
+import { memo } from 'react';
+
 import { Link } from 'react-router-dom';
 
-export function ServerErrorPage() {
+function ServerErrorPageComponent() {
   return (
     <main>
       <h1>500</h1>
@@ -10,4 +12,5 @@ export function ServerErrorPage() {
   );
 }
 
+export const ServerErrorPage = memo(ServerErrorPageComponent);
 ServerErrorPage.displayName = 'ServerErrorPage';

@@ -12,6 +12,12 @@
   }
 }
 
+.skeleton {
+  &__segment {
+    background: var(--app-header_classic-skeleton-bg, #475569);
+  }
+}
+
 .shell {
   display: flex;
   align-items: stretch;

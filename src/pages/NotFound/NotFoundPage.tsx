@@ -1,6 +1,8 @@
+import { memo } from 'react';
+
 import { Link } from 'react-router-dom';
 
-export function NotFoundPage() {
+function NotFoundPageComponent() {
   return (
     <main>
       <h1>404</h1>
@@ -10,4 +12,5 @@ export function NotFoundPage() {
   );
 }
 
+export const NotFoundPage = memo(NotFoundPageComponent);
 NotFoundPage.displayName = 'NotFoundPage';

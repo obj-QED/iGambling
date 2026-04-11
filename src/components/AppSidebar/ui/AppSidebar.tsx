@@ -1,3 +1,5 @@
+import { memo, useMemo } from 'react';
+
 import { useLocation } from 'react-router-dom';
 
 import { useCurrentPageData } from '@/api/lobby';
@@ -10,11 +12,11 @@ function getMenuItemsCount(menus: unknown): number {
   return menus.length;
 }
 
-export function AppSidebar() {
+function AppSidebarComponent() {
   const language = useLanguage();
   const location = useLocation();
   const pageData = useCurrentPageData(language, location.pathname || '/');
-  const menuItemsCount = getMenuItemsCount(pageData?.menu);
+  const menuItemsCount = useMemo(() => getMenuItemsCount(pageData?.menu), [pageData?.menu]);
 
   return (
     <aside className={styles.root}>
@@ -25,4 +27,5 @@ export function AppSidebar() {
   );
 }
 
+export const AppSidebar = memo(AppSidebarComponent);
 AppSidebar.displayName = 'AppSidebar';

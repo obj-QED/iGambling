@@ -1,4 +1,4 @@
-import type { HeaderProviderItem } from '../types/AppHeader.types';
+import type { AppHeaderData, AppHeaderLayout, AppHeaderParams, AppHeaderVariant } from '../types/AppHeader.types';
 
 import { useMemo } from 'react';
 
@@ -7,48 +7,58 @@ import { useLocation } from 'react-router-dom';
 import { type PageData, useCurrentPageDataState } from '@/api/lobby';
 import { useAuthSession } from '@/hooks/useAuthSession';
 import { useLanguage } from '@/hooks/useLanguage';
-
-import { resolveHeaderProviders } from '../lib/resolveHeaderProviders';
+import { getHeaderSettings } from '@/shared/config';
+import { isRecord } from '@/shared/lib';
 
 export type UseAppHeaderStateResult = {
+  params: AppHeaderParams;
+  data: AppHeaderData;
+  /** Показывать скелетон: нет меню в разметке и запрос ещё pending/fetching. */
   loading: boolean;
+  error: unknown | null;
   isAuthenticated: boolean;
-  /** `meta_title` из ответа страницы (init / getPage). */
-  title: string;
-  /** URL лого из `page.logo` (ответ init/getPage). */
-  logoUrl: string | undefined;
-  /** `window.__SETTINGS__.header.providers`. */
-  providers: HeaderProviderItem[];
 };
 
-function pickPageTitle(page: PageData | undefined): string {
-  if (!page || typeof page !== 'object') return '';
-  const t = (page as Record<string, unknown>).meta_title;
-  return typeof t === 'string' ? t : '';
+const DEFAULT_LAYOUT: AppHeaderLayout = 'container';
+const DEFAULT_VARIANT: AppHeaderVariant = 'default';
+
+function resolveParams(): AppHeaderParams {
+  const header = getHeaderSettings();
+  return {
+    layout: header.layout === 'container-fluid' ? 'container-fluid' : DEFAULT_LAYOUT,
+    variant: header.type === 'classic' ? 'classic' : DEFAULT_VARIANT,
+  };
 }
 
-function pickPageLogo(page: PageData | undefined): string | undefined {
-  if (!page || typeof page !== 'object') return undefined;
-  const logo = (page as Record<string, unknown>).logo;
-  if (typeof logo === 'string' && logo.length > 0) return logo;
-  return undefined;
+function findMenuHeaderTop(page: PageData | undefined): AppHeaderData {
+  if (!page) return undefined;
+  const blocks = page.blocks;
+  if (!Array.isArray(blocks)) return undefined;
+  const block = blocks.find((b: unknown) => isRecord(b) && b.type === 'menuHeaderTop');
+  if (!isRecord(block)) return undefined;
+  return {
+    buttonSearch: typeof block.buttonSearch === 'string' ? block.buttonSearch : '',
+    type: typeof block.type === 'string' ? block.type : '',
+    menu: Array.isArray(block.menu) ? block.menu : [],
+  };
 }
 
 export function useAppHeaderState(): UseAppHeaderStateResult {
   const language = useLanguage();
   const { pathname } = useLocation();
-  const { data, loading } = useCurrentPageDataState(language, pathname || '/');
+  const { data: pageData, loading: queryPending, error, isFetching } = useCurrentPageDataState(
+    language,
+    pathname || '/',
+  );
   const { isAuthenticated } = useAuthSession();
 
-  const title = useMemo(() => pickPageTitle(data), [data]);
-  const logoUrl = useMemo(() => pickPageLogo(data), [data]);
-  const providers = useMemo(() => resolveHeaderProviders(), []);
+  const params = useMemo(() => resolveParams(), []);
+  const data = useMemo(() => findMenuHeaderTop(pageData), [pageData]);
 
-  return {
-    loading,
-    isAuthenticated,
-    title,
-    logoUrl,
-    providers,
-  };
+  const loading = useMemo(
+    () => Boolean(data === undefined && !error && (queryPending || isFetching)),
+    [data, error, queryPending, isFetching],
+  );
+
+  return { params, data, loading, error, isAuthenticated };
 }

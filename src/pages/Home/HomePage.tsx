@@ -1,6 +1,8 @@
+import { memo } from 'react';
+
 import styles from './HomePage.module.scss';
 
-export function HomePage() {
+function HomePageComponent() {
   return (
     <section className={styles.root}>
       {/* страничный контент главной */}
@@ -8,4 +10,5 @@ export function HomePage() {
   );
 }
 
+export const HomePage = memo(HomePageComponent);
 HomePage.displayName = 'HomePage';

@@ -1,4 +1,6 @@
-export function LoginPage() {
+import { memo } from 'react';
+
+function LoginPageComponent() {
   return (
     <main>
       <h1>Вход</h1>
@@ -7,4 +9,5 @@ export function LoginPage() {
   );
 }
 
+export const LoginPage = memo(LoginPageComponent);
 LoginPage.displayName = 'LoginPage';

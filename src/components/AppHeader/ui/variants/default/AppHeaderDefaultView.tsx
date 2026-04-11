@@ -1,88 +1,43 @@
-import type { AppHeaderResolvedSlotProps } from '../../../types/AppHeader.types';
-import type { ComponentType, ReactNode } from 'react';
+import type { AppHeaderViewProps } from '../../../types/AppHeader.types';
 
 import { memo, useMemo } from 'react';
 
-import { AppHeaderDefaultLayout } from '../../blocks/AppHeaderDefaultLayout/AppHeaderDefaultLayout';
-import { AppHeaderGuestActions } from '../../blocks/AppHeaderGuestActions/AppHeaderGuestActions';
-import { AppHeaderIdentity } from '../../blocks/AppHeaderIdentity/AppHeaderIdentity';
-import { AppHeaderLogo } from '../../blocks/AppHeaderLogo/AppHeaderLogo';
-import { AppHeaderPageTitle } from '../../blocks/AppHeaderPageTitle/AppHeaderPageTitle';
-import { AppHeaderProvidersNav } from '../../blocks/AppHeaderProvidersNav/AppHeaderProvidersNav';
-import { AppHeaderUserActions } from '../../blocks/AppHeaderUserActions/AppHeaderUserActions';
+import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
 
-import defaultStyles from '../../../styles/variants/AppHeaderDefault.module.scss';
-import layoutStyles from '../../blocks/AppHeaderDefaultLayout/AppHeaderDefaultLayout.module.scss';
+import baseStyles from '@AppHeader/styles/base/AppHeaderBase.module.scss';
+import defaultStyles from '@AppHeader/styles/variants/AppHeaderDefault.module.scss';
 
-type AppHeaderDefaultViewProps = AppHeaderResolvedSlotProps & {
-  LayoutComponent: ComponentType<{ children: ReactNode }>;
-};
+function AppHeaderDefaultViewComponent({ params, data, loading }: AppHeaderViewProps) {
+  const LayoutComponent = LAYOUT_COMPONENTS[params.layout];
+  const SkeletonComponent = SKELETON_COMPONENTS[params.variant];
+  /** `loading` из хука уже учитывает pending/fetching и отсутствие menuHeaderTop. */
+  const showSkeleton = loading;
 
-function AppHeaderDefaultViewComponent({
-  baseStyles,
-  loading,
-  title,
-  logoUrl,
-  providers,
-  isAuthenticated,
-  hasSectionOverrides,
-  slotCount,
-  leftSlot,
-  centerSlot,
-  rightSlot,
-  SkeletonComponent,
-  LayoutComponent,
-}: AppHeaderDefaultViewProps) {
-  const rootClassName = useMemo(() => `${baseStyles.root} ${defaultStyles.root}`, [baseStyles]);
-  const logoPlaceholderClassName = useMemo(() => `${baseStyles.root__logo} ${defaultStyles.root__logo}`, [baseStyles]);
+  const rootClassName = useMemo(
+    () => `${baseStyles.root} ${defaultStyles.root}`,
+    [],
+  );
+
   const skeletonClassName = useMemo(
-    () => `${baseStyles.root__skeleton} ${loading ? baseStyles['root__skeleton--visible'] : ''}`,
-    [baseStyles, loading],
+    () => `${baseStyles.root__skeleton}${showSkeleton ? ` ${baseStyles['root__skeleton--visible']}` : ''}`,
+    [showSkeleton],
   );
 
-  const leftColumn = hasSectionOverrides ? (
-    <>
-      <AppHeaderLogo logoUrl={logoUrl} loading={loading} logoPlaceholderClassName={logoPlaceholderClassName} />
-      {leftSlot}
-    </>
-  ) : (
-    <>
-      <AppHeaderLogo logoUrl={logoUrl} loading={loading} logoPlaceholderClassName={logoPlaceholderClassName} />
-      <AppHeaderIdentity isAuthenticated={isAuthenticated} />
-    </>
-  );
-
-  const centerColumn = (
-    <div className={layoutStyles.centerStack}>
-      {hasSectionOverrides ? centerSlot : <AppHeaderPageTitle baseStyles={baseStyles} loading={loading} title={title} />}
-      <AppHeaderProvidersNav providers={providers} />
-    </div>
-  );
-
-  const rightColumn = hasSectionOverrides ? (
-    rightSlot
-  ) : isAuthenticated ? (
-    <AppHeaderUserActions />
-  ) : (
-    <AppHeaderGuestActions />
-  );
 
   return (
-    <header
-      aria-label={title || 'App Header'}
-      className={rootClassName}
-      data-auth={isAuthenticated ? 'true' : 'false'}
-      data-sections={String(slotCount)}
-      data-variant='default'
-    >
+    <header className={rootClassName} data-variant="default">
       <LayoutComponent>
         <div className={baseStyles.root__sections}>
-          <AppHeaderDefaultLayout left={leftColumn} center={centerColumn} right={rightColumn} />
+          {data?.menu?.map((item) => (
+            <span key={item.key}
+            // className={baseStyles.root__section}
+            >{item.name}</span>
+          ))}
         </div>
       </LayoutComponent>
-      {loading ? (
-        <div className={skeletonClassName} data-testid='app-header-skeleton'>
-          <SkeletonComponent sectionCount={slotCount} />
+      {showSkeleton ? (
+        <div className={skeletonClassName} data-testid="app-header-skeleton">
+          <SkeletonComponent />
         </div>
       ) : null}
     </header>

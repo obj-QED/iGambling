@@ -24,35 +24,54 @@ vi.mock('@/hooks/useAuthSession', () => ({
   useAuthSession: () => mockUseAuthSession(),
 }));
 
+const MENU_HEADER_BLOCK = {
+  blocks: [
+    {
+      buttonSearch: '1',
+      type: 'menuHeaderTop',
+      menu: [
+        { url: '', name: 'logo', key: 'logo', img: '/logo.png' },
+        { url: '/games', name: 'slots', key: 'slots', img: '' },
+      ],
+    },
+  ],
+};
+
 describe('AppHeader', () => {
-  it('uses single-section layout when one section is passed', () => {
-    mockUseCurrentPageDataState.mockReturnValue({ data: { meta_title: 'Main' }, loading: false });
-    render(<AppHeader sections={['only']} />);
-
-    expect(screen.getByRole('banner')).toHaveAttribute('data-sections', '1');
-  });
-
-  it('applies classic variant metadata', () => {
-    mockUseCurrentPageDataState.mockReturnValue({ data: { meta_title: 'Main' }, loading: false });
-    render(<AppHeader variant='classic' />);
-
-    expect(screen.getByRole('banner')).toHaveAttribute('data-variant', 'classic');
-  });
-
-  it('renders 3 sections and fluid container layout', () => {
-    mockUseCurrentPageDataState.mockReturnValue({ data: { meta_title: 'Main' }, loading: false });
-    render(<AppHeader layout='container-fluid' />);
-
-    expect(screen.getByText('Guest')).toBeInTheDocument();
-    expect(screen.getByText('Main')).toBeInTheDocument();
-    expect(screen.getByText('Login')).toBeInTheDocument();
-  });
-
-  it('shows component skeleton while page data is loading', () => {
-    mockUseCurrentPageDataState.mockReturnValue({ data: undefined, loading: true });
+  it('renders menu items from menuHeaderTop block', () => {
+    mockUseCurrentPageDataState.mockReturnValue({
+      data: MENU_HEADER_BLOCK,
+      loading: false,
+      isFetching: false,
+      error: null,
+    });
     render(<AppHeader />);
 
-    expect(screen.getByTestId('app-header-skeleton').className).toContain('root__skeleton--visible');
-    expect(screen.getByTestId('app-header-title').className).toContain('root__title--hidden');
+    expect(screen.getByText('logo')).toBeInTheDocument();
+    expect(screen.getByText('slots')).toBeInTheDocument();
+  });
+
+  it('shows skeleton while loading and no data', () => {
+    mockUseCurrentPageDataState.mockReturnValue({
+      data: undefined,
+      loading: true,
+      isFetching: true,
+      error: null,
+    });
+    render(<AppHeader />);
+
+    expect(screen.getByTestId('app-header-skeleton')).toBeInTheDocument();
+  });
+
+  it('does not show skeleton when data is available', () => {
+    mockUseCurrentPageDataState.mockReturnValue({
+      data: MENU_HEADER_BLOCK,
+      loading: false,
+      isFetching: false,
+      error: null,
+    });
+    render(<AppHeader />);
+
+    expect(screen.queryByTestId('app-header-skeleton')).not.toBeInTheDocument();
   });
 });

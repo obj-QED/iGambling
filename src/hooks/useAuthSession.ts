@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -13,19 +13,6 @@ type UseAuthSessionResult = {
  * Токен в JS/sessionStorage не сохраняем по требованиям безопасности.
  */
 export function useAuthSession(): UseAuthSessionResult {
-  const isAuthenticatedFromStore = useSelector(selectIsAuthenticated);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(isAuthenticatedFromStore);
-
-  useEffect(() => {
-    setIsAuthenticated(isAuthenticatedFromStore);
-  }, [isAuthenticatedFromStore]);
-
-  const result = useMemo(
-    () => ({
-      isAuthenticated,
-    }),
-    [isAuthenticated],
-  );
-
-  return result;
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  return useMemo(() => ({ isAuthenticated }), [isAuthenticated]);
 }

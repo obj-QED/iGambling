@@ -1,4 +1,4 @@
-import type { HeaderProviderItem } from '../../../types/AppHeader.types';
+import type { AppHeaderMenuItem } from '../../../types/AppHeader.types';
 
 import { memo } from 'react';
 
@@ -7,19 +7,23 @@ import { Link } from 'react-router-dom';
 import styles from './AppHeaderProvidersNav.module.scss';
 
 export type AppHeaderProvidersNavProps = {
-  providers: HeaderProviderItem[];
+  items: AppHeaderMenuItem[];
 };
 
 function isExternalUrl(url: string): boolean {
   return /^https?:\/\//i.test(url);
 }
 
-function ProviderNavLink({ item }: { item: HeaderProviderItem }) {
-  const inner = <img className={styles.providerIcon} src={item.icon} alt='' loading='lazy' decoding='async' />;
+function ProviderNavLink({ item }: { item: AppHeaderMenuItem }) {
+  const inner = item.img ? (
+    <img className={styles.providerIcon} src={item.img} alt="" loading="lazy" decoding="async" />
+  ) : (
+    <span>{item.name}</span>
+  );
 
   if (isExternalUrl(item.url)) {
     return (
-      <a className={styles.providerLink} href={item.url} rel='noopener noreferrer' target='_blank' aria-label={item.name}>
+      <a className={styles.providerLink} href={item.url} rel="noopener noreferrer" target="_blank" aria-label={item.name}>
         {inner}
       </a>
     );
@@ -32,13 +36,13 @@ function ProviderNavLink({ item }: { item: HeaderProviderItem }) {
   );
 }
 
-function AppHeaderProvidersNavComponent({ providers }: AppHeaderProvidersNavProps) {
-  if (providers.length === 0) return null;
+function AppHeaderProvidersNavComponent({ items }: AppHeaderProvidersNavProps) {
+  if (items.length === 0) return null;
 
   return (
-    <nav className={styles.providers} aria-label='Провайдеры'>
-      {providers.map((item) => (
-        <ProviderNavLink key={`${item.name}-${item.url}`} item={item} />
+    <nav className={styles.providers} aria-label="Провайдеры">
+      {items.map((item) => (
+        <ProviderNavLink key={`${item.key}-${item.url}`} item={item} />
       ))}
     </nav>
   );

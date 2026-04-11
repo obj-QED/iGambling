@@ -1,9 +1,12 @@
 import type { AppHeaderLayoutProps } from '../../types/AppHeader.types';
 
+import { memo } from 'react';
+
 import styles from '../../styles/layout/AppHeaderContainer.module.scss';
 
-export function AppHeaderContainerLayout({ children }: AppHeaderLayoutProps) {
+function AppHeaderContainerLayoutComponent({ children }: AppHeaderLayoutProps) {
   return <div className={`header-container ${styles.root}`}>{children}</div>;
 }
 
+export const AppHeaderContainerLayout = memo(AppHeaderContainerLayoutComponent);
 AppHeaderContainerLayout.displayName = 'AppHeaderContainerLayout';

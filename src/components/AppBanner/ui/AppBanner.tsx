@@ -1,6 +1,8 @@
+import { memo } from 'react';
+
 import styles from '../styles/AppBannerBase.module.scss';
 
-export function AppBanner() {
+function AppBannerComponent() {
   return (
     <div className={styles.root}>
       {/* промо-баннеры, слайдер */}
@@ -8,4 +10,5 @@ export function AppBanner() {
   );
 }
 
+export const AppBanner = memo(AppBannerComponent);
 AppBanner.displayName = 'AppBanner';

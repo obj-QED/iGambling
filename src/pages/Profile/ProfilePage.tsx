@@ -1,4 +1,6 @@
-export function ProfilePage() {
+import { memo } from 'react';
+
+function ProfilePageComponent() {
   return (
     <main>
       <h1>Профиль</h1>
@@ -7,4 +9,5 @@ export function ProfilePage() {
   );
 }
 
+export const ProfilePage = memo(ProfilePageComponent);
 ProfilePage.displayName = 'ProfilePage';
