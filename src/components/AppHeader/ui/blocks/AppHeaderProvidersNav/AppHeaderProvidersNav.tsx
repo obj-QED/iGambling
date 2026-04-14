@@ -1,49 +1,36 @@
 import type { AppHeaderMenuItem } from '../../../types/AppHeader.types';
+import type { MouseEvent } from 'react';
 
 import { memo } from 'react';
 
-import { Link } from 'react-router-dom';
+import { AppHeaderProviderNavItem } from './AppHeaderProviderNavItem';
 
 import styles from './AppHeaderProvidersNav.module.scss';
 
+function providerNavItemKey(item: AppHeaderMenuItem): string {
+  return item.key || `${item.name}-${item.url}`;
+}
+
 export type AppHeaderProvidersNavProps = {
   items: AppHeaderMenuItem[];
+  /** Аналитика, отмена перехода через `preventDefault`, модалки и т.д. */
+  onItemClick?: (item: AppHeaderMenuItem, event: MouseEvent<HTMLElement>) => void;
 };
 
-function isExternalUrl(url: string): boolean {
-  return /^https?:\/\//i.test(url);
-}
-
-function ProviderNavLink({ item }: { item: AppHeaderMenuItem }) {
-  const inner = item.img ? (
-    <img className={styles.providerIcon} src={item.img} alt="" loading="lazy" decoding="async" />
-  ) : (
-    <span>{item.name}</span>
-  );
-
-  if (isExternalUrl(item.url)) {
-    return (
-      <a className={styles.providerLink} href={item.url} rel="noopener noreferrer" target="_blank" aria-label={item.name}>
-        {inner}
-      </a>
-    );
-  }
-
-  return (
-    <Link className={styles.providerLink} to={item.url} aria-label={item.name}>
-      {inner}
-    </Link>
-  );
-}
-
-function AppHeaderProvidersNavComponent({ items }: AppHeaderProvidersNavProps) {
+function AppHeaderProvidersNavComponent({ items, onItemClick }: AppHeaderProvidersNavProps) {
   if (items.length === 0) return null;
 
   return (
     <nav className={styles.providers} aria-label="Провайдеры">
-      {items.map((item) => (
-        <ProviderNavLink key={`${item.key}-${item.url}`} item={item} />
-      ))}
+      <ul className={styles.providersList}>
+        {items.map((item) => (
+          <AppHeaderProviderNavItem
+            key={providerNavItemKey(item)}
+            item={item}
+            onItemClick={onItemClick}
+          />
+        ))}
+      </ul>
     </nav>
   );
 }

@@ -1,9 +1,20 @@
 .providers {
+  display: block;
+}
+
+.providersList {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.providersItem {
+  display: inline-flex;
 }
 
 .providerLink {

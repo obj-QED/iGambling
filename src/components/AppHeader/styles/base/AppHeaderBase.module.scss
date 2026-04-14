@@ -34,88 +34,109 @@
   @return center;
 }
 
-.root {
-  position: relative;
-  width: 100%;
-  // min-height: 56px;
-  overflow: hidden;
-  background: var(--header_background, #0d0d0d);
+@layer fdd-base {
+  .root {
+    position: relative;
+    width: 100%;
+    // min-height: 56px;
+    overflow: hidden;
+    background: var(--header_background, #0d0d0d);
 
-  &__sections {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 0;
-  }
+    &__sections {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+    }
 
-  &__section {
-    display: flex;
-    flex: 1 1 0;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-    justify-content: center;
-  }
+    &__section {
+      display: flex;
+      flex: 1 1 0;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      justify-content: center;
+    }
 
-  // Рантайм-«условие» по числу колонок — :has (список @each задаёт N; см. app-header-section-justify).
-  @each $total in 1, 2, 3, 4, 5, 6 {
-    @for $i from 1 through $total {
-      &__sections:has(&__section:nth-child(#{$total}):last-child) &__section:nth-child(#{$i}) {
-        justify-content: app-header-section-justify($total, $i);
+    // Рантайм-«условие» по числу колонок — :has (список @each задаёт N; см. app-header-section-justify).
+    @each $total in 1, 2, 3, 4, 5, 6 {
+      @for $i from 1 through $total {
+        &__sections:has(&__section:nth-child(#{$total}):last-child) &__section:nth-child(#{$i}) {
+          justify-content: app-header-section-justify($total, $i);
+        }
+      }
+    }
+
+    &__logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    &__title {
+      margin: 0;
+      font-size: 14px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      transition: opacity 0.24s ease;
+    }
+
+    &__title--hidden {
+      opacity: 0;
+    }
+
+    &__skeleton {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0;
+      transition: opacity 0.24s ease;
+      pointer-events: none;
+    }
+
+    &__skeleton--visible {
+      opacity: 1;
+    }
+
+    &__userActions-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      /* Класс `root__userActions-item_icon` на SVG: размер — глобальный `.inline-icon` (`1em`). */
+      &_icon {
+        flex-shrink: 0;
+      }
+
+      /* Слот иконки выхода: фон задаётся в варианте через `--icon-logout`; форма — глобальные `icon-shape-*`. */
+      &_icon_logout {
+        display: inline-block;
+        box-sizing: border-box;
+        flex-shrink: 0;
+        vertical-align: middle;
       }
     }
   }
 
-  &__logo {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
+  @media (prefers-reduced-motion: reduce) {
+    .root {
+      &__title {
+        transition: none;
+      }
 
-  &__title {
-    margin: 0;
-    font-size: 14px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    transition: opacity 0.24s ease;
-  }
-
-  &__title--hidden {
-    opacity: 0;
-  }
-
-  &__skeleton {
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0;
-    transition: opacity 0.24s ease;
-    pointer-events: none;
-  }
-
-  &__skeleton--visible {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .root {
-    &__title {
-      transition: none;
-    }
-
-    &__skeleton {
-      transition: none;
+      &__skeleton {
+        transition: none;
+      }
     }
   }
 }

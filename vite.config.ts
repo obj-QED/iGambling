@@ -83,7 +83,7 @@ export default defineConfig(({ mode }) => {
       preprocessorOptions: {
         scss: {
           loadPaths: [fileURLToPath(new URL('./src', import.meta.url))],
-          additionalData: `@use "assets/styles/tokens" as *; @use "assets/styles/mixins" as *;`,
+          additionalData: `@use "assets/styles/tokens" as *; @use "assets/styles/mixins" as *; @use "shared/styles/fdd-cascade-layers" as *;`,
         },
       },
     },

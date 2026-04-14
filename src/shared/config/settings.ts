@@ -1,13 +1,6 @@
-export type SettingsProvider = {
-  name: string;
-  icon: string;
-  url: string;
-};
-
 export type HeaderSettings = {
   layout?: 'container' | 'container-fluid';
   type?: 'default' | 'classic';
-  providers?: SettingsProvider[];
 };
 
 export type AppSettings = {

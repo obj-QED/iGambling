@@ -1,10 +1,16 @@
-import type { AppHeaderData, AppHeaderLayout, AppHeaderParams, AppHeaderVariant } from '../types/AppHeader.types';
+import type {
+  AppHeaderData,
+  AppHeaderLayout,
+  AppHeaderParams,
+  AppHeaderVariant,
+} from '../types/AppHeader.types';
+import type { PageData } from '@/api/lobby';
 
 import { useMemo } from 'react';
 
 import { useLocation } from 'react-router-dom';
 
-import { type PageData, useCurrentPageDataState } from '@/api/lobby';
+import { useCurrentPageDataState } from '@/api/lobby';
 import { useAuthSession } from '@/hooks/useAuthSession';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getHeaderSettings } from '@/shared/config';
@@ -25,8 +31,8 @@ const DEFAULT_VARIANT: AppHeaderVariant = 'default';
 function resolveParams(): AppHeaderParams {
   const header = getHeaderSettings();
   return {
-    layout: header.layout === 'container-fluid' ? 'container-fluid' : DEFAULT_LAYOUT,
-    variant: header.type === 'classic' ? 'classic' : DEFAULT_VARIANT,
+    layout: header.layout ?? DEFAULT_LAYOUT,
+    variant: header.type ?? DEFAULT_VARIANT,
   };
 }
 
@@ -46,10 +52,12 @@ function findMenuHeaderTop(page: PageData | undefined): AppHeaderData {
 export function useAppHeaderState(): UseAppHeaderStateResult {
   const language = useLanguage();
   const { pathname } = useLocation();
-  const { data: pageData, loading: queryPending, error, isFetching } = useCurrentPageDataState(
-    language,
-    pathname || '/',
-  );
+  const {
+    data: pageData,
+    loading: queryPending,
+    error,
+    isFetching,
+  } = useCurrentPageDataState(language, pathname || '/');
   const { isAuthenticated } = useAuthSession();
 
   const params = useMemo(() => resolveParams(), []);

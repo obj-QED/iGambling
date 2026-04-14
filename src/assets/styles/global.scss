@@ -1,3 +1,92 @@
 // Подключение токенов (SASS-переменные) для глобального доступа.
 // :root и базовые стили — только в public/base.css.
 @use 'assets/styles/tokens';
+
+svg {
+  &.icon-stroke {
+    stroke: currentColor;
+  }
+}
+
+/**
+ * Инлайновый ряд «иконка + текст»: SVG и `img` по размеру с `font-size` строки (`1em`).
+ * Размер по умолчанию через `:where`, чтобы классы `icon-shape-*` на дочернем svg/img перекрывали без повышения специфичности.
+ */
+.inline-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+
+  :where(svg, img, i) {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+  }
+
+  i {
+    color: inherit;
+    background-color: currentColor;
+    mask-image: var(--icon-image);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: var(--icon-image);
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+  }
+
+  img {
+    object-fit: contain;
+  }
+
+  /*
+  * Форма иконки (навешивать на `svg` / `img` / `i` с фоном или обёртку).
+  * Масштаб — в `em` от `font-size` контекста. Сочетать: `icon-shape-rect icon-rounded`.
+  */
+
+  & .icon-shape-square {
+    aspect-ratio: 1 / 1;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  & .icon-shape-rect {
+    width: 1.5em;
+    aspect-ratio: 3 / 2;
+    height: auto;
+    flex-shrink: 0;
+    object-fit: contain;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  & .icon-shape-circle {
+    aspect-ratio: 1 / 1;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  & .icon-rounded {
+    border-radius: var(--icon-radius, var(--radius-md));
+  }
+
+  & .icon-rounded-sm {
+    border-radius: var(--radius-sm);
+  }
+
+  & .icon-rounded-lg {
+    border-radius: var(--radius-lg);
+  }
+}

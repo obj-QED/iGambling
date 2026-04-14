@@ -1,0 +1,4 @@
+// Единые имена слоёв для компонентов FDD: `styles/base` слабее `styles/variants`.
+// Подключается глобально через `vite.config` → `css.preprocessorOptions.scss.additionalData`.
+// В модулях: оборачивайте base в `@layer fdd-base { … }`, variant в `@layer fdd-variant { … }`.
+@layer fdd-base, fdd-variant;
