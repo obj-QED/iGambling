@@ -1,11 +1,10 @@
 .root {
   --icon-radius: 2px;
   /**
-   * Иконка для mask (не background): в SVG — чёрный штрих (#000), цвет на экране = `color` / `background-color: currentColor`.
-   * UTF-8 в URI обычно короче base64 (~на треть); base64 удобен для бинарных данных.
-   * Вариант: `data:image/svg+xml;base64,...` — тот же SVG, поведение то же.
+   * Иконка-маска: задавайте как полное `url("data:image/svg+xml,...")`.
+   * Для mask внутри SVG лучше использовать фиксированный цвет (`#000`), а цвет управлять через `currentColor` снаружи.
    */
-  --icon-image: url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2224%22%20height=%2224%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22currentColor%22%20stroke-width=%221.5%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20class=%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-logout-2%22%3E%3Cpath%20stroke=%22none%22%20d=%22M0%200h24v24H0z%22%20fill=%22none%22%20/%3E%3Cpath%20d=%22M10%208v-2a2%202%200%200%201%202%20-2h7a2%202%200%200%201%202%202v12a2%202%200%200%201%20-2%202h-7a2%202%200%200%201%20-2%20-2v-2%22%20/%3E%3Cpath%20d=%22M15%2012h-12l3%20-3%22%20/%3E%3Cpath%20d=%22M6%2015l-3%20-3%22%20/%3E%3C/svg%3E');
+  --icon-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20stroke='none'%20d='M0%200h24v24H0z'%20fill='none'/%3E%3Cpath%20d='M10%208v-2a2%202%200%200%201%202-2h7a2%202%200%200%201%202%202v12a2%202%200%200%201-2%202h-7a2%202%200%200%201-2-2v-2'/%3E%3Cpath%20d='M15%2012H3l3-3'/%3E%3Cpath%20d='M6%2015l-3-3'/%3E%3C/svg%3E");
 
   &__logo {
     background: var(--color-bg-accent-default, #111827);
@@ -15,10 +14,14 @@
   &__titlePreview {
     display: none;
   }
+
+  &__userActions-item {
+    cursor: pointer;
+  }
 }
 
 .skeleton {
   &__segment {
-    background: var(--app-header_default-skeleton-bg, #d1d5db);
+    background: var(--app-header_default-skeleton-bg, rgb(255 255 255 / 50%));
   }
 }

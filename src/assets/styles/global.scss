@@ -6,6 +6,10 @@ svg {
   &.icon-stroke {
     stroke: currentColor;
   }
+
+  &.icon-fill {
+    fill: currentColor;
+  }
 }
 
 /**
@@ -16,6 +20,7 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 0.35em;
+  transition: all 0.2s ease;
 
   :where(svg, img, i) {
     width: 1em;
@@ -23,7 +28,11 @@ svg {
     flex-shrink: 0;
   }
 
-  i {
+  img {
+    object-fit: contain;
+  }
+
+  & .icon-i {
     color: inherit;
     background-color: currentColor;
     mask-image: var(--icon-image);
@@ -36,10 +45,6 @@ svg {
     -webkit-mask-position: center;
   }
 
-  img {
-    object-fit: contain;
-  }
-
   /*
   * Форма иконки (навешивать на `svg` / `img` / `i` с фоном или обёртку).
   * Масштаб — в `em` от `font-size` контекста. Сочетать: `icon-shape-rect icon-rounded`.
@@ -47,9 +52,6 @@ svg {
 
   & .icon-shape-square {
     aspect-ratio: 1 / 1;
-    width: 1em;
-    height: 1em;
-    flex-shrink: 0;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -59,7 +61,6 @@ svg {
     width: 1.5em;
     aspect-ratio: 3 / 2;
     height: auto;
-    flex-shrink: 0;
     object-fit: contain;
     background-size: contain;
     background-position: center;
@@ -68,9 +69,6 @@ svg {
 
   & .icon-shape-circle {
     aspect-ratio: 1 / 1;
-    width: 1em;
-    height: 1em;
-    flex-shrink: 0;
     border-radius: 50%;
     overflow: hidden;
     background-size: contain;

@@ -8,8 +8,8 @@
     flex: 1 1 0;
     min-width: 0;
     height: 14px;
-    border-radius: 999px;
-    background: var(--color-skeleton, #d1d5db);
+    border-radius: var(--app-header_skeleton-border-radius, 6px);
+    background: var(--app-header_skeleton-bg, rgb(255 255 255 / 50%));
     opacity: 0.9;
   }
 }

@@ -7,8 +7,8 @@ import { useMergeModuleClassKey } from '@/shared/lib';
 import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
 import { AppHeaderUserActions } from '../../blocks/AppHeaderUserActions/AppHeaderUserActions';
 
-import baseStyles from '@AppHeader/styles/base/AppHeaderBase.module.scss';
-import defaultStyles from '@AppHeader/styles/variants/AppHeaderDefault.module.scss';
+import baseStyles from '../../../styles/base/AppHeaderBase.module.scss';
+import defaultStyles from '../../../styles/variants/AppHeaderDefault.module.scss';
 
 function AppHeaderDefaultViewComponent({ params, data, loading }: AppHeaderViewProps) {
   const LayoutComponent = LAYOUT_COMPONENTS[params.layout];

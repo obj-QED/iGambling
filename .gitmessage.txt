@@ -1,0 +1,12 @@
+# <type>(<scope>): <short imperative summary>
+#
+# Types:
+# feat, fix, refactor, perf, test, docs, chore
+#
+# Examples:
+# feat(app-header): add css-mask logout icon with shape variants
+# fix(app-header): restore user actions class merging for icon slot
+#
+# Body (optional, wrap at ~72 chars):
+# Why: <one short reason>.
+# Impact: <what changed for users/developers>.

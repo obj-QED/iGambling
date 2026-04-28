@@ -4,8 +4,8 @@ import { memo, useMemo } from 'react';
 
 import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
 
-import baseStyles from '@AppHeader/styles/base/AppHeaderBase.module.scss';
-import classicStyles from '@AppHeader/styles/variants/AppHeaderClassic.module.scss';
+import baseStyles from '../../../styles/base/AppHeaderBase.module.scss';
+import classicStyles from '../../../styles/variants/AppHeaderClassic.module.scss';
 
 function AppHeaderClassicViewComponent({ params, data, loading }: AppHeaderViewProps) {
   const LayoutComponent = LAYOUT_COMPONENTS[params.layout];
