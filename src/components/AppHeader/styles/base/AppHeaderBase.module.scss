@@ -58,7 +58,7 @@
       justify-content: center;
     }
 
-    // Рантайм-«условие» по числу колонок — :has (список @each задаёт N; см. app-header-section-justify).
+    // Runtime condition by column count via :has (the @each list defines N; see app-header-section-justify).
     @each $total in 1, 2, 3, 4, 5, 6 {
       @for $i from 1 through $total {
         &__sections:has(&__section:nth-child(#{$total}):last-child) &__section:nth-child(#{$i}) {
@@ -113,12 +113,12 @@
       align-items: center;
       gap: 6px;
 
-      /* Класс `root__userActions-item_icon` на SVG: размер — глобальный `.inline-icon` (`1em`). */
+      /* `root__userActions-item_icon` on SVG: size comes from global `.inline-icon` (`1em`). */
       &_icon {
         flex-shrink: 0;
       }
 
-      /* Слот иконки выхода: фон задаётся в варианте через `--icon-logout`; форма — глобальные `icon-shape-*`. */
+      /* Logout icon slot: background is set by variant via `--icon-logout`; shape uses global `icon-shape-*`. */
       &_icon_logout {
         display: inline-block;
         box-sizing: border-box;

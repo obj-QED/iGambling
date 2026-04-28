@@ -1,5 +1,5 @@
-// Миксины для компонентов
-// Подключение: автоматически через vite.config.scss.additionalData
+// Mixins for components
+// Injection: automatic via vite.config.scss.additionalData
 
 @mixin focus-ring($color: var(--color-primary, currentColor)) {
   outline: 2px solid $color;

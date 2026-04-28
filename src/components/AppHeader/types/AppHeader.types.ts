@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-/** Единый объект классов из `AppHeaderBase.module.scss` — импортируется только в `AppHeader` и прокидывается вниз. */
+/** Unified class map from `AppHeaderBase.module.scss` — imported in `AppHeader` and passed down. */
 export type AppHeaderBaseStyles = typeof import('../styles/base/AppHeaderBase.module.scss').default;
 
 export type AppHeaderLayout = 'container' | 'container-fluid';
@@ -32,9 +32,9 @@ export type AppHeaderData = {
 export type AppHeaderViewProps = {
   params: AppHeaderParams;
   data: AppHeaderData;
-  /** Скелетон: true пока нет `data` (menuHeaderTop) и запрос в pending/fetching (см. useAppHeaderState). */
+  /** Skeleton: true while `data` (menuHeaderTop) is missing and request is pending/fetching (see useAppHeaderState). */
   loading: boolean;
-  /** Ошибка запроса страницы/init; при ошибке скелетон не показываем. */
+  /** Page/init request error; hide skeleton when error is present. */
   error: unknown | null;
   isAuthenticated: boolean;
 };

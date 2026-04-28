@@ -13,7 +13,7 @@ function providerNavItemKey(item: AppHeaderMenuItem): string {
 
 export type AppHeaderProvidersNavProps = {
   items: AppHeaderMenuItem[];
-  /** Аналитика, отмена перехода через `preventDefault`, модалки и т.д. */
+  /** Analytics, navigation cancel via `preventDefault`, modals, etc. */
   onItemClick?: (item: AppHeaderMenuItem, event: MouseEvent<HTMLElement>) => void;
 };
 

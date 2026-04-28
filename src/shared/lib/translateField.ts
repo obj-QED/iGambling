@@ -1,7 +1,7 @@
 import type { Words } from '@/entities/translation/types';
 
 /**
- * Проверка «плоского» словаря строк (как `state.words` после init).
+ * Checks a "flat" string dictionary (like `state.words` after init).
  */
 function isFlatWordsRecord(obj: unknown): obj is Words {
   if (!obj || typeof obj !== 'object') return false;
@@ -9,9 +9,9 @@ function isFlatWordsRecord(obj: unknown): obj is Words {
 }
 
 /**
- * Перевод по ключу из словаря (локаль + сервер уже слиты в Redux `words`).
- * @param rename если `true` и перевод найден — оборачивает в шаблон (как в legacy); если перевода нет — `lang->key`. Если `false` — сырой текст или ключ без префикса `lang->`.
- * @param lower приводить ключ к нижнему регистру перед поиском
+ * Translates by key from dictionary (local + server are already merged into Redux `words`).
+ * @param rename if `true` and translation exists, returns the template style (legacy behavior); if missing, returns `lang->key`. If `false`, returns raw text/key without `lang->`.
+ * @param lower lowercases the lookup key before searching
  */
 export function translateField(
   name: unknown,

@@ -1,4 +1,4 @@
-/** Склеивает классы; пустые и falsy отбрасываются. */
+/** Joins class names; empty and falsy values are dropped. */
 export function joinClassNames(
   ...parts: Array<string | undefined | null | false>
 ): string {

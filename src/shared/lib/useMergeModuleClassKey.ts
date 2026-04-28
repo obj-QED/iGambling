@@ -4,12 +4,12 @@ import { mergeModuleClassKey } from './mergeModuleClassKey';
 
 type ScssModule = Record<string, string>;
 
-/** Результат хука: слияние base + variant по строковому ключу экспорта SCSS. */
+/** Hook result: merged base + variant by exported SCSS string key. */
 export type MergeModuleClassKeyFn = (classKey: string) => string;
 
 /**
- * Склеивает классы двух CSS Modules (base + variant) по одному ключу.
- * Вариант может не переопределять ключ — тогда остаётся только base.
+ * Merges classes from two CSS Modules (base + variant) by the same key.
+ * Variant may omit a key — base class is kept in that case.
  */
 export function useMergeModuleClassKey<B extends ScssModule, V extends ScssModule>(
   base: B,

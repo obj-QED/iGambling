@@ -1,7 +1,7 @@
-# Настройки (settings)
+# Settings
 
-Файлы из этой папки при сборке объединяются в **dist/settings.js** (по алфавиту имён).
+Files from this folder are concatenated into **dist/settings.js** during build (alphabetical by filename).
 
-- Поддерживаются только `.js`.
-- Конкатенация «как есть» — пишите код так, чтобы при склейке получался валидный JS (например, первый файл задаёт `window.__SETTINGS__`, следующие дополняют через `Object.assign`).
-- На сервере можно заменить или отредактировать `dist/settings.js` для переопределения настроек без пересборки.
+- Only `.js` files are supported.
+- Concatenation is "as-is" — write code so merged output remains valid JS (e.g., first file initializes `window.__SETTINGS__`, next files extend via `Object.assign`).
+- On the server, you can replace or edit `dist/settings.js` to override settings without rebuilding.

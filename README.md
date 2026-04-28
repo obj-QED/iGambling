@@ -1,65 +1,65 @@
 # iGambling
 
-Приложение на **React 19**, **Vite**, **TypeScript**.
+Application built with **React 19**, **Vite**, and **TypeScript**.
 
-## Стек
+## Stack
 
 - React 19, Vite, TypeScript
 - React Router 6
-- Структура по FDD: `docs/new-project/architecture.md`, `docs/new-project/rules-new-project.md`
+- FDD-based structure: `docs/new-project/architecture.md`, `docs/new-project/rules-new-project.md`
 
-## Переменные окружения
+## Environment Variables
 
-- **Локалка (`yarn dev`)**: Vite проксирует `/apiLobby.php` и `/api.php` на `VITE_APP_URL`.
-- **Прод (`yarn build`)**: фронт обращается к `apiLobby.php` относительно текущего origin.
+- **Local (`yarn dev`)**: Vite proxies `/apiLobby.php` and `/api.php` to `VITE_APP_URL`.
+- **Production (`yarn build`)**: the frontend requests `apiLobby.php` relative to the current origin.
 
-| Переменная     | Назначение                                                                 |
+| Variable       | Purpose                                                                    |
 | -------------- | -------------------------------------------------------------------------- |
-| `VITE_APP_URL` | Базовый URL для dev-proxy (`server.proxy`) и `baseApi` клиента (`api.php`) |
+| `VITE_APP_URL` | Base URL for dev proxy (`server.proxy`) and client `baseApi` (`api.php`)  |
 
-`proxy.php` в текущей схеме не используется.
+`proxy.php` is not used in the current setup.
 
-## Запуск
+## Run
 
 ```bash
 yarn install
-yarn dev      # режим разработки (http://localhost:5173)
-yarn test     # unit/integration тесты (Vitest)
+yarn dev      # development mode (http://localhost:5173)
+yarn test     # unit/integration tests (Vitest)
 yarn lint     # eslint
-yarn build    # production-сборка
-yarn build:analyze # сборка + отчёт размеров bundle (dist/stats.html)
-yarn preview  # просмотр production-сборки
+yarn build    # production build
+yarn build:analyze # build + bundle size report (dist/stats.html)
+yarn preview  # preview production build
 ```
 
-## Структура src/
+## `src/` Structure
 
-- `app/` — bootstrap, providers, роутинг
-- `pages/` — страницы (роуты)
-- `components/` — feature-компоненты (FDD)
-- `elements/` — UI-примитивы
-- `ui/` — общий UI-kit
-- `api/` — baseApi, queries, mutations
-- `store/` — Redux Toolkit (slices)
-- `shared/` — utils, стили (tokens, mixins)
-- `schemas/` — валидация
-- `hooks/` — общие хуки
+- `app/` - bootstrap, providers, routing
+- `pages/` - pages (routes)
+- `components/` - feature components (FDD)
+- `elements/` - UI primitives
+- `ui/` - shared UI kit
+- `api/` - baseApi, queries, mutations
+- `store/` - Redux Toolkit (slices)
+- `shared/` - utils, styles (tokens, mixins)
+- `schemas/` - validation
+- `hooks/` - shared hooks
 
-Правила и архитектура: см. `docs/new-project/` и `.cursor/rules/devcasi-rules.mdc`.
+Rules and architecture: see `docs/new-project/` and `.cursor/rules/devcasi-rules.mdc`.
 
 ## AppHeader (default variant)
 
-Источники данных:
+Data sources:
 
-- `title` и `logo` приходят из `useCurrentPageDataState(...)` (payload текущей страницы).
-- `providers` берутся из `window.__SETTINGS__.header.providers` (`src/assets/settings/index.js`).
+- `title` and `logo` come from `useCurrentPageDataState(...)` (current page payload).
+- `providers` come from `window.__SETTINGS__.header.providers` (`src/assets/settings/index.js`).
 
-Текущая композиция default-варианта:
+Current default variant composition:
 
-- `ui/variants/default/AppHeaderDefaultView.tsx` — orchestration рендера.
-- `ui/blocks/AppHeaderDefaultLayout/` — 3 секции шапки (left / center / right).
-- `ui/blocks/AppHeaderLogo/` — лого (URL) или fallback `IG`.
-- `ui/blocks/AppHeaderProvidersNav/` — список провайдеров.
-- `ui/blocks/AppHeaderPageTitle/` — заголовок страницы.
-- `ui/blocks/AppHeaderGuestActions/` и `ui/blocks/AppHeaderUserActions/` — правая колонка по auth-состоянию.
+- `ui/variants/default/AppHeaderDefaultView.tsx` - render orchestration.
+- `ui/blocks/AppHeaderDefaultLayout/` - 3 header sections (left / center / right).
+- `ui/blocks/AppHeaderLogo/` - logo (URL) or fallback `IG`.
+- `ui/blocks/AppHeaderProvidersNav/` - providers list.
+- `ui/blocks/AppHeaderPageTitle/` - page title.
+- `ui/blocks/AppHeaderGuestActions/` and `ui/blocks/AppHeaderUserActions/` - right column based on auth state.
 
-Если передать `sections` в `AppHeader`, используются override-слоты.
+If you pass `sections` into `AppHeader`, override slots are used.

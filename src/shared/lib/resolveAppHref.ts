@@ -1,6 +1,6 @@
 /**
- * Классификация строковых href для клиентского роутера и внешних ссылок.
- * Для рендера: внешний → `<a target="_blank" rel="noopener noreferrer">`, внутренний → `react-router` `Link`, невалидный → `<span data-invalid-href>`.
+ * Classifies string href values for client routing and external links.
+ * Rendering: external -> `<a target="_blank" rel="noopener noreferrer">`, internal -> `react-router` `Link`, invalid -> `<span data-invalid-href>`.
  */
 export type AppHrefKind = 'external' | 'internal' | 'invalid';
 

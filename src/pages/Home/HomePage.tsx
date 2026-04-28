@@ -5,7 +5,7 @@ import styles from './HomePage.module.scss';
 function HomePageComponent() {
   return (
     <section className={styles.root}>
-      {/* страничный контент главной */}
+      {/* home page content */}
     </section>
   );
 }

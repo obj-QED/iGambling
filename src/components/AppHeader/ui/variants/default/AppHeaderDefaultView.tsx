@@ -13,7 +13,7 @@ import defaultStyles from '../../../styles/variants/AppHeaderDefault.module.scss
 function AppHeaderDefaultViewComponent({ params, data, loading }: AppHeaderViewProps) {
   const LayoutComponent = LAYOUT_COMPONENTS[params.layout];
   const SkeletonComponent = SKELETON_COMPONENTS[params.variant];
-  /** `loading` из хука уже учитывает pending/fetching и отсутствие menuHeaderTop. */
+  /** `loading` from hook already accounts for pending/fetching and missing menuHeaderTop. */
   const showSkeleton = loading;
 
   const m = useMergeModuleClassKey(baseStyles, defaultStyles);

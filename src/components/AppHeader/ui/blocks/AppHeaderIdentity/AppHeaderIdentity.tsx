@@ -4,7 +4,7 @@ export type AppHeaderIdentityProps = {
   isAuthenticated: boolean;
 };
 
-/** Подпись слева от лого: гость или аккаунт. */
+/** Label to the left of logo: guest or account. */
 function AppHeaderIdentityComponent({ isAuthenticated }: AppHeaderIdentityProps) {
   return <span>{isAuthenticated ? 'Account' : 'Guest'}</span>;
 }

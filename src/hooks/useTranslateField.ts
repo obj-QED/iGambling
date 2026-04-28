@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { translateField } from '@/shared/lib/translateField';
 
 /**
- * `words` подставляются из Redux (`state.words`), передавать словарь не нужно.
+ * `words` are pulled from Redux (`state.words`), so no dictionary argument is needed.
  *
  * @example
  * const t = useTranslateField();

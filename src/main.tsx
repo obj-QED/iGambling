@@ -17,17 +17,17 @@ const root = createRoot(document.getElementById('root')!);
 
 (async function bootstrap() {
   const language = getBrowserLanguage();
-  /** Первый URL захода (включая прямой переход на /profile, /auth и т.д.) — не «только главная». */
+  /** First entry URL (including direct visits to /profile, /auth, etc.) — not only home page. */
   const initialPath = typeof window !== 'undefined' ? (window.location.pathname || '/') : '/';
   setInitialPath(initialPath);
 
-  // Prefetch init/translation для этого же initialPath; не ждём до render — скелетон хедера видит pending/fetching.
+  // Prefetch init/translation for the same initialPath; do not block render — header skeleton can react to pending/fetching.
   void prefetchInitData(queryClient, language, initialPath).catch((error) => {
     console.error('[bootstrap] prefetch failed', error);
   });
 
   try {
-    // Прогрев частых страниц; маршрут при заходе не с Home всё равно подгрузит свой lazy-чанк из routes.
+    // Warm up frequent pages; non-home entry routes still load their own lazy chunk from routes.
     await Promise.all([import('@/pages/Home/HomePage'), import('@/pages/Login/LoginPage')]);
   } catch (error) {
     console.error('[bootstrap] chunk load failed', error);

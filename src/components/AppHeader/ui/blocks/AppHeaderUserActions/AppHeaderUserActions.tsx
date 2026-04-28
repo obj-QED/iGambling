@@ -5,7 +5,7 @@ import { memo } from 'react';
 import classNames from 'classnames';
 
 
-/** Форма иконки в слоте user actions. */
+/** Icon shape in the user actions slot. */
 export type AppHeaderUserActionsIconShape = 'square' | 'rect' | 'circle';
 
 const ICON_SHAPE_CLASS: Record<AppHeaderUserActionsIconShape, string> = {
@@ -16,13 +16,13 @@ const ICON_SHAPE_CLASS: Record<AppHeaderUserActionsIconShape, string> = {
 
 type AppHeaderUserActionsComponentProps = {
   merge?: MergeModuleClassKeyFn;
-  /** Stem из SCSS, напр. `root__userActions-item` → класс `…_icon_logout`. */
+  /** SCSS stem, e.g. `root__userActions-item` -> class `..._icon_logout`. */
   classKey?: string;
   iconShape?: AppHeaderUserActionsIconShape;
   text?: string;
 };
 
-/** Колонка справа для авторизованного пользователя: выход. */
+/** Right column for authenticated user: logout action. */
 function AppHeaderUserActionsComponent({
   merge,
   classKey = 'root__userActions-item',

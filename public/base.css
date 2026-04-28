@@ -1,4 +1,4 @@
-/* Базовые стили — подключаются через <link> в index.html, не инжектируются в <style> */
+/* Base styles are loaded via <link> in index.html, not injected into <style> */
 
 :root {
   font-family: system-ui, -apple-system, sans-serif;
@@ -32,7 +32,7 @@ body {
   min-height: 100vh;
 }
 
-/* Глобальный прелоадер — грузится первым из base.css, скрывается после монтирования React */
+/* Global preloader is loaded first from base.css and hidden after React mounts */
 .global-preloader {
   position: fixed;
   inset: 0;

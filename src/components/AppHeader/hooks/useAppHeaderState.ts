@@ -19,7 +19,7 @@ import { isRecord } from '@/shared/lib';
 export type UseAppHeaderStateResult = {
   params: AppHeaderParams;
   data: AppHeaderData;
-  /** Показывать скелетон: нет меню в разметке и запрос ещё pending/fetching. */
+  /** Show skeleton when menu is absent in markup and request is still pending/fetching. */
   loading: boolean;
   error: unknown | null;
   isAuthenticated: boolean;

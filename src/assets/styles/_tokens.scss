@@ -1,6 +1,6 @@
-// Design tokens: SASS-переменные для .module.scss (цвета, отступы, радиусы).
-// CSS-переменные (:root) — только в public/base.css, без дублей.
-// Подключение: автоматически через vite.config.scss.additionalData
+// Design tokens: SASS variables for .module.scss (colors, spacing, radii).
+// Keep CSS variables (:root) only in public/base.css, no duplicates.
+// Injection: automatic via vite.config.scss.additionalData
 
 $radius-sm: 6px;
 $radius-md: 8px;

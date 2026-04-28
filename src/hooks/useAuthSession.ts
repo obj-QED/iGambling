@@ -9,8 +9,8 @@ type UseAuthSessionResult = {
 };
 
 /**
- * Источник правды — серверная сессия (httpOnly cookie), а в клиенте используем только флаг.
- * Токен в JS/sessionStorage не сохраняем по требованиям безопасности.
+ * Source of truth is server session (httpOnly cookie); client keeps only a boolean flag.
+ * Token is never stored in JS/sessionStorage per security requirements.
  */
 export function useAuthSession(): UseAuthSessionResult {
   const isAuthenticated = useSelector(selectIsAuthenticated);

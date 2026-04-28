@@ -1,6 +1,6 @@
-# Тема (theme)
+# Theme
 
-Файлы из этой папки при сборке объединяются в **dist/theme.css** (по алфавиту имён).
+Files from this folder are concatenated into **dist/theme.css** during build (alphabetical by filename).
 
-- Поддерживаются `.css` и `.scss`.
-- На сервере можно заменить или отредактировать `dist/theme.css` для переопределения стилей темы без пересборки.
+- `.css` and `.scss` are supported.
+- On the server, you can replace or edit `dist/theme.css` to override theme styles without rebuilding.

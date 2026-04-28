@@ -6,7 +6,7 @@ export type PageLoaderProps = {
   children?: ReactNode;
 };
 
-/** Suspense-fallback при lazy-загрузке JS-чанка страницы. */
+/** Suspense fallback while lazy-loading page JS chunk. */
 export function PageLoader({ children }: PageLoaderProps) {
   return (
     <div className={styles.root} role="status" aria-label="Загрузка">

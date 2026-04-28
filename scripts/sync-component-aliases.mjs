@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Синхронизирует алиасы @<ComponentName>/* в tsconfig.app.json
- * по содержимому src/components/.
+ * Syncs @<ComponentName>/* aliases in tsconfig.app.json
+ * based on the contents of src/components/.
  *
- * Запуск: node scripts/sync-component-aliases.mjs
+ * Run: node scripts/sync-component-aliases.mjs
  */
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';

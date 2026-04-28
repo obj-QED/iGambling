@@ -1,7 +1,7 @@
 /**
- * Склеивает класс с одним и тем же ключом из base и variant CSS Modules.
- * Если в variant ключа нет или значение пустое — возвращается только base
- * (удобно для опциональных переопределений варианта).
+ * Merges classes by the same key from base and variant CSS Modules.
+ * If variant key is missing or empty, returns base only
+ * (useful for optional variant overrides).
  */
 export function mergeModuleClassKey<
   B extends Record<string, string>,

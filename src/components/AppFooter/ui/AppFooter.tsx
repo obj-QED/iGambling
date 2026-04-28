@@ -5,7 +5,7 @@ import styles from '../styles/AppFooterBase.module.scss';
 function AppFooterComponent() {
   return (
     <footer className={styles.root}>
-      {/* ссылки, лицензии, копирайт */}
+      {/* links, licenses, copyright */}
     </footer>
   );
 }

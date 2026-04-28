@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-/** Колонка справа для гостя: вход. */
+/** Right column for guest: sign-in action. */
 function AppHeaderGuestActionsComponent() {
   return <span>Login</span>;
 }

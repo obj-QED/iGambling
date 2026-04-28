@@ -58,27 +58,27 @@ export default tseslint.config(
       'local/no-empty-jsx-whitespace': 'error',
 
       /**
-       * Порядок групп импортов:
-       *  1. type-импорты внешних библиотек (react, redux, @tanstack…)
-       *  2. value-импорты react / react-dom
-       *  3. value-импорты остальных внешних пакетов
-       *  4. @/app — bootstrap, routing, providers
+       * Import group order:
+       *  1. type imports from external libraries (react, redux, @tanstack...)
+       *  2. value imports from react / react-dom
+       *  3. value imports from other external packages
+       *  4. @/app - bootstrap, routing, providers
        *  5. @/pages
        *  6. @/components, @/elements, @/ui
        *  7. @/api, @/store, @/hooks, @/schemas, @/shared
-       *  8. Прочие @/ aliases
-       *  9. Относительные импорты (./, ../)
-       * 10. Стили (side-effect, последними)
+       *  8. Other @/ aliases
+       *  9. Relative imports (./, ../)
+       * 10. Styles (side-effect imports, always last)
        */
       'simple-import-sort/imports': [
         'error',
         {
           groups: [
-            // 1. type-импорты: все пакеты (external + @/ + relative) — \u0000 suffix добавляет плагин
+            // 1. Type imports: all packages (external + @/ + relative) - \u0000 suffix is added by the plugin
             ['^.*\\u0000$'],
-            // 2. react + react-dom value-импорты
+            // 2. react + react-dom value imports
             ['^react(-dom)?(/.*)?$'],
-            // 3. Остальные внешние value-импорты
+            // 3. Other external value imports
             ['^@?\\w'],
             // 4. @/app
             ['^@/app(/.*|$)'],
@@ -88,11 +88,11 @@ export default tseslint.config(
             ['^@/(components|elements|ui)(/.*|$)'],
             // 7. @/api, @/store, @/hooks, @/schemas, @/shared
             ['^@/(api|store|hooks|schemas|shared)(/.*|$)'],
-            // 8. Прочие @/ (assets, icons и т.д.)
+            // 8. Other @/ imports (assets, icons, etc.)
             ['^@(/.*|$)'],
-            // 9. Относительные импорты
+            // 9. Relative imports
             ['^\\.'],
-            // 10. Стили — всегда последними
+            // 10. Styles - always last
             ['^.+\\.s?css$'],
           ],
         },
