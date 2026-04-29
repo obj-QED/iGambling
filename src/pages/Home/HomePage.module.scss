@@ -1,5 +1,27 @@
 .root {
   display: grid;
-  gap: 16px;
+  gap: 20px;
   padding: 16px;
+}
+
+.block {
+  display: grid;
+  gap: 12px;
+}
+
+.blockDark {
+  padding: 12px;
+  border-radius: 12px;
+  background: #1d2430;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }

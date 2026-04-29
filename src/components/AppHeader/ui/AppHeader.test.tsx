@@ -1,4 +1,6 @@
+import { MantineProvider } from '@mantine/core';
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 
 import { AppHeader } from './AppHeader';
@@ -16,9 +18,13 @@ vi.mock('@/hooks/useLanguage', () => ({
   useLanguage: () => mockUseLanguage(),
 }));
 
-vi.mock('react-router-dom', () => ({
-  useLocation: () => mockUseLocation(),
-}));
+vi.mock('react-router-dom', async (importOriginal) => {
+  const mod = await importOriginal<typeof import('react-router-dom')>();
+  return {
+    ...mod,
+    useLocation: () => mockUseLocation(),
+  };
+});
 
 vi.mock('@/hooks/useAuthSession', () => ({
   useAuthSession: () => mockUseAuthSession(),
@@ -37,6 +43,21 @@ const MENU_HEADER_BLOCK = {
   ],
 };
 
+function renderWithRouter(ui: Parameters<typeof render>[0]) {
+  return render(
+    <MantineProvider>
+      <MemoryRouter
+        future={{
+          v7_relativeSplatPath: true,
+          v7_startTransition: true,
+        }}
+      >
+        {ui}
+      </MemoryRouter>
+    </MantineProvider>,
+  );
+}
+
 describe('AppHeader', () => {
   it('renders menu items from menuHeaderTop block', () => {
     mockUseCurrentPageDataState.mockReturnValue({
@@ -45,7 +66,7 @@ describe('AppHeader', () => {
       isFetching: false,
       error: null,
     });
-    render(<AppHeader />);
+    renderWithRouter(<AppHeader />);
 
     expect(screen.getByText('logo')).toBeInTheDocument();
     expect(screen.getByText('slots')).toBeInTheDocument();
@@ -58,7 +79,7 @@ describe('AppHeader', () => {
       isFetching: true,
       error: null,
     });
-    render(<AppHeader />);
+    renderWithRouter(<AppHeader />);
 
     expect(screen.getByTestId('app-header-skeleton')).toBeInTheDocument();
   });
@@ -70,7 +91,7 @@ describe('AppHeader', () => {
       isFetching: false,
       error: null,
     });
-    render(<AppHeader />);
+    renderWithRouter(<AppHeader />);
 
     expect(screen.queryByTestId('app-header-skeleton')).not.toBeInTheDocument();
   });

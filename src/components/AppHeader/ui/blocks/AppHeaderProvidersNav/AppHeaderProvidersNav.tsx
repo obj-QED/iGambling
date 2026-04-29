@@ -21,7 +21,7 @@ function AppHeaderProvidersNavComponent({ items, onItemClick }: AppHeaderProvide
   if (items.length === 0) return null;
 
   return (
-    <nav className={styles.providers} aria-label="Провайдеры">
+    <nav className={styles.providers} aria-label="Providers">
       <ul className={styles.providersList}>
         {items.map((item) => (
           <AppHeaderProviderNavItem

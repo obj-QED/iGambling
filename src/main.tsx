@@ -12,6 +12,9 @@ import { getBrowserLanguage } from '@/hooks/useLanguage';
 import '@/assets/styles/global.scss';
 import '@/assets/styles/fonts.scss';
 import '@/assets/theme/root.scss';
+import '@/app/providers/mantineStyles.css';
+
+import '@/assets/settings/index.js';
 
 const root = createRoot(document.getElementById('root')!);
 

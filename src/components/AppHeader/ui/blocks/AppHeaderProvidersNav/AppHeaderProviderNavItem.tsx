@@ -3,6 +3,8 @@ import type { MouseEvent } from 'react';
 
 import { memo } from 'react';
 
+import { Button } from '@mantine/core';
+import { IconPlug } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
 import { getAppHrefKind } from '@/shared/lib';
@@ -25,35 +27,34 @@ function AppHeaderProviderNavItemComponent({ item, onItemClick }: AppHeaderProvi
     <img
       className={styles.providerIcon}
       src={imageSrc}
-      alt={label}
+      alt=""
       loading="lazy"
       decoding="async"
     />
   ) : (
-    label
+    <IconPlug size={22} stroke={1.5} aria-hidden />
   );
 
-  const linkProps = {
+  const buttonProps = {
     className: styles.providerLink,
     title: label,
     'aria-label': label,
+    variant: item.buttonVariant ?? ('light' as const),
+    color: item.buttonColor,
+    size: item.buttonSize ?? ('compact-sm' as const),
+    radius: item.buttonRadius,
     onClick,
-  } as const;
+    children: content,
+  };
 
   return (
     <li className={styles.providersItem}>
       {kind === 'external' ? (
-        <a href={url} rel="noopener noreferrer" target="_blank" {...linkProps}>
-          {content}
-        </a>
+        <Button component="a" href={url} rel="noopener noreferrer" target="_blank" {...buttonProps} />
       ) : kind === 'invalid' ? (
-        <span data-invalid-href {...linkProps}>
-          {content}
-        </span>
+        <Button disabled type="button" data-invalid-href {...buttonProps} />
       ) : (
-        <Link to={url} {...linkProps}>
-          {content}
-        </Link>
+        <Button component={Link} to={url} {...buttonProps} />
       )}
     </li>
   );

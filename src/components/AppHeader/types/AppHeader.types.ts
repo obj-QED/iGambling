@@ -20,6 +20,10 @@ export type AppHeaderMenuItem = {
   name: string;
   key: string;
   img: string;
+  buttonVariant?: 'filled' | 'light' | 'outline' | 'subtle' | 'default';
+  buttonColor?: string;
+  buttonSize?: 'compact-xs' | 'compact-sm' | 'compact-md' | 'compact-lg' | 'compact-xl' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  buttonRadius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number;
   items?: AppHeaderMenuItem[];
 };
 

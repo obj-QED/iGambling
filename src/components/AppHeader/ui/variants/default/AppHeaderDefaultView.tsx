@@ -1,16 +1,20 @@
-import type { AppHeaderViewProps } from '../../../types/AppHeader.types';
+import type { AppHeaderMenuItem, AppHeaderViewProps } from '../../../types/AppHeader.types';
 
 import { memo, useMemo } from 'react';
 
+import { getHeaderSettings } from '@/shared/config';
 import { useMergeModuleClassKey } from '@/shared/lib';
+import { MantineButtonsProvider } from '@/shared/ui';
 
 import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
+import { AppHeaderGuestActions } from '../../blocks/AppHeaderGuestActions/AppHeaderGuestActions';
+import { AppHeaderProvidersNav } from '../../blocks/AppHeaderProvidersNav/AppHeaderProvidersNav';
 import { AppHeaderUserActions } from '../../blocks/AppHeaderUserActions/AppHeaderUserActions';
 
 import baseStyles from '../../../styles/base/AppHeaderBase.module.scss';
 import defaultStyles from '../../../styles/variants/AppHeaderDefault.module.scss';
 
-function AppHeaderDefaultViewComponent({ params, data, loading }: AppHeaderViewProps) {
+function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated }: AppHeaderViewProps) {
   const LayoutComponent = LAYOUT_COMPONENTS[params.layout];
   const SkeletonComponent = SKELETON_COMPONENTS[params.variant];
   /** `loading` from hook already accounts for pending/fetching and missing menuHeaderTop. */
@@ -23,6 +27,57 @@ function AppHeaderDefaultViewComponent({ params, data, loading }: AppHeaderViewP
     [showSkeleton],
   );
 
+  const providerItems = useMemo((): AppHeaderMenuItem[] => {
+    const raw = getHeaderSettings().providers ?? [];
+    return raw.map((p) => ({
+      key: p.key,
+      name: p.name,
+      url: p.url,
+      img: p.img ?? '',
+      buttonVariant: p.buttonVariant,
+      buttonColor: p.buttonColor,
+      buttonSize: p.buttonSize,
+      buttonRadius: p.buttonRadius,
+    }));
+  }, []);
+
+  const guestActions = useMemo(() => {
+    const menu = data?.menu ?? [];
+    const isLoginItem = (item: AppHeaderMenuItem): boolean => {
+      const key = item.key?.toLowerCase() ?? '';
+      const name = item.name?.toLowerCase() ?? '';
+      const url = item.url?.toLowerCase() ?? '';
+      return (
+        key.includes('login') ||
+        key.includes('auth') ||
+        name.includes('login') ||
+        name.includes('вход') ||
+        url.includes('/auth') ||
+        url.includes('/login')
+      );
+    };
+
+    const isRegisterItem = (item: AppHeaderMenuItem): boolean => {
+      const key = item.key?.toLowerCase() ?? '';
+      const name = item.name?.toLowerCase() ?? '';
+      const url = item.url?.toLowerCase() ?? '';
+      return (
+        key.includes('register') ||
+        key.includes('signup') ||
+        key.includes('registration') ||
+        name.includes('register') ||
+        name.includes('регистрац') ||
+        url.includes('/register') ||
+        url.includes('/signup')
+      );
+    };
+
+    return {
+      loginItem: menu.find(isLoginItem),
+      registerItem: menu.find(isRegisterItem),
+    };
+  }, [data?.menu]);
+
   return (
     <header className={m('root')}>
       <LayoutComponent>
@@ -33,12 +88,26 @@ function AppHeaderDefaultViewComponent({ params, data, loading }: AppHeaderViewP
             ))}
           </div>
           <div className={baseStyles.root__section}>
-            <AppHeaderUserActions merge={m} classKey="root__userActions-item" />
+            <MantineButtonsProvider>
+              <AppHeaderProvidersNav items={providerItems} />
+            </MantineButtonsProvider>
+          </div>
+          <div className={baseStyles.root__section}>
+            {isAuthenticated ? (
+              <AppHeaderUserActions merge={m} classKey="root__userActions-item" />
+            ) : (
+              <MantineButtonsProvider>
+                <AppHeaderGuestActions
+                  loginItem={guestActions.loginItem}
+                  registerItem={guestActions.registerItem}
+                />
+              </MantineButtonsProvider>
+            )}
           </div>
         </div>
       </LayoutComponent>
       {showSkeleton ? (
-        <div className={skeletonClassName}>
+        <div className={skeletonClassName} data-testid="app-header-skeleton">
           <SkeletonComponent />
         </div>
       ) : null}
