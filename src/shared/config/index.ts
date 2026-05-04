@@ -1,3 +1,4 @@
+export { mantineTheme } from './mantineTheme';
 export type {
   AppSettings,
   HeaderActionButtonSettings,
@@ -8,4 +9,3 @@ export type {
   HeaderSettings,
 } from './settings';
 export { getHeaderSettings, getSettings } from './settings';
-export { mantineTheme } from './mantineTheme';

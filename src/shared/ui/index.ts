@@ -1,3 +1,5 @@
+export type { ButtonProps } from './Button/Button';
+export { Button } from './Button/Button';
 export { MantineButtonsProvider } from './MantineButtonsProvider';
 export type { PageLoaderProps } from '@/elements/PageLoader';
 export { PageLoader } from '@/elements/PageLoader';

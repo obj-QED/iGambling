@@ -5,8 +5,6 @@ import { memo } from 'react';
 
 import { Button } from '@mantine/core';
 
-import { MantineButtonsProvider } from '@/shared/ui';
-
 import styles from './HomePage.module.scss';
 
 const BUTTON_VARIANTS = ['default', 'filled', 'light', 'outline', 'subtle', 'transparent', 'white'] as const;
@@ -41,27 +39,24 @@ const testButtonVars: ButtonCssVars = {
 function HomePageComponent() {
   return (
     <section className={styles.root}>
-      <MantineButtonsProvider>
-        <div className={styles.block}>
-          <h2 className={styles.title}>Mantine Button variants (default)</h2>
-          <div className={styles.row}>
-            {BUTTON_VARIANTS.map((variant) => (
-              <Button key={variant} variant={variant} size="sm">
-                {variant}
-              </Button>
-            ))}
-          </div>
-        </div>
-        <div className={`${styles.block} ${styles.blockDark}`}>
-          <h2 className={styles.title}>Same variants with custom CSS variables</h2>
-          <div className={styles.row}>
-            <Button variant="transparent" size={testButtonVars['--button-size']} className={styles.customButton} style={testButtonVars}
-            >
-              Test Default Button
+      <div className={styles.block}>
+        <h2 className={styles.title}>Mantine Button variants (default)</h2>
+        <div className={styles.row}>
+          {BUTTON_VARIANTS.map((variant) => (
+            <Button key={variant} variant={variant} size="sm">
+              {variant}
             </Button>
-          </div>
+          ))}
         </div>
-      </MantineButtonsProvider>
+      </div>
+      <div className={`${styles.block} ${styles.blockDark}`}>
+        <h2 className={styles.title}>Same variants with custom CSS variables</h2>
+        <div className={styles.row}>
+          <Button variant="transparent" size={testButtonVars['--button-size']} className={styles.customButton} style={testButtonVars}>
+            Test Default Button
+          </Button>
+        </div>
+      </div>
     </section>
   );
 }

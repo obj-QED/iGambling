@@ -1,16 +1,15 @@
-import type { CSSProperties } from 'react';
-
 import { useMemo } from 'react';
 
-type MantineButtonThemeVars = CSSProperties & {
-  '--button-bg'?: string;
-  '--button-color'?: string;
-  '--button-hover'?: string;
-  '--button-bd'?: string;
-  '--button-radius'?: string;
-};
+type MantineButtonThemeVarKey =
+  | '--button-bg'
+  | '--button-color'
+  | '--button-hover'
+  | '--button-bd'
+  | '--button-radius';
 
-const VAR_SUFFIX_TO_BUTTON_VAR: ReadonlyArray<readonly [string, keyof MantineButtonThemeVars]> = [
+type MantineButtonThemeVars = Partial<Record<MantineButtonThemeVarKey, string>>;
+
+const VAR_SUFFIX_TO_BUTTON_VAR: ReadonlyArray<readonly [string, MantineButtonThemeVarKey]> = [
   ['bg', '--button-bg'],
   ['color', '--button-color'],
   ['hover', '--button-hover'],

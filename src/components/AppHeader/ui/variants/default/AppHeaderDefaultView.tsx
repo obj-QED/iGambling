@@ -4,7 +4,6 @@ import { memo, useMemo } from 'react';
 
 import { getHeaderSettings } from '@/shared/config';
 import { useMergeModuleClassKey } from '@/shared/lib';
-import { MantineButtonsProvider } from '@/shared/ui';
 
 import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
 import { AppHeaderGuestActions } from '../../blocks/AppHeaderGuestActions/AppHeaderGuestActions';
@@ -88,20 +87,16 @@ function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated 
             ))}
           </div>
           <div className={baseStyles.root__section}>
-            <MantineButtonsProvider>
-              <AppHeaderProvidersNav items={providerItems} />
-            </MantineButtonsProvider>
+            <AppHeaderProvidersNav items={providerItems} />
           </div>
           <div className={baseStyles.root__section}>
             {isAuthenticated ? (
               <AppHeaderUserActions merge={m} classKey="root__userActions-item" />
             ) : (
-              <MantineButtonsProvider>
-                <AppHeaderGuestActions
-                  loginItem={guestActions.loginItem}
-                  registerItem={guestActions.registerItem}
-                />
-              </MantineButtonsProvider>
+              <AppHeaderGuestActions
+                loginItem={guestActions.loginItem}
+                registerItem={guestActions.registerItem}
+              />
             )}
           </div>
         </div>

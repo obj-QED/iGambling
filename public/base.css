@@ -22,6 +22,10 @@ button {
   font-family: var(--root-font-family, var(--mantine-font-family));
 }
 
+a {
+  text-decoration: none;
+}
+
 /* Global preloader is loaded first from base.css and hidden after React mounts */
 .global-preloader {
   position: fixed;
