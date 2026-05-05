@@ -5,8 +5,8 @@ type MantineButtonsProviderProps = {
 };
 
 /**
- * Обёртка с классом `.mantine-buttons-theme`: под неё настроен `cssVariablesSelector` у корневого `MantineProvider` в `Providers`.
- * Отдельный `MantineProvider` здесь не нужен — дублирования темы нет.
+ * Wrapper with `.mantine-buttons-theme`; root `MantineProvider` in `Providers` targets this via `cssVariablesSelector`.
+ * No nested `MantineProvider` — theme is not duplicated.
  */
 export function MantineButtonsProvider({ children }: MantineButtonsProviderProps) {
   return <div className="mantine-buttons-theme">{children}</div>;

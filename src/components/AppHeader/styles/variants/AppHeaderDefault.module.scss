@@ -1,5 +1,6 @@
 .root {
   --icon-radius: 2px;
+
   /**
    * Mask icon: provide as full `url("data:image/svg+xml,...")`.
    * For SVG mask content, prefer a fixed color (`#000`) and control visible color externally via `currentColor`.
@@ -8,7 +9,7 @@
 
   &__logo {
     background: var(--color-bg-accent-default, #111827);
-    color: var(--color-text-on-accent-default, #ffffff);
+    color: var(--color-text-on-accent-default, #fff);
   }
 
   &__titlePreview {

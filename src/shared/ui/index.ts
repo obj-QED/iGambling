@@ -1,3 +1,5 @@
+export type { AppLinkProps } from './AppLink';
+export { AppLink, getMantineAppHrefProps } from './AppLink';
 export type { ButtonProps } from './Button/Button';
 export { Button } from './Button/Button';
 export { MantineButtonsProvider } from './MantineButtonsProvider';

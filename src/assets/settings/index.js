@@ -1,6 +1,6 @@
 /**
- * Настройки приложения. На сервере можно переопределить dist/settings.js
- * Сборка: всё из src/assets/settings/ объединяется в dist/settings.js (конкатенация по алфавиту имён).
+ * App settings. Server-side builds may override `dist/settings.js`.
+ * Build merges everything under `src/assets/settings/` into `dist/settings.js` (sorted by filename).
  */
 (function () {
   window.__SETTINGS__ = window.__SETTINGS__ || {};

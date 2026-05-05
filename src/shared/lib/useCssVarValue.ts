@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 
 /**
- * Значение кастомного свойства на `:root` после монтирования (fallback до гидрации / если пусто).
+ * Reads a custom property from `:root` after mount (fallback before hydration / if empty).
  */
 export function useCssVarValue(propertyName: string, fallback: string): string {
   const [value, setValue] = useState(fallback);

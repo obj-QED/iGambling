@@ -3,8 +3,8 @@ import { memo } from 'react';
 function ProfilePageComponent() {
   return (
     <main>
-      <h1>Профиль</h1>
-      <p>Страница доступна только авторизованным пользователям.</p>
+      <h1>Profile</h1>
+      <p>This page is available to signed-in users only.</p>
     </main>
   );
 }

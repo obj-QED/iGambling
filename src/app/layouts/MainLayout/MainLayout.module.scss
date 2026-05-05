@@ -1,0 +1,19 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+// Right column: fills remaining width next to the sticky sidebar.
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  transition: margin-left var(--sidebar-transition-duration, 0.3s) ease;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+}

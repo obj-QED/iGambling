@@ -32,10 +32,10 @@ function resolveGroupOrientation(value: string): 'horizontal' | 'vertical' {
   return value === 'horizontal' ? 'horizontal' : 'vertical';
 }
 
-/** Guest actions в хедере через shared `Button` (CSS vars + Mantine внутри провайдера). */
+/** Guest actions in the header using shared `Button` (CSS vars + Mantine under provider). */
 function AppHeaderGuestActionsComponent({ loginItem, registerItem }: AppHeaderGuestActionsProps) {
-  const loginLabel = loginItem?.name?.trim() || 'Вход';
-  const registerLabel = registerItem?.name?.trim() || 'Регистрация';
+  const loginLabel = loginItem?.name?.trim() || 'Sign in';
+  const registerLabel = registerItem?.name?.trim() || 'Register';
   const orientation = resolveGroupOrientation(
     useCssVarValue('--app-header-guest-actions-orientation', 'horizontal'),
   );

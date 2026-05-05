@@ -1,9 +1,30 @@
 import {
   createTheme,
   defaultVariantColorsResolver,
-  rem,
+  Title,
   type VariantColorsResolver,
 } from '@mantine/core';
+
+import classes from './mantineTheme.module.scss';
+
+const pxToEm = (px: number): string => `${px / 16}em`;
+const APP_SIZE_MOBILE_MAX_PX = 992;
+
+export const appBreakpointPx = {
+  xs: 0,
+  sm: 768,
+  md: 993,
+  lg: 1240,
+  xl: 1920,
+} as const;
+
+export const appSize = {
+  mobile: {
+    min: appBreakpointPx.xs,
+    max: APP_SIZE_MOBILE_MAX_PX,
+    media: `(max-width: ${pxToEm(APP_SIZE_MOBILE_MAX_PX)})`,
+  },
+} as const;
 
 const variantColorResolver: VariantColorsResolver = (input) => {
   const resolved = defaultVariantColorsResolver(input);
@@ -27,24 +48,22 @@ const variantColorResolver: VariantColorsResolver = (input) => {
 export const mantineTheme = createTheme({
   focusRing: 'never',
   breakpoints: {
-    xs: rem(480),
-    sm: rem(768),
-    md: rem(1024),
-    lg: rem(1280),
-    xl: rem(1536),
+    xs: pxToEm(appBreakpointPx.xs),
+    sm: pxToEm(appBreakpointPx.sm),
+    md: pxToEm(appBreakpointPx.md),
+    lg: pxToEm(appBreakpointPx.lg),
+    xl: pxToEm(appBreakpointPx.xl),
   },
   fontFamily: 'var(--root-font-family, IBM Plex Sans, sans-serif)',
-  variantColorResolver,
-  components: {
-    Button: {
-      styles: {
-        root: {
-          '&:focus, &:focus-visible': {
-            outline: 'none',
-            boxShadow: 'none',
-          },
-        },
-      },
-    },
+  other: {
+    size: appSize,
   },
+  components: {
+    Title: Title.extend({
+      classNames: {
+        root: classes.heading,
+      },
+    }),
+  },
+  variantColorResolver,
 });

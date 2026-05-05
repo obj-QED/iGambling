@@ -1,13 +1,13 @@
 import type { AppHeaderMenuItem } from '../../../types/AppHeader.types';
+import type { ButtonProps as MantineButtonProps } from '@mantine/core';
 import type { MouseEvent } from 'react';
 
 import { memo } from 'react';
 
 import { Button } from '@mantine/core';
 import { IconPlug } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
 
-import { getAppHrefKind } from '@/shared/lib';
+import { getMantineAppHrefProps } from '@/shared/ui/AppLink';
 
 import styles from './AppHeaderProvidersNav.module.scss';
 
@@ -18,9 +18,9 @@ export type AppHeaderProviderNavItemProps = {
 
 function AppHeaderProviderNavItemComponent({ item, onItemClick }: AppHeaderProviderNavItemProps) {
   const url = item.url ?? '';
-  const label = item.name?.trim() || 'Провайдер';
+  const label = item.name?.trim() || 'Provider';
   const imageSrc = item.img?.trim() ? item.img : undefined;
-  const kind = getAppHrefKind(url);
+  const navProps = getMantineAppHrefProps(url);
   const onClick = onItemClick ? (event: MouseEvent<HTMLElement>) => onItemClick(item, event) : undefined;
 
   const content = imageSrc ? (
@@ -49,13 +49,7 @@ function AppHeaderProviderNavItemComponent({ item, onItemClick }: AppHeaderProvi
 
   return (
     <li className={styles.providersItem}>
-      {kind === 'external' ? (
-        <Button component="a" href={url} rel="noopener noreferrer" target="_blank" {...buttonProps} />
-      ) : kind === 'invalid' ? (
-        <Button disabled type="button" data-invalid-href {...buttonProps} />
-      ) : (
-        <Button component={Link} to={url} {...buttonProps} />
-      )}
+      <Button {...({ ...buttonProps, ...navProps } as unknown as MantineButtonProps)} />
     </li>
   );
 }

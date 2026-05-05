@@ -9,7 +9,7 @@ export type PageLoaderProps = {
 /** Suspense fallback while lazy-loading page JS chunk. */
 export function PageLoader({ children }: PageLoaderProps) {
   return (
-    <div className={styles.root} role="status" aria-label="Загрузка">
+    <div className={styles.root} role="status" aria-label="Loading">
       {children}
     </div>
   );

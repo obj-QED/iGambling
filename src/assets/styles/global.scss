@@ -4,11 +4,11 @@
 
 svg {
   &.icon-stroke {
-    stroke: currentColor;
+    stroke: currentcolor;
   }
 
   &.icon-fill {
-    fill: currentColor;
+    fill: currentcolor;
   }
 }
 
@@ -34,7 +34,7 @@ svg {
 
   & .icon-i {
     color: inherit;
-    background-color: currentColor;
+    background-color: currentcolor;
     mask-image: var(--icon-image);
     mask-size: contain;
     mask-repeat: no-repeat;

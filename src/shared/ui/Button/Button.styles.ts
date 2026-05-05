@@ -25,8 +25,8 @@ export const createButtonVars = (varsKey: string): CSSProperties => {
     '--mantine-spacing-xs': `var(--${p}-spacing-${DEFAULT_SIZE}, 6px)`,
     '--mantine-font-weight-medium': `var(--${p}-font-weight, 500)`,
     /**
-     * Mantine **не читает** `--button-size`: высота/padding/fz считаются из пропа `size` в JS.
-     * Строка нужна для каскада; реальный размер — через чтение того же токена `--${p}-size` с `:root` → проп `size`.
+     * Mantine does not read `--button-size`: height/padding/font-size come from the `size` prop in JS.
+     * This line keeps the cascade; real sizing reads `--${p}-size` from `:root` into the `size` prop.
      */
     '--button-size': `var(--${p}-size, ${DEFAULT_SIZE})`,
 

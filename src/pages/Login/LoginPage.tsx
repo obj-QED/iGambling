@@ -3,8 +3,8 @@ import { memo } from 'react';
 function LoginPageComponent() {
   return (
     <main>
-      <h1>Вход</h1>
-      <p>Страница входа. Доступ к приложению — после авторизации.</p>
+      <h1>Sign in</h1>
+      <p>Sign-in page. Full app access comes after authentication.</p>
     </main>
   );
 }

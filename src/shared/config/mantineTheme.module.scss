@@ -1,0 +1,53 @@
+.heading {
+  --color: var(--root-heading-color, var(--mantine-primary-color-contrast));
+  --family: var(--root-heading-font-family, var(--mantine-font-family-headings));
+  --weight: var(--root-heading-font-weight, var(--mantine-h1-font-weight));
+  --wrap: var(--root-heading-font-wrap, var(--mantine-heading-text-wrap));
+
+  color: var(--color);
+  font-family: var(--family);
+  font-weight: var(--weight);
+  text-wrap: var(--wrap);
+
+  &:is(h1) {
+    --size: var(--heading-font-size-h1, var(--mantine-h1-font-size));
+    --line-height: var(--heading-line-height, var(--mantine-h1-line-height));
+
+    font: var(--weight) var(--size) / var(--line-height) var(--family);
+  }
+
+  &:is(h2) {
+    --size: var(--heading-font-size-h2, var(--mantine-h2-font-size));
+    --line-height: var(--heading-line-height, var(--mantine-h2-line-height));
+
+    font: var(--weight) var(--size) / var(--line-height) var(--family);
+  }
+
+  &:is(h3) {
+    --size: var(--heading-font-size-h3, var(--mantine-h3-font-size));
+    --line-height: var(--heading-line-height, var(--mantine-h3-line-height));
+
+    font: var(--weight) var(--size) / var(--line-height) var(--family);
+  }
+
+  &:is(h4) {
+    --size: var(--heading-font-size-h4, var(--mantine-h4-font-size));
+    --line-height: var(--heading-line-height, var(--mantine-h4-line-height));
+
+    font: var(--weight) var(--size) / var(--line-height) var(--family);
+  }
+
+  &:is(h5) {
+    --size: var(--heading-font-size-h5, var(--mantine-h5-font-size));
+    --line-height: var(--heading-line-height, var(--mantine-h5-line-height));
+
+    font: var(--weight) var(--size) / var(--line-height) var(--family);
+  }
+
+  &:is(h6) {
+    --size: var(--heading-font-size-h6, var(--mantine-h6-font-size));
+    --line-height: var(--heading-line-height, var(--mantine-h6-line-height));
+
+    font: var(--weight) var(--size) / var(--line-height) var(--family);
+  }
+}

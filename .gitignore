@@ -40,18 +40,7 @@ coverage/
 
 # Optional
 *.pem
-
-# Docs
-docs/
-
-# Rules
 .cursor/
+docs/*
 .cursorrules
-.yarn/*
-
-
-# Repositories
-.cursor/
-src/store/
-src/api/
-src/app/
+src/api/*

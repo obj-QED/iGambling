@@ -1,0 +1,10 @@
+/* Mantine scoped styles: no global reset/body overrides from `styles.css`. */
+@import '@mantine/core/styles/default-css-variables.css';
+@import '@mantine/core/styles/Button.css';
+@import '@mantine/core/styles/Grid.css';
+
+.mantine-buttons-theme [class~='mantine-Button-root']:focus,
+.mantine-buttons-theme [class~='mantine-Button-root']:focus-visible {
+  outline: none;
+  box-shadow: none;
+}

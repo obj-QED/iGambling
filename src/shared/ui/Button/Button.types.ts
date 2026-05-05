@@ -1,26 +1,15 @@
 import type { ButtonProps as MantineButtonProps } from '@mantine/core';
-import type { LinkProps } from 'react-router-dom';
+import type { ReactNode } from 'react';
 
-export type BaseButtonProps = {
-  children: React.ReactNode;
+type BaseButtonProps = {
+  children: ReactNode;
   varsKey: string;
   className?: string;
   variant?: MantineButtonProps['variant'] | 'custom';
   size?: MantineButtonProps['size'];
 };
 
-type ButtonAsLink = BaseButtonProps &
-  Omit<MantineButtonProps, 'component' | 'size' | 'variant'> &
-  Omit<LinkProps, 'children' | 'to'> & {
-    url: string;
-    to?: never;
-    href?: never;
+export type ButtonProps = BaseButtonProps &
+  Omit<MantineButtonProps, 'component' | 'href' | 'size' | 'target' | 'to' | 'variant'> & {
+    url?: string;
   };
-
-type ButtonAsButton = BaseButtonProps &
-  Omit<MantineButtonProps, 'component' | 'size' | 'variant'> & {
-    url?: never;
-    to?: never;
-  };
-
-export type ButtonProps = ButtonAsLink | ButtonAsButton;

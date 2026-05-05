@@ -18,8 +18,8 @@ function ProfileActivationPageComponent() {
 
   return (
     <main>
-      <h1>Профиль активирован</h1>
-      <p>Перенаправляем на главную через 5 секунд...</p>
+      <h1>Profile activated</h1>
+      <p>Redirecting to home in 5 seconds…</p>
     </main>
   );
 }

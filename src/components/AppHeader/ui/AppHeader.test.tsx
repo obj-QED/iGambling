@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 
 import { AppHeader } from './AppHeader';
+import { AppHeaderContainerLayout } from './layouts/AppHeaderContainerLayout';
 
 const mockUseCurrentPageDataState = vi.fn();
 const mockUseLanguage = vi.fn(() => 'ru');
@@ -94,5 +95,12 @@ describe('AppHeader', () => {
     renderWithRouter(<AppHeader />);
 
     expect(screen.queryByTestId('app-header-skeleton')).not.toBeInTheDocument();
+  });
+
+  it('does not render undefined class for container layout', () => {
+    const { container } = renderWithRouter(<AppHeaderContainerLayout>content</AppHeaderContainerLayout>);
+
+    expect(container.innerHTML).toContain('header-container');
+    expect(container.innerHTML).not.toContain('undefined');
   });
 });

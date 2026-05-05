@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 
 import { memo } from 'react';
 
+import { Title } from '@mantine/core';
 import { Button } from '@mantine/core';
 
 import styles from './HomePage.module.scss';
@@ -50,7 +51,7 @@ function HomePageComponent() {
         </div>
       </div>
       <div className={`${styles.block} ${styles.blockDark}`}>
-        <h2 className={styles.title}>Same variants with custom CSS variables</h2>
+        <Title order={1} className={styles.title}>Same variants with custom CSS variables</Title>
         <div className={styles.row}>
           <Button variant="transparent" size={testButtonVars['--button-size']} className={styles.customButton} style={testButtonVars}>
             Test Default Button

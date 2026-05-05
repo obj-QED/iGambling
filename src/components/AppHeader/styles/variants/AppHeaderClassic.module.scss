@@ -67,6 +67,6 @@
   justify-content: flex-end;
 }
 
-.main-cell:not(:first-child):not(:last-child) {
+.main-cell:not(:first-child, :last-child) {
   justify-content: center;
 }

@@ -1,33 +1,33 @@
 @function app-header-section-justify($total, $index) {
-  @if $total ==1 {
+  @if $total == 1 {
     @return flex-start;
   }
 
-  @if $total ==2 {
-    @if $index ==1 {
+  @if $total == 2 {
+    @if $index == 1 {
       @return flex-start;
     }
 
     @return flex-end;
   }
 
-  @if $total ==3 {
-    @if $index ==1 {
+  @if $total == 3 {
+    @if $index == 1 {
       @return flex-start;
     }
 
-    @if $index ==2 {
+    @if $index == 2 {
       @return center;
     }
 
     @return flex-end;
   }
 
-  @if $index ==1 or $index ==4 {
+  @if $index == 1 or $index == 4 {
     @return flex-start;
   }
 
-  @if $index ==3 or $index ==6 {
+  @if $index == 3 or $index == 6 {
     @return flex-end;
   }
 
@@ -38,6 +38,7 @@
   .root {
     position: relative;
     width: 100%;
+
     // min-height: 56px;
     overflow: hidden;
     background: var(--header_background, #0d0d0d);

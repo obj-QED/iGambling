@@ -50,7 +50,6 @@ function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated 
         key.includes('login') ||
         key.includes('auth') ||
         name.includes('login') ||
-        name.includes('вход') ||
         url.includes('/auth') ||
         url.includes('/login')
       );
@@ -65,7 +64,7 @@ function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated 
         key.includes('signup') ||
         key.includes('registration') ||
         name.includes('register') ||
-        name.includes('регистрац') ||
+        name.includes('signup') ||
         url.includes('/register') ||
         url.includes('/signup')
       );
