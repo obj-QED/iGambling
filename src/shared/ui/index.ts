@@ -3,6 +3,7 @@ export { AppLink, getMantineAppHrefProps } from './AppLink';
 export type { ButtonProps } from './Button/Button';
 export { Button } from './Button/Button';
 export { MantineButtonsProvider } from './MantineButtonsProvider';
+export { MantineColorSchemeToggle } from './MantineColorSchemeToggle';
 export type { PageLoaderProps } from '@/elements/PageLoader';
 export { PageLoader } from '@/elements/PageLoader';
 export type { SkeletonProps } from '@/elements/Skeleton';

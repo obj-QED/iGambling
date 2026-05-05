@@ -2,6 +2,8 @@ import type { AppHeaderViewProps } from '../../../types/AppHeader.types';
 
 import { memo, useMemo } from 'react';
 
+import { MantineColorSchemeToggle } from '@/shared/ui';
+
 import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
 
 import baseStyles from '../../../styles/base/AppHeaderBase.module.scss';
@@ -40,6 +42,9 @@ function AppHeaderClassicViewComponent({ params, data, loading }: AppHeaderViewP
             {menuItems?.map((item) => (
               <span key={item.key}>{item.name}</span>
             ))}
+          </div>
+          <div className={classicStyles.themeToggleWrap}>
+            <MantineColorSchemeToggle />
           </div>
         </div>
       </LayoutComponent>

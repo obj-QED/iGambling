@@ -41,7 +41,7 @@
 
     // min-height: 56px;
     overflow: hidden;
-    background: var(--header_background, #0d0d0d);
+    background: var(--header_background, var(--mantine-color-body));
 
     &__sections {
       display: flex;

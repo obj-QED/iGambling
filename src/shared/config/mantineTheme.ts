@@ -35,10 +35,10 @@ const variantColorResolver: VariantColorsResolver = (input) => {
 
   return {
     ...resolved,
-    background: `var(--demo_btn_default-bg, ${resolved.background})`,
-    hover: `var(--demo_btn_default-hover, ${resolved.hover})`,
-    border: `var(--demo_btn_default-border, ${resolved.border})`,
-    color: `var(--demo_btn_default-color, ${resolved.color})`,
+    background: `var(--mantine-app-btn-default-bg, ${resolved.background})`,
+    hover: `var(--mantine-app-btn-default-hover, ${resolved.hover})`,
+    border: `var(--mantine-app-btn-default-border, ${resolved.border})`,
+    color: `var(--mantine-app-btn-default-color, ${resolved.color})`,
   };
 };
 

@@ -1,0 +1,1 @@
+export { MantineColorSchemeToggle } from './MantineColorSchemeToggle';

@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Provider } from 'react-redux';
 
 import { queryClient } from '@/api/queryClient';
-import { mantineTheme } from '@/shared/config/mantineTheme';
+import { mantineColorSchemeManager, mantineTheme } from '@/shared/config';
 import { MantineButtonsProvider } from '@/shared/ui';
 import { store } from '@/store';
 
@@ -19,11 +19,13 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <Provider store={store}>
+      {/* Palette: static `default-css-variables.css` on `:root`; avoid `withCssVariables` on `.mantine-buttons-theme` or Button variants lose resolved colors. */}
       <MantineProvider
         theme={mantineTheme}
         withCssVariables={false}
         cssVariablesSelector=".mantine-buttons-theme"
         withGlobalClasses={false}
+        colorSchemeManager={mantineColorSchemeManager}
         defaultColorScheme="dark"
       >
         <QueryClientProvider client={queryClient}>

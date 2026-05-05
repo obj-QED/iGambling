@@ -26,6 +26,14 @@
   padding: 12px 0;
 }
 
+.themeToggleWrap {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  padding-left: 12px;
+  flex-shrink: 0;
+}
+
 .brand {
   display: flex;
   align-items: center;

@@ -4,6 +4,12 @@
     "stylelint-config-standard-scss"
   ],
   "rules": {
+    "comment-empty-line-before": [
+      "always",
+      {
+        "ignore": ["after-comment"]
+      }
+    ],
     "no-descending-specificity": null,
     "property-no-deprecated": null,
     "custom-property-pattern": null,

@@ -1,3 +1,7 @@
+export {
+  MANTINE_COLOR_SCHEME_STORAGE_KEY,
+  mantineColorSchemeManager,
+} from './mantineColorScheme';
 export { mantineTheme } from './mantineTheme';
 export type {
   AppSettings,

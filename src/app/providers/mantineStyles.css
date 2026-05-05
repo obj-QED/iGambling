@@ -2,6 +2,7 @@
 @import '@mantine/core/styles/default-css-variables.css';
 @import '@mantine/core/styles/Button.css';
 @import '@mantine/core/styles/Grid.css';
+@import '@mantine/core/styles/ActionIcon.css';
 
 .mantine-buttons-theme [class~='mantine-Button-root']:focus,
 .mantine-buttons-theme [class~='mantine-Button-root']:focus-visible {

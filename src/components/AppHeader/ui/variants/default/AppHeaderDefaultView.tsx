@@ -4,6 +4,7 @@ import { memo, useMemo } from 'react';
 
 import { getHeaderSettings } from '@/shared/config';
 import { useMergeModuleClassKey } from '@/shared/lib';
+import { MantineColorSchemeToggle } from '@/shared/ui';
 
 import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
 import { AppHeaderGuestActions } from '../../blocks/AppHeaderGuestActions/AppHeaderGuestActions';
@@ -89,6 +90,7 @@ function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated 
             <AppHeaderProvidersNav items={providerItems} />
           </div>
           <div className={baseStyles.root__section}>
+            <MantineColorSchemeToggle />
             {isAuthenticated ? (
               <AppHeaderUserActions merge={m} classKey="root__userActions-item" />
             ) : (
