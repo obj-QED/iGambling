@@ -110,10 +110,6 @@
     }
 
     &__userActions-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-
       /* `root__userActions-item_icon` on SVG: size comes from global `.inline-icon` (`1em`). */
       &_icon {
         flex-shrink: 0;

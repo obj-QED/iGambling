@@ -21,6 +21,7 @@ svg {
   align-items: center;
   gap: 0.35em;
   transition: all 0.2s ease;
+  color: var(--inline-icon-color, var(--mantine-color-bright));
 
   :where(svg, img, i) {
     width: 1em;

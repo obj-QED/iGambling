@@ -91,14 +91,14 @@ function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated 
           </div>
           <div className={baseStyles.root__section}>
             <MantineColorSchemeToggle />
-            {isAuthenticated ? (
-              <AppHeaderUserActions classes={classes} classKey="root__userActions-item" />
-            ) : (
-              <AppHeaderGuestActions
-                loginItem={guestActions.loginItem}
-                registerItem={guestActions.registerItem}
-              />
-            )}
+            {/* {isAuthenticated ? ( */}
+            <AppHeaderUserActions classes={classes} classKey="root__userActions-item" />
+            {/* ) : ( */}
+            <AppHeaderGuestActions
+              loginItem={guestActions.loginItem}
+              registerItem={guestActions.registerItem}
+            />
+            {/* )} */}
           </div>
         </div>
       </LayoutComponent>
