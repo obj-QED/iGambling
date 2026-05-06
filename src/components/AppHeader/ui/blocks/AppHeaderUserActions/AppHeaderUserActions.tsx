@@ -1,4 +1,4 @@
-import type { MergeModuleClassKeyFn } from '@/shared/lib';
+import type { MergedModuleClasses } from '@/shared/lib';
 
 import { memo } from 'react';
 
@@ -15,7 +15,7 @@ const ICON_SHAPE_CLASS: Record<AppHeaderUserActionsIconShape, string> = {
 };
 
 type AppHeaderUserActionsComponentProps = {
-  merge?: MergeModuleClassKeyFn;
+  classes?: MergedModuleClasses;
   /** SCSS stem, e.g. `root__userActions-item` -> class `..._icon_logout`. */
   classKey?: string;
   iconShape?: AppHeaderUserActionsIconShape;
@@ -24,17 +24,16 @@ type AppHeaderUserActionsComponentProps = {
 
 /** Right column for authenticated user: logout action. */
 function AppHeaderUserActionsComponent({
-  merge,
+  classes,
   classKey = 'root__userActions-item',
   iconShape = 'square',
   text = 'Logout',
 }: AppHeaderUserActionsComponentProps) {
+  const iconClassKey = `${classKey}_icon_logout`;
+
   return (
-    <span className={classNames('inline-icon', merge?.(classKey))}>
-      <i
-        className={classNames('icon-i', merge?.(`${classKey}_icon_logout`), ICON_SHAPE_CLASS[iconShape])}
-        aria-hidden
-      />
+    <span className={classNames('inline-icon', classes?.[classKey])}>
+      <i className={classNames('icon-i', classes?.[iconClassKey], ICON_SHAPE_CLASS[iconShape])} aria-hidden />
       {text}
     </span>
   );

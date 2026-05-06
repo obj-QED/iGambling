@@ -3,7 +3,7 @@ import type { AppHeaderMenuItem, AppHeaderViewProps } from '../../../types/AppHe
 import { memo, useMemo } from 'react';
 
 import { getHeaderSettings } from '@/shared/config';
-import { useMergeModuleClassKey } from '@/shared/lib';
+import { useMergedModuleClasses } from '@/shared/lib';
 import { MantineColorSchemeToggle } from '@/shared/ui';
 
 import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
@@ -20,7 +20,7 @@ function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated 
   /** `loading` from hook already accounts for pending/fetching and missing menuHeaderTop. */
   const showSkeleton = loading;
 
-  const m = useMergeModuleClassKey(baseStyles, defaultStyles);
+  const classes = useMergedModuleClasses(baseStyles, defaultStyles);
 
   const skeletonClassName = useMemo(
     () => `${baseStyles.root__skeleton}${showSkeleton ? ` ${baseStyles['root__skeleton--visible']}` : ''}`,
@@ -78,7 +78,7 @@ function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated 
   }, [data?.menu]);
 
   return (
-    <header className={m('root')}>
+    <header className={classes.root}>
       <LayoutComponent>
         <div className={baseStyles.root__sections}>
           <div className={baseStyles.root__section}>
@@ -92,7 +92,7 @@ function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated 
           <div className={baseStyles.root__section}>
             <MantineColorSchemeToggle />
             {isAuthenticated ? (
-              <AppHeaderUserActions merge={m} classKey="root__userActions-item" />
+              <AppHeaderUserActions classes={classes} classKey="root__userActions-item" />
             ) : (
               <AppHeaderGuestActions
                 loginItem={guestActions.loginItem}
