@@ -1,30 +1,33 @@
 import {
+  Container,
   createTheme,
   defaultVariantColorsResolver,
+  rem,
   Title,
   type VariantColorsResolver,
   virtualColor,
 } from '@mantine/core';
 
+import { appBreakpointPx, appSizePx, containerSizeByBreakpointPx } from './styleTokens';
+
 import classes from './mantineTheme.module.scss';
 
 const pxToEm = (px: number): string => `${px / 16}em`;
-const APP_SIZE_MOBILE_MAX_PX = 992;
-
-export const appBreakpointPx = {
-  xs: 0,
-  sm: 768,
-  md: 993,
-  lg: 1240,
-  xl: 1920,
-} as const;
 
 export const appSize = {
   mobile: {
-    min: appBreakpointPx.xs,
-    max: APP_SIZE_MOBILE_MAX_PX,
-    media: `(max-width: ${pxToEm(APP_SIZE_MOBILE_MAX_PX)})`,
+    min: appSizePx.mobile.min,
+    max: appSizePx.mobile.max,
+    media: `(max-width: ${pxToEm(appSizePx.mobile.max)})`,
   },
+} as const;
+
+const CONTAINER_SIZE_BY_BREAKPOINT = {
+  xs: rem(containerSizeByBreakpointPx.xs),
+  sm: rem(containerSizeByBreakpointPx.sm),
+  md: rem(containerSizeByBreakpointPx.md),
+  lg: rem(containerSizeByBreakpointPx.lg),
+  xl: rem(containerSizeByBreakpointPx.xl),
 } as const;
 
 const variantColorResolver: VariantColorsResolver = (input) => {
@@ -70,6 +73,31 @@ export const mantineTheme = createTheme({
     size: appSize,
   },
   components: {
+    // mantineTheme.ts
+    Container: Container.extend({
+      classNames: (_, { size }) => ({
+        root: size === 'responsive' ? classes.responsiveContainer : undefined,
+      }),
+      defaultProps: {
+        size: 'responsive',
+      },
+      vars: (_, { size, fluid }) => ({
+        root: {
+          '--container-size-xs': CONTAINER_SIZE_BY_BREAKPOINT.xs,
+          '--container-size-sm': CONTAINER_SIZE_BY_BREAKPOINT.sm,
+          '--container-size-md': CONTAINER_SIZE_BY_BREAKPOINT.md,
+          '--container-size-lg': CONTAINER_SIZE_BY_BREAKPOINT.lg,
+          '--container-size-xl': CONTAINER_SIZE_BY_BREAKPOINT.xl,
+          '--container-size': fluid
+            ? '100%'
+            : typeof size === 'string' &&
+                size !== 'responsive' &&
+                size in CONTAINER_SIZE_BY_BREAKPOINT
+              ? CONTAINER_SIZE_BY_BREAKPOINT[size as keyof typeof CONTAINER_SIZE_BY_BREAKPOINT]
+              : undefined,
+        },
+      }),
+    }),
     Title: Title.extend({
       classNames: {
         root: classes.heading,

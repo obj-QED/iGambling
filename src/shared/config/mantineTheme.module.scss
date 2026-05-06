@@ -51,3 +51,41 @@
     font: var(--weight) var(--size) / var(--line-height) var(--family);
   }
 }
+
+.responsiveContainer {
+  &[data-strategy='block'] {
+    --container-size-responsive: #{$container-size-mobile};
+    max-width: var(--container-size-responsive);
+    padding-inline: #{$container-padding-desktop};
+  }
+
+  @media (min-width: calc(#{$mobile} + 1px)) and (max-width: #{$tablet}) {
+    &[data-strategy='block'] {
+      --container-size-responsive: #{$container-size-tablet};
+    }
+  }
+
+  @media (min-width: calc(#{$tablet} + 1px)) and (max-width: #{$laptop}) {
+    &[data-strategy='block'] {
+      --container-size-responsive: #{$container-size-laptop};
+    }
+  }
+
+  @media (min-width: calc(#{$breakpoint-lg} + 1px)) and (max-width: calc(#{$breakpoint-xl} + 1px)) {
+    &[data-strategy='block'] {
+      --container-size-responsive: #{$container-size-desktop};
+    }
+  }
+
+  @media (min-width: calc(#{$breakpoint-xl} + 1px)) {
+    &[data-strategy='block'] {
+      --container-size-responsive: #{$container-size-xl};
+    }
+  }
+
+  @media (max-width: $tablet) {
+    &[data-strategy='block'] {
+      padding-inline: #{$container-padding-mobile};
+    }
+  }
+}
