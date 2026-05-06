@@ -25,7 +25,7 @@ type AppHeaderGuestActionsGroupStyle = CSSProperties & {
 const GROUP_STYLE: AppHeaderGuestActionsGroupStyle = {
   '--button-border-width': 'var(--app-header-guest-actions-border-width, 0)',
   '--orientation': 'var(--app-header-guest-actions-orientation, horizontal)',
-  gap: 'var(--app-header-guest-actions-gap, 8px)',
+  gap: 'var(--app-header-guest-actions-gap, 12px)',
 };
 
 function resolveGroupOrientation(value: string): 'horizontal' | 'vertical' {

@@ -1,5 +1,5 @@
 /* Mantine scoped styles: no global reset/body overrides from `styles.css`. */
-@import '@mantine/core/styles/default-css-variables.css';
+/* Palette vars come from `MantineProvider` (`withCssVariables` + `cssVariablesSelector="html"`); avoid duplicate static `default-css-variables.css`. */
 @import '@mantine/core/styles/Button.css';
 @import '@mantine/core/styles/Grid.css';
 @import '@mantine/core/styles/ActionIcon.css';

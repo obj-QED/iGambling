@@ -19,11 +19,11 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <Provider store={store}>
-      {/* Palette: static `default-css-variables.css` on `:root`; avoid `withCssVariables` on `.mantine-buttons-theme` or Button variants lose resolved colors. */}
+      {/* Theme-driven palette on `html` (supports `virtualColor`); keep Button CSS scoped via `.mantine-buttons-theme` hooks below. */}
       <MantineProvider
         theme={mantineTheme}
-        withCssVariables={false}
-        cssVariablesSelector=".mantine-buttons-theme"
+        withCssVariables
+        cssVariablesSelector="html"
         withGlobalClasses={false}
         colorSchemeManager={mantineColorSchemeManager}
         defaultColorScheme="dark"

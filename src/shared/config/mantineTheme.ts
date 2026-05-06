@@ -3,6 +3,7 @@ import {
   defaultVariantColorsResolver,
   Title,
   type VariantColorsResolver,
+  virtualColor,
 } from '@mantine/core';
 
 import classes from './mantineTheme.module.scss';
@@ -47,6 +48,16 @@ const variantColorResolver: VariantColorsResolver = (input) => {
  */
 export const mantineTheme = createTheme({
   focusRing: 'never',
+  /** Cyan accent in dark mode; neutral `dark` scale in light mode for contrast on white. */
+  colors: {
+    brand: virtualColor({
+      name: 'brand',
+      dark: 'cyan',
+      light: 'teal',
+    }),
+  },
+  primaryColor: 'brand',
+  primaryShade: { light: 7, dark: 6 },
   breakpoints: {
     xs: pxToEm(appBreakpointPx.xs),
     sm: pxToEm(appBreakpointPx.sm),
