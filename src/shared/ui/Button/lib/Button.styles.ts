@@ -13,7 +13,9 @@ export const createButtonVars = (varsKey: string): CSSProperties => {
     '--button-bd': `var(--${p}-border, none)`,
     '--button-radius': `var(--${p}-radius, var(--mantine-radius-sm))`,
     '--button-fz': `var(--${p}-fz, var(--mantine-font-size-sm))`,
-    '--button-padding-x': `var(--${p}-padding-x, var(--mantine-spacing-xs))`,
+    '--button-padding-x': `var(--${p}-padding-x, var(--${p}-spacing-${DEFAULT_SIZE}, var(--mantine-spacing-xs)))`,
+    '--button-left-section-margin': `var(--${p}-left-section-margin, var(--${p}-section-gap, var(--mantine-spacing-xs)))`,
+    '--button-right-section-margin': `var(--${p}-right-section-margin, var(--${p}-section-gap, var(--mantine-spacing-xs)))`,
     '--button-hover': `var(--${p}-hover, transparent)`,
     '--button-hover-color': `var(--${p}-hover-color, var(--${p}-color, var(--mantine-color-dark-light-color)))`,
     '--button-active-bg': `var(--${p}-active-bg, var(--mantine-color-body))`,
@@ -22,8 +24,6 @@ export const createButtonVars = (varsKey: string): CSSProperties => {
     '--button-disabled-bg': `var(--${p}-disabled-bg, var(--mantine-color-body-dimmed))`,
     '--button-disabled-color': `var(--${p}-disabled-color, var(--mantine-color-text-dimmed))`,
     '--button-disabled-border': `var(--${p}-disabled-border, var(--${p}-border, none))`,
-    '--mantine-spacing-xs': `var(--${p}-spacing-${DEFAULT_SIZE}, var(--mantine-spacing-xs))`,
-    '--mantine-font-weight-medium': `var(--${p}-font-weight, var(--mantine-font-weight-medium))`,
     /**
      * Mantine does not read `--button-size`: height/padding/font-size come from the `size` prop in JS.
      * This line keeps the cascade; real sizing reads `--${p}-size` from `:root` into the `size` prop.
@@ -32,5 +32,6 @@ export const createButtonVars = (varsKey: string): CSSProperties => {
 
     borderRadius: `var(--button-radius)`,
     backgroundColor: `var(--button-bg)`,
+    fontWeight: `var(--${p}-font-weight, var(--mantine-font-weight-regular, 400))`,
   } as CSSProperties;
 };

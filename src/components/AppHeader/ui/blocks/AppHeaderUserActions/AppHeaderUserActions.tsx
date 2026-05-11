@@ -2,17 +2,10 @@ import type { MergedModuleClasses } from '@/shared/lib';
 
 import { memo } from 'react';
 
-import classNames from 'classnames';
-
+import { type InlineIconShape,InlineIconText } from '@/shared/ui';
 
 /** Icon shape in the user actions slot. */
-export type AppHeaderUserActionsIconShape = 'square' | 'rect' | 'circle';
-
-const ICON_SHAPE_CLASS: Record<AppHeaderUserActionsIconShape, string> = {
-  square: 'icon-shape-square',
-  rect: 'icon-shape-rect',
-  circle: 'icon-shape-circle',
-};
+export type AppHeaderUserActionsIconShape = InlineIconShape;
 
 type AppHeaderUserActionsComponentProps = {
   classes?: MergedModuleClasses;
@@ -32,10 +25,13 @@ function AppHeaderUserActionsComponent({
   const iconClassKey = `${classKey}_icon_logout`;
 
   return (
-    <span className={classNames('inline-icon', classes?.[classKey])}>
-      <i className={classNames('icon-i', classes?.[iconClassKey], ICON_SHAPE_CLASS[iconShape])} aria-hidden />
+    <InlineIconText
+      className={classes?.[classKey]}
+      iconClassName={classes?.[iconClassKey]}
+      iconShape={iconShape}
+    >
       {text}
-    </span>
+    </InlineIconText>
   );
 }
 

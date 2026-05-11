@@ -1,10 +1,7 @@
-export type { AppLinkProps } from './AppLink';
-export { AppLink, getMantineAppHrefProps } from './AppLink';
-export type { ButtonProps } from './Button/Button';
-export { Button } from './Button/Button';
-export { MantineButtonsProvider } from './MantineButtonsProvider';
+export { AppLink, type AppLinkProps, getMantineAppHrefProps } from './AppLink';
+export { Button, type ButtonProps } from './Button';
+export { type InlineIconShape, InlineIconText, type InlineIconTextProps } from './InlineIconText';
+export { MantineButtonsProvider, type MantineButtonsProviderProps } from './MantineButtonsProvider';
 export { MantineColorSchemeToggle } from './MantineColorSchemeToggle';
-export type { PageLoaderProps } from '@/elements/PageLoader';
-export { PageLoader } from '@/elements/PageLoader';
-export type { SkeletonProps } from '@/elements/Skeleton';
-export { Skeleton } from '@/elements/Skeleton';
+export { PageLoader, type PageLoaderProps } from '@/elements/PageLoader';
+export { Skeleton, type SkeletonProps } from '@/elements/Skeleton';

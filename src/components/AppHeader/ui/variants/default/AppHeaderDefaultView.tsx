@@ -14,7 +14,7 @@ import { AppHeaderUserActions } from '../../blocks/AppHeaderUserActions/AppHeade
 import baseStyles from '../../../styles/base/AppHeaderBase.module.scss';
 import defaultStyles from '../../../styles/variants/AppHeaderDefault.module.scss';
 
-function AppHeaderDefaultViewComponent({ params, data, loading, isAuthenticated }: AppHeaderViewProps) {
+function AppHeaderDefaultViewComponent({ params, data, loading }: AppHeaderViewProps) {
   const LayoutComponent = LAYOUT_COMPONENTS[params.layout];
   const SkeletonComponent = SKELETON_COMPONENTS[params.variant];
   /** `loading` from hook already accounts for pending/fetching and missing menuHeaderTop. */

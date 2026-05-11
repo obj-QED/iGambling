@@ -1,4 +1,4 @@
-import type { ButtonProps } from './Button.types';
+import type { ButtonProps } from '../types/Button.types';
 import type { ButtonProps as MantineButtonProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 
@@ -7,7 +7,7 @@ import cn from 'classnames';
 
 import { getMantineAppHrefProps } from '@/shared/ui/AppLink';
 
-import { createButtonVars } from './Button.styles';
+import { createButtonVars } from '../lib/Button.styles';
 
 const DEFAULT_SIZE = 'sm';
 
@@ -61,5 +61,5 @@ export function Button(props: ButtonProps) {
   return renderButton({ buttonProps, children, sharedProps, url });
 }
 
-export type { ButtonProps } from './Button.types';
 Button.displayName = 'Button';
+

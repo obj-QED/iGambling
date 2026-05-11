@@ -12,6 +12,20 @@ svg {
   }
 }
 
+/*
+ * Shared Button section spacing override for Mantine `leftSection` / `rightSection`.
+ * Keep it scoped to our wrapper class so global Mantine buttons are untouched.
+ */
+.button-default {
+  :where(.mantine-Button-section[data-position='left']) {
+    margin-inline-end: var(--button-left-section-margin, var(--mantine-spacing-xs)) !important;
+  }
+
+  :where(.mantine-Button-section[data-position='right']) {
+    margin-inline-start: var(--button-right-section-margin, var(--mantine-spacing-xs)) !important;
+  }
+}
+
 /**
  * Inline icon+text row: SVG and `img` match the line font size (`1em`).
  * Default sizing uses `:where` so `icon-shape-*` on child svg/img can override without raising specificity.
@@ -19,9 +33,21 @@ svg {
 .inline-icon {
   display: inline-flex;
   align-items: center;
-  gap: 0.35em;
+  gap: var(--inline-icon-gap, var(--mantine-spacing-xs));
   transition: all 0.2s ease;
   color: var(--inline-icon-color, var(--mantine-color-bright));
+  font: var(--inline-icon-font-weight, var(--mantine-font-weight-regular, 400))
+    var(--inline-icon-font-size, var(--mantine-font-size-sm)) /
+    var(--inline-icon-line-height, var(--mantine-line-height-sm))
+    var(--inline-icon-font-family, var(--mantine-font-family));
+
+  &:hover,
+  &:active {
+    color: var(
+      --inline-icon-color-hover,
+      var(--inline-icon-color, var(--mantine-color-dark-light-color))
+    );
+  }
 
   :where(svg, img, i) {
     width: 1em;

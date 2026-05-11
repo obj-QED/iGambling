@@ -1,8 +1,4 @@
-import type { ReactNode } from 'react';
-
-type MantineButtonsProviderProps = {
-  children: ReactNode;
-};
+import type { MantineButtonsProviderProps } from '../types/MantineButtonsProvider.types';
 
 /**
  * Wrapper with `.mantine-buttons-theme`; root `MantineProvider` in `Providers` targets this via `cssVariablesSelector`.
@@ -13,3 +9,4 @@ export function MantineButtonsProvider({ children }: MantineButtonsProviderProps
 }
 
 MantineButtonsProvider.displayName = 'MantineButtonsProvider';
+

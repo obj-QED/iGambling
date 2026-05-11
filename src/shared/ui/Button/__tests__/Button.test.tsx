@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
-import { Button } from '../Button';
+import { Button } from '../ui/Button';
 
 function renderButton(ui: ReactElement) {
   return render(
