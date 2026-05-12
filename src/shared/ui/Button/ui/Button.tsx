@@ -1,4 +1,4 @@
-import type { ButtonProps } from '../types/Button.types';
+import type { ButtonIcon, ButtonProps } from '../types/Button.types';
 import type { ButtonProps as MantineButtonProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 
@@ -20,6 +20,46 @@ type RenderButtonParams = {
   sharedProps: ButtonSharedProps;
   url?: string;
 };
+
+type ResolveSectionPropsParams = Pick<
+  MantineButtonProps,
+  'leftSection' | 'rightSection'
+> & {
+  icon?: ButtonIcon;
+  iconPosition: 'left' | 'right';
+};
+
+function renderIcon(icon: ButtonIcon): ReactNode {
+  if (typeof icon === 'string') {
+    return (
+      <img
+        className="button-default__icon-image"
+        src={icon}
+        alt=""
+        aria-hidden
+      />
+    );
+  }
+
+  return icon;
+}
+
+function resolveSectionProps({
+  leftSection,
+  rightSection,
+  icon,
+  iconPosition,
+}: ResolveSectionPropsParams): Pick<MantineButtonProps, 'leftSection' | 'rightSection'> {
+  if (leftSection != null || rightSection != null || icon == null) {
+    return { leftSection, rightSection };
+  }
+
+  const iconNode = renderIcon(icon);
+
+  return iconPosition === 'right'
+    ? { rightSection: iconNode }
+    : { leftSection: iconNode };
+}
 
 function renderButton({ buttonProps, children, sharedProps, url }: RenderButtonParams) {
   if (!url) {
@@ -45,9 +85,22 @@ function renderButton({ buttonProps, children, sharedProps, url }: RenderButtonP
 }
 
 export function Button(props: ButtonProps) {
-  const { varsKey, className, url, variant = 'custom', size: sizeProp, children, ...rest } = props;
+  const {
+    varsKey,
+    className,
+    url,
+    variant = 'custom',
+    size: sizeProp,
+    icon,
+    iconPosition = 'left',
+    leftSection,
+    rightSection,
+    children,
+    ...rest
+  } = props;
   const size = sizeProp ?? DEFAULT_SIZE;
   const style = variant === 'custom' ? createButtonVars(varsKey) : undefined;
+  const sectionProps = resolveSectionProps({ leftSection, rightSection, icon, iconPosition });
 
   const sharedProps = {
     size,
@@ -56,7 +109,10 @@ export function Button(props: ButtonProps) {
     style,
   };
 
-  const buttonProps = rest as ButtonRestProps;
+  const buttonProps = {
+    ...rest,
+    ...sectionProps,
+  } as ButtonRestProps;
 
   return renderButton({ buttonProps, children, sharedProps, url });
 }

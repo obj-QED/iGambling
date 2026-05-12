@@ -50,4 +50,33 @@ describe('Button', () => {
     expect(button).toHaveAttribute('data-invalid-href', 'true');
     expect(button).toHaveAttribute('aria-disabled', 'true');
   });
+
+  it('renders icon on the requested side', () => {
+    renderButton(
+      <Button
+        varsKey="header-btn-register"
+        icon={<span data-testid="button-icon">icon</span>}
+        iconPosition="right"
+      >
+        Register
+      </Button>,
+    );
+
+    expect(screen.getByTestId('button-icon').closest('[data-position="right"]')).toBeInTheDocument();
+  });
+
+  it('renders string icon values as decorative images', () => {
+    const { container } = renderButton(
+      <Button varsKey="header-btn-register" icon="/icons/user-plus.png" iconPosition="right">
+        Register
+      </Button>,
+    );
+
+    const image = container.querySelector('img[src="/icons/user-plus.png"]');
+
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute('alt', '');
+    expect(image).toHaveAttribute('aria-hidden', 'true');
+    expect(image?.closest('[data-position="right"]')).toBeInTheDocument();
+  });
 });

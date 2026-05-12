@@ -109,19 +109,17 @@
       opacity: 1;
     }
 
-    &__userActions-item {
-      /* `root__userActions-item_icon` on SVG: size comes from global `.inline-icon` (`1em`). */
-      &_icon {
-        flex-shrink: 0;
-      }
+    /* `root__userActions-item_icon` on SVG: size comes from global `.inline-icon` (`1em`). */
+    &__userActions-item_icon {
+      flex-shrink: 0;
+    }
 
-      /* Logout icon slot: background is set by variant via `--icon-logout`; shape uses global `icon-shape-*`. */
-      &_icon_logout {
-        display: inline-block;
-        box-sizing: border-box;
-        flex-shrink: 0;
-        vertical-align: middle;
-      }
+    /* Logout icon slot: background is set by variant via `--icon-logout`; shape uses global `icon-shape-*`. */
+    &__userActions-item_icon_logout {
+      display: inline-block;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      vertical-align: middle;
     }
   }
 

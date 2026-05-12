@@ -50,7 +50,7 @@ function AppHeaderGuestActionsComponent({ loginItem, registerItem }: AppHeaderGu
         url={loginItem?.url || '/auth'}
         aria-label={loginLabel}
         varsKey="header-btn-login"
-        leftSection={<IconLogin size="1em" aria-hidden />}
+        icon={<IconLogin size="1em" aria-hidden />}
       >
         {loginLabel}
       </MantineButton>
@@ -58,7 +58,7 @@ function AppHeaderGuestActionsComponent({ loginItem, registerItem }: AppHeaderGu
         url={registerItem?.url || '/register'}
         aria-label={registerLabel}
         varsKey="header-btn-register"
-        leftSection={<IconUserPlus size="1em" aria-hidden />}
+        icon={<IconUserPlus size="1em" aria-hidden />}
       >
         {registerLabel}
       </MantineButton>

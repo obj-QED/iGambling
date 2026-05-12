@@ -27,7 +27,7 @@ describe('createButtonVars', () => {
     const vars = createButtonVars('header-btn-login') as Record<string, string>;
 
     expect(vars.fontWeight).toBe(
-      'var(--header-btn-login-font-weight, var(--mantine-font-weight-medium, 500))',
+      'var(--header-btn-login-font-weight, var(--mantine-font-weight-regular, 400))',
     );
     expect(vars).not.toHaveProperty('--mantine-font-weight-medium');
   });

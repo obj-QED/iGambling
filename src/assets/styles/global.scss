@@ -17,12 +17,20 @@ svg {
  * Keep it scoped to our wrapper class so global Mantine buttons are untouched.
  */
 .button-default {
-  :where(.mantine-Button-section[data-position='left']) {
+  :where([class~='mantine-Button-section'][data-position='left']) {
     margin-inline-end: var(--button-left-section-margin, var(--mantine-spacing-xs)) !important;
   }
 
-  :where(.mantine-Button-section[data-position='right']) {
+  :where([class~='mantine-Button-section'][data-position='right']) {
     margin-inline-start: var(--button-right-section-margin, var(--mantine-spacing-xs)) !important;
+  }
+
+  :where(.button-default__icon-image) {
+    display: block;
+    width: 1em;
+    height: 1em;
+    object-fit: contain;
+    flex-shrink: 0;
   }
 }
 
@@ -32,7 +40,9 @@ svg {
  */
 .inline-icon {
   display: inline-flex;
-  align-items: center;
+  align-items: var(--inline-icon-align-items, center);
+  justify-content: var(--inline-icon-justify-content, center);
+  flex-direction: var(--inline-icon-flex-direction, row);
   gap: var(--inline-icon-gap, var(--mantine-spacing-xs));
   transition: all 0.2s ease;
   color: var(--inline-icon-color, var(--mantine-color-bright));
@@ -62,11 +72,17 @@ svg {
   & .icon-i {
     color: inherit;
     background-color: currentcolor;
-    mask-image: var(--icon-image);
+    mask-image: var(
+      --icon-image,
+      url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20stroke='none'%20d='M0%200h24v24H0z'%20fill='none'/%3E%3Cpath%20d='M10%208v-2a2%202%200%200%201%202-2h7a2%202%200%200%201%202%202v12a2%202%200%200%201-2%202h-7a2%202%200%200%201-2-2v-2'/%3E%3Cpath%20d='M15%2012H3l3-3'/%3E%3Cpath%20d='M6%2015l-3-3'/%3E%3C/svg%3E")
+    );
+    -webkit-mask-image: var(
+      --icon-image,
+      url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20stroke='none'%20d='M0%200h24v24H0z'%20fill='none'/%3E%3Cpath%20d='M10%208v-2a2%202%200%200%201%202-2h7a2%202%200%200%201%202%202v12a2%202%200%200%201-2%202h-7a2%202%200%200%201-2-2v-2'/%3E%3Cpath%20d='M15%2012H3l3-3'/%3E%3Cpath%20d='M6%2015l-3-3'/%3E%3C/svg%3E")
+    );
     mask-size: contain;
     mask-repeat: no-repeat;
     mask-position: center;
-    -webkit-mask-image: var(--icon-image);
     -webkit-mask-size: contain;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;

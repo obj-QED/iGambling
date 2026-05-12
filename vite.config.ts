@@ -6,6 +6,11 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 
 import { themeBuildPlugin } from './vite-plugin-assets-build';
+import { fontsStylesheetPlugin } from './vite-plugin-fonts-stylesheet';
+
+function encodeLightningCssVersion(major: number, minor = 0, patch = 0): number {
+  return (major << 16) | (minor << 8) | patch;
+}
 
 function getComponentAliases(componentsDir: string): Record<string, string> {
   const aliases: Record<string, string> = {};
@@ -26,6 +31,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       react(),
+      fontsStylesheetPlugin(),
       themeBuildPlugin(),
       shouldAnalyze
         ? visualizer({
@@ -76,9 +82,21 @@ export default defineConfig(({ mode }) => {
       },
     },
     css: {
-      modules: {
-        localsConvention: 'camelCase',
-        generateScopedName: isProd ? '[hash:base64:5]' : '[name]_[local]_[hash:base64:5]',
+      transformer: 'lightningcss',
+      lightningcss: {
+        targets: {
+          android: encodeLightningCssVersion(90),
+          chrome: encodeLightningCssVersion(90),
+          edge: encodeLightningCssVersion(90),
+          firefox: encodeLightningCssVersion(90),
+          ios_saf: encodeLightningCssVersion(13),
+          opera: encodeLightningCssVersion(76),
+          safari: encodeLightningCssVersion(13),
+          samsung: encodeLightningCssVersion(14),
+        },
+        cssModules: {
+          pattern: isProd ? '[hash]_[local]' : '[name]_[local]_[hash]',
+        },
       },
       preprocessorOptions: {
         scss: {

@@ -1,6 +1,6 @@
 export { AppLink, type AppLinkProps, getMantineAppHrefProps } from './AppLink';
 export { Button, type ButtonProps } from './Button';
-export { type InlineIconShape, InlineIconText, type InlineIconTextProps } from './InlineIconText';
+export { type InlineIconShape, type InlineIconTag, InlineIconText, type InlineIconTextProps } from './InlineIconText';
 export { MantineButtonsProvider, type MantineButtonsProviderProps } from './MantineButtonsProvider';
 export { MantineColorSchemeToggle } from './MantineColorSchemeToggle';
 export { PageLoader, type PageLoaderProps } from '@/elements/PageLoader';
