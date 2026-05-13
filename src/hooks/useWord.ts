@@ -1,10 +1,10 @@
-import type { RootState } from '@/store';
+import type { RootState } from '@store';
 
 import { useCallback } from 'react';
 
 import { shallowEqual, useSelector } from 'react-redux';
 
-import { selectWords } from '@/store/slices/wordsSlice';
+import { selectWords } from '@store/slices/wordsSlice';
 
 /**
  * Returns a translator function by key from store.words.

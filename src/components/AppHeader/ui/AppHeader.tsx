@@ -1,16 +1,21 @@
-import type { AppHeaderLayout, AppHeaderVariant, AppHeaderViewProps } from '../types/AppHeader.types';
+import type {
+  AppHeaderLayout,
+  AppHeaderMenuItem,
+  AppHeaderVariant,
+  AppHeaderViewProps,
+} from '@AppHeader/types/AppHeader.types';
 import type { ReactNode } from 'react';
 import type { ComponentType } from 'react';
 
 import { memo } from 'react';
 
-import { useAppHeaderState } from '../hooks/useAppHeaderState';
-import { AppHeaderContainerLayout } from './layouts/AppHeaderContainerLayout';
-import { AppHeaderFluidLayout } from './layouts/AppHeaderFluidLayout';
-import { AppHeaderClassicSkeleton } from './skeletons/AppHeaderClassicSkeleton';
-import { AppHeaderDefaultSkeleton } from './skeletons/AppHeaderDefaultSkeleton';
-import { AppHeaderClassicView } from './variants/classic/AppHeaderClassicView';
-import { AppHeaderDefaultView } from './variants/default/AppHeaderDefaultView';
+import { useAppHeaderState } from '@AppHeader/hooks/useAppHeaderState';
+import { AppHeaderContainerLayout } from '@AppHeader/ui/layouts/AppHeaderContainerLayout';
+import { AppHeaderFluidLayout } from '@AppHeader/ui/layouts/AppHeaderFluidLayout';
+import { AppHeaderClassicSkeleton } from '@AppHeader/ui/skeletons/AppHeaderClassicSkeleton';
+import { AppHeaderDefaultSkeleton } from '@AppHeader/ui/skeletons/AppHeaderDefaultSkeleton';
+import { AppHeaderClassicView } from '@AppHeader/ui/variants/classic/AppHeaderClassicView';
+import { AppHeaderDefaultView } from '@AppHeader/ui/variants/default/AppHeaderDefaultView';
 
 const LAYOUT_COMPONENTS: Record<AppHeaderLayout, ComponentType<{ children: ReactNode }>> = {
   container: AppHeaderContainerLayout,
@@ -22,7 +27,11 @@ const VARIANT_COMPONENTS: Record<AppHeaderVariant, ComponentType<AppHeaderViewPr
   classic: AppHeaderClassicView,
 };
 
-const SKELETON_COMPONENTS: Record<AppHeaderVariant, ComponentType> = {
+type AppHeaderSkeletonProps = {
+  menu?: AppHeaderMenuItem[];
+};
+
+const SKELETON_COMPONENTS: Record<AppHeaderVariant, ComponentType<AppHeaderSkeletonProps>> = {
   default: AppHeaderDefaultSkeleton,
   classic: AppHeaderClassicSkeleton,
 };

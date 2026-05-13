@@ -1,10 +1,10 @@
-import type { RootState } from '@/store';
+import type { RootState } from '@store';
 
 import { useCallback } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { translateField } from '@/shared/lib/translateField';
+import { translateField } from '@shared/lib/translateField';
 
 /**
  * `words` are pulled from Redux (`state.words`), so no dictionary argument is needed.

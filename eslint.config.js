@@ -63,12 +63,13 @@ export default tseslint.config(
        *  2. value imports from react / react-dom
        *  3. value imports from other external packages
        *  4. @/app - bootstrap, routing, providers
-       *  5. @/pages
-       *  6. @/components, @/elements, @/ui
-       *  7. @/api, @/store, @/hooks, @/schemas, @/shared
-       *  8. Other @/ aliases
-       *  9. Relative imports (./, ../)
-       * 10. Styles (side-effect imports, always last)
+       *  5. @pages, @elements
+       *  6. @components, @ui
+       *  7. @AppBanner, @AppFooter, @AppHeader, @AppSidebar, …
+       *  8. @shared, @entities, @api, @store, @hooks, @schemas
+       *  9. @/app, other @/ aliases (assets, …)
+       * 10. Relative imports (./, ../)
+       * 11. Styles (side-effect imports, always last)
        */
       'simple-import-sort/imports': [
         'error',
@@ -82,22 +83,30 @@ export default tseslint.config(
             ['^@?\\w'],
             // 4. @/app
             ['^@/app(/.*|$)'],
-            // 5. @/pages
-            ['^@/pages(/.*|$)'],
-            // 6. @/components, @/elements, @/ui
-            ['^@/(components|elements|ui)(/.*|$)'],
-            // 7. @/api, @/store, @/hooks, @/schemas, @/shared
-            ['^@/(api|store|hooks|schemas|shared)(/.*|$)'],
-            // 8. Other @/ imports (assets, icons, etc.)
+            // 5. @pages, @elements
+            ['^@(pages|elements)(/|$)'],
+            // 6. @components, @ui (design-system barrel under src/shared/ui)
+            ['^@(components|ui)(/|$)'],
+            // 7. @AppBanner, @AppHeader, …
+            ['^@(AppBanner|AppFooter|AppHeader|AppSidebar)(/|$)'],
+            // 8. @shared, @entities, @api, @store, @hooks, @schemas
+            ['^@(shared|entities|api|store|hooks|schemas)(/|$)'],
+            // 9. other @/ imports (assets, etc.)
             ['^@(/.*|$)'],
-            // 9. Relative imports
+            // 10. Relative imports
             ['^\\.'],
-            // 10. Styles - always last
+            // 11. Styles - always last
             ['^.+\\.s?css$'],
           ],
         },
       ],
       'simple-import-sort/exports': 'error',
+    },
+  },
+  {
+    files: ['src/vite-env.d.ts'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
 );

@@ -1,4 +1,4 @@
-import type { RootState } from '@/store';
+import type { RootState } from '@store';
 
 import { describe, expect, it } from 'vitest';
 

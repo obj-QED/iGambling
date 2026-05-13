@@ -39,10 +39,10 @@ const variantColorResolver: VariantColorsResolver = (input) => {
 
   return {
     ...resolved,
-    background: `var(--mantine-app-btn-default-bg, ${resolved.background})`,
-    hover: `var(--mantine-app-btn-default-hover, ${resolved.hover})`,
-    border: `var(--mantine-app-btn-default-border, ${resolved.border})`,
-    color: `var(--mantine-app-btn-default-color, ${resolved.color})`,
+    background: `var(--global-btn-default-bg, ${resolved.background})`,
+    hover: `var(--global-btn-default-hover, ${resolved.hover})`,
+    border: `var(--global-btn-default-border, ${resolved.border})`,
+    color: `var(--global-btn-default-color, ${resolved.color})`,
   };
 };
 
@@ -51,8 +51,15 @@ const variantColorResolver: VariantColorsResolver = (input) => {
  */
 export const mantineTheme = createTheme({
   focusRing: 'never',
+  autoContrast: true,
+  activeClassName: classes.active,
   /** Cyan accent in dark mode; neutral `dark` scale in light mode for contrast on white. */
   colors: {
+    primary: virtualColor({
+      name: 'primary',
+      dark: 'pink',
+      light: 'blue',
+    }),
     brand: virtualColor({
       name: 'brand',
       dark: 'cyan',
@@ -73,7 +80,6 @@ export const mantineTheme = createTheme({
     size: appSize,
   },
   components: {
-    // mantineTheme.ts
     Container: Container.extend({
       classNames: (_, { size }) => ({
         root: size === 'responsive' ? classes.responsiveContainer : undefined,

@@ -4,7 +4,11 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -19,20 +23,69 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@/components": ["src/components/index.ts"],
-      "@/pages": ["src/pages"],
-      "@/api": ["src/api"],
-      "@/store": ["src/store"],
-      "@/shared": ["src/shared"],
-      "@/entities": ["src/entities"],
-      "@/elements": ["src/elements"],
-      "@/hooks": ["src/hooks"],
-      "@AppBanner/*": ["src/components/AppBanner/*"],
-      "@AppFooter/*": ["src/components/AppFooter/*"],
-      "@AppHeader/*": ["src/components/AppHeader/*"],
-      "@AppSidebar/*": ["src/components/AppSidebar/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@components": [
+        "src/components/index.ts"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@ui": [
+        "src/shared/ui"
+      ],
+      "@ui/*": [
+        "src/shared/ui/*"
+      ],
+      "@schemas": [
+        "src/schemas"
+      ],
+      "@schemas/*": [
+        "src/schemas/*"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ],
+      "@entities/*": [
+        "src/entities/*"
+      ],
+      "@api/*": [
+        "src/api/*"
+      ],
+      "@store": [
+        "src/store/index.ts"
+      ],
+      "@store/*": [
+        "src/store/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@pages": [
+        "src/pages/index.ts"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@elements/*": [
+        "src/elements/*"
+      ],
+      "@AppBanner/*": [
+        "src/components/AppBanner/*"
+      ],
+      "@AppFooter/*": [
+        "src/components/AppFooter/*"
+      ],
+      "@AppHeader/*": [
+        "src/components/AppHeader/*"
+      ],
+      "@AppSidebar/*": [
+        "src/components/AppSidebar/*"
+      ]
     }
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

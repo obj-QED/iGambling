@@ -1,20 +1,22 @@
+import type { PageData } from '@api/lobby';
 import type {
   AppHeaderData,
   AppHeaderLayout,
   AppHeaderParams,
   AppHeaderVariant,
-} from '../types/AppHeader.types';
-import type { PageData } from '@/api/lobby';
+} from '@AppHeader/types/AppHeader.types';
 
 import { useMemo } from 'react';
 
 import { useLocation } from 'react-router-dom';
 
-import { useCurrentPageDataState } from '@/api/lobby';
-import { useAuthSession } from '@/hooks/useAuthSession';
-import { useLanguage } from '@/hooks/useLanguage';
-import { getHeaderSettings } from '@/shared/config';
-import { isRecord } from '@/shared/lib';
+import { normalizeAppHeaderMenuSections } from '@AppHeader/lib/menuItems';
+
+import { useCurrentPageDataState } from '@api/lobby';
+import { useAuthSession } from '@hooks/useAuthSession';
+import { useLanguage } from '@hooks/useLanguage';
+import { getHeaderSettings } from '@shared/config';
+import { isRecord } from '@shared/lib';
 
 export type UseAppHeaderStateResult = {
   params: AppHeaderParams;
@@ -42,10 +44,11 @@ function findMenuHeaderTop(page: PageData | undefined): AppHeaderData {
   if (!Array.isArray(blocks)) return undefined;
   const block = blocks.find((b: unknown) => isRecord(b) && b.type === 'menuHeaderTop');
   if (!isRecord(block)) return undefined;
+  const rawMenu = Array.isArray(block.menu) ? block.menu : [];
   return {
     buttonSearch: typeof block.buttonSearch === 'string' ? block.buttonSearch : '',
     type: typeof block.type === 'string' ? block.type : '',
-    menu: Array.isArray(block.menu) ? block.menu : [],
+    menu: normalizeAppHeaderMenuSections(rawMenu),
   };
 }
 

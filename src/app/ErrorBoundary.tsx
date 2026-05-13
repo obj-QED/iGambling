@@ -9,15 +9,16 @@ type Props = {
 
 type State = {
   hasError: boolean;
+  error: Error | null;
 };
 
 export class ErrorBoundary extends Component<Props, State> {
   static displayName = 'ErrorBoundary';
 
-  state: State = { hasError: false };
+  state: State = { hasError: false, error: null };
 
-  static getDerivedStateFromError(): State {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
@@ -26,12 +27,33 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback ?? (
-        <main style={{ padding: '2rem', textAlign: 'center' }}>
-          <h1>500</h1>
-          <p>Ошибка сервера. Попробуйте позже.</p>
-          <a href="/">На главную</a>
-        </main>
+      return (
+        this.props.fallback ?? (
+          <main style={{ padding: '2rem', textAlign: 'center' }}>
+            <h1>Ошибка интерфейса</h1>
+            <p>Приложение столкнулось с непредвиденной ошибкой. Попробуйте обновить страницу или зайти позже.</p>
+            {import.meta.env.DEV && this.state.error != null ? (
+              <pre
+                style={{
+                  marginTop: '1rem',
+                  textAlign: 'left',
+                  overflow: 'auto',
+                  maxWidth: '48rem',
+                  marginInline: 'auto',
+                  padding: '1rem',
+                  background: 'var(--mantine-color-body, #f5f5f5)',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                }}
+              >
+                {this.state.error.message}
+              </pre>
+            ) : null}
+            <p style={{ marginTop: '1.5rem' }}>
+              <a href="/">На главную</a>
+            </p>
+          </main>
+        )
       );
     }
     return this.props.children;

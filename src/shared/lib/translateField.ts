@@ -1,4 +1,4 @@
-import type { Words } from '@/entities/translation/types';
+import type { Words } from '@entities/translation/types';
 
 /**
  * Checks a "flat" string dictionary (like `state.words` after init).

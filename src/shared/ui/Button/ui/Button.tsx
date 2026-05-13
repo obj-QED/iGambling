@@ -2,10 +2,12 @@ import type { ButtonIcon, ButtonProps } from '../types/Button.types';
 import type { ButtonProps as MantineButtonProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 
+import { forwardRef } from 'react';
+
 import { Button as MantineButton } from '@mantine/core';
 import cn from 'classnames';
 
-import { getMantineAppHrefProps } from '@/shared/ui/AppLink';
+import { getMantineAppHrefProps } from '@ui/AppLink';
 
 import { createButtonVars } from '../lib/Button.styles';
 
@@ -17,6 +19,7 @@ type ButtonSharedProps = Pick<MantineButtonProps, 'className' | 'size' | 'style'
 type RenderButtonParams = {
   buttonProps: ButtonRestProps;
   children: ReactNode;
+  ref: React.ForwardedRef<HTMLButtonElement>;
   sharedProps: ButtonSharedProps;
   url?: string;
 };
@@ -44,6 +47,19 @@ function renderIcon(icon: ButtonIcon): ReactNode {
   return icon;
 }
 
+function hasRenderableLabel(children: ReactNode): boolean {
+  if (children == null || typeof children === 'boolean') {
+    return false;
+  }
+  if (typeof children === 'string') {
+    return children.trim().length > 0;
+  }
+  if (Array.isArray(children)) {
+    return children.some((node) => hasRenderableLabel(node));
+  }
+  return true;
+}
+
 function resolveSectionProps({
   leftSection,
   rightSection,
@@ -61,30 +77,33 @@ function resolveSectionProps({
     : { leftSection: iconNode };
 }
 
-function renderButton({ buttonProps, children, sharedProps, url }: RenderButtonParams) {
-  if (!url) {
+function renderButton({ buttonProps, children, ref, sharedProps, url }: RenderButtonParams) {
+  const showLabel = hasRenderableLabel(children);
+
+  if (url === undefined) {
     return (
-      <MantineButton {...buttonProps} {...sharedProps}>
-        {children}
+      <MantineButton ref={ref} {...buttonProps} {...sharedProps}>
+        {showLabel ? children : undefined}
       </MantineButton>
     );
   }
 
-  const navProps = getMantineAppHrefProps(url);
+  const navProps = getMantineAppHrefProps(url.trim());
 
   return (
     <MantineButton
+      ref={ref}
       {...({
         ...buttonProps,
         ...sharedProps,
         ...navProps,
-        children,
+        ...(showLabel ? { children } : {}),
       } as unknown as MantineButtonProps)}
     />
   );
 }
 
-export function Button(props: ButtonProps) {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
   const {
     varsKey,
     className,
@@ -114,8 +133,8 @@ export function Button(props: ButtonProps) {
     ...sectionProps,
   } as ButtonRestProps;
 
-  return renderButton({ buttonProps, children, sharedProps, url });
-}
+  return renderButton({ buttonProps, children, ref, sharedProps, url });
+});
 
 Button.displayName = 'Button';
 

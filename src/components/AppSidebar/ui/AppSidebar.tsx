@@ -2,8 +2,8 @@ import { memo, useMemo } from 'react';
 
 import { useLocation } from 'react-router-dom';
 
-import { useCurrentPageData } from '@/api/lobby';
-import { useLanguage } from '@/hooks/useLanguage';
+import { useCurrentPageData } from '@api/lobby';
+import { useLanguage } from '@hooks/useLanguage';
 
 import styles from '../styles/AppSidebarBase.module.scss';
 

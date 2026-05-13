@@ -11,18 +11,21 @@
     background: var(--color-bg-accent-default, #111827);
     color: var(--color-text-on-accent-default, #fff);
   }
-
   &__titlePreview {
     display: none;
   }
-
   &__userActions-item {
     cursor: pointer;
   }
 }
 
 .skeleton {
-  &__segment {
+  --app-header-skeleton-mantine-fill: var(
+    --app-header_default-skeleton-mantine-fill,
+    rgb(255 255 255 / 22%)
+  );
+
+  &__item {
     background: var(--app-header_default-skeleton-bg, rgb(255 255 255 / 50%));
   }
 }

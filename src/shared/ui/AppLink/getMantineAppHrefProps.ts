@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { getAppHrefKind } from '@/shared/lib';
+import { getAppHrefKind } from '@shared/lib';
 
 export function getMantineAppHrefProps(url: string) {
   const kind = getAppHrefKind(url);

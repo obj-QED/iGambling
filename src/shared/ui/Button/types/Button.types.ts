@@ -5,7 +5,8 @@ export type ButtonIconPosition = 'left' | 'right';
 export type ButtonIcon = ReactNode | string;
 
 type BaseButtonProps = {
-  children: ReactNode;
+  /** Omit or pass `null` / blank string for icon-only buttons (no empty Mantine label span). */
+  children?: ReactNode;
   varsKey: string;
   className?: string;
   icon?: ButtonIcon;

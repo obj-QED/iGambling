@@ -1,110 +1,55 @@
-import type { AppHeaderMenuItem, AppHeaderViewProps } from '../../../types/AppHeader.types';
+import type { AppHeaderMenuItem, AppHeaderViewProps } from '@AppHeader/types/AppHeader.types';
 
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 
-import { getHeaderSettings } from '@/shared/config';
-import { useMergedModuleClasses } from '@/shared/lib';
-import { MantineColorSchemeToggle } from '@/shared/ui';
+import { getAppHeaderSectionItems } from '@AppHeader/lib/menuItems';
+import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '@AppHeader/ui/AppHeader';
+import { AppHeaderMenuItemRenderer } from '@AppHeader/ui/blocks/AppHeaderMenuItemRenderer/AppHeaderMenuItemRenderer';
 
-import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
-import { AppHeaderGuestActions } from '../../blocks/AppHeaderGuestActions/AppHeaderGuestActions';
-import { AppHeaderProvidersNav } from '../../blocks/AppHeaderProvidersNav/AppHeaderProvidersNav';
-import { AppHeaderUserActions } from '../../blocks/AppHeaderUserActions/AppHeaderUserActions';
+import { useMergedModuleClasses } from '@shared/lib';
 
-import baseStyles from '../../../styles/base/AppHeaderBase.module.scss';
-import defaultStyles from '../../../styles/variants/AppHeaderDefault.module.scss';
+import baseStyles from '@AppHeader/styles/base/AppHeaderBase.module.scss';
+import defaultStyles from '@AppHeader/styles/variants/AppHeaderDefault.module.scss';
 
 function AppHeaderDefaultViewComponent({ params, data, loading }: AppHeaderViewProps) {
   const LayoutComponent = LAYOUT_COMPONENTS[params.layout];
   const SkeletonComponent = SKELETON_COMPONENTS[params.variant];
-  /** `loading` from hook already accounts for pending/fetching and missing menuHeaderTop. */
   const showSkeleton = loading;
-
   const classes = useMergedModuleClasses(baseStyles, defaultStyles);
+  const sections = data?.menu ?? [];
 
-  const skeletonClassName = useMemo(
-    () => `${baseStyles.root__skeleton}${showSkeleton ? ` ${baseStyles['root__skeleton--visible']}` : ''}`,
-    [showSkeleton],
+  const themeMenuItem = {
+    key: 'theme',
+    name: 'Theme',
+    url: '/test',
+    img: '',
+  } satisfies AppHeaderMenuItem;
+
+  const sectionThemeAdded = sections.map((section) =>
+    section.key === 'block1'
+      ? {
+          ...section,
+          items: [...(section.items ?? []), themeMenuItem],
+        }
+      : section,
   );
-
-  const providerItems = useMemo((): AppHeaderMenuItem[] => {
-    const raw = getHeaderSettings().providers ?? [];
-    return raw.map((p) => ({
-      key: p.key,
-      name: p.name,
-      url: p.url,
-      img: p.img ?? '',
-      buttonVariant: p.buttonVariant,
-      buttonColor: p.buttonColor,
-      buttonSize: p.buttonSize,
-      buttonRadius: p.buttonRadius,
-    }));
-  }, []);
-
-  const guestActions = useMemo(() => {
-    const menu = data?.menu ?? [];
-    const isLoginItem = (item: AppHeaderMenuItem): boolean => {
-      const key = item.key?.toLowerCase() ?? '';
-      const name = item.name?.toLowerCase() ?? '';
-      const url = item.url?.toLowerCase() ?? '';
-      return (
-        key.includes('login') ||
-        key.includes('auth') ||
-        name.includes('login') ||
-        url.includes('/auth') ||
-        url.includes('/login')
-      );
-    };
-
-    const isRegisterItem = (item: AppHeaderMenuItem): boolean => {
-      const key = item.key?.toLowerCase() ?? '';
-      const name = item.name?.toLowerCase() ?? '';
-      const url = item.url?.toLowerCase() ?? '';
-      return (
-        key.includes('register') ||
-        key.includes('signup') ||
-        key.includes('registration') ||
-        name.includes('register') ||
-        name.includes('signup') ||
-        url.includes('/register') ||
-        url.includes('/signup')
-      );
-    };
-
-    return {
-      loginItem: menu.find(isLoginItem),
-      registerItem: menu.find(isRegisterItem),
-    };
-  }, [data?.menu]);
 
   return (
     <header className={classes.root}>
       <LayoutComponent>
         <div className={baseStyles.root__sections}>
-          <div className={baseStyles.root__section}>
-            {data?.menu?.map((item) => (
-              <span key={item.key}>{item.name}</span>
-            ))}
-          </div>
-          <div className={baseStyles.root__section}>
-            <AppHeaderProvidersNav items={providerItems} />
-          </div>
-          <div className={baseStyles.root__section}>
-            <MantineColorSchemeToggle />
-            {/* {isAuthenticated ? ( */}
-            <AppHeaderUserActions classes={classes} classKey="root__userActions-item" />
-            {/* ) : ( */}
-            <AppHeaderGuestActions
-              loginItem={guestActions.loginItem}
-              registerItem={guestActions.registerItem}
-            />
-            {/* )} */}
-          </div>
+          {sectionThemeAdded.map((section) => (
+            <div key={section.key} className={baseStyles.root__section} data-section={section.key}>
+              {getAppHeaderSectionItems(section).map((item) => (
+                <AppHeaderMenuItemRenderer key={item.key} item={item} />
+              ))}
+            </div>
+          ))}
         </div>
       </LayoutComponent>
       {showSkeleton ? (
-        <div className={skeletonClassName} data-testid="app-header-skeleton">
-          <SkeletonComponent />
+        <div className={baseStyles.root__skeleton} data-testid="app-header-skeleton">
+          <SkeletonComponent menu={data?.menu} />
         </div>
       ) : null}
     </header>

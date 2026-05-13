@@ -49,6 +49,11 @@ export type AppSettings = {
   appName?: string;
   version?: string;
   header?: HeaderSettings;
+  /**
+   * Optional anonymous lobby token injected with HTML (not in Redux).
+   * Prefer server `httpOnly` session; use only when backend requires a visible bootstrap token.
+   */
+  lobbyToken?: string;
 };
 
 declare global {

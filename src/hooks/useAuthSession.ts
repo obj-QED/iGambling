@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { selectIsAuthenticated } from '@/store/slices/authSlice';
+import { selectIsAuthenticated } from '@store/slices/authSlice';
 
 type UseAuthSessionResult = {
   isAuthenticated: boolean;
@@ -10,7 +10,8 @@ type UseAuthSessionResult = {
 
 /**
  * Source of truth is server session (httpOnly cookie); client keeps only a boolean flag.
- * Token is never stored in JS/sessionStorage per security requirements.
+ * Lobby `getPage` token (from initV2 or optional `__SETTINGS__.lobbyToken`) is kept in-memory
+ * via `@api/lobby` session helpers — not in Redux or localStorage.
  */
 export function useAuthSession(): UseAuthSessionResult {
   const isAuthenticated = useSelector(selectIsAuthenticated);

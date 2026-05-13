@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { useAuthSession } from '@/hooks/useAuthSession';
+import { useAuthSession } from '@hooks/useAuthSession';
 
 type GuestRouteProps = {
   children?: ReactNode;

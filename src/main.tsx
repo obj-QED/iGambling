@@ -5,9 +5,9 @@ import { App } from '@/app/bootstrap/App';
 import { Providers } from '@/app/providers/Providers';
 import { setInitialPath } from '@/app/routing/state/initialPath';
 
-import { prefetchInitData } from '@/api/lobby';
-import { queryClient } from '@/api/queryClient';
-import { getBrowserLanguage } from '@/hooks/useLanguage';
+import { prefetchInitData, setLobbySessionDevToken } from '@api/lobby';
+import { queryClient } from '@api/queryClient';
+import { getBrowserLanguage } from '@hooks/useLanguage';
 
 import '@/assets/styles/global.scss';
 import '@/assets/styles/fonts.scss';
@@ -24,6 +24,18 @@ const root = createRoot(document.getElementById('root')!);
   const initialPath = typeof window !== 'undefined' ? (window.location.pathname || '/') : '/';
   setInitialPath(initialPath);
 
+  if (import.meta.env.DEV) {
+    const devLobbyToken = import.meta.env.VITE_DEV_LOBBY_TOKEN;
+    if (typeof devLobbyToken === 'string' && devLobbyToken.trim()) {
+      setLobbySessionDevToken(devLobbyToken);
+    }
+    if (typeof window !== 'undefined') {
+      window.__DEV_SET_LOBBY_TOKEN__ = (t) => {
+        setLobbySessionDevToken(t);
+      };
+    }
+  }
+
   // Prefetch init/translation for the same initialPath; do not block render — header skeleton can react to pending/fetching.
   void prefetchInitData(queryClient, language, initialPath).catch((error) => {
     console.error('[bootstrap] prefetch failed', error);
@@ -31,7 +43,7 @@ const root = createRoot(document.getElementById('root')!);
 
   try {
     // Warm up frequent pages; non-home entry routes still load their own lazy chunk from routes.
-    await Promise.all([import('@/pages/Home/HomePage'), import('@/pages/Login/LoginPage')]);
+    await Promise.all([import('@pages/Home/HomePage'), import('@pages/Login/LoginPage')]);
   } catch (error) {
     console.error('[bootstrap] chunk load failed', error);
   }

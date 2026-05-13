@@ -12,17 +12,30 @@ const ROOT = resolve(import.meta.dirname, '..');
 const COMPONENTS_DIR = resolve(ROOT, 'src/components');
 const TSCONFIG_PATH = resolve(ROOT, 'tsconfig.app.json');
 
+/**
+ * TypeScript `paths` need two entries per logical package when you both:
+ * - import the barrel: `from '@ui'` / `from '@store'` / `from '@pages'`
+ * - import subpaths: `from '@ui/AppLink'` / `from '@store/slices/authSlice'`
+ * The `*` pattern does not match the bare specifier (no `/` after the name), so `@name` and `@name/*` are paired, not duplicates.
+ * `@/foo` is covered by `@/*` → `src/*`; no separate `@/schemas` entry needed.
+ */
 const STATIC_PATHS = {
   '@/*': ['src/*'],
-  '@/components': ['src/components'],
-  '@/pages': ['src/pages'],
-  '@/api': ['src/api'],
-  '@/store': ['src/store'],
-  '@/shared': ['src/shared'],
-  '@/ui': ['src/ui'],
-  '@/elements': ['src/elements'],
-  '@/hooks': ['src/hooks'],
-  '@/schemas': ['src/schemas'],
+  '@components': ['src/components/index.ts'],
+  '@components/*': ['src/components/*'],
+  '@ui': ['src/shared/ui'],
+  '@ui/*': ['src/shared/ui/*'],
+  '@schemas': ['src/schemas'],
+  '@schemas/*': ['src/schemas/*'],
+  '@shared/*': ['src/shared/*'],
+  '@entities/*': ['src/entities/*'],
+  '@api/*': ['src/api/*'],
+  '@store': ['src/store/index.ts'],
+  '@store/*': ['src/store/*'],
+  '@hooks/*': ['src/hooks/*'],
+  '@pages': ['src/pages/index.ts'],
+  '@pages/*': ['src/pages/*'],
+  '@elements/*': ['src/elements/*'],
 };
 
 const componentNames = readdirSync(COMPONENTS_DIR).filter((name) => {

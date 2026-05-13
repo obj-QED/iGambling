@@ -1,14 +1,8 @@
 .skeleton {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-
-  &__segment {
-    flex: 1 1 0;
-    min-width: 0;
-    height: 14px;
-    border-radius: var(--app-header_skeleton-border-radius, 6px);
+  &__item {
+    display: block;
+    flex: 0 0 auto;
+    min-width: 32px;
     background: var(--app-header_skeleton-bg, rgb(255 255 255 / 50%));
     opacity: 0.9;
   }

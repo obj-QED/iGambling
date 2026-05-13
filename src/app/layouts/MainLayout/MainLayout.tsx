@@ -2,7 +2,7 @@ import { memo, Suspense } from 'react';
 
 import { Outlet } from 'react-router-dom';
 
-import { AppBanner, AppFooter, AppHeader, AppSidebar } from '@/components';
+import { AppBanner, AppFooter, AppHeader, AppSidebar } from '@components';
 
 import styles from './MainLayout.module.scss';
 

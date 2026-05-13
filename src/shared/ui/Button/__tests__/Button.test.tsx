@@ -51,6 +51,18 @@ describe('Button', () => {
     expect(button).toHaveAttribute('aria-disabled', 'true');
   });
 
+  it('treats empty string url as invalid via getMantineAppHrefProps', () => {
+    renderButton(
+      <Button varsKey="header-btn-login" url="">
+        No link
+      </Button>,
+    );
+
+    const button = screen.getByRole('button', { name: 'No link' });
+    expect(button).toHaveAttribute('data-invalid-href', 'true');
+    expect(button).toBeDisabled();
+  });
+
   it('renders icon on the requested side', () => {
     renderButton(
       <Button

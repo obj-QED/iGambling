@@ -13,7 +13,9 @@
 }
 
 .skeleton {
-  &__segment {
+  --app-header-skeleton-mantine-fill: var(--app-header_classic-skeleton-mantine-fill, rgb(255 255 255 / 18%));
+
+  &__item {
     background: var(--app-header_classic-skeleton-bg, #475569);
   }
 }

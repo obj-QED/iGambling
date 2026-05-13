@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { AppLink } from '@/shared/ui';
+import { AppLink } from '@ui';
 
 function ServerErrorPageComponent() {
   return (

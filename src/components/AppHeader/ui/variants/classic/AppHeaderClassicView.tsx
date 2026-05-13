@@ -1,13 +1,14 @@
-import type { AppHeaderViewProps } from '../../../types/AppHeader.types';
+import type { AppHeaderViewProps } from '@AppHeader/types/AppHeader.types';
 
 import { memo, useMemo } from 'react';
 
-import { MantineColorSchemeToggle } from '@/shared/ui';
+import { flattenAppHeaderMenuSections } from '@AppHeader/lib/menuItems';
+import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '@AppHeader/ui/AppHeader';
+import { AppHeaderLogoItem } from '@AppHeader/ui/blocks/AppHeaderLogoItem/AppHeaderLogoItem';
+import { AppHeaderMenuItemRenderer } from '@AppHeader/ui/blocks/AppHeaderMenuItemRenderer/AppHeaderMenuItemRenderer';
 
-import { LAYOUT_COMPONENTS, SKELETON_COMPONENTS } from '../../AppHeader';
-
-import baseStyles from '../../../styles/base/AppHeaderBase.module.scss';
-import classicStyles from '../../../styles/variants/AppHeaderClassic.module.scss';
+import baseStyles from '@AppHeader/styles/base/AppHeaderBase.module.scss';
+import classicStyles from '@AppHeader/styles/variants/AppHeaderClassic.module.scss';
 
 function AppHeaderClassicViewComponent({ params, data, loading }: AppHeaderViewProps) {
   const LayoutComponent = LAYOUT_COMPONENTS[params.layout];
@@ -19,13 +20,8 @@ function AppHeaderClassicViewComponent({ params, data, loading }: AppHeaderViewP
     [],
   );
 
-  const skeletonClassName = useMemo(
-    () => `${baseStyles.root__skeleton}${showSkeleton ? ` ${baseStyles['root__skeleton--visible']}` : ''}`,
-    [showSkeleton],
-  );
-
-  const menu = data?.menu;
-  const logo = menu?.find((item) => item.key === 'logo');
+  const menu = useMemo(() => flattenAppHeaderMenuSections(data?.menu), [data?.menu]);
+  const logo = menu.find((item) => item.key === 'logo');
   const menuItems = useMemo(
     () => menu?.filter((item) => item.key !== 'logo'),
     [menu],
@@ -36,21 +32,18 @@ function AppHeaderClassicViewComponent({ params, data, loading }: AppHeaderViewP
       <LayoutComponent>
         <div className={classicStyles.shell}>
           <div className={classicStyles.brand}>
-            <div className={baseStyles.root__logo}>{logo?.img ? <img src={logo.img} alt={logo.name} /> : 'IG'}</div>
+            {logo ? <AppHeaderLogoItem item={logo} /> : <div className={baseStyles.root__logo}>IG</div>}
           </div>
           <div className={classicStyles.main}>
             {menuItems?.map((item) => (
-              <span key={item.key}>{item.name}</span>
+              <AppHeaderMenuItemRenderer key={item.key} item={item} />
             ))}
-          </div>
-          <div className={classicStyles.themeToggleWrap}>
-            <MantineColorSchemeToggle />
           </div>
         </div>
       </LayoutComponent>
       {showSkeleton ? (
-        <div className={skeletonClassName} data-testid="app-header-skeleton">
-          <SkeletonComponent />
+        <div className={baseStyles.root__skeleton} data-testid="app-header-skeleton">
+          <SkeletonComponent menu={data?.menu} />
         </div>
       ) : null}
     </header>

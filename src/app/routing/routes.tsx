@@ -9,6 +9,7 @@ import { MainLayout } from '@/app/layouts/MainLayout';
 import { GuestRoute } from '@/app/routing/guards/GuestRoute';
 import { ProtectedRoute } from '@/app/routing/guards/ProtectedRoute';
 
+import { PageLoader } from '@elements/PageLoader';
 import {
   HomePage,
   LoginPage,
@@ -18,9 +19,7 @@ import {
   ProfilePage,
   RegisterPage,
   ServerErrorPage,
-} from '@/pages';
-
-import { PageLoader } from '@/elements/PageLoader';
+} from '@pages';
 
 type AppRoute = {
   path: string;

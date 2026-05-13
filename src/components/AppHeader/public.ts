@@ -5,5 +5,5 @@ export type {
   AppHeaderParams,
   AppHeaderVariant,
   AppHeaderViewProps,
-} from './types/AppHeader.types';
-export { AppHeader } from './ui/AppHeader';
+} from '@AppHeader/types/AppHeader.types';
+export { AppHeader } from '@AppHeader/ui/AppHeader';

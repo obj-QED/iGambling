@@ -3449,6 +3449,7 @@ __metadata:
     prettier: "npm:^3.8.1"
     react: "npm:^19.2.4"
     react-dom: "npm:^19.2.4"
+    react-inlinesvg: "npm:^4.4.1"
     react-redux: "npm:^9.1.2"
     react-router-dom: "npm:^6.28.0"
     rollup-plugin-visualizer: "npm:^7.0.1"
@@ -4663,6 +4664,26 @@ __metadata:
   peerDependencies:
     react: ^19.2.4
   checksum: 10c0/f0c63f1794dedb154136d4d0f59af00b41907f4859571c155940296808f4b94bf9c0c20633db75b5b2112ec13d8d7dd4f9bf57362ed48782f317b11d05a44f35
+  languageName: node
+  linkType: hard
+
+"react-from-dom@npm:^0.7.5":
+  version: 0.7.5
+  resolution: "react-from-dom@npm:0.7.5"
+  peerDependencies:
+    react: 16.8 - 19
+  checksum: 10c0/1f1fd17d5d08ca2a714dde9a9559c54747eefdc9d1a45d84befb4e036957f197681c0ac5ddea325ac30d0a646c070ec9bb458ebfab281f4e380023451a3a28a0
+  languageName: node
+  linkType: hard
+
+"react-inlinesvg@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "react-inlinesvg@npm:4.4.1"
+  dependencies:
+    react-from-dom: "npm:^0.7.5"
+  peerDependencies:
+    react: 16.8 - 19
+  checksum: 10c0/2b86b45a86a9aa3529ed02de960c8ed8831bd9da18187c5ccef8977970c8618c95b0cd38a21777fe578b840b288009f0a49f73959e7da032f6777784473903b5
   languageName: node
   linkType: hard
 

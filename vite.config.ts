@@ -25,7 +25,7 @@ function getComponentAliases(componentsDir: string): Record<string, string> {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const apiTarget = env.VITE_APP_URL || env.VITE_LOBBY_API_URL || 'https://999ggg.net';
+  const apiTarget = env.VITE_APP_URL || env.VITE_LOBBY_API_URL;
   const isProd = mode === 'production';
   const shouldAnalyze = env.VITE_ANALYZE === 'true';
   return {
@@ -57,6 +57,16 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+        '@ui': fileURLToPath(new URL('./src/shared/ui', import.meta.url)),
+        '@shared': fileURLToPath(new URL('./src/shared', import.meta.url)),
+        '@entities': fileURLToPath(new URL('./src/entities', import.meta.url)),
+        '@api': fileURLToPath(new URL('./src/api', import.meta.url)),
+        '@store': fileURLToPath(new URL('./src/store', import.meta.url)),
+        '@hooks': fileURLToPath(new URL('./src/hooks', import.meta.url)),
+        '@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
+        '@elements': fileURLToPath(new URL('./src/elements', import.meta.url)),
+        '@schemas': fileURLToPath(new URL('./src/schemas', import.meta.url)),
         ...getComponentAliases(fileURLToPath(new URL('./src/components', import.meta.url))),
       },
     },
@@ -66,7 +76,7 @@ export default defineConfig(({ mode }) => {
       minify: 'esbuild',
       rollupOptions: {
         output: {
-          manualChunks: id => {
+          manualChunks: (id) => {
             if (id.includes('node_modules')) {
               if (id.includes('react-dom') || id.includes('/react/')) return 'react';
               if (id.includes('react-router')) return 'router';

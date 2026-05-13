@@ -1,5 +1,5 @@
-import type { Words } from '@/api/lobby/types';
-import type { RootState } from '@/store';
+import type { Words } from '@api/lobby/types';
+import type { RootState } from '@store';
 
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 

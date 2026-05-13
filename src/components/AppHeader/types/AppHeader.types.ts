@@ -16,22 +16,34 @@ export type AppHeaderParams = {
 };
 
 export type AppHeaderMenuItem = {
-  url: string;
-  name: string;
+  url?: string;
+  name?: string;
   key: string;
-  img: string;
+  img?: string;
   buttonVariant?: 'filled' | 'light' | 'outline' | 'subtle' | 'default';
   buttonColor?: string;
-  buttonSize?: 'compact-xs' | 'compact-sm' | 'compact-md' | 'compact-lg' | 'compact-xl' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  buttonSize?:
+    | 'compact-xs'
+    | 'compact-sm'
+    | 'compact-md'
+    | 'compact-lg'
+    | 'compact-xl'
+    | 'xs'
+    | 'sm'
+    | 'md'
+    | 'lg'
+    | 'xl';
   buttonRadius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number;
   items?: AppHeaderMenuItem[];
 };
 
-export type AppHeaderData = {
-  buttonSearch: string;
-  type: string;
-  menu: AppHeaderMenuItem[];
-} | undefined;
+export type AppHeaderData =
+  | {
+      buttonSearch: string;
+      type: string;
+      menu: AppHeaderMenuItem[];
+    }
+  | undefined;
 
 export type AppHeaderViewProps = {
   params: AppHeaderParams;

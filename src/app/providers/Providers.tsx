@@ -5,10 +5,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Provider } from 'react-redux';
 
-import { queryClient } from '@/api/queryClient';
-import { mantineColorSchemeManager, mantineTheme } from '@/shared/config';
-import { MantineButtonsProvider } from '@/shared/ui';
-import { store } from '@/store';
+import { MantineButtonsProvider } from '@ui';
+
+import { queryClient } from '@api/queryClient';
+import { mantineColorSchemeManager, mantineTheme } from '@shared/config';
+import { store } from '@store';
 
 type ProvidersProps = {
   children: ReactNode;

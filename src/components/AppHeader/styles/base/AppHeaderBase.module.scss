@@ -37,26 +37,42 @@
 @layer fdd-base {
   .root {
     position: relative;
+    z-index: var(--app-header-z, 100);
     width: 100%;
-
-    // min-height: 56px;
-    overflow: hidden;
+    min-height: 60px;
+    min-width: 0;
+    overflow-x: visible;
+    overflow-y: visible;
     background: var(--header_background, var(--mantine-color-body));
 
     &__sections {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 0;
+      column-gap: 20px;
+      row-gap: 8px;
+      padding: 12px 16px;
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-x: auto;
+      scrollbar-width: thin;
     }
 
     &__section {
       display: flex;
-      flex: 1 1 0;
+      flex: 0 auto;
       align-items: center;
       gap: 10px;
       min-width: 0;
       justify-content: center;
+      /* Keep controls from painting over the next column when the row is narrower than content. */
+      overflow-x: auto;
+      overflow-y: visible;
+      scrollbar-width: thin;
+
+      & > * {
+        flex-shrink: 0;
+      }
     }
 
     // Runtime condition by column count via :has (the @each list defines N; see app-header-section-justify).
@@ -66,6 +82,18 @@
           justify-content: app-header-section-justify($total, $i);
         }
       }
+    }
+
+    /* One full-width strip: many items in a single block. */
+    &__sections:has(&__section:nth-child(1):last-child) &__section:nth-child(1) {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    /* Two / three blocks: distribute along the row without forcing column flex-grow. */
+    &__sections:has(&__section:nth-child(2):last-child),
+    &__sections:has(&__section:nth-child(3):last-child) {
+      justify-content: space-between;
     }
 
     &__logo {
@@ -96,17 +124,18 @@
 
     &__skeleton {
       position: absolute;
-      left: 16px;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      opacity: 0;
-      transition: opacity 0.24s ease;
+      z-index: 2;
+      inset: 0 16px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      max-height: 100%;
       pointer-events: none;
-    }
 
-    &__skeleton--visible {
-      opacity: 1;
+      /* Inner layout reuses `root__sections`; stretch to full overlay width */
+      & > * {
+        width: 100%;
+      }
     }
 
     /* `root__userActions-item_icon` on SVG: size comes from global `.inline-icon` (`1em`). */
@@ -129,9 +158,6 @@
         transition: none;
       }
 
-      &__skeleton {
-        transition: none;
-      }
     }
   }
 }
