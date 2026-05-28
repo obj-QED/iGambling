@@ -1,0 +1,27 @@
+body {
+  background: var(--root-body-bg, #fff);
+  font-family: var(--root-font-family, 'IBM Plex Sans', sans-serif);
+  color: var(--root-color-text, #111827);
+  font-size: var(--root-font-size, 1rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button {
+  font-family: var(--root-font-family, 'IBM Plex Sans', sans-serif);
+}
+
+a {
+  text-decoration: none;
+}

@@ -7,19 +7,19 @@ const REDIRECT_TIMEOUT_MS = 5000;
 function ProfileActivationPageComponent() {
   const navigate = useNavigate();
 
-  const redirectHome = useCallback(() => {
-    navigate('/', { replace: true });
+  const redirectToAuth = useCallback(() => {
+    navigate('/auth', { replace: true });
   }, [navigate]);
 
   useEffect(() => {
-    const timer = setTimeout(redirectHome, REDIRECT_TIMEOUT_MS);
+    const timer = setTimeout(redirectToAuth, REDIRECT_TIMEOUT_MS);
     return () => clearTimeout(timer);
-  }, [redirectHome]);
+  }, [redirectToAuth]);
 
   return (
     <main>
       <h1>Profile activated</h1>
-      <p>Redirecting to home in 5 seconds…</p>
+      <p>Redirecting to sign in in 5 seconds…</p>
     </main>
   );
 }

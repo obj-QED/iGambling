@@ -67,25 +67,25 @@
 }
 
 @mixin media-max-tablet {
-  @media (max-width: $tablet) {
+  @media (width <= $tablet) {
     @content;
   }
 }
 
 @mixin media-tablet-to-md {
-  @media (min-width: calc(#{$tablet} + 1px)) and (max-width: $breakpoint-md) {
+  @media (width >= calc(#{$tablet} + 1px)) and (width <= $breakpoint-md) {
     @content;
   }
 }
 
 @mixin media-md-to-lg {
-  @media (min-width: calc(#{$breakpoint-md} + 1px)) and (max-width: $breakpoint-lg) {
+  @media (width >= calc(#{$breakpoint-md} + 1px)) and (width <= $breakpoint-lg) {
     @content;
   }
 }
 
 @mixin media-lg-and-up {
-  @media (min-width: calc(#{$breakpoint-lg} + 1px)) {
+  @media (width >= calc(#{$breakpoint-lg} + 1px)) {
     @content;
   }
 }

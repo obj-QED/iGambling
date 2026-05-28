@@ -44,18 +44,18 @@ describe('routing guards', () => {
     expect(screen.getByText('auth page')).toBeInTheDocument();
   });
 
-  it('GuestRoute redirects authenticated user to /', () => {
+  it('GuestRoute redirects authenticated user to profile activation', () => {
     renderWithAuth(
       <Routes>
-        <Route path="/" element={<div>home page</div>} />
         <Route element={<GuestRoute />}>
           <Route path="/auth" element={<div>auth page</div>} />
         </Route>
+        <Route path="/profile/activation" element={<div>activation page</div>} />
       </Routes>,
       true,
       ['/auth'],
     );
 
-    expect(screen.getByText('home page')).toBeInTheDocument();
+    expect(screen.getByText('activation page')).toBeInTheDocument();
   });
 });

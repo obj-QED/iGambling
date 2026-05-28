@@ -1,13 +1,13 @@
 import { memo } from 'react';
 
-import { AppLink } from '@ui';
+import { Link } from 'react-router-dom';
 
 function ServerErrorPageComponent() {
   return (
     <main>
       <h1>500</h1>
       <p>Server error. Please try again later.</p>
-      <AppLink href="/">Home</AppLink>
+      <Link to="/auth">Sign in</Link>
     </main>
   );
 }

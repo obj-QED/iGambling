@@ -14,7 +14,7 @@ function GuestRouteComponent({ children }: GuestRouteProps) {
   const { isAuthenticated } = useAuthSession();
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/profile/activation" replace />;
   }
 
   return <>{children ?? <Outlet />}</>;

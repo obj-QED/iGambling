@@ -4,33 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/base.css" />
     <title>iGambling</title>
-    <!-- Mantine color scheme before paint; key must match `MANTINE_COLOR_SCHEME_STORAGE_KEY` in `src/shared/config/mantineColorScheme.ts`. -->
-    <script>
-      try {
-        var _colorScheme = window.localStorage.getItem('igambling-mantine-color-scheme');
-        var colorScheme =
-          _colorScheme === 'light' || _colorScheme === 'dark' || _colorScheme === 'auto'
-            ? _colorScheme
-            : 'dark';
-        var computedColorScheme =
-          colorScheme !== 'auto'
-            ? colorScheme
-            : window.matchMedia('(prefers-color-scheme: dark)').matches
-              ? 'dark'
-              : 'light';
-        document.documentElement.setAttribute('data-mantine-color-scheme', computedColorScheme);
-      } catch (e) {}
-    </script>
   </head>
   <body>
-    <div id="global-preloader" class="global-preloader" aria-hidden="false" aria-label="Loading...">
-      <div class="global-preloader__inner">
-        <div class="global-preloader__spinner"></div>
-        <span class="global-preloader__text">Loading...</span>
-      </div>
-    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

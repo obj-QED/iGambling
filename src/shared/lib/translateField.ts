@@ -1,4 +1,4 @@
-import type { Words } from '@entities/translation/types';
+export type Words = Record<string, string>;
 
 /**
  * Checks a "flat" string dictionary (like `state.words` after init).

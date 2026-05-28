@@ -1,6 +1,4 @@
 import react from '@vitejs/plugin-react';
-import { readdirSync, statSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
@@ -10,17 +8,6 @@ import { fontsStylesheetPlugin } from './vite-plugin-fonts-stylesheet';
 
 function encodeLightningCssVersion(major: number, minor = 0, patch = 0): number {
   return (major << 16) | (minor << 8) | patch;
-}
-
-function getComponentAliases(componentsDir: string): Record<string, string> {
-  const aliases: Record<string, string> = {};
-  for (const name of readdirSync(componentsDir)) {
-    const full = resolve(componentsDir, name);
-    if (statSync(full).isDirectory()) {
-      aliases[`@${name}`] = full;
-    }
-  }
-  return aliases;
 }
 
 export default defineConfig(({ mode }) => {
@@ -57,17 +44,12 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
-        '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
         '@ui': fileURLToPath(new URL('./src/shared/ui', import.meta.url)),
         '@shared': fileURLToPath(new URL('./src/shared', import.meta.url)),
-        '@entities': fileURLToPath(new URL('./src/entities', import.meta.url)),
         '@api': fileURLToPath(new URL('./src/api', import.meta.url)),
         '@store': fileURLToPath(new URL('./src/store', import.meta.url)),
         '@hooks': fileURLToPath(new URL('./src/hooks', import.meta.url)),
         '@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
-        '@elements': fileURLToPath(new URL('./src/elements', import.meta.url)),
-        '@schemas': fileURLToPath(new URL('./src/schemas', import.meta.url)),
-        ...getComponentAliases(fileURLToPath(new URL('./src/components', import.meta.url))),
       },
     },
     build: {
@@ -111,7 +93,7 @@ export default defineConfig(({ mode }) => {
       preprocessorOptions: {
         scss: {
           loadPaths: [fileURLToPath(new URL('./src', import.meta.url))],
-          additionalData: `@use "assets/styles/tokens" as *; @use "assets/styles/mixins" as *; @use "shared/styles/fdd-cascade-layers" as *;`,
+          additionalData: `@use "assets/styles/tokens" as *; @use "assets/styles/mixins" as *;`,
         },
       },
     },

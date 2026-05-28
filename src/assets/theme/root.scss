@@ -1,7 +1,1 @@
-/* Theme: :root variables. On the server, dist/theme.css can be overridden. */
-
-:root {
-  --root-font-family: 'IBM Plex Sans', sans-serif;
-  --header-btn-register-padding-x: 0px;
-  --header-btn-login-padding-x: 0px;
-}
+@use 'assets/theme/theme' as *;

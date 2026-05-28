@@ -1,8 +1,8 @@
 import { BrowserRouter } from 'react-router-dom';
 
-import { GlobalPreloaderRemover } from '@/app/bootstrap/GlobalPreloaderRemover';
 import { ErrorBoundary } from '@/app/ErrorBoundary';
-import { AppRoutes } from '@/app/routing/AppRoutes';
+
+import { AppBootstrap } from './AppBootstrap';
 
 export function App() {
   return (
@@ -13,8 +13,7 @@ export function App() {
           v7_relativeSplatPath: true,
         }}
       >
-        <GlobalPreloaderRemover />
-        <AppRoutes />
+        <AppBootstrap />
       </BrowserRouter>
     </ErrorBoundary>
   );

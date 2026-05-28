@@ -1,40 +1,4 @@
-// Design tokens: SASS variables for .module.scss (colors, spacing, radii).
-// Keep CSS variables (:root) only in public/base.css, no duplicates.
-// Injection: automatic via vite.config.scss.additionalData
-
-$radius-sm: 6px;
-$radius-md: 8px;
-$radius-lg: 12px;
-$spacing-xs: 4px;
-$spacing-sm: 8px;
-$spacing-md: 16px;
-$spacing-lg: 24px;
-$breakpoint-xs: 767px;
-$breakpoint-sm: 992px;
-$breakpoint-md: 1024px;
-$breakpoint-lg: 1440px;
-$breakpoint-xl: 1920px;
-$container-size-mobile: 100%;
-$container-size-tablet: 992px;
-$container-size-laptop: 1240px;
-$container-size-desktop: 1620px;
-$container-size-xl: 1920px;
-$container-padding-desktop: var(--root-container-padding-desktop, var(--mantine-spacing-md));
-$container-padding-mobile: var(--root-container-padding-mobile, var(--mantine-spacing-xs));
-
-// Backward-compatible aliases.
-$breakpoint-xs-min: 0px;
-$breakpoint-xs-max: $breakpoint-xs;
-$breakpoint-sm-min: calc(#{$breakpoint-xs} + 1px);
-$breakpoint-sm-max: $breakpoint-sm;
-$breakpoint-md-min: calc(#{$breakpoint-sm} + 1px);
-$breakpoint-md-max: $breakpoint-md;
-$breakpoint-lg-min: calc(#{$breakpoint-md} + 1px);
-$breakpoint-lg-max: $breakpoint-lg;
-$breakpoint-xl-min: calc(#{$breakpoint-lg} + 1px);
-$size-mobile-min: $breakpoint-xs-min;
-$size-mobile-max: $breakpoint-sm;
-$mobile: $breakpoint-xs;
-$tablet: $breakpoint-md;
-$laptop: $breakpoint-lg;
-$pc: $breakpoint-lg;
+// mobile от 0 до 767
+// tablet 768-А 1024
+// laptop 1025-1440
+// desctop 1440 и выше

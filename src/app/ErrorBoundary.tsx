@@ -41,7 +41,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   maxWidth: '48rem',
                   marginInline: 'auto',
                   padding: '1rem',
-                  background: 'var(--mantine-color-body, #f5f5f5)',
+                  background: 'var(--color-bg-body, #f5f5f5)',
                   borderRadius: '8px',
                   fontSize: '0.875rem',
                 }}
@@ -50,7 +50,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </pre>
             ) : null}
             <p style={{ marginTop: '1.5rem' }}>
-              <a href="/">На главную</a>
+              <a href="/auth">Вход</a>
             </p>
           </main>
         )

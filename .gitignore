@@ -41,6 +41,11 @@ coverage/
 # Optional
 *.pem
 .cursor/
+!.cursor/agents/
+!.cursor/agents/*.md
+!.cursor/rules/
+!.cursor/rules/*.mdc
+
 docs/*
 .cursorrules
 src/api/*
