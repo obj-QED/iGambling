@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "stylelint-config-standard",
-    "stylelint-config-standard-scss"
-  ],
+  "extends": ["stylelint-config-standard", "stylelint-config-standard-scss"],
   "rules": {
     "comment-empty-line-before": [
       "always",
@@ -13,6 +10,8 @@
     "no-descending-specificity": null,
     "property-no-deprecated": null,
     "custom-property-pattern": null,
+    "custom-property-empty-line-before": null,
+    "value-keyword-case": ["lower", { "ignoreKeywords": ["Georgia"] }],
     "property-no-vendor-prefix": null
   },
   "overrides": [
