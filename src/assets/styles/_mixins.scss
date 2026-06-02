@@ -30,62 +30,16 @@
   }
 }
 
-@mixin media-xs {
-  @media (min-width: $breakpoint-xs-min) and (max-width: $breakpoint-xs-max) {
+// Responsive helpers. Pass an injected breakpoint token (px) from breakpoints.ts.
+// Usage: @include media-down($tablet) { ... } / @include media-up($laptop) { ... }
+@mixin media-down($size) {
+  @media (max-width: $size) {
     @content;
   }
 }
 
-@mixin media-sm {
-  @media (min-width: $breakpoint-sm-min) and (max-width: $breakpoint-sm-max) {
-    @content;
-  }
-}
-
-@mixin media-md {
-  @media (min-width: $breakpoint-md-min) and (max-width: $breakpoint-md-max) {
-    @content;
-  }
-}
-
-@mixin media-lg {
-  @media (min-width: $breakpoint-lg-min) and (max-width: $breakpoint-lg-max) {
-    @content;
-  }
-}
-
-@mixin media-xl {
-  @media (min-width: $breakpoint-xl-min) {
-    @content;
-  }
-}
-
-@mixin size-mobile {
-  @media (min-width: $size-mobile-min) and (max-width: $size-mobile-max) {
-    @content;
-  }
-}
-
-@mixin media-max-tablet {
-  @media (width <= $tablet) {
-    @content;
-  }
-}
-
-@mixin media-tablet-to-md {
-  @media (width >= calc(#{$tablet} + 1px)) and (width <= $breakpoint-md) {
-    @content;
-  }
-}
-
-@mixin media-md-to-lg {
-  @media (width >= calc(#{$breakpoint-md} + 1px)) and (width <= $breakpoint-lg) {
-    @content;
-  }
-}
-
-@mixin media-lg-and-up {
-  @media (width >= calc(#{$breakpoint-lg} + 1px)) {
+@mixin media-up($size) {
+  @media (min-width: $size) {
     @content;
   }
 }

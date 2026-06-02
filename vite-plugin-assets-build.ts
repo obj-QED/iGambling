@@ -11,7 +11,8 @@ async function collectFiles(dir: string, ext: string[]): Promise<string[]> {
     const full = join(dir, e.name);
     if (e.isDirectory()) {
       files.push(...(await collectFiles(full, ext)));
-    } else if (ext.some((ex) => e.name.endsWith(ex))) {
+    } else if (ext.some((ex) => e.name.endsWith(ex)) && !e.name.includes('.module.')) {
+      // CSS modules are component-scoped; never inline them into the global theme.css
       files.push(full);
     }
   }
@@ -28,7 +29,7 @@ function themeBuildPlugin(): Plugin {
     },
     async closeBundle() {
       const root = join(process.cwd(), 'src', 'assets');
-      const themeDir = join(root, 'theme');
+      const themeDir = join(root, 'theme', 'tokens');
       const settingsDir = join(root, 'settings');
 
       try {

@@ -9,10 +9,8 @@ import { prefetchInitData, setLobbySessionDevToken } from '@api/lobby';
 import { queryClient } from '@api/queryClient';
 import { getBrowserLanguage } from '@hooks/useLanguage';
 
-import '@/assets/styles/base.css';
-import '@/assets/styles/global.scss';
-import '@/assets/styles/fonts.scss';
-import '@/assets/theme/theme.scss';
+import '@mantine/core/styles.css';
+import '@/assets/index.scss';
 
 import '@/assets/settings/index.js';
 

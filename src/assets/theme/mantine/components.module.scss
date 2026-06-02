@@ -1,0 +1,50 @@
+.heading {
+  font-family: var(--font-family-headings);
+  font-weight: var(--heading-font-weight);
+  line-height: var(--heading-line-height);
+  color: var(--heading-color);
+
+  &:is(h1) {
+    font-size: var(--h1-font-size);
+    font-family: Outfit, sans-serif;
+    font-weight: 900;
+  }
+
+  &:is(h2) {
+    font-size: var(--h2-font-size);
+  }
+
+  &:is(h3) {
+    font-size: var(--h3-font-size);
+  }
+
+  &:is(h4) {
+    font-size: var(--h4-font-size);
+  }
+
+  &:is(h5) {
+    font-size: var(--h5-font-size);
+  }
+
+  &:is(h6) {
+    font-size: var(--h6-font-size);
+  }
+}
+
+// Container size="responsive": Mantine sets inline --container-size: var(--container-size-responsive)
+// and max-width: var(--container-size). Define the responsive token here (not max-width directly).
+.responsiveContainer {
+  --container-size-responsive: var(--container-max-pc);
+
+  @media (max-width: $laptop) {
+    --container-size-responsive: var(--container-max-laptop);
+  }
+
+  @media (max-width: $tablet) {
+    --container-size-responsive: var(--container-max-tablet);
+  }
+
+  @media (max-width: $mobile) {
+    --container-size-responsive: var(--container-max-mobile);
+  }
+}

@@ -3,12 +3,15 @@ import { fileURLToPath } from 'node:url';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 
+import { BREAKPOINTS_PX } from './src/assets/theme/breakpoints';
 import { themeBuildPlugin } from './vite-plugin-assets-build';
 import { fontsStylesheetPlugin } from './vite-plugin-fonts-stylesheet';
 
-function encodeLightningCssVersion(major: number, minor = 0, patch = 0): number {
-  return (major << 16) | (minor << 8) | patch;
-}
+// Inject breakpoint tokens (px) into every SCSS file so `@media (max-width: $tablet)`
+// works in any *.scss / *.module.scss. Source of truth: src/assets/theme/breakpoints.ts
+const scssBreakpoints = Object.entries(BREAKPOINTS_PX)
+  .map(([name, px]) => `$${name}: ${px}px;`)
+  .join(' ');
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -54,6 +57,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       target: 'es2022',
+      cssTarget: ['chrome90', 'edge90', 'firefox90', 'safari13', 'ios13', 'opera76'],
       cssCodeSplit: true,
       minify: 'esbuild',
       rollupOptions: {
@@ -74,26 +78,13 @@ export default defineConfig(({ mode }) => {
       },
     },
     css: {
-      transformer: 'lightningcss',
-      lightningcss: {
-        targets: {
-          android: encodeLightningCssVersion(90),
-          chrome: encodeLightningCssVersion(90),
-          edge: encodeLightningCssVersion(90),
-          firefox: encodeLightningCssVersion(90),
-          ios_saf: encodeLightningCssVersion(13),
-          opera: encodeLightningCssVersion(76),
-          safari: encodeLightningCssVersion(13),
-          samsung: encodeLightningCssVersion(14),
-        },
-        cssModules: {
-          pattern: isProd ? '[hash]_[local]' : '[name]_[local]_[hash]',
-        },
+      modules: {
+        generateScopedName: isProd ? '[hash:base64:8]' : '[name]_[local]_[hash:base64:5]',
       },
       preprocessorOptions: {
         scss: {
           loadPaths: [fileURLToPath(new URL('./src', import.meta.url))],
-          additionalData: `@use "assets/styles/tokens" as *; @use "assets/styles/mixins" as *;`,
+          additionalData: `@use "assets/styles/mixins" as *; ${scssBreakpoints}`,
         },
       },
     },
