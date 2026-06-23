@@ -17,6 +17,7 @@
   "overrides": [
     {
       "files": ["**/*.module.scss"],
+      "extends": ["./stylelint.module-scss.json"],
       "rules": {
         "selector-class-pattern": null
       }

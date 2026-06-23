@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global", "local"]
+      }
+    ],
+    "selector-class-pattern": null,
+    "max-nesting-depth": 2,
+    "no-descending-specificity": null
+  }
+}

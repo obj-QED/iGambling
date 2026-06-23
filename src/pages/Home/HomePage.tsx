@@ -22,7 +22,6 @@ function HomePageComponent() {
           <Link to="/register">Register</Link>
         </nav>
       </Container>
-
     </main>
   );
 }

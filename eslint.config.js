@@ -3,6 +3,7 @@ import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import { typescriptStrictRules } from './eslint.typescript.rules.js';
 
 const localPlugin = {
   rules: {
@@ -46,6 +47,12 @@ export default tseslint.config(
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
@@ -54,6 +61,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      ...typescriptStrictRules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'local/no-empty-jsx-whitespace': 'error',
 

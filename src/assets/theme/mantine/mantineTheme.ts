@@ -56,6 +56,5 @@ export const mantineTheme = createTheme({
 
   // Single source of truth: src/assets/theme/breakpoints.ts (px → em).
   breakpoints: breakpointsEm,
-
   components: themeComponents,
 });

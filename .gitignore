@@ -40,12 +40,25 @@ coverage/
 
 # Optional
 *.pem
-.cursor/
+.cursor/*
 !.cursor/agents/
-!.cursor/agents/*.md
+!.cursor/agents/**
 !.cursor/rules/
-!.cursor/rules/*.mdc
+!.cursor/rules/**
+!.cursor/hooks.json
+!.cursor/hooks/
+!.cursor/hooks/**
+!.cursor/GLOBAL_SETUP.md
+!.cursor/skills/
+!.cursor/skills/**/SKILL.md
+
+ai-rules/
+!ai-rules/
+!ai-rules/*.md
 
 docs/*
 .cursorrules
 src/api/*
+.cursor/*
+ai-rules/*
+scripts/*
