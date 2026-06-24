@@ -7,10 +7,9 @@ const FALLBACK_LANGUAGE = 'en';
  */
 export function getBrowserLanguage(): string {
   if (typeof navigator === 'undefined') return FALLBACK_LANGUAGE;
-  const lang = navigator.language ?? (navigator as { userLanguage?: string }).userLanguage;
-  if (!lang || typeof lang !== 'string') return FALLBACK_LANGUAGE;
-  const code = lang.split('-')[0]?.toLowerCase() ?? FALLBACK_LANGUAGE;
-  return code || FALLBACK_LANGUAGE;
+
+  const code = navigator.language.split('-')[0].toLowerCase();
+  return code === '' ? FALLBACK_LANGUAGE : code;
 }
 
 /**

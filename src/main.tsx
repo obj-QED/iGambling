@@ -18,12 +18,17 @@ const root = createRoot(document.getElementById('root')!);
 
 (async function bootstrap() {
   const language = getBrowserLanguage();
-  const initialPath = typeof window !== 'undefined' ? (window.location.pathname || '/') : '/';
+  const initialPath =
+    typeof window !== 'undefined'
+      ? window.location.pathname.length > 0
+        ? window.location.pathname
+        : '/'
+      : '/';
   setInitialPath(initialPath);
 
   if (import.meta.env.DEV) {
     const devLobbyToken = import.meta.env.VITE_DEV_LOBBY_TOKEN;
-    if (typeof devLobbyToken === 'string' && devLobbyToken.trim()) {
+    if (typeof devLobbyToken === 'string' && devLobbyToken.trim().length > 0) {
       setLobbySessionDevToken(devLobbyToken);
     }
     if (typeof window !== 'undefined') {

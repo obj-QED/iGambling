@@ -1,0 +1,35 @@
+// CMF ActionIcon SCSS config — consumed by cmf-action-icon-tokens.scss
+
+$cmf-action-icon-variants: (
+  'filled',
+  'outline',
+  'light',
+  'subtle',
+  'default',
+  'transparent',
+  'white',
+  'gradient',
+  'hero',
+  'hero-light',
+  'hero-outline'
+);
+$cmf-action-icon-border: 1px solid var(--color-border);
+$cmf-action-icon-border-transparent: 1px solid transparent;
+$cmf-action-icon-hero: #059669;
+$cmf-action-icon-variant-props:
+  bg, bd, color, hover, hover-color, disabled-bg, disabled-color, disabled-hover,
+  disabled-hover-color, loading-bg, loading-color, loading-bd;
+$cmf-action-icon-sizes: (
+  'xs',
+  'sm',
+  'md',
+  'lg',
+  'xl',
+  'input-xs',
+  'input-sm',
+  'input-md',
+  'input-lg',
+  'input-xl'
+);
+$cmf-action-icon-size-props: size;
+$cmf-action-icon-shared-props: radius;

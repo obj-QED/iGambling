@@ -20,12 +20,14 @@ function stripQueryAndHash(id: string): string {
   return id.replace(/[?#].*$/, '');
 }
 
-export function extractExternalStylesheetImports(source: string): ExtractExternalStylesheetImportsResult {
+export function extractExternalStylesheetImports(
+  source: string,
+): ExtractExternalStylesheetImportsResult {
   const urls = new Set<string>();
 
   const code = source.replace(EXTERNAL_STYLESHEET_IMPORT_RE, (...args) => {
     const groups = args.at(-1) as { url?: string } | undefined;
-    if (groups?.url) {
+    if (groups != null && groups.url != null) {
       urls.add(groups.url);
     }
     return '';
@@ -56,7 +58,10 @@ export function buildExternalStylesheetTags(urls: string[]): HtmlTagDescriptor[]
       seenPreconnects.add(stylesheetOrigin);
     }
 
-    if (stylesheetOrigin === 'https://fonts.googleapis.com' && !seenPreconnects.has('https://fonts.gstatic.com')) {
+    if (
+      stylesheetOrigin === 'https://fonts.googleapis.com' &&
+      !seenPreconnects.has('https://fonts.gstatic.com')
+    ) {
       tags.push({
         tag: 'link',
         attrs: {

@@ -15,7 +15,7 @@ const scssBreakpoints = Object.entries(BREAKPOINTS_PX)
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const apiTarget = env.VITE_APP_URL || env.VITE_LOBBY_API_URL;
+  const apiTarget = env.VITE_APP_URL.length > 0 ? env.VITE_APP_URL : env.VITE_LOBBY_API_URL;
   const isProd = mode === 'production';
   const shouldAnalyze = env.VITE_ANALYZE === 'true';
   return {

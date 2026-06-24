@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { authReducer } from './slices/authSlice';
-import { wordsReducer } from './slices/wordsSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    words: wordsReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

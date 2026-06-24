@@ -1,0 +1,200 @@
+// CMF button CSS variables + scope bridge — included from theme.scss (:root)
+
+@use 'assets/theme/tokens/cmf-button-config' as *;
+
+@mixin root-tokens {
+
+  /* App gradients — SoT for Mantine defaultGradient + CMF gradient button fallbacks */
+  --app-gradient-default: linear-gradient(
+    45deg,
+    var(--mantine-color-brand-4) 0%,
+    color-mix(in srgb, var(--mantine-color-brand-4) 70%, black) 100%
+  );
+  --app-gradient-default-hover: linear-gradient(
+    45deg,
+    var(--mantine-color-brand-5) 0%,
+    color-mix(in srgb, var(--mantine-color-brand-6) 88%, black) 100%
+  );
+
+  /*
+   * CMF button cascade (resolved on scope via cmf-button-scope-bridge):
+   *   1. --cmf-{scope}-button-{variant}-{prop} | --cmf-{scope}-button-{prop}
+   *   2. --cmf-button-{prop}                    (generic defaults below)
+   *   3. --cmf-button-{variant}-{prop}          (per-variant defaults)
+   *   4. Mantine                                (buttonVars.ts fallbacks)
+   */
+
+  /* generic (all variants / sizes fallback inside location scope) */
+  --cmf-button-radius: var(--radius-md);
+  --cmf-button-justify: center;
+  --cmf-button-height: calc(2.625rem * var(--mantine-scale));
+  --cmf-button-padding-x: var(--spacing-md);
+  --cmf-button-fz: var(--mantine-font-size-sm);
+  --cmf-button-bg: var(--mantine-color-default);
+  --cmf-button-bd: calc(0.0625rem * var(--mantine-scale)) solid var(--mantine-color-default-border);
+  --cmf-button-color: var(--mantine-color-text);
+  --cmf-button-hover: var(--mantine-color-default-hover);
+  --cmf-button-hover-color: var(--mantine-color-text);
+  --cmf-button-disabled-bg: color-mix(in srgb, var(--color-text) 8%, transparent);
+  --cmf-button-disabled-color: var(--color-text-muted);
+  --cmf-button-disabled-hover: color-mix(in srgb, var(--color-text) 12%, transparent);
+  --cmf-button-disabled-hover-color: var(--color-text-muted);
+
+  /* sizes */
+  --cmf-button-xs-height: 1.875rem;
+  --cmf-button-xs-padding-x: var(--spacing-sm);
+  --cmf-button-xs-fz: 0.75rem;
+
+  --cmf-button-sm-height: 2.25rem;
+  --cmf-button-sm-padding-x: var(--spacing-sm);
+  --cmf-button-sm-fz: 0.875rem;
+
+  --cmf-button-md-height: 2.625rem;
+  --cmf-button-md-padding-x: var(--spacing-md);
+  --cmf-button-md-fz: 0.875rem;
+
+  --cmf-button-lg-height: 3.125rem;
+  --cmf-button-lg-padding-x: var(--spacing-md);
+  --cmf-button-lg-fz: 1rem;
+
+  --cmf-button-xl-height: 3.75rem;
+  --cmf-button-xl-padding-x: var(--spacing-lg);
+  --cmf-button-xl-fz: 1.125rem;
+
+  /* filled — text via Mantine autoContrast (theme.autoContrast + Button.autoContrast) */
+  --cmf-button-filled-bg: var(--mantine-color-brand-4);
+  --cmf-button-filled-hover: var(--mantine-color-brand-3);
+  --cmf-button-filled-color: var(--mantine-primary-color-contrast);
+  --cmf-button-filled-bd: #{$cmf-button-border-transparent};
+  --cmf-button-filled-hover-color: var(--mantine-primary-color-contrast);
+
+  /* outline */
+  --cmf-button-outline-bg: transparent;
+  --cmf-button-outline-bd: calc(0.0625rem * var(--mantine-scale)) solid
+    color-mix(in srgb, var(--mantine-color-brand-4) 42%, var(--mantine-color-default-border));
+  --cmf-button-outline-color: var(--mantine-color-text);
+  --cmf-button-outline-hover: var(--mantine-color-brand-light-hover);
+  --cmf-button-outline-hover-color: var(--mantine-color-text);
+
+  /* light */
+  --cmf-button-light-bg: var(--mantine-color-brand-light);
+  --cmf-button-light-bd: #{$cmf-button-border-transparent};
+  --cmf-button-light-color: var(--mantine-color-brand-light-color);
+  --cmf-button-light-hover: var(--mantine-color-brand-light-hover);
+  --cmf-button-light-hover-color: var(--mantine-color-brand-light-color);
+
+  /* subtle */
+  --cmf-button-subtle-bg: transparent;
+  --cmf-button-subtle-bd: #{$cmf-button-border-transparent};
+  --cmf-button-subtle-color: var(--mantine-color-dimmed);
+  --cmf-button-subtle-hover: var(--mantine-color-brand-light-hover);
+  --cmf-button-subtle-hover-color: var(--mantine-color-text);
+
+  /* default — neutral Mantine surface, not brand filled */
+  --cmf-button-default-bg: var(--mantine-color-default);
+  --cmf-button-default-bd: calc(0.0625rem * var(--mantine-scale)) solid
+    var(--mantine-color-default-border);
+  --cmf-button-default-color: var(--mantine-color-text);
+  --cmf-button-default-hover: var(--mantine-color-default-hover);
+  --cmf-button-default-hover-color: var(--mantine-color-text);
+
+  /* transparent */
+  --cmf-button-transparent-bg: transparent;
+  --cmf-button-transparent-bd: #{$cmf-button-border-transparent};
+  --cmf-button-transparent-color: var(--color-text);
+  --cmf-button-transparent-hover: transparent;
+  --cmf-button-transparent-hover-color: var(--color-text);
+
+  /* white */
+  --cmf-button-white-bg: #fff;
+  --cmf-button-white-bd: #{$cmf-button-border-transparent};
+  --cmf-button-white-color: var(--mantine-color-brand-5);
+  --cmf-button-white-hover: #fff;
+  --cmf-button-white-hover-color: var(--mantine-color-brand-5);
+
+  /* gradient */
+  --cmf-button-gradient-bg: var(--app-gradient-default);
+  --cmf-button-gradient-bd: #{$cmf-button-border-transparent};
+  --cmf-button-gradient-color: #fff;
+
+  /* Mantine hover uses background-color; gradients need background (button-states.scss) */
+  --cmf-button-gradient-hover: var(--app-gradient-default-hover);
+  --cmf-button-gradient-hover-color: #fff;
+  --cmf-button-gradient-disabled-color: color-mix(in srgb, #fff 45%, transparent);
+
+  /* hero — default / light / outline behaviors, hero palette */
+  --cmf-button-hero-bg: #{$cmf-button-hero};
+  --cmf-button-hero-bd: #{$cmf-button-border};
+  --cmf-button-hero-color: #fff;
+  --cmf-button-hero-hover: color-mix(in srgb, #{$cmf-button-hero} 88%, black);
+  --cmf-button-hero-hover-color: #fff;
+
+  --cmf-button-hero-light-bg: color-mix(in srgb, #{$cmf-button-hero} 12%, transparent);
+  --cmf-button-hero-light-bd: #{$cmf-button-border-transparent};
+  --cmf-button-hero-light-color: #{$cmf-button-hero};
+  --cmf-button-hero-light-hover: color-mix(in srgb, #{$cmf-button-hero} 18%, transparent);
+  --cmf-button-hero-light-hover-color: #{$cmf-button-hero};
+
+  --cmf-button-hero-outline-bg: transparent;
+  --cmf-button-hero-outline-bd: 1px solid #{$cmf-button-hero};
+  --cmf-button-hero-outline-color: #{$cmf-button-hero};
+  --cmf-button-hero-outline-hover: color-mix(in srgb, #{$cmf-button-hero} 8%, transparent);
+  --cmf-button-hero-outline-hover-color: #{$cmf-button-hero};
+
+  --cmf-button-hero-disabled-bg: color-mix(in srgb, #{$cmf-button-hero} 35%, transparent);
+  --cmf-button-hero-disabled-color: color-mix(in srgb, #fff 55%, #{$cmf-button-hero});
+  --cmf-button-hero-disabled-hover: color-mix(in srgb, #{$cmf-button-hero} 35%, transparent);
+  --cmf-button-hero-disabled-hover-color: color-mix(in srgb, #fff 55%, #{$cmf-button-hero});
+
+  --cmf-button-hero-light-disabled-bg: color-mix(in srgb, #{$cmf-button-hero} 6%, transparent);
+  --cmf-button-hero-light-disabled-color: color-mix(in srgb, #{$cmf-button-hero} 45%, transparent);
+  --cmf-button-hero-light-disabled-hover: color-mix(in srgb, #{$cmf-button-hero} 6%, transparent);
+  --cmf-button-hero-light-disabled-hover-color: color-mix(
+    in srgb,
+    #{$cmf-button-hero} 45%,
+    transparent
+  );
+
+  --cmf-button-hero-outline-disabled-bg: transparent;
+  --cmf-button-hero-outline-disabled-color: color-mix(
+    in srgb,
+    #{$cmf-button-hero} 45%,
+    transparent
+  );
+  --cmf-button-hero-outline-disabled-hover: transparent;
+  --cmf-button-hero-outline-disabled-hover-color: color-mix(
+    in srgb,
+    #{$cmf-button-hero} 45%,
+    transparent
+  );
+}
+
+@mixin cmf-button-scope-bridge($key) {
+  @each $variant in $cmf-button-variants {
+    @each $prop in $cmf-button-variant-props {
+      --cmf-button-#{$variant}-#{$prop}: var(
+        --cmf-#{$key}-button-#{$variant}-#{$prop},
+        var(
+          --cmf-#{$key}-button-#{$prop},
+          var(--cmf-button-#{$prop}, var(--cmf-button-#{$variant}-#{$prop}))
+        )
+      );
+    }
+  }
+
+  @each $prop in $cmf-button-shared-props {
+    --cmf-button-#{$prop}: var(--cmf-#{$key}-button-#{$prop}, var(--cmf-button-#{$prop}));
+  }
+
+  @each $size in $cmf-button-sizes {
+    @each $prop in $cmf-button-size-props {
+      --cmf-button-#{$size}-#{$prop}: var(
+        --cmf-#{$key}-button-#{$size}-#{$prop},
+        var(
+          --cmf-#{$key}-button-#{$prop},
+          var(--cmf-button-#{$prop}, var(--cmf-button-#{$size}-#{$prop}))
+        )
+      );
+    }
+  }
+}

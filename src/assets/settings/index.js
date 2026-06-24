@@ -7,9 +7,9 @@
   Object.assign(window.__SETTINGS__, {
     appName: 'iGambling',
     version: '1.0.0',
-    // header: {
-    //   layout: 'container',
-    //   type: 'default',
-    // }
+    header: {
+      layout: 'container',
+      type: 'default',
+    }
   });
 })();

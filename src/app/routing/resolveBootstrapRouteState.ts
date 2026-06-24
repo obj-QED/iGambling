@@ -33,7 +33,7 @@ export function resolveBootstrapRouteState({
   init,
   translation,
 }: ResolveBootstrapRouteStateParams): BootstrapRouteState {
-  if (!language.trim()) {
+  if (language.trim().length === 0) {
     return { status: 'pending' };
   }
 

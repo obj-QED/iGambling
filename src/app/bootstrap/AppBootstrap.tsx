@@ -2,16 +2,16 @@ import { Suspense } from 'react';
 
 import { LazyRoutes } from '@/app/routing/routes';
 
-import { useInitData } from '@api/lobby';
+import { ServerErrorPage } from '@pages/eager';
+
 import { useLanguage } from '@hooks/useLanguage';
 
-import { ServerErrorPage } from '@/pages/ServerError/ServerErrorPage';
-
 import { GlobalPreloader } from './GlobalPreloader';
+import { useAppBootstrap } from './useAppBootstrap';
 
 function AppBootstrapComponent() {
   const language = useLanguage();
-  const { bootstrapRouteState } = useInitData(language);
+  const { bootstrapRouteState } = useAppBootstrap(language);
 
   if (bootstrapRouteState.status === 'pending') {
     return <GlobalPreloader />;

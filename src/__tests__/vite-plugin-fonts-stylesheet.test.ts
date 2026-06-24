@@ -14,7 +14,7 @@ import {
 function getHookHandler<T extends (...args: never[]) => unknown>(
   hook: T | { handler: T } | undefined,
 ): T | undefined {
-  if (!hook) {
+  if (hook == null) {
     return undefined;
   }
 
@@ -108,14 +108,17 @@ describe('fontsStylesheetPlugin', () => {
       fontsFile,
     );
 
-    const transformedCode = typeof transformed === 'object' && transformed ? transformed.code : transformed;
+    const transformedCode =
+      typeof transformed === 'object' && transformed != null ? transformed.code : transformed;
 
     expect(transformedCode).not.toContain('https://fonts.googleapis.com');
     expect(transformedCode).toContain('body { color: red; }');
 
-    const htmlResult = await (plugin.transformIndexHtml as (html: string) => Promise<{ html: string; tags: HtmlTagDescriptor[] }>)(
-      '<html><head></head><body></body></html>',
-    );
+    const htmlResult = await (
+      plugin.transformIndexHtml as (
+        html: string,
+      ) => Promise<{ html: string; tags: HtmlTagDescriptor[] }>
+    )('<html><head></head><body></body></html>');
 
     expect(htmlResult.tags).toEqual(
       expect.arrayContaining([

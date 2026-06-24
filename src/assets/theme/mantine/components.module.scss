@@ -1,3 +1,13 @@
+// Typography only — button state visuals live in button-states.scss (.cmf-Button-root).
+.button {
+  font-family: var(--font-family-base);
+  font-weight: 500;
+}
+
+.actionIcon {
+  font-family: var(--font-family-base);
+}
+
 .heading {
   font-family: var(--font-family-headings);
   font-weight: var(--heading-font-weight);

@@ -11,7 +11,7 @@ export type AppHrefKind = 'external' | 'internal' | 'hash' | 'invalid';
 
 export function getAppHrefKind(href: string): AppHrefKind {
   const h = href.trim();
-  if (!h) return 'invalid';
+  if (h.length === 0) return 'invalid';
   if (/^\/\//.test(h)) return 'invalid';
   if (/^https?:\/\//i.test(h)) return 'external';
   if (h.startsWith('#')) {
