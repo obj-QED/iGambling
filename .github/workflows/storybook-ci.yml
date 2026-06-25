@@ -15,9 +15,6 @@ concurrency:
   group: storybook-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  NODE_VERSION: '22'
-
 jobs:
   quality:
     name: Lint + Typecheck + Tests
@@ -25,16 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
+      - uses: ./.github/actions/setup-yarn
 
       - name: Lint
         run: yarn lint
@@ -55,13 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
-
-      - run: corepack enable
-      - run: yarn install --immutable
+      - uses: ./.github/actions/setup-yarn
 
       - name: Build Storybook
         run: yarn build-storybook
@@ -69,7 +51,7 @@ jobs:
       - name: Story index report
         run: node .github/scripts/storybook-index-report.mjs
 
-      - name: Upload Storybook (Pages)
+      - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
@@ -98,18 +80,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-storybook
     env:
-      # Set to 'true' once color-contrast tokens are fixed (see reports/a11y.json).
-      STORYBOOK_A11Y_STRICT: 'false'
+      STORYBOOK_A11Y_STRICT: "false"
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
-
-      - run: corepack enable
-      - run: yarn install --immutable
+      - uses: ./.github/actions/setup-yarn
 
       - uses: actions/download-artifact@v4
         with:
@@ -135,19 +110,12 @@ jobs:
     name: Visual regression (Chromatic)
     runs-on: ubuntu-latest
     needs: build-storybook
-    if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
-
-      - run: corepack enable
-      - run: yarn install --immutable
+      - uses: ./.github/actions/setup-yarn
 
       - uses: actions/download-artifact@v4
         with:
@@ -155,6 +123,7 @@ jobs:
           path: storybook-static
 
       - name: Publish to Chromatic
+        if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         run: yarn chromatic --storybook-build-dir=storybook-static --exit-zero-on-changes
@@ -163,17 +132,10 @@ jobs:
     name: AI design review
     runs-on: ubuntu-latest
     needs: build-storybook
-    if: ${{ secrets.OPENAI_API_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
-
-      - run: corepack enable
-      - run: yarn install --immutable
+      - uses: ./.github/actions/setup-yarn
 
       - uses: actions/download-artifact@v4
         with:
@@ -181,6 +143,7 @@ jobs:
           path: storybook-static
 
       - name: Generate AI review
+        if: ${{ secrets.OPENAI_API_KEY != '' }}
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: yarn storybook:ai-review
