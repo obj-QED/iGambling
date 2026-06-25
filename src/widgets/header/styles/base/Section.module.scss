@@ -1,0 +1,7 @@
+@layer widget.base {
+  .root {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--header-block-gap, var(--spacing-xs, 0.25rem));
+  }
+}

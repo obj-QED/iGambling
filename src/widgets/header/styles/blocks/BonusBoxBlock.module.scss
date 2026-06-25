@@ -1,0 +1,13 @@
+@layer widget.blocks {
+  .root {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  .image {
+    width: auto;
+    height: var(--header-menu-control-height, 2.25rem);
+    object-fit: contain;
+  }
+}

@@ -1,0 +1,20 @@
+@use './surface-tokens' as *;
+@use '../variant/type-default';
+
+@layer widget.base {
+  .root {
+    @include header-surface-tokens;
+    @include header-surface-styles;
+    @include header-control-tokens;
+
+    width: 100%;
+  }
+}
+
+@layer widget.variant {
+  .root[data-icon-shape='rectangular'] {
+    --header-button-icon-width: calc(var(--header-button-icon-size, 0.875rem) * 1.25);
+    --header-button-icon-height: var(--header-button-icon-size, 0.875rem);
+    --header-logo-width: calc(var(--header-logo-height, 2.25rem) * 1.25);
+  }
+}

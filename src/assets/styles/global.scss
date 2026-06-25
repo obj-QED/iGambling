@@ -1,9 +1,5 @@
-svg {
-  &.icon-stroke {
+@layer base {
+  svg {
     stroke: currentcolor;
-  }
-
-  &.icon-fill {
-    fill: currentcolor;
   }
 }

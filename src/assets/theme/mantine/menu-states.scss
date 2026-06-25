@@ -1,0 +1,12 @@
+/* Menu item hover — button-like rows; overrides Mantine menu-item background-color hover. */
+
+@layer components {
+  .cmf-Menu-item {
+    text-decoration: none;
+
+    &:where(:hover, :focus-visible):where(:not(:disabled, [data-disabled])) {
+      background: var(--menu-item-hover-bg, var(--cmf-button-default-hover)) !important;
+      color: var(--menu-item-hover-color, var(--cmf-button-default-hover-color));
+    }
+  }
+}

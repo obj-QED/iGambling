@@ -1,55 +1,57 @@
 /* ActionIcon disabled/loading/gradient — targets static cmf-ActionIcon-root. */
 
-.cmf-ActionIcon-root {
-  &:where(:disabled:not([data-loading]), [data-disabled]:not([data-loading])) {
-    cursor: not-allowed;
-    transform: none;
-    color: var(--ai-disabled-color, var(--mantine-color-disabled-color)) !important;
-    background: var(--ai-disabled-bg, var(--mantine-color-disabled)) !important;
-    border: var(--ai-bd, calc(0.0625rem * var(--mantine-scale)) solid transparent) !important;
-  }
+@layer components {
+  .cmf-ActionIcon-root {
+    &:where(:disabled:not([data-loading]), [data-disabled]:not([data-loading])) {
+      cursor: not-allowed;
+      transform: none;
+      color: var(--ai-disabled-color, var(--mantine-color-disabled-color)) !important;
+      background: var(--ai-disabled-bg, var(--mantine-color-disabled)) !important;
+      border: var(--ai-bd, calc(0.0625rem * var(--mantine-scale)) solid transparent) !important;
+    }
 
-  &:where([data-loading]) {
-    cursor: not-allowed;
-    transform: none;
-    color: var(--ai-loading-color, var(--ai-color)) !important;
-    background: var(--ai-loading-bg, var(--ai-bg)) !important;
-    border: var(--ai-loading-bd, var(--ai-bd)) !important;
-  }
+    &:where([data-loading]) {
+      cursor: not-allowed;
+      transform: none;
+      color: var(--ai-loading-color, var(--ai-color)) !important;
+      background: var(--ai-loading-bg, var(--ai-bg)) !important;
+      border: var(--ai-loading-bd, var(--ai-bd)) !important;
+    }
 
-  &[data-variant='gradient']:where(:not(:disabled, [data-disabled], [data-loading])) {
-    background: var(--ai-bg) !important;
-    background-color: transparent !important;
+    &[data-variant='gradient']:where(:not(:disabled, [data-disabled], [data-loading])) {
+      background: var(--ai-bg) !important;
+      background-color: transparent !important;
 
-    @media (hover: hover) {
-      &:hover:not(:disabled, [data-disabled], [data-loading]) {
-        background: var(--ai-hover) !important;
-        background-color: transparent !important;
-        color: var(--ai-hover-color, var(--ai-color)) !important;
+      @media (hover: hover) {
+        &:hover:not(:disabled, [data-disabled], [data-loading]) {
+          background: var(--ai-hover) !important;
+          background-color: transparent !important;
+          color: var(--ai-hover-color, var(--ai-color)) !important;
+        }
+      }
+
+      @media (hover: none) {
+        &:active:not(:disabled, [data-disabled], [data-loading]) {
+          background: var(--ai-hover) !important;
+          background-color: transparent !important;
+          color: var(--ai-hover-color, var(--ai-color)) !important;
+        }
       }
     }
 
-    @media (hover: none) {
-      &:active:not(:disabled, [data-disabled], [data-loading]) {
-        background: var(--ai-hover) !important;
-        background-color: transparent !important;
-        color: var(--ai-hover-color, var(--ai-color)) !important;
-      }
+    &[data-variant='gradient']:where(
+        :disabled:not([data-loading]),
+        [data-disabled]:not([data-loading])
+      ) {
+      background: var(--ai-disabled-bg, var(--mantine-color-disabled)) !important;
+      background-color: transparent !important;
+      color: var(--ai-disabled-color, var(--mantine-color-disabled-color)) !important;
     }
-  }
 
-  &[data-variant='gradient']:where(
-      :disabled:not([data-loading]),
-      [data-disabled]:not([data-loading])
-    ) {
-    background: var(--ai-disabled-bg, var(--mantine-color-disabled)) !important;
-    background-color: transparent !important;
-    color: var(--ai-disabled-color, var(--mantine-color-disabled-color)) !important;
-  }
-
-  &[data-variant='gradient']:where([data-loading]) {
-    background: var(--ai-loading-bg, var(--ai-bg)) !important;
-    background-color: transparent !important;
-    color: var(--ai-loading-color, var(--ai-color)) !important;
+    &[data-variant='gradient']:where([data-loading]) {
+      background: var(--ai-loading-bg, var(--ai-bg)) !important;
+      background-color: transparent !important;
+      color: var(--ai-loading-color, var(--ai-color)) !important;
+    }
   }
 }

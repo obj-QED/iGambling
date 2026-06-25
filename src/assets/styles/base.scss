@@ -1,27 +1,21 @@
-body {
-  background: var(--root-body-bg, #fff);
-  font-family: var(--root-font-family, 'IBM Plex Sans', sans-serif);
-  color: var(--root-color-text, #111827);
-  font-size: var(--root-font-size, 1rem);
-}
+@layer base {
+  body {
+    background: var(--root-body-bg, #fff);
+    font-family: var(--root-font-family, 'IBM Plex Sans', sans-serif);
+    color: var(--root-color-text, #111827);
+    font-size: var(--root-font-size, 1rem);
+    min-height: 100vh;
+  }
 
-* {
-  box-sizing: border-box;
-}
+  #root {
+    min-height: 100vh;
+  }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-}
+  button {
+    font-family: var(--root-font-family, 'IBM Plex Sans', sans-serif);
+  }
 
-#root {
-  min-height: 100vh;
-}
-
-button {
-  font-family: var(--root-font-family, 'IBM Plex Sans', sans-serif);
-}
-
-a {
-  text-decoration: none;
+  a {
+    text-decoration: none;
+  }
 }

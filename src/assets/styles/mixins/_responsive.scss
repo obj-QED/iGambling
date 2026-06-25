@@ -1,0 +1,14 @@
+// Pass an injected breakpoint token (px) from breakpoints.ts.
+// Usage: @include media-down($tablet) { ... } / @include media-up($laptop) { ... }
+
+@mixin media-down($size) {
+  @media (max-width: $size) {
+    @content;
+  }
+}
+
+@mixin media-up($size) {
+  @media (min-width: $size) {
+    @content;
+  }
+}

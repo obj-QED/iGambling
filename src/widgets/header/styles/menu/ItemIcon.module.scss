@@ -1,0 +1,9 @@
+@layer widget.menu {
+  .root {
+    @include header-menu-icon;
+  }
+
+  .hidden {
+    display: none;
+  }
+}

@@ -13,6 +13,19 @@ const scssBreakpoints = Object.entries(BREAKPOINTS_PX)
   .map(([name, px]) => `$${name}: ${px}px;`)
   .join(' ');
 
+const scssGlobalPreamble = `@use "assets/styles/cascade-layers" as *; @use "assets/styles/mixins" as *; ${scssBreakpoints}`;
+
+/** Header widget mixins — not global; see src/widgets/header/styles/_mixins.scss */
+function scssAdditionalData(content: string, filename: string): string {
+  const normalized = filename.replace(/\\/g, '/');
+  const isHeaderStyles =
+    normalized.includes('/widgets/header/styles/') &&
+    !normalized.endsWith('/widgets/header/styles/_mixins.scss');
+  const headerMixins = isHeaderStyles ? `@use "widgets/header/styles/mixins" as *; ` : '';
+
+  return `${scssGlobalPreamble} ${headerMixins}${content}`;
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const apiTarget = env.VITE_APP_URL.length > 0 ? env.VITE_APP_URL : env.VITE_LOBBY_API_URL;
@@ -84,7 +97,7 @@ export default defineConfig(({ mode }) => {
       preprocessorOptions: {
         scss: {
           loadPaths: [fileURLToPath(new URL('./src', import.meta.url))],
-          additionalData: `@use "assets/styles/mixins" as *; ${scssBreakpoints}`,
+          additionalData: scssAdditionalData,
         },
       },
     },

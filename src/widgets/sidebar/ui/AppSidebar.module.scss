@@ -1,0 +1,5 @@
+@layer widget.base {
+  .root {
+    width: var(--app-layout-sidebar-width, 16rem);
+  }
+}

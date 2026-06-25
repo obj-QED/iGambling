@@ -1,0 +1,5 @@
+@layer widget.blocks {
+  .root {
+    @include header-menu-action-icon-control;
+  }
+}

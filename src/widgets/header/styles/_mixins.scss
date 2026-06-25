@@ -1,0 +1,53 @@
+// Header menu SCSS mixins — injected only for widgets/header/styles/** (see vite.config.ts).
+
+@use 'assets/styles/mixins/a11y' as a11y;
+
+@mixin header-menu-control-height {
+  min-height: var(--header-menu-control-height, calc(2.25rem * var(--mantine-scale, 1)));
+  height: var(--header-menu-control-height, calc(2.25rem * var(--mantine-scale, 1)));
+}
+
+@mixin header-menu-action-icon-control {
+  @include header-menu-control-height;
+
+  width: var(--header-menu-control-height, calc(2.25rem * var(--mantine-scale, 1)));
+  min-width: var(--header-menu-control-height, calc(2.25rem * var(--mantine-scale, 1)));
+  flex-shrink: 0;
+}
+
+@mixin header-menu-button-control {
+  @include header-menu-control-height;
+}
+
+@mixin header-menu-icon {
+  width: var(--header-button-icon-width, 1.5rem);
+  height: var(--header-button-icon-height, 1.5rem);
+  border-radius: var(--header-button-icon-radius, var(--mantine-radius-sm, 0.25rem));
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+@mixin header-menu-logo {
+  display: block;
+  width: var(
+    --header-logo-width,
+    var(--header-logo-height, var(--header-menu-control-height, 2.25rem))
+  );
+  height: var(--header-logo-height, var(--header-menu-control-height, 2.25rem));
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+}
+
+@mixin header-chevron-rotate {
+  transition: transform var(--header-chevron-transition, 200ms ease);
+  transform: rotate(0deg);
+
+  &[data-open='true'] {
+    transform: rotate(180deg);
+  }
+
+  @include a11y.reduced-motion {
+    transition: none;
+  }
+}

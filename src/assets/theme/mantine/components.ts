@@ -1,4 +1,11 @@
-import { ActionIcon, Button, Container, type MantineThemeComponents, Title } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  Container,
+  type MantineThemeComponents,
+  Menu,
+  Title,
+} from '@mantine/core';
 import cx from 'clsx';
 
 import { resolveActionIconRootVars } from './actionIconVars';
@@ -18,6 +25,9 @@ import classes from './components.module.scss';
  * ActionIcon cascade (tokens/theme.scss + actionIconVars.ts):
  * 1. `--cmf-{scope}-action-icon-{variant}-*` on `[data-cmf-action-icon-scope]`
  * 2. `--cmf-action-icon-{variant}-*` in :root
+ *
+ * Menu dropdown rows reuse CMF button tokens; scope on dropdown panel:
+ * `[data-cmf-menu-scope]` + `[data-cmf-button-scope]` → `cmf-button-scope-bridge`.
  */
 export const themeComponents: MantineThemeComponents = {
   // Heading visuals (color, per-order tweaks) live in components.module.scss.
@@ -58,5 +68,13 @@ export const themeComponents: MantineThemeComponents = {
     vars: (_, props) => ({
       root: resolveActionIconRootVars(props),
     }),
+  }),
+
+  Menu: Menu.extend({
+    classNames: {
+      dropdown: classes.menuDropdown,
+      item: classes.menuItem,
+      itemLabel: classes.menuItemLabel,
+    },
   }),
 };

@@ -1,0 +1,7 @@
+@layer widget.base {
+  .sections {
+    width: 100%;
+    align-items: center;
+    gap: var(--header-section-gap, var(--spacing-md, 1rem));
+  }
+}

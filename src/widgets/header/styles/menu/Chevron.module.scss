@@ -1,0 +1,9 @@
+@layer widget.menu {
+  .root {
+    width: var(--header-chevron-icon-size, var(--cmf-button-xs-fz, 0.75rem));
+    height: var(--header-chevron-icon-size, var(--cmf-button-xs-fz, 0.75rem));
+    flex-shrink: 0;
+
+    @include header-chevron-rotate;
+  }
+}

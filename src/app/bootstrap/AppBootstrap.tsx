@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import { LazyRoutes } from '@/app/routing/routes';
+import { AppRoutes } from '@/app/routing/routes';
 
 import { ServerErrorPage } from '@pages/eager';
 
@@ -23,7 +23,7 @@ function AppBootstrapComponent() {
 
   return (
     <Suspense fallback={<GlobalPreloader />}>
-      <LazyRoutes />
+      <AppRoutes />
     </Suspense>
   );
 }

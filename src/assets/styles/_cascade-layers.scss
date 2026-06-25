@@ -1,0 +1,6 @@
+// Global cascade layer order (weakest → strongest).
+// Injected into every *.scss via vite `css.preprocessorOptions.scss.additionalData`.
+@layer reset, base, env, components, page, widget;
+
+// Header widget internal layers (base → layout → blocks → menu → variant).
+@layer widget.base, widget.layout, widget.blocks, widget.menu, widget.variant;

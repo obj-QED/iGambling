@@ -10,6 +10,9 @@ import { store } from '@store';
 
 import { classNamesPrefix, defaultColorScheme, mantineTheme } from '@/assets/theme';
 
+import { DeviceBodySync } from './DeviceBodySync';
+import { ScrollFullscreenSync } from './ScrollFullscreenSync';
+
 type ProvidersProps = {
   children: ReactNode;
 };
@@ -20,7 +23,13 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <MantineProvider theme={mantineTheme} defaultColorScheme={defaultColorScheme} classNamesPrefix={classNamesPrefix}>
+        <MantineProvider
+          theme={mantineTheme}
+          defaultColorScheme={defaultColorScheme}
+          classNamesPrefix={classNamesPrefix}
+        >
+          <DeviceBodySync />
+          <ScrollFullscreenSync />
           {children}
         </MantineProvider>
         {isDev && <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />}

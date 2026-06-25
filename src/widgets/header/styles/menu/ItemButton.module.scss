@@ -1,0 +1,5 @@
+@layer widget.menu {
+  .root {
+    @include header-menu-button-control;
+  }
+}

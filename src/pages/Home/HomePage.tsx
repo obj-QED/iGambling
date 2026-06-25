@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Code,
-  Container,
   Group,
   Stack,
   Text,
@@ -169,190 +168,187 @@ function LinkDemoRow({ href, label }: { href: string; label: string }) {
 
 function HomePageComponent() {
   return (
-    <main>
-      <Container size="responsive">
-        <Stack gap="xs" className={'container'}>
-          {HEADING_ORDERS.map((order) => (
-            <Title key={order} order={order}>
-              Заголовок h{order}
-            </Title>
+    <>
+      <Stack gap="xs" className={'container'}>
+        {HEADING_ORDERS.map((order) => (
+          <Title key={order} order={order}>
+            Заголовок h{order}
+          </Title>
+        ))}
+      </Stack>
+
+      <Stack gap="md" mt="lg">
+        <Title order={3}>Тема и бренд</Title>
+        <ThemeToggleBlock />
+      </Stack>
+
+      <Stack gap="md" mt="lg">
+        <Title order={3}>Кнопки</Title>
+
+        <Stack gap="xs">
+          <Title order={5}>Дефолт (tokens/theme.scss)</Title>
+          <Group gap="sm">
+            {BUTTON_VARIANTS.map((variant) => (
+              <Button key={variant} variant={variant}>
+                {variant}
+              </Button>
+            ))}
+          </Group>
+        </Stack>
+
+        <Stack gap="xs" style={cmfBrandOverrideStyle}>
+          <Title order={5}>CMF override: --cmf-button-filled-* / outline-*</Title>
+          <Group gap="sm">
+            <Button variant="filled">filled</Button>
+            <Button variant="outline">outline</Button>
+          </Group>
+        </Stack>
+
+        <Stack gap="xs">
+          <Title order={5}>Hero variants (default / light / outline)</Title>
+          <Group gap="sm">
+            <Button variant="hero">hero default</Button>
+            <Button variant="hero-light">hero light</Button>
+            <Button variant="hero-outline">hero outline</Button>
+          </Group>
+        </Stack>
+
+        <Stack gap="xs">
+          <Title order={5}>Размеры</Title>
+          <Group gap="sm" align="flex-end">
+            {BUTTON_SIZES.map((size) => (
+              <Button key={size} size={size} variant="filled">
+                {size}
+              </Button>
+            ))}
+          </Group>
+        </Stack>
+
+        <Stack gap="sm">
+          <Title order={5}>Состояния (default / disabled / loading / fullWidth)</Title>
+          {BUTTON_STATE_VARIANTS.map((variant) => (
+            <Stack key={variant} gap="xs">
+              <Text size="sm" fw={600}>
+                {variant}
+              </Text>
+              <Group gap="sm">
+                <Button variant={variant}>default</Button>
+                <Button variant={variant} disabled>
+                  disabled
+                </Button>
+                <Button variant={variant} loading>
+                  loading
+                </Button>
+                <Button variant={variant} disabled loading>
+                  disabled+loading
+                </Button>
+              </Group>
+              <Button variant={variant} fullWidth>
+                fullWidth
+              </Button>
+            </Stack>
+          ))}
+        </Stack>
+      </Stack>
+
+      <Stack gap="md" mt="lg">
+        <Title order={3}>ActionIcon</Title>
+
+        <Stack gap="xs">
+          <Title order={5}>Дефолт (tokens/theme.scss)</Title>
+          <Group gap="sm">
+            {ACTION_ICON_VARIANTS.map((variant) => (
+              <ActionIcon key={variant} variant={variant} aria-label={variant}>
+                <DemoIconGlyph />
+              </ActionIcon>
+            ))}
+          </Group>
+        </Stack>
+
+        <Stack gap="xs" style={cmfActionIconOverrideStyle}>
+          <Title order={5}>CMF override: --cmf-action-icon-filled-* / outline-*</Title>
+          <Group gap="sm">
+            <ActionIcon variant="filled" aria-label="filled">
+              <DemoIconGlyph />
+            </ActionIcon>
+            <ActionIcon variant="outline" aria-label="outline">
+              <DemoIconGlyph />
+            </ActionIcon>
+          </Group>
+        </Stack>
+
+        <Stack gap="xs">
+          <Title order={5}>Hero variants (default / light / outline)</Title>
+          <Group gap="sm">
+            <ActionIcon variant="hero" aria-label="hero default">
+              <DemoIconGlyph />
+            </ActionIcon>
+            <ActionIcon variant="hero-light" aria-label="hero light">
+              <DemoIconGlyph />
+            </ActionIcon>
+            <ActionIcon variant="hero-outline" aria-label="hero outline">
+              <DemoIconGlyph />
+            </ActionIcon>
+          </Group>
+        </Stack>
+
+        <Stack gap="xs">
+          <Title order={5}>Размеры</Title>
+          <Group gap="sm" align="flex-end">
+            {ACTION_ICON_SIZES.map((size) => (
+              <ActionIcon key={size} size={size} variant="filled" aria-label={size}>
+                <DemoIconGlyph />
+              </ActionIcon>
+            ))}
+          </Group>
+        </Stack>
+
+        <Stack gap="sm">
+          <Title order={5}>Состояния (default / disabled / loading)</Title>
+          {(['filled', 'outline', 'gradient', 'hero'] as const).map((variant) => (
+            <Stack key={variant} gap="xs">
+              <Text size="sm" fw={600}>
+                {variant}
+              </Text>
+              <Group gap="sm">
+                <ActionIcon variant={variant} aria-label={`${variant} default`}>
+                  <DemoIconGlyph />
+                </ActionIcon>
+                <ActionIcon variant={variant} disabled aria-label={`${variant} disabled`}>
+                  <DemoIconGlyph />
+                </ActionIcon>
+                <ActionIcon variant={variant} loading aria-label={`${variant} loading`}>
+                  <DemoIconGlyph />
+                </ActionIcon>
+              </Group>
+            </Stack>
+          ))}
+        </Stack>
+      </Stack>
+
+      <Stack gap="md" mt="xl">
+        <Title order={3}>Ссылки (AppLink)</Title>
+        <Text size="sm" c="dimmed">
+          Корректные: internal / external / hash. Некорректные: invalid → span с data-invalid-href.
+        </Text>
+
+        <Stack gap="xs">
+          <Title order={5}>Валидные</Title>
+          {VALID_LINK_SAMPLES.map((sample) => (
+            <LinkDemoRow key={sample.label} href={sample.href} label={sample.label} />
           ))}
         </Stack>
 
-        <Stack gap="md" mt="lg">
-          <Title order={3}>Тема и бренд</Title>
-          <ThemeToggleBlock />
+        <Stack gap="xs">
+          <Title order={5}>Невалидные</Title>
+          {INVALID_LINK_SAMPLES.map((sample) => (
+            <LinkDemoRow key={sample.label} href={sample.href} label={sample.label} />
+          ))}
         </Stack>
+      </Stack>
 
-        <Stack gap="md" mt="lg">
-          <Title order={3}>Кнопки</Title>
-
-          <Stack gap="xs">
-            <Title order={5}>Дефолт (tokens/theme.scss)</Title>
-            <Group gap="sm">
-              {BUTTON_VARIANTS.map((variant) => (
-                <Button key={variant} variant={variant}>
-                  {variant}
-                </Button>
-              ))}
-            </Group>
-          </Stack>
-
-          <Stack gap="xs" style={cmfBrandOverrideStyle}>
-            <Title order={5}>CMF override: --cmf-button-filled-* / outline-*</Title>
-            <Group gap="sm">
-              <Button variant="filled">filled</Button>
-              <Button variant="outline">outline</Button>
-            </Group>
-          </Stack>
-
-          <Stack gap="xs">
-            <Title order={5}>Hero variants (default / light / outline)</Title>
-            <Group gap="sm">
-              <Button variant="hero">hero default</Button>
-              <Button variant="hero-light">hero light</Button>
-              <Button variant="hero-outline">hero outline</Button>
-            </Group>
-          </Stack>
-
-          <Stack gap="xs">
-            <Title order={5}>Размеры</Title>
-            <Group gap="sm" align="flex-end">
-              {BUTTON_SIZES.map((size) => (
-                <Button key={size} size={size} variant="filled">
-                  {size}
-                </Button>
-              ))}
-            </Group>
-          </Stack>
-
-          <Stack gap="sm">
-            <Title order={5}>Состояния (default / disabled / loading / fullWidth)</Title>
-            {BUTTON_STATE_VARIANTS.map((variant) => (
-              <Stack key={variant} gap="xs">
-                <Text size="sm" fw={600}>
-                  {variant}
-                </Text>
-                <Group gap="sm">
-                  <Button variant={variant}>default</Button>
-                  <Button variant={variant} disabled>
-                    disabled
-                  </Button>
-                  <Button variant={variant} loading>
-                    loading
-                  </Button>
-                  <Button variant={variant} disabled loading>
-                    disabled+loading
-                  </Button>
-                </Group>
-                <Button variant={variant} fullWidth>
-                  fullWidth
-                </Button>
-              </Stack>
-            ))}
-          </Stack>
-        </Stack>
-
-        <Stack gap="md" mt="lg">
-          <Title order={3}>ActionIcon</Title>
-
-          <Stack gap="xs">
-            <Title order={5}>Дефолт (tokens/theme.scss)</Title>
-            <Group gap="sm">
-              {ACTION_ICON_VARIANTS.map((variant) => (
-                <ActionIcon key={variant} variant={variant} aria-label={variant}>
-                  <DemoIconGlyph />
-                </ActionIcon>
-              ))}
-            </Group>
-          </Stack>
-
-          <Stack gap="xs" style={cmfActionIconOverrideStyle}>
-            <Title order={5}>CMF override: --cmf-action-icon-filled-* / outline-*</Title>
-            <Group gap="sm">
-              <ActionIcon variant="filled" aria-label="filled">
-                <DemoIconGlyph />
-              </ActionIcon>
-              <ActionIcon variant="outline" aria-label="outline">
-                <DemoIconGlyph />
-              </ActionIcon>
-            </Group>
-          </Stack>
-
-          <Stack gap="xs">
-            <Title order={5}>Hero variants (default / light / outline)</Title>
-            <Group gap="sm">
-              <ActionIcon variant="hero" aria-label="hero default">
-                <DemoIconGlyph />
-              </ActionIcon>
-              <ActionIcon variant="hero-light" aria-label="hero light">
-                <DemoIconGlyph />
-              </ActionIcon>
-              <ActionIcon variant="hero-outline" aria-label="hero outline">
-                <DemoIconGlyph />
-              </ActionIcon>
-            </Group>
-          </Stack>
-
-          <Stack gap="xs">
-            <Title order={5}>Размеры</Title>
-            <Group gap="sm" align="flex-end">
-              {ACTION_ICON_SIZES.map((size) => (
-                <ActionIcon key={size} size={size} variant="filled" aria-label={size}>
-                  <DemoIconGlyph />
-                </ActionIcon>
-              ))}
-            </Group>
-          </Stack>
-
-          <Stack gap="sm">
-            <Title order={5}>Состояния (default / disabled / loading)</Title>
-            {(['filled', 'outline', 'gradient', 'hero'] as const).map((variant) => (
-              <Stack key={variant} gap="xs">
-                <Text size="sm" fw={600}>
-                  {variant}
-                </Text>
-                <Group gap="sm">
-                  <ActionIcon variant={variant} aria-label={`${variant} default`}>
-                    <DemoIconGlyph />
-                  </ActionIcon>
-                  <ActionIcon variant={variant} disabled aria-label={`${variant} disabled`}>
-                    <DemoIconGlyph />
-                  </ActionIcon>
-                  <ActionIcon variant={variant} loading aria-label={`${variant} loading`}>
-                    <DemoIconGlyph />
-                  </ActionIcon>
-                </Group>
-              </Stack>
-            ))}
-          </Stack>
-        </Stack>
-
-        <Stack gap="md" mt="xl">
-          <Title order={3}>Ссылки (AppLink)</Title>
-          <Text size="sm" c="dimmed">
-            Корректные: internal / external / hash. Некорректные: invalid → span с
-            data-invalid-href.
-          </Text>
-
-          <Stack gap="xs">
-            <Title order={5}>Валидные</Title>
-            {VALID_LINK_SAMPLES.map((sample) => (
-              <LinkDemoRow key={sample.label} href={sample.href} label={sample.label} />
-            ))}
-          </Stack>
-
-          <Stack gap="xs">
-            <Title order={5}>Невалидные</Title>
-            {INVALID_LINK_SAMPLES.map((sample) => (
-              <LinkDemoRow key={sample.label} href={sample.href} label={sample.label} />
-            ))}
-          </Stack>
-        </Stack>
-
-        <p>Минимальная сборка: прокси + авторизация + bootstrap.</p>
-      </Container>
-    </main>
+      <p>Минимальная сборка: прокси + авторизация + bootstrap.</p>
+    </>
   );
 }
 

@@ -15,7 +15,7 @@ vi.mock('@hooks/useLanguage', () => ({
 }));
 
 vi.mock('@/app/routing/routes', () => ({
-  LazyRoutes: () => <div>routes-ready</div>,
+  AppRoutes: () => <div>routes-ready</div>,
 }));
 
 vi.mock('./GlobalPreloader', () => ({

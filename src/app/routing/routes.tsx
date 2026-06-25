@@ -1,10 +1,15 @@
-import type { ReactNode } from 'react';
+import type { RouteObject } from 'react-router-dom';
 
 import { memo } from 'react';
 
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 
-import { BlankLayout } from '@/app/layouts/BlankLayout';
+import { AppLayout } from '@/app/layouts/AppLayout';
+import {
+  DEFAULT_PAGE_LAYOUT_HANDLE,
+  INFO_PAGE_LAYOUT_HANDLE,
+} from '@/app/layouts/lib/resolvePageLayout';
+import { DefaultPageLayout, InfoPageLayout } from '@/app/layouts/page';
 import { GuestRoute } from '@/app/routing/guards/GuestRoute';
 
 import {
@@ -16,49 +21,51 @@ import {
   ServerErrorPage,
 } from '@pages';
 
-type AppRoute = {
-  path: string;
-  element: ReactNode;
-};
+const ROUTER_FUTURE = {
+  v7_startTransition: true,
+  v7_relativeSplatPath: true,
+} as const;
 
-const PUBLIC_ROUTES: AppRoute[] = [{ path: '/', element: <HomePage /> }];
-
-const GUEST_ONLY_ROUTES: AppRoute[] = [
-  { path: '/auth', element: <LoginPage /> },
-  { path: '/register', element: <RegisterPage /> },
+const appRouteObjects: RouteObject[] = [
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        element: <DefaultPageLayout />,
+        handle: DEFAULT_PAGE_LAYOUT_HANDLE,
+        children: [
+          { path: '/', element: <HomePage /> },
+          { path: '/404', element: <NotFoundPage /> },
+          { path: '/500', element: <ServerErrorPage /> },
+          {
+            element: <GuestRoute />,
+            children: [
+              { path: '/auth', element: <LoginPage /> },
+              { path: '/register', element: <RegisterPage /> },
+            ],
+          },
+        ],
+      },
+      {
+        element: <InfoPageLayout />,
+        handle: INFO_PAGE_LAYOUT_HANDLE,
+        children: [{ path: '/profile/activation', element: <ProfileActivationPage /> }],
+      },
+    ],
+  },
+  { path: '*', element: <Navigate to="/404" replace /> },
 ];
 
-const SYSTEM_ROUTES: AppRoute[] = [
-  { path: '/profile/activation', element: <ProfileActivationPage /> },
-  { path: '/404', element: <NotFoundPage /> },
-  { path: '/500', element: <ServerErrorPage /> },
-];
+export const appRouter = createBrowserRouter(appRouteObjects, {
+  future: ROUTER_FUTURE,
+});
 
-const CATCH_ALL = <Navigate to="/404" replace />;
-
-function LazyRoutesComponent() {
-  return (
-    <Routes>
-      <Route element={<BlankLayout />}>
-        {PUBLIC_ROUTES.map((route) => (
-          <Route key={route.path} path={route.path} element={route.element} />
-        ))}
-
-        <Route element={<GuestRoute />}>
-          {GUEST_ONLY_ROUTES.map((route) => (
-            <Route key={route.path} path={route.path} element={route.element} />
-          ))}
-        </Route>
-
-        {SYSTEM_ROUTES.map((route) => (
-          <Route key={route.path} path={route.path} element={route.element} />
-        ))}
-      </Route>
-
-      <Route path="*" element={CATCH_ALL} />
-    </Routes>
-  );
+function AppRoutesComponent() {
+  return <RouterProvider router={appRouter} future={ROUTER_FUTURE} />;
 }
 
-export const LazyRoutes = memo(LazyRoutesComponent);
-LazyRoutes.displayName = 'LazyRoutes';
+export const AppRoutes = memo(AppRoutesComponent);
+AppRoutes.displayName = 'AppRoutes';
+
+/** @deprecated Use `AppRoutes`. */
+export const LazyRoutes = AppRoutes;

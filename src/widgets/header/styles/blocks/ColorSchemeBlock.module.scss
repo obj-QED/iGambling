@@ -1,0 +1,25 @@
+@layer widget.blocks {
+  .root {
+    @include header-menu-action-icon-control;
+  }
+
+  .light {
+    display: block;
+  }
+
+  .dark {
+    display: none;
+  }
+}
+
+@layer widget.variant {
+  :global([data-mantine-color-scheme='dark']) .root {
+    .light {
+      display: none;
+    }
+
+    .dark {
+      display: block;
+    }
+  }
+}

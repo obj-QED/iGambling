@@ -1,0 +1,7 @@
+@layer widget.menu {
+  .root {
+    width: var(--header-button-icon-width, 1.5rem);
+    height: var(--header-button-icon-height, 1.5rem);
+    flex-shrink: 0;
+  }
+}

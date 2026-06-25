@@ -13,7 +13,7 @@ import { useInitData } from '@api/lobby/queries/useInitData';
 import { lobbyQueryKeys } from '@api/lobby/queryKeys';
 import { setAuthenticated } from '@store/slices/authSlice';
 
-import { getInitialPath } from '@/shared/lib/initialPath';
+import { getInitialPath } from '@/shared/lib/routing';
 
 export function useAppBootstrap(language: string) {
   const dispatch = useDispatch<AppDispatch>();

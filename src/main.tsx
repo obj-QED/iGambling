@@ -9,6 +9,8 @@ import { prefetchInitData, setLobbySessionDevToken } from '@api/lobby';
 import { queryClient } from '@api/queryClient';
 import { getBrowserLanguage } from '@hooks/useLanguage';
 
+import { initDeviceBodyClasses } from '@/shared/lib/device';
+
 import '@mantine/core/styles.css';
 import '@/assets/index.scss';
 
@@ -25,6 +27,7 @@ const root = createRoot(document.getElementById('root')!);
         : '/'
       : '/';
   setInitialPath(initialPath);
+  initDeviceBodyClasses();
 
   if (import.meta.env.DEV) {
     const devLobbyToken = import.meta.env.VITE_DEV_LOBBY_TOKEN;

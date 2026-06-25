@@ -1,0 +1,9 @@
+@layer widget.menu {
+  .actionIcon {
+    @include header-menu-action-icon-control;
+  }
+
+  .button {
+    @include header-menu-button-control;
+  }
+}

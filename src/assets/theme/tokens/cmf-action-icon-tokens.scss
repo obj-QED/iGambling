@@ -3,6 +3,7 @@
 @use 'assets/theme/tokens/cmf-action-icon-config' as *;
 
 @mixin action-icon-root-tokens {
+
   /*
    * CMF ActionIcon cascade (resolved on scope via cmf-action-icon-scope-bridge):
    *   1. --cmf-{scope}-action-icon-{variant}-{prop} | --cmf-{scope}-action-icon-{prop}

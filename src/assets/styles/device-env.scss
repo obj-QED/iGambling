@@ -1,0 +1,10 @@
+@layer env {
+  // Body environment flags (synced from ua-parser-js + viewport + fullscreen).
+  // Classes: is-mobile, is-mobile-only, is-tablet, is-ios, is-android,
+  // is-fullscreen, is-browser-{chrome|safari|firefox|edge|opera|unknown}
+  //
+  // Example:
+  // body.is-mobile.is-ios {
+  //   padding-bottom: env(safe-area-inset-bottom);
+  // }
+}
