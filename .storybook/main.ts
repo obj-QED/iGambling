@@ -13,7 +13,7 @@ const config: StorybookConfig = {
   addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],
   staticDirs: ['../public'],
   async viteFinal(viteConfig) {
-    viteConfig.base = '/igambling/';
+    viteConfig.base = '/iGambling/';
 
     return mergeConfig(viteConfig, {
       define: {

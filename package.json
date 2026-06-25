@@ -2,6 +2,10 @@
   "name": "igambling",
   "private": true,
   "version": "0.0.0",
+  "packageManager": "yarn@4.13.0",
+  "engines": {
+    "node": ">=22"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",

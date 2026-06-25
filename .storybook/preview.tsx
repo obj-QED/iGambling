@@ -3,13 +3,16 @@ import type { Preview } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router-dom';
 
 import { defaultColorScheme } from '@/assets/theme/mantine/mantineTheme';
+import { withAppSettings } from '@/storybook/decorators/withAppSettings';
 import { withMantineColorScheme } from '@/storybook/decorators/withMantineColorScheme';
+import { STORYBOOK_APP_SETTINGS_GLOBAL_TYPES } from '@/storybook/settings';
 
 import '@mantine/core/styles.css';
 import '@/assets/index.scss';
 
 const preview: Preview = {
   globalTypes: {
+    ...STORYBOOK_APP_SETTINGS_GLOBAL_TYPES,
     colorScheme: {
       name: 'Color scheme',
       description: 'Mantine color scheme',
@@ -25,6 +28,7 @@ const preview: Preview = {
     },
   },
   decorators: [
+    withAppSettings,
     withMantineColorScheme,
     (Story) => (
       <MemoryRouter>
@@ -53,7 +57,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ['Elements', 'Widgets', '*'],
+        order: ['Settings', 'Elements', 'Widgets', '*'],
       },
     },
   },

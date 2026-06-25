@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Group, Stack, Text, Title } from '@mantine/core';
 
-import { createHeaderMenuFixture, findHeaderMenuItem } from '@/storybook/data';
+import { createStorybookHeaderMenu, findHeaderMenuItem } from '@/storybook/data';
 import { ColorSchemeBlock } from '@/widgets/header/ui/blocks/ColorSchemeBlock/ColorSchemeBlock';
 import { SearchBlock } from '@/widgets/header/ui/blocks/SearchBlock/SearchBlock';
 import { WalletBlock } from '@/widgets/header/ui/blocks/WalletBlock/WalletBlock';
@@ -14,7 +14,7 @@ import { ItemMenuTrigger } from '@/widgets/header/ui/menu/ItemMenuTrigger/ItemMe
 
 import '@/widgets/header/registry/registerBlocks';
 
-const menu = createHeaderMenuFixture();
+const menu = createStorybookHeaderMenu();
 const profileItem = findHeaderMenuItem(menu, 'profile');
 const walletItem = findHeaderMenuItem(menu, 'wallet');
 const searchItem = findHeaderMenuItem(menu, 'search');
