@@ -6,6 +6,8 @@ interface ImportMetaEnv {
   readonly VITE_LOBBY_API_URL?: string;
   /** Dev only: seed lobby `token` for `initV2` / `getPage` (use `.env.local`, never commit secrets). */
   readonly VITE_DEV_LOBBY_TOKEN?: string;
+  /** Set by Storybook Vite config — no backend bootstrap in stories. */
+  readonly STORYBOOK?: string;
 }
 
 declare module '*.module.scss' {
