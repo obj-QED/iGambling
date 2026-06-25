@@ -9,7 +9,9 @@ import { fontsStylesheetPlugin } from './vite-plugin-fonts-stylesheet';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const apiTarget = env.VITE_APP_URL.length > 0 ? env.VITE_APP_URL : env.VITE_LOBBY_API_URL;
+  const viteAppUrl = env.VITE_APP_URL ?? '';
+  const apiTarget =
+    viteAppUrl.length > 0 ? viteAppUrl : (env.VITE_LOBBY_API_URL ?? 'http://localhost');
   const isProd = mode === 'production';
   const shouldAnalyze = env.VITE_ANALYZE === 'true';
   return {

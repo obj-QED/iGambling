@@ -5,6 +5,8 @@ import { Stack, Title } from '@mantine/core';
 import { resolveStorybookHeaderProps } from '@/storybook/helpers/resolveStorybookHeaderProps';
 import { AppHeader } from '@/widgets/header';
 
+const baseProps = resolveStorybookHeaderProps();
+
 const meta = {
   title: 'Widgets/Header/AppHeader',
   component: AppHeader,
@@ -12,41 +14,31 @@ const meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  args: baseProps,
 } satisfies Meta<typeof AppHeader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  render: () => {
-    const { menu, config } = resolveStorybookHeaderProps();
-    return <AppHeader menu={menu} config={config} />;
-  },
-};
+export const Default: Story = {};
 
 export const ContainerFluid: Story = {
-  render: () => {
-    const { menu, config } = resolveStorybookHeaderProps();
-    return <AppHeader menu={menu} config={{ ...config, layout: 'container-fluid' }} />;
+  args: {
+    config: { ...baseProps.config, layout: 'container-fluid' },
   },
 };
 
 export const CustomType: Story = {
-  render: () => {
-    const { menu, config } = resolveStorybookHeaderProps();
-    return <AppHeader menu={menu} config={{ ...config, type: 'custom' }} />;
+  args: {
+    config: { ...baseProps.config, type: 'custom' },
   },
 };
 
 export const DarkToolbarPreview: Story = {
-  render: () => {
-    const { menu, config } = resolveStorybookHeaderProps();
-
-    return (
-      <Stack gap="md">
-        <Title order={4}>Header toolbar (mock menu + settings)</Title>
-        <AppHeader menu={menu} config={config} />
-      </Stack>
-    );
-  },
+  render: (args) => (
+    <Stack gap="md">
+      <Title order={4}>Header toolbar (mock menu + settings)</Title>
+      <AppHeader {...args} />
+    </Stack>
+  ),
 };
