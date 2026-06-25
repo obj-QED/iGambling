@@ -1,13 +1,9 @@
 @layer widget.menu {
   .glyph {
-    width: var(
-      --header-button-icon-width,
-      var(--header-button-icon-size, var(--cmf-button-sm-fz, 0.875rem))
-    );
-    height: var(
-      --header-button-icon-height,
-      var(--header-button-icon-size, var(--cmf-button-sm-fz, 0.875rem))
-    );
+    width: var(--header-menu-icon-width, 50%);
+    height: var(--header-menu-icon-height, 50%);
+    max-width: 100%;
+    max-height: 100%;
     flex-shrink: 0;
   }
 }

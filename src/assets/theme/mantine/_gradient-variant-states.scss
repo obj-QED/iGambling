@@ -1,0 +1,40 @@
+// Mantine hover uses background-color; linear-gradient hover must use background-image.
+// Applied via theme classNames (.button / .actionIcon) — always on component root.
+
+@mixin gradient-variant-states($prefix) {
+  &[data-variant='gradient']:where(:not(:disabled, [data-disabled], [data-loading])) {
+    background-image: var(--#{$prefix}-bg) !important;
+    background-color: transparent !important;
+
+    @media (hover: hover) {
+      &:hover:not(:disabled, [data-disabled], [data-loading]) {
+        background-image: var(--#{$prefix}-hover) !important;
+        background-color: transparent !important;
+        color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color)) !important;
+      }
+    }
+
+    @media (hover: none) {
+      &:active:not(:disabled, [data-disabled], [data-loading]) {
+        background-image: var(--#{$prefix}-hover) !important;
+        background-color: transparent !important;
+        color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color)) !important;
+      }
+    }
+  }
+
+  &[data-variant='gradient']:where(
+      :disabled:not([data-loading]),
+      [data-disabled]:not([data-loading])
+    ) {
+    background-image: var(--#{$prefix}-disabled-bg, var(--mantine-color-disabled)) !important;
+    background-color: transparent !important;
+    color: var(--#{$prefix}-disabled-color, var(--mantine-color-disabled-color)) !important;
+  }
+
+  &[data-variant='gradient']:where([data-loading]) {
+    background-image: var(--#{$prefix}-loading-bg, var(--#{$prefix}-bg)) !important;
+    background-color: transparent !important;
+    color: var(--#{$prefix}-loading-color, var(--#{$prefix}-color)) !important;
+  }
+}

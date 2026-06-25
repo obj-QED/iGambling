@@ -1,11 +1,17 @@
-// Typography only — button state visuals live in button-states.scss (.cmf-Button-root).
+// Button / ActionIcon state visuals: gradient via theme classNames; disabled/loading via cmf-* static classes.
+@use './gradient-variant-states' as gradient;
+
 .button {
   font-family: var(--font-family-base);
   font-weight: 500;
+
+  @include gradient.gradient-variant-states('button');
 }
 
 .actionIcon {
   font-family: var(--font-family-base);
+
+  @include gradient.gradient-variant-states('ai');
 }
 
 .menuDropdown {

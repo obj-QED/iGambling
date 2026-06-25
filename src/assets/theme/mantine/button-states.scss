@@ -17,42 +17,5 @@
       background: var(--button-loading-bg, var(--button-bg)) !important;
       border: var(--button-loading-bd, var(--button-bd)) !important;
     }
-
-    /* gradient: Mantine hover uses background-color — gradients need background */
-    &[data-variant='gradient']:where(:not(:disabled, [data-disabled], [data-loading])) {
-      background: var(--button-bg) !important;
-      background-color: transparent !important;
-
-      @media (hover: hover) {
-        &:hover:not(:disabled, [data-disabled], [data-loading]) {
-          background: var(--button-hover) !important;
-          background-color: transparent !important;
-          color: var(--button-hover-color, var(--button-color)) !important;
-        }
-      }
-
-      @media (hover: none) {
-        &:active:not(:disabled, [data-disabled], [data-loading]) {
-          background: var(--button-hover) !important;
-          background-color: transparent !important;
-          color: var(--button-hover-color, var(--button-color)) !important;
-        }
-      }
-    }
-
-    &[data-variant='gradient']:where(
-        :disabled:not([data-loading]),
-        [data-disabled]:not([data-loading])
-      ) {
-      background: var(--button-disabled-bg, var(--mantine-color-disabled)) !important;
-      background-color: transparent !important;
-      color: var(--button-disabled-color, var(--mantine-color-disabled-color)) !important;
-    }
-
-    &[data-variant='gradient']:where([data-loading]) {
-      background: var(--button-loading-bg, var(--button-bg)) !important;
-      background-color: transparent !important;
-      color: var(--button-loading-color, var(--button-color)) !important;
-    }
   }
 }

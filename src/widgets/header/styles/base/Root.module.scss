@@ -13,8 +13,8 @@
 
 @layer widget.variant {
   .root[data-icon-shape='rectangular'] {
-    --header-button-icon-width: calc(var(--header-button-icon-size, 0.875rem) * 1.25);
-    --header-button-icon-height: var(--header-button-icon-size, 0.875rem);
+    --header-menu-icon-width: 50%;
+    --header-menu-icon-height: 50%;
     --header-logo-width: calc(var(--header-logo-height, 2.25rem) * 1.25);
   }
 }

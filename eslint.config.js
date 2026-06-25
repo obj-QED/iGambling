@@ -1,3 +1,6 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from 'eslint-plugin-storybook';
+
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -43,7 +46,7 @@ const localPlugin = {
 };
 
 export default tseslint.config(
-  { ignores: ['coverage', 'dist', 'node_modules'] },
+  { ignores: ['coverage', 'dist', 'node_modules', 'storybook-static', 'vitest.shims.d.ts'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
@@ -117,4 +120,5 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': 'off',
     },
   },
+  storybook.configs['flat/recommended'],
 );

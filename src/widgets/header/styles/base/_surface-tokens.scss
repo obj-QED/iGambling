@@ -31,22 +31,19 @@
     --header-menu-control-height,
     var(--cmf-button-sm-height, calc(2.25rem * var(--mantine-scale, 1)))
   );
+
+  /* Unified row size — ActionIcon `input-sm`, Button `sm`, custom blocks. */
+  --cmf-action-icon-input-sm-size: var(--header-menu-control-height);
+  --cmf-button-sm-height: var(--header-menu-control-height);
+
   --header-button-icon-shape: square;
-  --header-button-icon-size: var(
-    --header-button-icon-size,
-    var(--cmf-button-sm-fz, var(--mantine-font-size-sm, 0.875rem))
-  );
+  --header-menu-icon-width: var(--header-menu-icon-width, 50%);
+  --header-menu-icon-height: var(--header-menu-icon-height, 50%);
+  --header-button-icon-width: var(--header-menu-icon-width, 50%);
+  --header-button-icon-height: var(--header-menu-icon-height, 50%);
   --header-chevron-icon-size: var(
     --header-chevron-icon-size,
     var(--cmf-button-xs-fz, var(--mantine-font-size-xs, 0.75rem))
-  );
-  --header-button-icon-width: var(
-    --header-button-icon-width,
-    var(--header-button-icon-size, 0.875rem)
-  );
-  --header-button-icon-height: var(
-    --header-button-icon-height,
-    var(--header-button-icon-size, 0.875rem)
   );
   --header-logo-height: var(--header-logo-height, var(--header-menu-control-height, 2.25rem));
   --header-logo-width: var(--header-logo-width, var(--header-logo-height, 2.25rem));

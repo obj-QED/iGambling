@@ -34,7 +34,7 @@ type Story = StoryObj<typeof meta>;
 export const ActionIcons: Story = {
   render: () => (
     <Group gap="sm">
-      {walletItem !== undefined ? <ItemActionIcon item={walletItem} /> : null}
+      {walletItem !== undefined ? <ItemActionIcon item={walletItem} /> : <></>}
       {notificationItem !== undefined ? (
         <ItemActionIcon
           item={{
@@ -43,7 +43,9 @@ export const ActionIcons: Story = {
             img: notificationItem.img ?? '/images/ui/default/header/default/notification.svg',
           }}
         />
-      ) : null}
+      ) : (
+        <></>
+      )}
     </Group>
   ),
 };
@@ -52,18 +54,22 @@ export const TextButtons: Story = {
   render: () =>
     profileItem !== undefined ? (
       <ItemButton item={{ ...profileItem, items: undefined, name: 'profile' }} />
-    ) : null,
+    ) : (
+      <></>
+    ),
 };
 
 export const DropdownTrigger: Story = {
   render: () =>
     profileItem !== undefined ? (
       <ItemMenuTrigger item={profileItem} rightSection={<Chevron />} />
-    ) : null,
+    ) : (
+      <></>
+    ),
 };
 
 export const DropdownMenu: Story = {
-  render: () => (profileItem !== undefined ? <Dropdown item={profileItem} /> : null),
+  render: () => (profileItem !== undefined ? <Dropdown item={profileItem} /> : <></>),
 };
 
 export const SpecialBlocks: Story = {
@@ -73,13 +79,13 @@ export const SpecialBlocks: Story = {
         <Text size="sm" fw={600}>
           Search
         </Text>
-        {searchItem !== undefined ? <SearchBlock item={searchItem} /> : null}
+        {searchItem !== undefined ? <SearchBlock item={searchItem} /> : <></>}
       </Stack>
       <Stack gap="xs">
         <Text size="sm" fw={600}>
           Wallet
         </Text>
-        {walletItem !== undefined ? <WalletBlock item={walletItem} /> : null}
+        {walletItem !== undefined ? <WalletBlock item={walletItem} /> : <></>}
       </Stack>
       <Stack gap="xs">
         <Text size="sm" fw={600}>
@@ -96,10 +102,10 @@ export const ControlRow: Story = {
     <Stack gap="sm">
       <Title order={5}>Toolbar row (isolated blocks)</Title>
       <Group gap="xs">
-        {searchItem !== undefined ? <SearchBlock item={searchItem} /> : null}
+        {searchItem !== undefined ? <SearchBlock item={searchItem} /> : <></>}
         <ColorSchemeBlock item={{ key: 'color_scheme', url: '', name: '' }} />
-        {walletItem !== undefined ? <WalletBlock item={walletItem} /> : null}
-        {profileItem !== undefined ? <Dropdown item={profileItem} /> : null}
+        {walletItem !== undefined ? <WalletBlock item={walletItem} /> : <></>}
+        {profileItem !== undefined ? <Dropdown item={profileItem} /> : <></>}
         {notificationItem !== undefined ? (
           <ItemActionIcon
             item={{
@@ -108,7 +114,9 @@ export const ControlRow: Story = {
               img: notificationItem.img ?? '/images/ui/default/header/default/notification.svg',
             }}
           />
-        ) : null}
+        ) : (
+          <></>
+        )}
       </Group>
     </Stack>
   ),

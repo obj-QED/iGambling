@@ -3,28 +3,9 @@ import { fileURLToPath } from 'node:url';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 
-import { BREAKPOINTS_PX } from './src/assets/theme/breakpoints';
+import { scssAdditionalData } from './build/scss-config';
 import { themeBuildPlugin } from './vite-plugin-assets-build';
 import { fontsStylesheetPlugin } from './vite-plugin-fonts-stylesheet';
-
-// Inject breakpoint tokens (px) into every SCSS file so `@media (max-width: $tablet)`
-// works in any *.scss / *.module.scss. Source of truth: src/assets/theme/breakpoints.ts
-const scssBreakpoints = Object.entries(BREAKPOINTS_PX)
-  .map(([name, px]) => `$${name}: ${px}px;`)
-  .join(' ');
-
-const scssGlobalPreamble = `@use "assets/styles/cascade-layers" as *; @use "assets/styles/mixins" as *; ${scssBreakpoints}`;
-
-/** Header widget mixins — not global; see src/widgets/header/styles/_mixins.scss */
-function scssAdditionalData(content: string, filename: string): string {
-  const normalized = filename.replace(/\\/g, '/');
-  const isHeaderStyles =
-    normalized.includes('/widgets/header/styles/') &&
-    !normalized.endsWith('/widgets/header/styles/_mixins.scss');
-  const headerMixins = isHeaderStyles ? `@use "widgets/header/styles/mixins" as *; ` : '';
-
-  return `${scssGlobalPreamble} ${headerMixins}${content}`;
-}
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');

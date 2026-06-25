@@ -41,13 +41,17 @@ function BonusBoxBlockComponent({ item }: BlockProps) {
 
   if (href.length > 0) {
     return (
-      <AppLink href={href} className={styles.root} aria-label={label}>
+      <AppLink href={href} className={styles.root} aria-label={label} data-header-block={item.key}>
         {content}
       </AppLink>
     );
   }
 
-  return <span className={styles.root}>{content}</span>;
+  return (
+    <span className={styles.root} data-header-block={item.key}>
+      {content}
+    </span>
+  );
 }
 
 export const BonusBoxBlock = memo(BonusBoxBlockComponent);

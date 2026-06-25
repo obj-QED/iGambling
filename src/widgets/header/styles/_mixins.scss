@@ -20,8 +20,8 @@
 }
 
 @mixin header-menu-icon {
-  width: var(--header-button-icon-width, 1.5rem);
-  height: var(--header-button-icon-height, 1.5rem);
+  width: var(--header-menu-icon-width, 50%);
+  height: var(--header-menu-icon-height, 50%);
   border-radius: var(--header-button-icon-radius, var(--mantine-radius-sm, 0.25rem));
   object-fit: contain;
   flex-shrink: 0;
@@ -50,4 +50,24 @@
   @include a11y.reduced-motion {
     transition: none;
   }
+}
+
+/**
+ * Custom block chrome — defaults match ActionIcon `default`; override in theme via
+ * `--header-{prefix}-*` (e.g. `--header-bonus-box-bg`) on `:root` or `[data-header-block]`.
+ */
+@mixin header-custom-block-surface($prefix) {
+  background: var(--header-#{$prefix}-bg, var(--cmf-action-icon-default-bg));
+  color: var(--header-#{$prefix}-color, var(--cmf-action-icon-default-color));
+  border-radius: var(
+    --header-#{$prefix}-radius,
+    var(--cmf-action-icon-radius, var(--mantine-radius-sm, 0.25rem))
+  );
+  border: var(
+    --header-#{$prefix}-bd,
+    var(
+      --cmf-action-icon-default-bd,
+      calc(0.0625rem * var(--mantine-scale)) solid var(--mantine-color-default-border)
+    )
+  );
 }

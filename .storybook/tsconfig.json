@@ -1,0 +1,23 @@
+{
+  "extends": "../tsconfig.app.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "baseUrl": "..",
+    "paths": {
+      "@/*": ["src/*"],
+      "@ui": ["src/shared/ui"],
+      "@ui/*": ["src/shared/ui/*"],
+      "@schemas": ["src/schemas"],
+      "@schemas/*": ["src/schemas/*"],
+      "@shared/*": ["src/shared/*"],
+      "@api/*": ["src/api/*"],
+      "@store": ["src/store/index.ts"],
+      "@store/*": ["src/store/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@pages": ["src/pages/index.ts"],
+      "@pages/*": ["src/pages/*"]
+    }
+  },
+  "include": ["./**/*.ts", "./**/*.tsx", "../src/vite-env.d.ts"]
+}

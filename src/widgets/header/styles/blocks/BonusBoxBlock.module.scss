@@ -1,13 +1,18 @@
 @layer widget.blocks {
   .root {
+    @include header-menu-action-icon-control;
+
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     line-height: 0;
+
+    @include header-custom-block-surface('bonus-box');
   }
 
   .image {
     width: auto;
-    height: var(--header-menu-control-height, 2.25rem);
+    height: 100%;
     object-fit: contain;
   }
 }
