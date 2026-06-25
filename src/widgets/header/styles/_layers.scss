@@ -1,10 +1,8 @@
 // Header widget SCSS layers (nested under global `widget`).
-//
 // widget.base    — shell, surface tokens, sections
 // widget.layout  — container / container-fluid wrappers
 // widget.blocks  — domain blocks (logo, wallet, …)
 // widget.menu    — menu primitives (button, dropdown, icon)
 // widget.variant — type/shape/theme overrides via CSS vars on .root[data-type]
-//
 // Type skin: styles/variant/type-<name>.scss
 //   .root[data-type='classic'] { --header-surface-bg: …; }

@@ -21,6 +21,12 @@
       "rules": {
         "selector-class-pattern": null
       }
+    },
+    {
+      "files": ["src/assets/theme/mantine/**/*.scss"],
+      "rules": {
+        "selector-class-pattern": null
+      }
     }
   ]
 }
