@@ -22,4 +22,3 @@ jobs:
       - run: yarn stylelint
       - run: yarn test
       - run: yarn build
-      - run: yarn build-storybook

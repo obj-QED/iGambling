@@ -1,8 +1,16 @@
 {
-  "extends": "../tsconfig.app.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "types": ["node"],
     "baseUrl": "..",
     "paths": {
       "@/*": ["src/*"],
@@ -19,5 +27,5 @@
       "@pages/*": ["src/pages/*"]
     }
   },
-  "include": ["./**/*.ts", "./**/*.tsx", "../src/vite-env.d.ts"]
+  "include": ["./**/*.ts", "./**/*.tsx", "../src/vite-env.d.ts", "../build/scss-config.ts"]
 }

@@ -13,7 +13,7 @@ export function applyStorybookAppSettings(globals: Record<string, unknown>): App
   };
 
   if (typeof globalThis !== 'undefined') {
-    (globalThis as Window).__SETTINGS__ = settings;
+    (globalThis as unknown as Window).__SETTINGS__ = settings;
   }
 
   return settings;

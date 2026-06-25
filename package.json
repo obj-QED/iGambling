@@ -21,8 +21,12 @@
     "stylelint": "stylelint \"src/**/*.{css,scss}\"",
     "prepare": "husky",
     "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "test:a11y": "node .github/scripts/storybook-a11y.mjs",
+    "storybook:ai-review": "node .github/scripts/storybook-ai-review.mjs",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic --exit-zero-on-changes"
   },
   "lint-staged": {
     "*.{ts,tsx,js,json,md}": [
@@ -51,6 +55,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
     "@chromatic-com/storybook": "^5.2.1",
     "@eslint/js": "^9.15.0",
     "@storybook/addon-a11y": "^10.4.6",
@@ -69,6 +74,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/browser-playwright": "4.1.2",
     "@vitest/coverage-v8": "^4.1.2",
+    "chromatic": "^11.27.0",
     "eslint": "^9.15.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",

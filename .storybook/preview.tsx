@@ -26,7 +26,7 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
-  },
+  } as Preview['globalTypes'],
   decorators: [
     withAppSettings,
     withMantineColorScheme,

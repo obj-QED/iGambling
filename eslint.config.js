@@ -115,6 +115,16 @@ export default tseslint.config(
     },
   },
   {
+    files: ['.storybook/**/*.ts', '.storybook/**/*.tsx'],
+    languageOptions: {
+      parserOptions: {
+        project: ['./.storybook/tsconfig.json'],
+        projectService: false,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  {
     files: ['src/vite-env.d.ts'],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',

@@ -10,7 +10,7 @@ const srcDir = fileURLToPath(new URL('../src', import.meta.url));
 const config: StorybookConfig = {
   framework: '@storybook/react-vite',
   stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],
+  addons: ['@storybook/addon-docs', '@storybook/addon-a11y', '@chromatic-com/storybook'],
   staticDirs: ['../public'],
   async viteFinal(viteConfig) {
     viteConfig.base = '/iGambling/';

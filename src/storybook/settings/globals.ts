@@ -38,12 +38,12 @@ export const STORYBOOK_APP_SETTINGS_GLOBAL_TYPES = {
   headerMockMenu: {
     name: 'Header mock menu',
     description: '`window.__SETTINGS__.header.mockMenu` — use widgets/header mocks',
-    defaultValue: true,
+    defaultValue: 'true',
     toolbar: {
       icon: 'database',
       items: [
-        { value: true, title: 'Mock on' },
-        { value: false, title: 'Mock off' },
+        { value: 'true', title: 'Mock on' },
+        { value: 'false', title: 'Mock off' },
       ],
       dynamicTitle: true,
     },
@@ -51,17 +51,17 @@ export const STORYBOOK_APP_SETTINGS_GLOBAL_TYPES = {
   headerColorSchemeSlot: {
     name: 'Color scheme slot',
     description: 'Inject `color_scheme` custom block into header toolbar',
-    defaultValue: true,
+    defaultValue: 'true',
     toolbar: {
       icon: 'paintbrush',
       items: [
-        { value: true, title: 'Slot on' },
-        { value: false, title: 'Slot off' },
+        { value: 'true', title: 'Slot on' },
+        { value: 'false', title: 'Slot off' },
       ],
       dynamicTitle: true,
     },
   },
-} as const;
+};
 
 export function readStorybookAppSettingsGlobals(
   globals: Record<string, unknown>,
@@ -77,8 +77,8 @@ export function readStorybookAppSettingsGlobals(
   return {
     headerLayout,
     headerType,
-    headerMockMenu: globals.headerMockMenu !== false,
-    headerColorSchemeSlot: globals.headerColorSchemeSlot !== false,
+    headerMockMenu: globals.headerMockMenu !== 'false',
+    headerColorSchemeSlot: globals.headerColorSchemeSlot !== 'false',
   };
 }
 

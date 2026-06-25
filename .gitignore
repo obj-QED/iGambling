@@ -67,3 +67,4 @@ scripts/*
 
 *storybook.log
 storybook-static
+reports/
