@@ -9,6 +9,10 @@ import {
   CMF_ACTION_ICON_VARIANTS,
 } from '@/assets/theme/mantine/cmfActionIconVars';
 import {
+  elementDocsPreviewParameters,
+  elementPlaygroundParameters,
+} from '@/storybook/helpers/elementStoryParameters';
+import {
   mantineBooleanArgType,
   mantineColorArgType,
   mantineRadiusArgType,
@@ -18,8 +22,8 @@ import {
 } from '@/storybook/helpers/mantineArgTypes';
 import {
   ACTION_ICON_DOCS_PLAYGROUND_FIELDS,
-  mantineCanvasPlaygroundParameters,
   MantineDocsPlayground,
+  mantineDocsPlaygroundParameters,
 } from '@/storybook/helpers/MantineDocsPlayground';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
 
@@ -33,12 +37,6 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        component:
-          'Mantine ActionIcon with CMF theme tokens. Use **Playground** in the Canvas tab; Docs shows **All Variants** only.',
-      },
-    },
   },
   argTypes: {
     variant: mantineVariantArgType(CMF_ACTION_ICON_VARIANTS),
@@ -63,8 +61,43 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const Default: Story = {
+  parameters: elementDocsPreviewParameters,
+  render: (args) => (
+    <ActionIcon {...args}>
+      <DemoGlyph />
+    </ActionIcon>
+  ),
+};
+
+export const AllVariants: Story = {
+  parameters: {
+    ...elementDocsPreviewParameters,
+    docs: {
+      ...elementDocsPreviewParameters.docs,
+      description: {
+        story: 'Variant matrix for visual regression and token review.',
+      },
+    },
+  },
+  render: () => (
+    <VariantMatrix
+      items={CMF_ACTION_ICON_VARIANTS}
+      columns={4}
+      renderItem={(variant) => (
+        <ActionIcon variant={variant} aria-label={variant}>
+          <DemoGlyph />
+        </ActionIcon>
+      )}
+    />
+  ),
+};
+
 export const Playground: Story = {
-  parameters: mantineCanvasPlaygroundParameters,
+  parameters: {
+    ...elementPlaygroundParameters,
+    controls: mantineDocsPlaygroundParameters.controls,
+  },
   render: function ActionIconPlayground() {
     const [args, updateArgs] = useArgs<typeof meta.args>();
 
@@ -80,25 +113,4 @@ export const Playground: Story = {
       </MantineDocsPlayground>
     );
   },
-};
-
-export const AllVariants: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Full variant matrix for visual regression and token review.',
-      },
-    },
-  },
-  render: () => (
-    <VariantMatrix
-      items={CMF_ACTION_ICON_VARIANTS}
-      columns={4}
-      renderItem={(variant) => (
-        <ActionIcon variant={variant} aria-label={variant}>
-          <DemoGlyph />
-        </ActionIcon>
-      )}
-    />
-  ),
 };

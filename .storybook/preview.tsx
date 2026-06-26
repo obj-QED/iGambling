@@ -52,10 +52,10 @@ const preview: Preview = {
         order: [
           'Settings',
           'Elements',
-          ['Button', ['Playground', 'All Variants']],
-          ['ActionIcon', ['Playground', 'All Variants']],
+          ['Button', ['Default', 'All Variants', 'Playground']],
+          ['ActionIcon', ['Default', 'All Variants', 'Playground']],
           'Widgets',
-          ['Header', ['AppHeader', 'Special Blocks', 'Menu Items']],
+          ['Header', ['AppHeader', 'Special Blocks', ['Menu Items', ['Overview']]]],
           '*',
         ],
       },

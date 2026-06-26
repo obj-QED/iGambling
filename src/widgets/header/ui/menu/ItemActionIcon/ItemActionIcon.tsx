@@ -1,6 +1,6 @@
 import type { HeaderMenuItem } from '../../../types';
 
-import { memo } from 'react';
+import { memo, useCallback, useState } from 'react';
 
 import { ActionIcon } from '@mantine/core';
 
@@ -8,6 +8,7 @@ import { AppLink } from '@/shared/ui';
 
 import {
   hasItemImg,
+  isIconOnlyItem,
   menuItemDataAttrs,
   resolveItemHref,
   resolveItemLabel,
@@ -23,6 +24,15 @@ type ItemActionIconProps = {
 };
 
 function ItemActionIconComponent({ item }: ItemActionIconProps) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const onImgFailed = useCallback(() => {
+    setImgFailed(true);
+  }, []);
+
+  if (isIconOnlyItem(item) === true && hasItemImg(item) === true && imgFailed === true) {
+    return null;
+  }
+
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
 
@@ -37,7 +47,7 @@ function ItemActionIconComponent({ item }: ItemActionIconProps) {
       {...menuItemDataAttrs(item)}
     >
       {hasItemImg(item) === true ? (
-        <MenuItemImage item={item} alt={label} />
+        <MenuItemImage item={item} alt={label} onImgFailed={onImgFailed} />
       ) : (
         label.slice(0, 1).toUpperCase()
       )}

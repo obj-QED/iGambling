@@ -5,6 +5,10 @@ import { useArgs } from 'storybook/preview-api';
 
 import { CMF_BUTTON_SIZES, CMF_BUTTON_VARIANTS } from '@/assets/theme/mantine/cmfButtonVars';
 import {
+  elementDocsPreviewParameters,
+  elementPlaygroundParameters,
+} from '@/storybook/helpers/elementStoryParameters';
+import {
   mantineBooleanArgType,
   mantineColorArgType,
   mantineRadiusArgType,
@@ -14,8 +18,8 @@ import {
 } from '@/storybook/helpers/mantineArgTypes';
 import {
   BUTTON_DOCS_PLAYGROUND_FIELDS,
-  mantineCanvasPlaygroundParameters,
   MantineDocsPlayground,
+  mantineDocsPlaygroundParameters,
 } from '@/storybook/helpers/MantineDocsPlayground';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
 
@@ -25,12 +29,6 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        component:
-          'Mantine Button with CMF theme tokens. Use **Playground** in the Canvas tab for live controls; Docs shows **All Variants** only.',
-      },
-    },
   },
   argTypes: {
     variant: mantineVariantArgType(CMF_BUTTON_VARIANTS),
@@ -57,8 +55,34 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const Default: Story = {
+  parameters: elementDocsPreviewParameters,
+};
+
+export const AllVariants: Story = {
+  parameters: {
+    ...elementDocsPreviewParameters,
+    docs: {
+      ...elementDocsPreviewParameters.docs,
+      description: {
+        story: 'Variant matrix for visual regression and token review.',
+      },
+    },
+  },
+  render: () => (
+    <VariantMatrix
+      items={CMF_BUTTON_VARIANTS}
+      columns={4}
+      renderItem={(variant) => <Button variant={variant}>{variant}</Button>}
+    />
+  ),
+};
+
 export const Playground: Story = {
-  parameters: mantineCanvasPlaygroundParameters,
+  parameters: {
+    ...elementPlaygroundParameters,
+    controls: mantineDocsPlaygroundParameters.controls,
+  },
   render: function ButtonPlayground() {
     const [args, updateArgs] = useArgs<typeof meta.args>();
 
@@ -72,21 +96,4 @@ export const Playground: Story = {
       </MantineDocsPlayground>
     );
   },
-};
-
-export const AllVariants: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Full variant matrix for visual regression and token review.',
-      },
-    },
-  },
-  render: () => (
-    <VariantMatrix
-      items={CMF_BUTTON_VARIANTS}
-      columns={4}
-      renderItem={(variant) => <Button variant={variant}>{variant}</Button>}
-    />
-  ),
 };

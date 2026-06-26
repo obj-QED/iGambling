@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Group, Stack, Text } from '@mantine/core';
 
+import { elementDocsPreviewParameters } from '@/storybook/helpers/elementStoryParameters';
 import {
   getHeaderMenuControlItems,
   HeaderMenuControlsShell,
@@ -15,7 +16,9 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    ...elementDocsPreviewParameters,
     docs: {
+      ...elementDocsPreviewParameters.docs,
       description: {
         component:
           'Registry blocks with dedicated UI (`search`, `wallet`, `color_scheme`, …). No menu `type` / name+img rules.',

@@ -10,14 +10,16 @@ type MenuItemImageProps = {
   item: HeaderMenuItem;
   alt: string;
   className?: string;
+  onImgFailed?: () => void;
 };
 
-function MenuItemImageComponent({ item, alt, className }: MenuItemImageProps) {
+function MenuItemImageComponent({ item, alt, className, onImgFailed }: MenuItemImageProps) {
   const [imgFailed, setImgFailed] = useState(false);
 
   const handleError = useCallback(() => {
     setImgFailed(true);
-  }, []);
+    onImgFailed?.();
+  }, [onImgFailed]);
 
   if (hasItemImg(item) === false) return null;
 

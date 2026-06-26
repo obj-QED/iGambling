@@ -2,25 +2,24 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Group, Stack, Text } from '@mantine/core';
 
-import {
-  getHeaderMenuControlItems,
-  HeaderMenuControlsShell,
-} from '@/storybook/helpers/headerMenuControls';
-import { Chevron } from '@/widgets/header/ui/menu/Chevron/Chevron';
+import { getHeaderMenuItemFixture } from '@/storybook/fixtures/headerMenuItems';
+import { elementDocsPreviewParameters } from '@/storybook/helpers/elementStoryParameters';
+import { HeaderMenuControlsShell } from '@/storybook/helpers/headerMenuControls';
 import { Dropdown } from '@/widgets/header/ui/menu/Dropdown/Dropdown';
 import { ItemActionIcon } from '@/widgets/header/ui/menu/ItemActionIcon/ItemActionIcon';
 import { ItemButton } from '@/widgets/header/ui/menu/ItemButton/ItemButton';
-import { ItemMenuTrigger } from '@/widgets/header/ui/menu/ItemMenuTrigger/ItemMenuTrigger';
 
 const meta = {
   title: 'Widgets/Header/Menu Items',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    ...elementDocsPreviewParameters,
     docs: {
+      ...elementDocsPreviewParameters.docs,
       description: {
         component:
-          'Default menu item renderers (`DefaultItemBlock` pipeline). Uses fixture catalog — independent of header Mock toolbar.',
+          'Default menu item renderers (`DefaultItemBlock`). Stable fixtures from `public/uploads` — not tied to header Mock toolbar.',
       },
     },
   },
@@ -29,54 +28,47 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primitives: Story = {
-  render: () => {
-    const { profileItem, walletItem, notificationItem } = getHeaderMenuControlItems();
-
-    return (
-      <HeaderMenuControlsShell>
-        <Stack gap="lg">
-          <Stack gap="xs">
-            <Text size="sm" fw={600}>
-              Icon only
-            </Text>
-            <Group gap="sm">
-              {walletItem !== undefined ? <ItemActionIcon item={walletItem} /> : null}
-              {notificationItem !== undefined ? (
-                <ItemActionIcon
-                  item={{
-                    ...notificationItem,
-                    name: '',
-                    img:
-                      notificationItem.img ?? '/images/ui/default/header/default/notification.svg',
-                  }}
-                />
-              ) : null}
-            </Group>
-          </Stack>
-
-          <Stack gap="xs">
-            <Text size="sm" fw={600}>
-              Text button
-            </Text>
-            {profileItem !== undefined ? (
-              <ItemButton item={{ ...profileItem, items: undefined, name: 'Profile' }} />
-            ) : null}
-          </Stack>
-
-          <Stack gap="xs">
-            <Text size="sm" fw={600}>
-              Dropdown
-            </Text>
-            <Group gap="sm">
-              {profileItem !== undefined ? (
-                <ItemMenuTrigger item={profileItem} rightSection={<Chevron />} />
-              ) : null}
-              {profileItem !== undefined ? <Dropdown item={profileItem} /> : null}
-            </Group>
-          </Stack>
+export const Overview: Story = {
+  render: () => (
+    <HeaderMenuControlsShell>
+      <Stack gap="xl" align="flex-start">
+        <Stack gap="xs" align="flex-start">
+          <Text size="sm" fw={600}>
+            Icon only · type link · transparent
+          </Text>
+          <Group gap="sm">
+            <ItemActionIcon item={getHeaderMenuItemFixture('iconOnlyLink')} />
+          </Group>
         </Stack>
-      </HeaderMenuControlsShell>
-    );
-  },
+
+        <Stack gap="xs" align="flex-start">
+          <Text size="sm" fw={600}>
+            Text only · type button · default
+          </Text>
+          <ItemButton item={getHeaderMenuItemFixture('textButton')} />
+        </Stack>
+
+        <Stack gap="xs" align="flex-start">
+          <Text size="sm" fw={600}>
+            Icon + name · type link
+          </Text>
+          <ItemButton item={getHeaderMenuItemFixture('iconAndText')} />
+        </Stack>
+
+        <Stack gap="xs" align="flex-start">
+          <Text size="sm" fw={600}>
+            Dropdown · icon trigger + menu
+          </Text>
+          <Dropdown item={getHeaderMenuItemFixture('dropdownProfile')} />
+        </Stack>
+
+        <Stack gap="xs" align="flex-start">
+          <Text size="sm" fw={600}>
+            Broken image · fallback glyph when name is set
+          </Text>
+          <ItemButton item={getHeaderMenuItemFixture('brokenImgWithName')} />
+        </Stack>
+      </Stack>
+    </HeaderMenuControlsShell>
+  ),
 };

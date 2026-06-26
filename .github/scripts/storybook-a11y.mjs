@@ -37,7 +37,7 @@ const STORY_IDS = [
   'elements-actionicon--playground',
   'settings-app--header-preview',
   'widgets-header-appheader--default',
-  'widgets-header-menu-items--primitives',
+  'widgets-header-menu-items--overview',
 ];
 
 function storyUrl(storyId) {

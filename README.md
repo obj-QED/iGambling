@@ -1,65 +1,105 @@
 # iGambling
 
-Application built with **React 19**, **Vite**, and **TypeScript**.
+Casino frontend SPA: **React 19**, **Vite**, **TypeScript**, **Mantine 9**, **TanStack Query**, **Redux Toolkit**.
 
-## Stack
+Architecture: **FSD** (layers) + **FDD** (feature modules). Full rules: `docs/new-project/`, `.cursor/rules/`.
 
-- React 19, Vite, TypeScript
-- React Router 6
-- FDD-based structure: `docs/new-project/architecture.md`, `docs/new-project/rules-new-project.md`
+## Requirements
 
-## Environment Variables
+- **Node.js** ≥ 22
+- **Yarn** 4 (`corepack enable`)
 
-- **Local (`yarn dev`)**: Vite proxies `/apiLobby.php` and `/api.php` to `VITE_APP_URL`.
-- **Production (`yarn build`)**: the frontend requests `apiLobby.php` relative to the current origin.
+## Environment
 
 | Variable       | Purpose                                                                    |
 | -------------- | -------------------------------------------------------------------------- |
-| `VITE_APP_URL` | Base URL for dev proxy (`server.proxy`) and client `baseApi` (`api.php`)  |
+| `VITE_APP_URL` | Dev proxy target for `/apiLobby.php` and `/api.php`; prod uses same-origin |
 
-`proxy.php` is not used in the current setup.
+Local dev proxies API to `VITE_APP_URL`. Production build calls `api.php` on the current origin.
 
-## Run
+## Scripts
 
 ```bash
 yarn install
-yarn dev      # development mode (http://localhost:5173)
-yarn test     # unit/integration tests (Vitest)
-yarn lint     # eslint
-yarn build    # production build
-yarn build:analyze # build + bundle size report (dist/stats.html)
-yarn preview  # preview production build
+yarn dev              # http://localhost:5173
+yarn build            # production build
+yarn build:analyze    # build + bundle report (dist/stats.html)
+yarn preview          # preview production build
+yarn typecheck        # tsc -b
+yarn lint             # eslint
+yarn stylelint        # scss/css
+yarn test             # vitest + coverage
+yarn storybook        # http://localhost:6006
+yarn build-storybook  # static Storybook → storybook-static/
+yarn test:a11y        # axe on Storybook (Playwright)
 ```
 
-## `src/` Structure
+## `src/` layout (FSD)
 
-- `app/` - bootstrap, providers, routing
-- `pages/` - pages (routes)
-- `components/` - feature components (FDD)
-- `elements/` - UI primitives
-- `ui/` - shared UI kit
-- `api/` - baseApi, queries, mutations
-- `store/` - Redux Toolkit (slices)
-- `shared/` - utils, styles (tokens, mixins)
-- `schemas/` - validation
-- `hooks/` - shared hooks
+```txt
+app/          bootstrap, providers, routing, layouts (data hooks for header/menu)
+pages/        route pages
+widgets/      header, sidebar, banner, footer — schema-driven composition
+features/     user workflows (public.ts boundary)
+entities/     domain content + mapping
+shared/       ui kit, config, lib, types, schemas
+assets/       theme tokens (SoT), settings stub, global SCSS
+api/          queries, mutations, keys
+store/        Redux — auth, flags, client invariants only
+stories/      Storybook stories
+storybook/    Storybook decorators, fixtures, helpers (not app runtime)
+```
 
-Rules and architecture: see `docs/new-project/` and `.cursor/rules/devcasi-rules.mdc`.
+Legacy paths (`components/`, `elements/`, `ui/`) may still exist during migration; **new code** follows FSD + `widgets/*`.
 
-## AppHeader (default variant)
+## Header Engine (v4)
 
-Data sources:
+Path: `src/widgets/header/`.
 
-- `title` and `logo` come from `useCurrentPageDataState(...)` (current page payload).
-- `providers` come from `window.__SETTINGS__.header.providers` (`src/assets/settings/index.js`).
+```txt
+Schema / config → layout → block (sync) → plugin → adapter (lazy) → entity → shared/ui
+```
 
-Current default variant composition:
+- Menu data: `app/layouts/*` (TanStack Query) → `AppHeader` props (`menu`, `config`) only.
+- Registries: `registry/layoutRegistry.ts`, `registry/blockRegistry.ts`.
+- Special blocks (`search`, `logo`, `wallet`, `notification`, `color_scheme`, `bonus_box`) — dedicated UI, **no** menu `type`.
+- Default menu items support optional `type`:
+  - `button` or absent / `null` → variant `default`
+  - `link` → variant `transparent`
+- Rendering rules: icon-only → `ItemActionIcon`; text or icon+text → `ItemButton`; no `name` and no `img` → skip; broken image → `HeaderPhotoFallback` (or hide icon-only item).
 
-- `ui/variants/default/AppHeaderDefaultView.tsx` - render orchestration.
-- `ui/blocks/AppHeaderDefaultLayout/` - 3 header sections (left / center / right).
-- `ui/blocks/AppHeaderLogo/` - logo (URL) or fallback `IG`.
-- `ui/blocks/AppHeaderProvidersNav/` - providers list.
-- `ui/blocks/AppHeaderPageTitle/` - page title.
-- `ui/blocks/AppHeaderGuestActions/` and `ui/blocks/AppHeaderUserActions/` - right column based on auth state.
+Details: `.cursor/rules/header-architecture-guard.mdc`, `src/widgets/ARCHITECTURE.md`.
 
-If you pass `sections` into `AppHeader`, override slots are used.
+## Storybook
+
+**Local:** `yarn storybook`
+
+**Published (main branch):** [https://obj-qed.github.io/iGambling/](https://obj-qed.github.io/iGambling/)
+
+| Section                           | Stories                                                              |
+| --------------------------------- | -------------------------------------------------------------------- |
+| **Elements/Button**               | `Default` (Docs preview), `All Variants`, `Playground` (Canvas only) |
+| **Elements/ActionIcon**           | same pattern                                                         |
+| **Widgets/Header/AppHeader**      | full shell, layout presets                                           |
+| **Widgets/Header/Special Blocks** | search, wallet, color scheme                                         |
+| **Widgets/Header/Menu Items**     | default item renderers (stable fixtures)                             |
+
+Toolbar: **Mock menu**, **color scheme**, app settings via `src/storybook/settings/`.
+
+Playground stories use `useArgs` and work only on the **Canvas** tab, not inside Docs embed.
+
+Fixtures: `src/storybook/fixtures/`, `src/storybook/data/`.
+
+## CI
+
+On push/PR to `main`: lint, stylelint, test, build.
+
+On push to `main`: Storybook build → **GitHub Pages** (job `storybook-pages` in `.github/workflows/ci.yml`).
+
+## Theme
+
+Source of truth: `src/assets/theme/theme.scss` → CSS variables → `src/assets/theme/mantine/mantineTheme.ts` (thin Mantine bridge).
+
+CMF tokens for Button / ActionIcon: `src/assets/theme/tokens/`, `src/assets/theme/mantine/*`.
+
+See also: `src/assets/theme/README.md`.
