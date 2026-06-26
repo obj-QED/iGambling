@@ -30,6 +30,7 @@ export type HeaderCustomBlockInput = {
   name?: unknown;
   key?: unknown;
   img?: unknown;
+  type?: unknown;
   items?: unknown;
 };
 

@@ -8,7 +8,40 @@ describe('parsePageMenuItemDto (Zod boundary)', () => {
       key: 'search',
       url: '/search',
       name: 'Search',
+      type: undefined,
     });
+  });
+
+  it('parses menu item type', () => {
+    expect(
+      parsePageMenuItemDto({ key: 'promo', url: '/promo', name: 'Promo', type: 'link' }),
+    ).toEqual({
+      key: 'promo',
+      url: '/promo',
+      name: 'Promo',
+      type: 'link',
+    });
+
+    expect(parsePageMenuItemDto({ key: 'cta', url: '/cta', name: 'CTA', type: 'button' })).toEqual({
+      key: 'cta',
+      url: '/cta',
+      name: 'CTA',
+      type: 'button',
+    });
+
+    expect(parsePageMenuItemDto({ key: 'bad', url: '/', name: 'Bad', type: 'modal' })?.type).toBe(
+      undefined,
+    );
+  });
+
+  it('drops type for special block keys', () => {
+    expect(parsePageMenuItemDto({ key: 'search', url: '/search', name: '', type: 'link' })).toEqual(
+      {
+        key: 'search',
+        url: '/search',
+        name: '',
+      },
+    );
   });
 
   it('rejects non-object', () => {

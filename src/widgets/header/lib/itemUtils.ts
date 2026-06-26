@@ -1,8 +1,14 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
 
+import { isHeaderSpecialBlockKey } from '@/shared/config/headerSpecialBlockKeys';
+
 import { HEADER_CONFIG_ONLY_BLOCK_KEYS } from '../types/items.types';
 
 const CONFIG_ONLY_BLOCK_KEY_SET = new Set<string>(HEADER_CONFIG_ONLY_BLOCK_KEYS);
+
+export function isSpecialBlockKey(key: string): boolean {
+  return isHeaderSpecialBlockKey(key);
+}
 
 export function isConfigOnlyBlockKey(key: string): boolean {
   return CONFIG_ONLY_BLOCK_KEY_SET.has(key);
@@ -40,6 +46,25 @@ export function resolveItemHref(url: string): string {
   if (/^https?:\/\//i.test(trimmed)) return trimmed;
   if (trimmed.startsWith('/') || trimmed.startsWith('#')) return trimmed;
   return `/${trimmed.replace(/^\//, '')}`;
+}
+
+/** Resolved menu item type for `data-menu-type` — defaults to `button` when absent. */
+export function resolveMenuItemTypeAttr(item: HeaderMenuItem): 'button' | 'link' {
+  return item.type ?? 'button';
+}
+
+export function menuItemDataAttrs(item: HeaderMenuItem): {
+  'data-menu-key': string;
+  'data-menu-type'?: 'button' | 'link';
+} {
+  if (isSpecialBlockKey(item.key)) {
+    return { 'data-menu-key': item.key };
+  }
+
+  return {
+    'data-menu-key': item.key,
+    'data-menu-type': resolveMenuItemTypeAttr(item),
+  };
 }
 
 export function filterRenderableItems(items: HeaderMenuItem[]): HeaderMenuItem[] {

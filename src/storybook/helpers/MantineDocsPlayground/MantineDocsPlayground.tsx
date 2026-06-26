@@ -18,19 +18,32 @@ function renderField<T extends Record<string, unknown>>(
   const value = readArgValue(args, field.name);
 
   if (field.type === 'variant') {
+    const groups =
+      field.groups ??
+      (field.options !== undefined ? [{ label: field.label, options: field.options }] : []);
+
     return (
-      <div className={styles.variantGroup}>
-        {field.options.map((option) => (
-          <Button
-            key={option.value}
-            size="compact-sm"
-            variant={value === option.value ? 'filled' : 'default'}
-            onClick={() => {
-              onChange({ [field.name]: option.value } as Partial<T>);
-            }}
-          >
-            {option.label}
-          </Button>
+      <div className={styles.variantSections}>
+        {groups.map((group) => (
+          <div key={group.label} className={styles.variantSection}>
+            {groups.length > 1 ? (
+              <div className={styles.variantSectionLabel}>{group.label}</div>
+            ) : null}
+            <div className={styles.variantGroup}>
+              {group.options.map((option) => (
+                <Button
+                  key={option.value}
+                  size="compact-sm"
+                  variant={value === option.value ? 'filled' : 'default'}
+                  onClick={() => {
+                    onChange({ [field.name]: option.value } as Partial<T>);
+                  }}
+                >
+                  {option.label}
+                </Button>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     );

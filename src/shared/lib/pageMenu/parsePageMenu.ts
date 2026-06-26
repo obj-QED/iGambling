@@ -1,8 +1,18 @@
 import type { PageMenuItemDto, PageMenuRootDto } from '@/shared/types/pageMenu';
 
+import { isHeaderSpecialBlockKey } from '@/shared/config/headerSpecialBlockKeys';
 import { pageMenuItemDtoSchema, pageMenuRootDtoSchema } from '@/shared/schemas/pageMenu.schema';
 
 import { isRecord, readString } from '../coercion';
+
+function resolveMenuItemType(raw: unknown): PageMenuItemDto['type'] | undefined {
+  if (raw === null || raw === undefined) return undefined;
+
+  const trimmed = readString(raw).trim();
+  if (trimmed === 'button' || trimmed === 'link') return trimmed;
+
+  return undefined;
+}
 
 function coercePageMenuItem(raw: unknown): PageMenuItemDto | null {
   if (!isRecord(raw)) return null;
@@ -14,6 +24,7 @@ function coercePageMenuItem(raw: unknown): PageMenuItemDto | null {
   const url = readString(raw.url);
   const imgRaw = readString(raw.img).trim();
   const img = imgRaw.length > 0 ? imgRaw : undefined;
+  const type = isHeaderSpecialBlockKey(key) === true ? undefined : resolveMenuItemType(raw.type);
 
   const nestedRaw = raw.items;
   let items: PageMenuItemDto[] | undefined;
@@ -27,7 +38,7 @@ function coercePageMenuItem(raw: unknown): PageMenuItemDto | null {
     if (nested.length > 0) items = nested;
   }
 
-  const coerced: PageMenuItemDto = { key, name, url, img, items };
+  const coerced: PageMenuItemDto = { key, name, url, img, type, items };
   const result = pageMenuItemDtoSchema.safeParse(coerced);
   return result.success ? result.data : null;
 }

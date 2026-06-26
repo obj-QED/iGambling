@@ -6,10 +6,16 @@ import { Button } from '@mantine/core';
 
 import { AppLink } from '@/shared/ui';
 
-import { resolveButtonVariant } from '../../../lib/buttonVariant';
-import { hasItemImg, hasItemName, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
+import {
+  hasItemImg,
+  hasItemName,
+  menuItemDataAttrs,
+  resolveItemHref,
+  resolveItemLabel,
+} from '../../../lib/itemUtils';
+import { resolveMenuItemButtonVariant } from '../../../lib/menuItemVariant';
 import { HEADER_MENU_BUTTON_SIZE } from '../icons/iconProps';
-import { ItemIcon } from '../ItemIcon/ItemIcon';
+import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
 import styles from '../../../styles/menu/ItemButton.module.scss';
 
@@ -21,9 +27,9 @@ type ItemButtonProps = {
 function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
-  const variant = resolveButtonVariant(item.key);
+  const variant = resolveMenuItemButtonVariant(item);
   const leftSection =
-    hasItemImg(item) === true ? <ItemIcon src={item.img ?? ''} alt={label} /> : undefined;
+    hasItemImg(item) === true ? <MenuItemImage item={item} alt={label} /> : undefined;
 
   return (
     <Button
@@ -34,7 +40,7 @@ function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
       size={HEADER_MENU_BUTTON_SIZE}
       leftSection={leftSection}
       rightSection={rightSection}
-      data-menu-key={item.key}
+      {...menuItemDataAttrs(item)}
     >
       {hasItemName(item) === true ? item.name.trim() : null}
     </Button>

@@ -43,6 +43,26 @@
     min-width: 0;
   }
 
+  .variantSections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm, 0.75rem);
+  }
+
+  .variantSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs, 0.5rem);
+  }
+
+  .variantSectionLabel {
+    font-size: var(--mantine-font-size-xs);
+    font-weight: 600;
+    color: var(--mantine-color-dimmed);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
   .variantGroup {
     display: flex;
     flex-wrap: wrap;

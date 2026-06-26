@@ -1,16 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { ActionIcon, Group, Stack, Text, Title } from '@mantine/core';
+import { ActionIcon } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useArgs } from 'storybook/preview-api';
 
 import {
   CMF_ACTION_ICON_SIZES,
   CMF_ACTION_ICON_VARIANTS,
-  type CmfActionIconSize,
-  type CmfActionIconVariant,
 } from '@/assets/theme/mantine/cmfActionIconVars';
-import { cmfActionIconScopeOverrideStyle } from '@/storybook/helpers/cmfScopeOverrides';
 import {
   mantineBooleanArgType,
   mantineColorArgType,
@@ -21,24 +18,10 @@ import {
 } from '@/storybook/helpers/mantineArgTypes';
 import {
   ACTION_ICON_DOCS_PLAYGROUND_FIELDS,
+  mantineCanvasPlaygroundParameters,
   MantineDocsPlayground,
-  mantineDocsPlaygroundParameters,
 } from '@/storybook/helpers/MantineDocsPlayground';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
-import { HEADER_MENU_ACTION_ICON_SIZE } from '@/widgets/header/ui/menu/icons/iconProps';
-
-const STATE_VARIANTS = [
-  'filled',
-  'outline',
-  'gradient',
-  'hero',
-] as const satisfies readonly CmfActionIconVariant[];
-const HERO_VARIANTS = [
-  'hero',
-  'hero-light',
-  'hero-outline',
-] as const satisfies readonly CmfActionIconVariant[];
-const HEADER_SIZES = ['md', 'input-sm'] as const satisfies readonly CmfActionIconSize[];
 
 function DemoGlyph() {
   return <IconPlus size={16} stroke={2} />;
@@ -50,6 +33,12 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Mantine ActionIcon with CMF theme tokens. Use **Playground** in the Canvas tab; Docs shows **All Variants** only.',
+      },
+    },
   },
   argTypes: {
     variant: mantineVariantArgType(CMF_ACTION_ICON_VARIANTS),
@@ -75,7 +64,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  parameters: mantineDocsPlaygroundParameters,
+  parameters: mantineCanvasPlaygroundParameters,
   render: function ActionIconPlayground() {
     const [args, updateArgs] = useArgs<typeof meta.args>();
 
@@ -94,6 +83,13 @@ export const Playground: Story = {
 };
 
 export const AllVariants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Full variant matrix for visual regression and token review.',
+      },
+    },
+  },
   render: () => (
     <VariantMatrix
       items={CMF_ACTION_ICON_VARIANTS}
@@ -104,85 +100,5 @@ export const AllVariants: Story = {
         </ActionIcon>
       )}
     />
-  ),
-};
-
-export const AllSizes: Story = {
-  render: () => (
-    <Group gap="sm" align="flex-end">
-      {CMF_ACTION_ICON_SIZES.map((size) => (
-        <ActionIcon key={size} size={size} variant="filled" aria-label={size}>
-          <DemoGlyph />
-        </ActionIcon>
-      ))}
-    </Group>
-  ),
-};
-
-export const HeaderToolbarSizes: Story = {
-  render: () => (
-    <Group gap="sm" align="flex-end">
-      {HEADER_SIZES.map((size) => (
-        <ActionIcon key={size} size={size} variant="default" aria-label={size}>
-          <DemoGlyph />
-        </ActionIcon>
-      ))}
-      <Text size="xs" c="dimmed">
-        header default: {HEADER_MENU_ACTION_ICON_SIZE}
-      </Text>
-    </Group>
-  ),
-};
-
-export const HeroVariants: Story = {
-  render: () => (
-    <Group gap="sm">
-      {HERO_VARIANTS.map((variant) => (
-        <ActionIcon key={variant} variant={variant} aria-label={variant}>
-          <DemoGlyph />
-        </ActionIcon>
-      ))}
-    </Group>
-  ),
-};
-
-export const States: Story = {
-  render: () => (
-    <Stack gap="lg">
-      {STATE_VARIANTS.map((variant) => (
-        <Stack key={variant} gap="xs">
-          <Text size="sm" fw={600}>
-            {variant}
-          </Text>
-          <Group gap="sm">
-            <ActionIcon variant={variant} aria-label={`${variant} default`}>
-              <DemoGlyph />
-            </ActionIcon>
-            <ActionIcon variant={variant} disabled aria-label={`${variant} disabled`}>
-              <DemoGlyph />
-            </ActionIcon>
-            <ActionIcon variant={variant} loading aria-label={`${variant} loading`}>
-              <DemoGlyph />
-            </ActionIcon>
-          </Group>
-        </Stack>
-      ))}
-    </Stack>
-  ),
-};
-
-export const CmfScopeOverride: Story = {
-  render: () => (
-    <Stack gap="sm" style={cmfActionIconScopeOverrideStyle} data-cmf-action-icon-scope="storybook">
-      <Title order={5}>CMF scope override (filled / outline)</Title>
-      <Group gap="sm">
-        <ActionIcon variant="filled" aria-label="filled">
-          <DemoGlyph />
-        </ActionIcon>
-        <ActionIcon variant="outline" aria-label="outline">
-          <DemoGlyph />
-        </ActionIcon>
-      </Group>
-    </Stack>
   ),
 };

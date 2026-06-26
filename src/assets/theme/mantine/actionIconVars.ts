@@ -11,6 +11,7 @@ import {
   cmfActionIconVariantToken,
 } from './cmfActionIconVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from './gradientTokens';
+import { resolveMantineComponentRadius } from './mantineRadiusVars';
 import {
   type MantineVariantColorProps,
   resolveMantineVariantColorVars,
@@ -188,12 +189,10 @@ export function resolveActionIconRootVars(
   theme: MantineTheme,
   props: ActionIconVarsProps,
 ): Record<string, string> {
-  const radius =
-    props.radius === undefined
-      ? cmfActionIconToken('radius', 'var(--mantine-radius-md)')
-      : typeof props.radius === 'number'
-        ? `calc(${props.radius} / 16 * 1rem * var(--mantine-scale))`
-        : `var(--mantine-radius-${String(props.radius)}, var(--mantine-radius-md))`;
+  const radius = resolveMantineComponentRadius(
+    props.radius,
+    cmfActionIconToken('radius', 'var(--mantine-radius-md)'),
+  );
 
   const base = {
     '--ai-size': resolveActionIconSize(props.size),

@@ -3,6 +3,7 @@ export type {
   HeaderBlockVariants,
   HeaderConfigOnlyBlockKey,
   HeaderMenuItem,
+  HeaderMenuItemType,
   HeaderMenuModel,
   HeaderSection,
   HeaderSpecialBlockKey,

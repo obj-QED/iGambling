@@ -12,6 +12,7 @@ import {
   cmfButtonVariantToken,
 } from './cmfButtonVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from './gradientTokens';
+import { resolveMantineComponentRadius } from './mantineRadiusVars';
 import {
   type MantineVariantColorProps,
   resolveMantineVariantColorVars,
@@ -237,6 +238,7 @@ function resolveButtonVariantVars(variant: string | undefined): Record<string, s
 
 type ButtonVarsProps = MantineVariantColorProps & {
   size?: unknown;
+  radius?: unknown;
   justify?: CSSProperties['justifyContent'];
 };
 
@@ -248,7 +250,10 @@ export function resolveButtonRootVars(
   const size = resolveButtonSize(props.size);
   const base = {
     ...BUTTON_SIZE_VARS[size],
-    '--button-radius': cmfButtonToken('radius', 'var(--mantine-radius-md)'),
+    '--button-radius': resolveMantineComponentRadius(
+      props.radius,
+      cmfButtonToken('radius', 'var(--mantine-radius-md)'),
+    ),
     '--button-justify': cmfButtonToken('justify', String(props.justify ?? 'center')),
     ...resolveButtonVariantVars(props.variant),
   };

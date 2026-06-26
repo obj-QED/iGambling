@@ -5,12 +5,18 @@ export type DocsPlaygroundOption = {
   label: string;
 };
 
+export type DocsPlaygroundVariantGroup = {
+  label: string;
+  options: readonly DocsPlaygroundOption[];
+};
+
 export type DocsPlaygroundField =
   | {
       type: 'variant';
       name: string;
       label: string;
-      options: readonly DocsPlaygroundOption[];
+      options?: readonly DocsPlaygroundOption[];
+      groups?: readonly DocsPlaygroundVariantGroup[];
     }
   | {
       type: 'segmented';

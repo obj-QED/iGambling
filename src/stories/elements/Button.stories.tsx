@@ -1,15 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button, Group, Stack, Text, Title } from '@mantine/core';
+import { Button } from '@mantine/core';
 import { useArgs } from 'storybook/preview-api';
 
-import {
-  CMF_BUTTON_SIZES,
-  CMF_BUTTON_VARIANTS,
-  type CmfButtonSize,
-  type CmfButtonVariant,
-} from '@/assets/theme/mantine/cmfButtonVars';
-import { cmfButtonScopeOverrideStyle } from '@/storybook/helpers/cmfScopeOverrides';
+import { CMF_BUTTON_SIZES, CMF_BUTTON_VARIANTS } from '@/assets/theme/mantine/cmfButtonVars';
 import {
   mantineBooleanArgType,
   mantineColorArgType,
@@ -20,22 +14,10 @@ import {
 } from '@/storybook/helpers/mantineArgTypes';
 import {
   BUTTON_DOCS_PLAYGROUND_FIELDS,
+  mantineCanvasPlaygroundParameters,
   MantineDocsPlayground,
-  mantineDocsPlaygroundParameters,
 } from '@/storybook/helpers/MantineDocsPlayground';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
-
-const STATE_VARIANTS = [
-  'filled',
-  'outline',
-  'gradient',
-  'hero',
-] as const satisfies readonly CmfButtonVariant[];
-const HERO_VARIANTS = [
-  'hero',
-  'hero-light',
-  'hero-outline',
-] as const satisfies readonly CmfButtonVariant[];
 
 const meta = {
   title: 'Elements/Button',
@@ -43,6 +25,12 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Mantine Button with CMF theme tokens. Use **Playground** in the Canvas tab for live controls; Docs shows **All Variants** only.',
+      },
+    },
   },
   argTypes: {
     variant: mantineVariantArgType(CMF_BUTTON_VARIANTS),
@@ -70,7 +58,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  parameters: mantineDocsPlaygroundParameters,
+  parameters: mantineCanvasPlaygroundParameters,
   render: function ButtonPlayground() {
     const [args, updateArgs] = useArgs<typeof meta.args>();
 
@@ -87,6 +75,13 @@ export const Playground: Story = {
 };
 
 export const AllVariants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Full variant matrix for visual regression and token review.',
+      },
+    },
+  },
   render: () => (
     <VariantMatrix
       items={CMF_BUTTON_VARIANTS}
@@ -94,77 +89,4 @@ export const AllVariants: Story = {
       renderItem={(variant) => <Button variant={variant}>{variant}</Button>}
     />
   ),
-};
-
-export const AllSizes: Story = {
-  render: () => (
-    <Group gap="sm" align="flex-end">
-      {CMF_BUTTON_SIZES.map((size) => (
-        <Button key={size} size={size} variant="filled">
-          {size}
-        </Button>
-      ))}
-    </Group>
-  ),
-};
-
-export const HeroVariants: Story = {
-  render: () => (
-    <Group gap="sm">
-      {HERO_VARIANTS.map((variant) => (
-        <Button key={variant} variant={variant}>
-          {variant}
-        </Button>
-      ))}
-    </Group>
-  ),
-};
-
-export const States: Story = {
-  render: () => (
-    <Stack gap="lg">
-      {STATE_VARIANTS.map((variant) => (
-        <Stack key={variant} gap="xs">
-          <Text size="sm" fw={600}>
-            {variant}
-          </Text>
-          <Group gap="sm">
-            <Button variant={variant}>default</Button>
-            <Button variant={variant} disabled>
-              disabled
-            </Button>
-            <Button variant={variant} loading>
-              loading
-            </Button>
-            <Button variant={variant} disabled loading>
-              disabled+loading
-            </Button>
-          </Group>
-          <Button variant={variant} fullWidth>
-            fullWidth
-          </Button>
-        </Stack>
-      ))}
-    </Stack>
-  ),
-};
-
-export const CmfScopeOverride: Story = {
-  render: () => (
-    <Stack gap="sm" style={cmfButtonScopeOverrideStyle} data-cmf-button-scope="storybook">
-      <Title order={5}>CMF scope override (filled / outline)</Title>
-      <Group gap="sm">
-        <Button variant="filled">filled</Button>
-        <Button variant="outline">outline</Button>
-      </Group>
-    </Stack>
-  ),
-};
-
-export const TypedVariant: Story = {
-  args: {
-    variant: 'outline' satisfies CmfButtonVariant,
-    size: 'sm' satisfies CmfButtonSize,
-    children: 'typed',
-  },
 };

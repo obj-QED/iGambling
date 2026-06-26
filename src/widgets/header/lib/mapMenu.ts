@@ -1,6 +1,8 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
 import type { PageMenuItemDto, PageMenuRootDto } from '@/shared/types/pageMenu';
 
+import { isSpecialBlockKey } from './itemUtils';
+
 function resolveSectionKey(item: PageMenuItemDto): string {
   const keyFromKey = item.key.trim();
   if (keyFromKey.length > 0) return keyFromKey;
@@ -12,13 +14,19 @@ function resolveSectionKey(item: PageMenuItemDto): string {
 export function mapItem(item: PageMenuItemDto): HeaderMenuItem {
   const items = item.items?.map((child) => mapItem(child));
 
-  return {
+  const mapped: HeaderMenuItem = {
     key: item.key,
     name: item.name,
     url: item.url,
     img: item.img,
     items: items !== undefined && items.length > 0 ? items : undefined,
   };
+
+  if (isSpecialBlockKey(item.key) === false && item.type !== undefined) {
+    mapped.type = item.type;
+  }
+
+  return mapped;
 }
 
 function mapSection(item: PageMenuItemDto): HeaderSection | null {

@@ -6,9 +6,15 @@ import { ActionIcon } from '@mantine/core';
 
 import { AppLink } from '@/shared/ui';
 
-import { hasItemImg, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
+import {
+  hasItemImg,
+  menuItemDataAttrs,
+  resolveItemHref,
+  resolveItemLabel,
+} from '../../../lib/itemUtils';
+import { resolveMenuItemActionIconVariant } from '../../../lib/menuItemVariant';
 import { HEADER_MENU_ACTION_ICON_SIZE } from '../icons/iconProps';
-import { ItemIcon } from '../ItemIcon/ItemIcon';
+import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
 import styles from '../../../styles/menu/ItemActionIcon.module.scss';
 
@@ -25,13 +31,13 @@ function ItemActionIconComponent({ item }: ItemActionIconProps) {
       className={styles.root}
       component={AppLink}
       href={href}
-      variant="default"
+      variant={resolveMenuItemActionIconVariant(item)}
       size={HEADER_MENU_ACTION_ICON_SIZE}
       aria-label={label}
-      data-menu-key={item.key}
+      {...menuItemDataAttrs(item)}
     >
       {hasItemImg(item) === true ? (
-        <ItemIcon src={item.img ?? ''} alt={label} />
+        <MenuItemImage item={item} alt={label} />
       ) : (
         label.slice(0, 1).toUpperCase()
       )}

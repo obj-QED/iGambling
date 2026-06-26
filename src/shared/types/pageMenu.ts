@@ -1,9 +1,12 @@
 /** Parsed `page.menu` item — validated at API/config boundary only. */
+export type PageMenuItemType = 'button' | 'link';
+
 export type PageMenuItemDto = {
   key: string;
   name: string;
   url: string;
   img?: string;
+  type?: PageMenuItemType;
   items?: PageMenuItemDto[];
 };
 

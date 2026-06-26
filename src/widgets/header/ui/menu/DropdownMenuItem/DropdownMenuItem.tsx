@@ -6,8 +6,14 @@ import { Menu } from '@mantine/core';
 
 import { AppLink } from '@/shared/ui';
 
-import { hasItemImg, hasItemName, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
-import { ItemIcon } from '../ItemIcon/ItemIcon';
+import {
+  hasItemImg,
+  hasItemName,
+  menuItemDataAttrs,
+  resolveItemHref,
+  resolveItemLabel,
+} from '../../../lib/itemUtils';
+import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
 type DropdownMenuItemProps = {
   item: HeaderMenuItem;
@@ -17,19 +23,24 @@ function DropdownMenuItemComponent({ item }: DropdownMenuItemProps) {
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
   const leftSection =
-    hasItemImg(item) === true ? <ItemIcon src={item.img ?? ''} alt={label} /> : undefined;
+    hasItemImg(item) === true ? <MenuItemImage item={item} alt={label} /> : undefined;
   const content = hasItemName(item) === true ? item.name.trim() : label;
 
   if (href.length === 0) {
     return (
-      <Menu.Item leftSection={leftSection} disabled data-menu-key={item.key}>
+      <Menu.Item leftSection={leftSection} disabled {...menuItemDataAttrs(item)}>
         {content}
       </Menu.Item>
     );
   }
 
   return (
-    <Menu.Item component={AppLink} href={href} leftSection={leftSection} data-menu-key={item.key}>
+    <Menu.Item
+      component={AppLink}
+      href={href}
+      leftSection={leftSection}
+      {...menuItemDataAttrs(item)}
+    >
       {content}
     </Menu.Item>
   );

@@ -36,4 +36,10 @@ describe('resolveButtonRootVars', () => {
     expect(withRed['--button-bg']).not.toContain('var(--cmf-button-filled-bg');
     expect(withRed['--button-bg']).not.toBe(withoutColor['--button-bg']);
   });
+
+  it('uses Mantine radius prop when provided', () => {
+    const vars = resolveButtonRootVars(theme, { variant: 'default', radius: 'xl' });
+
+    expect(vars['--button-radius']).toBe('var(--mantine-radius-xl, var(--mantine-radius-md))');
+  });
 });

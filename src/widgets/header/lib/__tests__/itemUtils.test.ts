@@ -8,7 +8,9 @@ import {
   hasItemImg,
   isIconOnlyItem,
   isRenderableItem,
+  menuItemDataAttrs,
   resolveItemLabel,
+  resolveMenuItemTypeAttr,
 } from '@/widgets/header/lib/itemUtils';
 
 describe('isRenderableItem', () => {
@@ -46,6 +48,33 @@ describe('hasItemImg', () => {
   it('detects non-empty img', () => {
     expect(hasItemImg({ key: 'a', name: '', url: '', img: '/i.png' })).toBe(true);
     expect(hasItemImg({ key: 'a', name: '', url: '', img: '  ' })).toBe(false);
+  });
+});
+
+describe('resolveMenuItemTypeAttr', () => {
+  it('defaults to button when type is missing', () => {
+    expect(resolveMenuItemTypeAttr({ key: 'promo', name: 'Promo', url: '/' })).toBe('button');
+  });
+
+  it('returns link when type is link', () => {
+    expect(resolveMenuItemTypeAttr({ key: 'promo', name: 'Promo', url: '/', type: 'link' })).toBe(
+      'link',
+    );
+  });
+});
+
+describe('menuItemDataAttrs', () => {
+  it('adds data-menu-type for default menu items', () => {
+    expect(menuItemDataAttrs({ key: 'promo', name: 'Promo', url: '/', type: 'link' })).toEqual({
+      'data-menu-key': 'promo',
+      'data-menu-type': 'link',
+    });
+  });
+
+  it('omits data-menu-type for special blocks', () => {
+    expect(menuItemDataAttrs({ key: 'search', name: '', url: '' })).toEqual({
+      'data-menu-key': 'search',
+    });
   });
 });
 

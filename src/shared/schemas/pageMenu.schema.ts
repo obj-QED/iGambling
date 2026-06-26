@@ -8,6 +8,7 @@ export const pageMenuItemDtoSchema: z.ZodType<PageMenuItemDto> = z.lazy(() =>
     name: z.string(),
     url: z.string(),
     img: z.string().trim().min(1).optional(),
+    type: z.enum(['button', 'link']).optional(),
     items: z.array(pageMenuItemDtoSchema).min(1).optional(),
   }),
 );

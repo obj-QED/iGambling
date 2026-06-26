@@ -30,19 +30,24 @@ const MANTINE_STANDARD_VARIANTS = [
   'gradient',
 ] as const;
 
-const CMF_EXTRA_BUTTON_VARIANTS = ['hero', 'hero-light', 'hero-outline'] as const;
+const CMF_BUTTON_VARIANTS = ['hero', 'hero-light', 'hero-outline'] as const;
+
+const CMF_ACTION_ICON_HERO_VARIANTS = CMF_ACTION_ICON_VARIANTS.filter((variant) =>
+  variant.startsWith('hero'),
+);
+
+const MANTINE_ACTION_ICON_VARIANTS = CMF_ACTION_ICON_VARIANTS.filter(
+  (variant) => !variant.startsWith('hero'),
+);
 
 export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
   {
     type: 'variant',
     name: 'variant',
     label: 'Variant',
-    options: [
-      ...toOptions(MANTINE_STANDARD_VARIANTS),
-      ...toOptions(CMF_EXTRA_BUTTON_VARIANTS).map((option) => ({
-        ...option,
-        label: `CMF ${option.label}`,
-      })),
+    groups: [
+      { label: 'Mantine', options: toOptions(MANTINE_STANDARD_VARIANTS) },
+      { label: 'CMF', options: toOptions(CMF_BUTTON_VARIANTS) },
     ],
   },
   {
@@ -74,7 +79,13 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     type: 'variant',
     name: 'variant',
     label: 'Variant',
-    options: toOptions(CMF_ACTION_ICON_VARIANTS),
+    groups: [
+      {
+        label: 'Mantine',
+        options: toOptions(MANTINE_ACTION_ICON_VARIANTS),
+      },
+      { label: 'CMF', options: toOptions(CMF_ACTION_ICON_HERO_VARIANTS) },
+    ],
   },
   {
     type: 'color',
@@ -115,5 +126,13 @@ export const mantineDocsPlaygroundParameters = {
       'children',
       'aria-label',
     ],
+  },
+};
+
+/** Interactive playground — canvas only (`useArgs` does not work in Docs embed). */
+export const mantineCanvasPlaygroundParameters = {
+  ...mantineDocsPlaygroundParameters,
+  docs: {
+    disable: true,
   },
 };

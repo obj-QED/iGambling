@@ -49,7 +49,15 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ['Settings', 'Elements', 'Widgets', '*'],
+        order: [
+          'Settings',
+          'Elements',
+          ['Button', ['Playground', 'All Variants']],
+          ['ActionIcon', ['Playground', 'All Variants']],
+          'Widgets',
+          ['Header', ['AppHeader', 'Special Blocks', 'Menu Items']],
+          '*',
+        ],
       },
     },
   },

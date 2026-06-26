@@ -4,16 +4,20 @@ import { forwardRef } from 'react';
 
 import { ActionIcon, Button } from '@mantine/core';
 
-import { resolveButtonVariant } from '../../../lib/buttonVariant';
 import {
   hasItemImg,
   hasItemName,
   isIconOnlyItem,
   isRenderableItem,
+  menuItemDataAttrs,
   resolveItemLabel,
 } from '../../../lib/itemUtils';
+import {
+  resolveMenuItemActionIconVariant,
+  resolveMenuItemButtonVariant,
+} from '../../../lib/menuItemVariant';
 import { HEADER_MENU_ACTION_ICON_SIZE, HEADER_MENU_BUTTON_SIZE } from '../icons/iconProps';
-import { ItemIcon } from '../ItemIcon/ItemIcon';
+import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
 import styles from '../../../styles/menu/ItemMenuTrigger.module.scss';
 
@@ -34,32 +38,32 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
           {...rest}
           ref={ref}
           className={styles.actionIcon}
-          variant="default"
+          variant={resolveMenuItemActionIconVariant(item)}
           size={HEADER_MENU_ACTION_ICON_SIZE}
           aria-label={label}
           aria-haspopup="menu"
-          data-menu-key={item.key}
+          {...menuItemDataAttrs(item)}
         >
-          <ItemIcon src={item.img ?? ''} alt={label} />
+          <MenuItemImage item={item} alt={label} />
         </ActionIcon>
       );
     }
 
     const leftSection =
-      hasItemImg(item) === true ? <ItemIcon src={item.img ?? ''} alt={label} /> : undefined;
+      hasItemImg(item) === true ? <MenuItemImage item={item} alt={label} /> : undefined;
 
     return (
       <Button
         {...rest}
         ref={ref}
         className={styles.button}
-        variant={resolveButtonVariant(item.key)}
+        variant={resolveMenuItemButtonVariant(item)}
         size={HEADER_MENU_BUTTON_SIZE}
         leftSection={leftSection}
         rightSection={rightSection}
         aria-label={label}
         aria-haspopup="menu"
-        data-menu-key={item.key}
+        {...menuItemDataAttrs(item)}
       >
         {hasItemName(item) === true ? item.name.trim() : null}
       </Button>
