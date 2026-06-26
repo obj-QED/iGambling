@@ -51,8 +51,8 @@ export const themeComponents: MantineThemeComponents = {
     classNames: {
       root: classes.button,
     },
-    vars: (_, props) => ({
-      root: resolveButtonRootVars(props),
+    vars: (theme, props) => ({
+      root: resolveButtonRootVars(theme, props),
     }),
   }),
 
@@ -65,8 +65,8 @@ export const themeComponents: MantineThemeComponents = {
     classNames: {
       root: classes.actionIcon,
     },
-    vars: (_, props) => ({
-      root: resolveActionIconRootVars(props),
+    vars: (theme, props) => ({
+      root: resolveActionIconRootVars(theme, props),
     }),
   }),
 

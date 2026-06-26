@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Button, Group, Stack, Text, Title } from '@mantine/core';
+import { useArgs } from 'storybook/preview-api';
 
 import {
   CMF_BUTTON_SIZES,
@@ -12,13 +13,16 @@ import { cmfButtonScopeOverrideStyle } from '@/storybook/helpers/cmfScopeOverrid
 import {
   mantineBooleanArgType,
   mantineColorArgType,
-  mantinePlaygroundParameters,
   mantineRadiusArgType,
   mantineSizeArgType,
   mantineTextArgType,
   mantineVariantArgType,
 } from '@/storybook/helpers/mantineArgTypes';
-import { MantinePlayground } from '@/storybook/helpers/MantinePlayground';
+import {
+  BUTTON_DOCS_PLAYGROUND_FIELDS,
+  MantineDocsPlayground,
+  mantineDocsPlaygroundParameters,
+} from '@/storybook/helpers/MantineDocsPlayground';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
 
 const STATE_VARIANTS = [
@@ -66,12 +70,20 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  parameters: mantinePlaygroundParameters,
-  render: (args) => (
-    <MantinePlayground>
-      <Button {...args} />
-    </MantinePlayground>
-  ),
+  parameters: mantineDocsPlaygroundParameters,
+  render: function ButtonPlayground() {
+    const [args, updateArgs] = useArgs<typeof meta.args>();
+
+    return (
+      <MantineDocsPlayground
+        args={args}
+        fields={BUTTON_DOCS_PLAYGROUND_FIELDS}
+        onChange={updateArgs}
+      >
+        <Button {...args} />
+      </MantineDocsPlayground>
+    );
+  },
 };
 
 export const AllVariants: Story = {

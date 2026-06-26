@@ -1,3 +1,5 @@
+import type { MantineTheme } from '@mantine/core';
+
 import {
   cmfActionIconDisabledToken,
   cmfActionIconLoadingToken,
@@ -9,6 +11,10 @@ import {
   cmfActionIconVariantToken,
 } from './cmfActionIconVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from './gradientTokens';
+import {
+  type MantineVariantColorProps,
+  resolveMantineVariantColorVars,
+} from './mantineVariantColorVars';
 
 const MANTINE_ACTION_ICON_BORDER_TRANSPARENT =
   'calc(0.0625rem * var(--mantine-scale)) solid transparent';
@@ -172,14 +178,16 @@ function resolveActionIconVariantVars(variant: string | undefined): Record<strin
   };
 }
 
-type ActionIconVarsProps = {
+type ActionIconVarsProps = MantineVariantColorProps & {
   size?: unknown;
-  variant?: string;
   radius?: unknown;
 };
 
 /** Mantine theme `vars` — merged after varsResolver, overrides Mantine inline styles. */
-export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<string, string> {
+export function resolveActionIconRootVars(
+  theme: MantineTheme,
+  props: ActionIconVarsProps,
+): Record<string, string> {
   const radius =
     props.radius === undefined
       ? cmfActionIconToken('radius', 'var(--mantine-radius-md)')
@@ -187,9 +195,12 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
         ? `calc(${props.radius} / 16 * 1rem * var(--mantine-scale))`
         : `var(--mantine-radius-${String(props.radius)}, var(--mantine-radius-md))`;
 
-  return {
+  const base = {
     '--ai-size': resolveActionIconSize(props.size),
     '--ai-radius': radius,
     ...resolveActionIconVariantVars(props.variant),
   };
+  const colorVars = resolveMantineVariantColorVars(theme, props, 'ai');
+
+  return colorVars ? { ...base, ...colorVars } : base;
 }

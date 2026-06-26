@@ -25,6 +25,16 @@ export function createHeaderMenuFixture(): HeaderMenuModel {
   });
 }
 
+/** Empty menu when `header.mockMenu` is off (matches app without init/mock). */
+export function createEmptyHeaderMenuFixture(): HeaderMenuModel {
+  return mapRoot({
+    key: 'menuHeaderTop',
+    name: '',
+    url: '',
+    items: [],
+  });
+}
+
 export function findHeaderMenuItem(menu: HeaderMenuModel, key: string): HeaderMenuItem | undefined {
   for (const section of menu.sections) {
     const found = findInItems(section.items, key);

@@ -32,15 +32,7 @@ const preview: Preview = {
     withMantineColorScheme,
     (Story) => (
       <MemoryRouter>
-        <div
-          style={{
-            padding: 'var(--spacing-md, 1rem)',
-            background: 'var(--color-bg-body, #0f172a)',
-            minHeight: '100%',
-          }}
-        >
-          <Story />
-        </div>
+        <Story />
       </MemoryRouter>
     ),
   ],

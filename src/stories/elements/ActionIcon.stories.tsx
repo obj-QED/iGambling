@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ActionIcon, Group, Stack, Text, Title } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
+import { useArgs } from 'storybook/preview-api';
 
 import {
   CMF_ACTION_ICON_SIZES,
@@ -13,13 +14,16 @@ import { cmfActionIconScopeOverrideStyle } from '@/storybook/helpers/cmfScopeOve
 import {
   mantineBooleanArgType,
   mantineColorArgType,
-  mantinePlaygroundParameters,
   mantineRadiusArgType,
   mantineSizeArgType,
   mantineTextArgType,
   mantineVariantArgType,
 } from '@/storybook/helpers/mantineArgTypes';
-import { MantinePlayground } from '@/storybook/helpers/MantinePlayground';
+import {
+  ACTION_ICON_DOCS_PLAYGROUND_FIELDS,
+  MantineDocsPlayground,
+  mantineDocsPlaygroundParameters,
+} from '@/storybook/helpers/MantineDocsPlayground';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
 import { HEADER_MENU_ACTION_ICON_SIZE } from '@/widgets/header/ui/menu/icons/iconProps';
 
@@ -71,14 +75,22 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  parameters: mantinePlaygroundParameters,
-  render: (args) => (
-    <MantinePlayground>
-      <ActionIcon {...args}>
-        <DemoGlyph />
-      </ActionIcon>
-    </MantinePlayground>
-  ),
+  parameters: mantineDocsPlaygroundParameters,
+  render: function ActionIconPlayground() {
+    const [args, updateArgs] = useArgs<typeof meta.args>();
+
+    return (
+      <MantineDocsPlayground
+        args={args}
+        fields={ACTION_ICON_DOCS_PLAYGROUND_FIELDS}
+        onChange={updateArgs}
+      >
+        <ActionIcon {...args}>
+          <DemoGlyph />
+        </ActionIcon>
+      </MantineDocsPlayground>
+    );
+  },
 };
 
 export const AllVariants: Story = {

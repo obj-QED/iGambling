@@ -1,3 +1,4 @@
+import type { MantineTheme } from '@mantine/core';
 import type { CSSProperties } from 'react';
 
 import {
@@ -11,6 +12,10 @@ import {
   cmfButtonVariantToken,
 } from './cmfButtonVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from './gradientTokens';
+import {
+  type MantineVariantColorProps,
+  resolveMantineVariantColorVars,
+} from './mantineVariantColorVars';
 
 const MANTINE_BUTTON_BORDER = 'calc(0.0625rem * var(--mantine-scale)) solid var(--color-border)';
 const MANTINE_BUTTON_BORDER_TRANSPARENT =
@@ -230,20 +235,24 @@ function resolveButtonVariantVars(variant: string | undefined): Record<string, s
   };
 }
 
-type ButtonVarsProps = {
+type ButtonVarsProps = MantineVariantColorProps & {
   size?: unknown;
-  variant?: string;
   justify?: CSSProperties['justifyContent'];
 };
 
 /** Mantine theme `vars` — merged after varsResolver, overrides --mantine-* inline styles. */
-export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, string> {
+export function resolveButtonRootVars(
+  theme: MantineTheme,
+  props: ButtonVarsProps,
+): Record<string, string> {
   const size = resolveButtonSize(props.size);
-
-  return {
+  const base = {
     ...BUTTON_SIZE_VARS[size],
     '--button-radius': cmfButtonToken('radius', 'var(--mantine-radius-md)'),
     '--button-justify': cmfButtonToken('justify', String(props.justify ?? 'center')),
     ...resolveButtonVariantVars(props.variant),
   };
+  const colorVars = resolveMantineVariantColorVars(theme, props, 'button');
+
+  return colorVars ? { ...base, ...colorVars } : base;
 }
