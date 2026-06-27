@@ -13,13 +13,28 @@ describe('getHeaderMenuMock', () => {
     window.__SETTINGS__ = undefined;
   });
 
-  it('returns menu when header.mockMenu is enabled', () => {
-    const menu = getHeaderMenuMock();
+  it('returns authenticated menu when mockMenu is enabled', () => {
+    const menu = getHeaderMenuMock({ isAuthenticated: true });
 
     expect(menu?.sections).toHaveLength(2);
     expect(menu?.sections[0]?.key).toBe('block3');
     expect(menu?.sections[0]?.items.some((item) => item.key === 'logo')).toBe(true);
     expect(menu?.sections[1]?.items.some((item) => item.key === 'wallet')).toBe(true);
+  });
+
+  it('returns guest menu when not authenticated', () => {
+    const menu = getHeaderMenuMock({ isAuthenticated: false });
+
+    expect(menu?.sections[1]?.items.some((item) => item.key === 'sign_in')).toBe(true);
+    expect(menu?.sections[1]?.items.some((item) => item.key === 'sign_up')).toBe(true);
+    expect(menu?.sections[1]?.items.some((item) => item.key === 'wallet')).toBe(false);
+  });
+
+  it('uses header.mockAuth when isAuthenticated is omitted', () => {
+    window.__SETTINGS__ = { header: { mockMenu: true, mockAuth: 'guest' } };
+
+    const menu = getHeaderMenuMock();
+    expect(menu?.sections[1]?.items.some((item) => item.key === 'sign_in')).toBe(true);
   });
 
   it('returns null when mockMenu is disabled', () => {
@@ -38,16 +53,19 @@ describe('resolveHeaderMenu', () => {
   });
 
   it('prefers mock over init content when mockMenu is enabled', () => {
-    const menu = resolveHeaderMenu({
-      page: {
-        blocks: [
-          {
-            type: 'menuHeaderTop',
-            menu: [{ key: 'api-only', name: 'API', url: '/api' }],
-          },
-        ],
+    const menu = resolveHeaderMenu(
+      {
+        page: {
+          blocks: [
+            {
+              type: 'menuHeaderTop',
+              menu: [{ key: 'api-only', name: 'API', url: '/api' }],
+            },
+          ],
+        },
       },
-    });
+      { isAuthenticated: true },
+    );
 
     expect(menu?.sections[0]?.items.some((item) => item.key === 'logo')).toBe(true);
     expect(menu?.sections[0]?.items.some((item) => item.key === 'api-only')).toBe(false);

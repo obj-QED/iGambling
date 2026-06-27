@@ -15,7 +15,7 @@
       layout: 'container',
       type: 'default',
       /** `true` → header menu from `src/widgets/header/mocks` */
-      mockMenu: true,
+      mockMenu: false,
       customBlocks: [
         // Into existing API section row (no new section):
         //   { section: 'block3', at: 'start' | 'end' | 0 | 1 | … }

@@ -1,7 +1,9 @@
 import {
   HEADER_LAYOUT_KEYS,
+  HEADER_MOCK_AUTH_KEYS,
   HEADER_TYPE_KEYS,
   type HeaderLayoutKey,
+  type HeaderMockAuthKey,
   type HeaderTypeKey,
 } from '@/shared/config';
 
@@ -10,7 +12,7 @@ import { COLOR_SCHEME_CUSTOM_BLOCK } from './defaults';
 export type StorybookAppSettingsGlobals = {
   headerLayout: HeaderLayoutKey;
   headerType: HeaderTypeKey;
-  headerMockMenu: boolean;
+  headerAuth: HeaderMockAuthKey;
   headerColorSchemeSlot: boolean;
 };
 
@@ -35,15 +37,15 @@ export const STORYBOOK_APP_SETTINGS_GLOBAL_TYPES = {
       dynamicTitle: true,
     },
   },
-  headerMockMenu: {
-    name: 'Header mock menu',
-    description: '`window.__SETTINGS__.header.mockMenu` — use widgets/header mocks',
-    defaultValue: 'true',
+  headerAuth: {
+    name: 'Header session',
+    description: 'Authenticated vs guest header menu mock (`widgets/header/mocks`)',
+    defaultValue: 'authenticated' satisfies HeaderMockAuthKey,
     toolbar: {
-      icon: 'database',
+      icon: 'user',
       items: [
-        { value: 'true', title: 'Mock on' },
-        { value: 'false', title: 'Mock off' },
+        { value: 'authenticated', title: 'With token' },
+        { value: 'guest', title: 'Guest' },
       ],
       dynamicTitle: true,
     },
@@ -74,10 +76,14 @@ export function readStorybookAppSettingsGlobals(
     ? (globals.headerType as HeaderTypeKey)
     : 'default';
 
+  const headerAuth = HEADER_MOCK_AUTH_KEYS.includes(globals.headerAuth as HeaderMockAuthKey)
+    ? (globals.headerAuth as HeaderMockAuthKey)
+    : 'authenticated';
+
   return {
     headerLayout,
     headerType,
-    headerMockMenu: globals.headerMockMenu !== 'false',
+    headerAuth,
     headerColorSchemeSlot: globals.headerColorSchemeSlot !== 'false',
   };
 }
@@ -88,7 +94,8 @@ export function buildHeaderSettingsFromGlobals(globals: Record<string, unknown>)
   return {
     layout: parsed.headerLayout,
     type: parsed.headerType,
-    mockMenu: parsed.headerMockMenu,
+    mockMenu: true,
+    mockAuth: parsed.headerAuth,
     customBlocks: parsed.headerColorSchemeSlot ? [COLOR_SCHEME_CUSTOM_BLOCK] : [],
   };
 }

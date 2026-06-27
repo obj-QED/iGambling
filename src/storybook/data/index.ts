@@ -2,21 +2,15 @@
  * Storybook-only data entrypoints.
  * Do not import from app runtime — use fixtures here and pass props in stories.
  */
-import {
-  createEmptyHeaderMenuFixture,
-  createHeaderMenuFixture,
-} from '@/storybook/fixtures/headerMenu';
+import { createHeaderMenuFixture } from '@/storybook/fixtures/headerMenu';
 import { getHeaderMenuMock } from '@/widgets/header/mocks/getHeaderMenuMock';
 
 /**
- * Header menu for Storybook — respects `window.__SETTINGS__.header.mockMenu`
- * (set via toolbar + `withAppSettings` before each story).
+ * Header menu for Storybook — always from `widgets/header/mocks`;
+ * session variant via toolbar **Header session** → `header.mockAuth`.
  */
 export function createStorybookHeaderMenu() {
-  const mockMenu = getHeaderMenuMock();
-  if (mockMenu !== null) return mockMenu;
-
-  return createEmptyHeaderMenuFixture();
+  return getHeaderMenuMock() ?? createHeaderMenuFixture();
 }
 
 /** Explicit full mock fixture (toolbar-independent), e.g. isolated menu control demos. */

@@ -37,7 +37,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Runtime visual config from `window.__SETTINGS__`. Use the toolbar (Header layout, Header type, Mock menu, Color scheme slot) — values apply before each story.',
+          'Runtime visual config from `window.__SETTINGS__`. Use the toolbar (Header layout, Header type, Header session, Color scheme slot) — values apply before each story.',
       },
     },
   },

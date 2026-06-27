@@ -55,11 +55,20 @@ export type HeaderBlockVariantSettings = {
   bonus_box?: 'default';
 };
 
+export type HeaderMockAuthKey = 'authenticated' | 'guest';
+
+export const HEADER_MOCK_AUTH_KEYS = [
+  'authenticated',
+  'guest',
+] as const satisfies readonly HeaderMockAuthKey[];
+
 export type HeaderSettings = {
   layout?: HeaderLayoutKey;
   type?: HeaderTypeKey;
   /** Use `widgets/header/mocks` instead of init API menu. */
   mockMenu?: boolean;
+  /** Mock menu variant when `mockMenu` is true. App runtime prefers Redux auth when passed to `getHeaderMenuMock`. */
+  mockAuth?: HeaderMockAuthKey;
   /** @deprecated Prefer `customBlocks` */
   customBlock?: HeaderCustomBlockSettings;
   customBlocks?: HeaderCustomBlockSettings[];

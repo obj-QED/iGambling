@@ -84,7 +84,7 @@ Details: `.cursor/rules/header-architecture-guard.mdc`, `src/widgets/ARCHITECTUR
 | **Widgets/Header/Special Blocks** | search, wallet, color scheme                                         |
 | **Widgets/Header/Menu Items**     | default item renderers (stable fixtures)                             |
 
-Toolbar: **Mock menu**, **color scheme**, app settings via `src/storybook/settings/`.
+Toolbar: **Header session** (authenticated / guest), **color scheme**, app settings via `src/storybook/settings/`.
 
 Playground stories use `useArgs` and work only on the **Canvas** tab, not inside Docs embed.
 

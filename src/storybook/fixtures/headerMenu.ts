@@ -3,12 +3,12 @@ import type { HeaderMenuItem, HeaderMenuModel } from '@/widgets/header/types';
 
 import { parsePageMenuItemDto } from '@/shared/lib/pageMenu';
 import { mapRoot } from '@/widgets/header/lib/mapMenu';
-import { MENU_HEADER_TOP_MOCK } from '@/widgets/header/mocks/menuHeaderTop/menuHeaderTop.mock';
+import { MENU_HEADER_TOP_AUTHENTICATED_MOCK } from '@/widgets/header/mocks/menuHeaderTop/menuHeaderTop.authenticated.mock';
 
 function parseMockItems(): PageMenuItemDto[] {
   const items: PageMenuItemDto[] = [];
 
-  for (const entry of MENU_HEADER_TOP_MOCK.menu) {
+  for (const entry of MENU_HEADER_TOP_AUTHENTICATED_MOCK.menu) {
     const parsed = parsePageMenuItemDto(entry);
     if (parsed !== null) items.push(parsed);
   }

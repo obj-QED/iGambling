@@ -29,7 +29,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Full header shell from API/fixture menu. Toolbar **Mock on/off** toggles menu source. Special blocks and menu item primitives live in sibling stories.',
+          'Full header shell from API/fixture menu. Toolbar **Header session** toggles authenticated vs guest mock menu. Special blocks and menu item primitives live in sibling stories.',
       },
     },
   },

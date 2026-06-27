@@ -2,10 +2,13 @@ import type { HeaderMenuModel } from '@/widgets/header/types';
 
 import { useMemo } from 'react';
 
+import { useSelector } from 'react-redux';
+
 import { useInitData } from '@api/lobby/queries/useInitData';
 
 import { getSettings } from '@/shared/config';
 import { getInitialPath } from '@/shared/lib/routing';
+import { selectIsAuthenticated } from '@/store/slices/authSlice';
 import { type AppBannerModel, extractBannerFromInit } from '@/widgets/banner';
 import { type HeaderConfig, resolveHeaderConfig } from '@/widgets/header';
 
@@ -23,10 +26,11 @@ export type UseAppLayoutResult = {
 
 export function useAppLayout(language: string, page = getInitialPath()): UseAppLayoutResult {
   const { init } = useInitData(language, page);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const headerMenu = useMemo(() => {
-    return resolveHeaderMenu(init.content);
-  }, [init.content]);
+    return resolveHeaderMenu(init.content, { isAuthenticated });
+  }, [init.content, isAuthenticated]);
 
   const footerMenu = useMemo(() => {
     if (init.content === undefined) return null;
