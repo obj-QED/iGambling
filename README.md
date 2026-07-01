@@ -98,7 +98,7 @@ On push to `main`: Storybook build → **GitHub Pages** (job `storybook-pages` i
 
 ## Theme
 
-Source of truth: `src/assets/theme/theme.scss` → CSS variables → `src/assets/theme/mantine/mantineTheme.ts` (thin Mantine bridge).
+Source of truth: `src/assets/theme/tokens/theme.scss` → CSS variables → `src/assets/theme/mantine/theme/mantineTheme.ts` (thin Mantine bridge).
 
 CMF tokens for Button / ActionIcon: `src/assets/theme/tokens/`, `src/assets/theme/mantine/*`.
 

@@ -5,6 +5,8 @@
 @use 'assets/styles/global';
 @use 'assets/styles/fonts';
 @use 'assets/theme/tokens/theme';
-@use 'assets/theme/mantine/button-states';
-@use 'assets/theme/mantine/action-icon-states';
-@use 'assets/theme/mantine/menu-states';
+@use 'assets/theme/mantine/styles/button-states';
+@use 'assets/theme/mantine/styles/action-icon-states';
+@use 'assets/theme/mantine/styles/menu-states';
+@use 'assets/theme/tokens/global/cmf-icon-component-context';
+@use 'assets/theme/tokens/global/cmf-control-icon';

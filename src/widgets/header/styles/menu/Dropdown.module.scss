@@ -1,11 +1,5 @@
-@use 'assets/theme/tokens/cmf-button-tokens' as cmf-button;
-
 @layer widget.menu {
   .dropdown {
     z-index: var(--z-index-dropdown, 200);
-
-    &[data-cmf-menu-scope='header'] {
-      @include cmf-button.cmf-button-scope-bridge('header-dropdown');
-    }
   }
 }

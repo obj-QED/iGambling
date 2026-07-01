@@ -1,0 +1,7 @@
+@use 'menu.tokens'as menu;
+@use 'widget.tokens'as widget;
+
+@mixin sidebar-root-tokens {
+  @include menu.sidebar-menu-tokens('md');
+  @include widget.sidebar-widget-tokens;
+}

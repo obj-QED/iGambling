@@ -1,0 +1,53 @@
+// CMF Button cascade mixins — priority (high → low):
+//   1. --cmf-{component}-{key}-button-*     (key + location)
+//   2. --cmf-{component}-button-*           (component)
+//   3. --cmf-button-*                       (:root global)
+//   4. Mantine fallbacks                    (buttonVars.ts)
+
+@use 'assets/theme/tokens/global/cmf-button-config'as *;
+
+@mixin cmf-button-component-cascade($component) {
+  @each $variant in $cmf-button-variants {
+    @each $prop in $cmf-button-variant-props {
+      --cmf-button-#{$variant}-#{$prop}: var(--cmf-#{$component}-button-#{$variant}-#{$prop},
+        var(--cmf-button-#{$variant}-#{$prop}));
+    }
+  }
+
+  @each $prop in $cmf-button-shared-props {
+    --cmf-button-#{$prop}: var(--cmf-#{$component}-button-#{$prop}, var(--cmf-button-#{$prop}));
+  }
+
+  @each $size in $cmf-button-sizes {
+    @each $prop in $cmf-button-size-props {
+      --cmf-button-#{$size}-#{$prop}: var(--cmf-#{$component}-button-#{$size}-#{$prop},
+        var(--cmf-button-#{$prop}, var(--cmf-button-#{$size}-#{$prop})));
+    }
+  }
+}
+
+@mixin cmf-button-key-cascade($component, $key) {
+  @each $variant in $cmf-button-variants {
+    @each $prop in $cmf-button-variant-props {
+      --cmf-button-#{$variant}-#{$prop}: var(--cmf-#{$component}-#{$key}-button-#{$variant}-#{$prop},
+        var(--cmf-#{$component}-button-#{$variant}-#{$prop}));
+    }
+  }
+
+  @each $prop in $cmf-button-shared-props {
+    --cmf-button-#{$prop}: var(--cmf-#{$component}-#{$key}-button-#{$prop},
+      var(--cmf-#{$component}-button-#{$prop}));
+  }
+
+  @each $size in $cmf-button-sizes {
+    @each $prop in $cmf-button-size-props {
+      --cmf-button-#{$size}-#{$prop}: var(--cmf-#{$component}-#{$key}-button-#{$size}-#{$prop},
+        var(--cmf-#{$component}-button-#{$size}-#{$prop}));
+    }
+  }
+}
+
+/** @deprecated Use `cmf-button-component-cascade` — `$key` was a component location id. */
+@mixin cmf-button-scope-bridge($component) {
+  @include cmf-button-component-cascade($component);
+}

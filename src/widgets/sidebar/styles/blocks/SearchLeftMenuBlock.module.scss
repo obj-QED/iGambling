@@ -1,0 +1,13 @@
+@layer widget.base {
+  .root {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .input {
+    width: 100%;
+    pointer-events: none;
+  }
+}

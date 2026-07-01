@@ -1,5 +1,5 @@
 // Button / ActionIcon state visuals: gradient via theme classNames; disabled/loading via cmf-* static classes.
-@use './gradient-variant-states' as gradient;
+@use './gradient-variant-states'as gradient;
 
 .button {
   font-family: var(--font-family-base);
@@ -20,6 +20,7 @@
   gap: var(--spacing-xs);
   padding: var(--spacing-xs);
   min-width: 12rem;
+  background: var(--cmf-menu-dropdown-bg, var(--mantine-color-body));
 }
 
 .menuItem {
@@ -30,9 +31,9 @@
   min-height: var(--cmf-button-sm-height, 2.25rem);
   padding-inline: var(--spacing-md);
   border-radius: var(--cmf-button-radius, var(--radius-md));
-  background: var(--cmf-button-default-bg);
+  background: var(--cmf-menu-item-bg, var(--cmf-button-default-bg));
   border: var(--cmf-button-default-bd);
-  color: var(--cmf-button-default-color);
+  color: var(--cmf-menu-item-color, var(--cmf-button-default-color));
 }
 
 .menuItemLabel {
@@ -42,9 +43,9 @@
 
 .heading {
   font-family: var(--font-family-headings);
-  font-weight: var(--heading-font-weight);
-  line-height: var(--heading-line-height);
-  color: var(--heading-color);
+  font-weight: var(--cmf-title-fw, var(--heading-font-weight));
+  line-height: var(--cmf-title-lh, var(--heading-line-height));
+  color: var(--cmf-title-color, var(--heading-color));
 
   &:is(h1) {
     font-size: var(--h1-font-size);

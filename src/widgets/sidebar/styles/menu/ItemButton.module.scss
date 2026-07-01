@@ -1,0 +1,22 @@
+@layer widget.menu {
+  .root {
+    @include aside-menu-control-height;
+  }
+
+  .dropdownTrigger {
+    :global(.cmf-Button-inner) {
+      width: 100%;
+      min-width: 0;
+    }
+
+    :global(.cmf-Button-label) {
+      flex: 1 1 auto;
+      min-width: 0;
+      text-align: start;
+    }
+
+    :global(.cmf-Button-section[data-position='right']) {
+      margin-inline-start: auto;
+    }
+  }
+}

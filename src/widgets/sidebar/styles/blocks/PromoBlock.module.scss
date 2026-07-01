@@ -1,0 +1,10 @@
+@layer widget.blocks {
+  .root {
+    @include aside-special-block-surface;
+  }
+
+  .label {
+    font-size: var(--font-size-sm, 0.875rem);
+    line-height: 1.2;
+  }
+}

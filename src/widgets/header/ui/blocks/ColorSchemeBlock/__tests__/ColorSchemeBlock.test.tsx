@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { mantineTheme } from '@/assets/theme/mantine/mantineTheme';
+import { mantineTheme } from '@/assets/theme';
 import { ColorSchemeBlock } from '@/widgets/header/ui/blocks/ColorSchemeBlock/ColorSchemeBlock';
 
 beforeAll(() => {

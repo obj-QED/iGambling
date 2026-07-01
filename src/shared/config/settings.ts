@@ -1,5 +1,7 @@
+import type { AsideSettings } from './asideSettings';
 import type { HeaderSettings } from './headerSettings';
 
+export type { AsideSettings } from './asideSettings';
 export type { HeaderSettings } from './headerSettings';
 
 export type AppParams = {
@@ -20,6 +22,7 @@ export type AppSettings = {
    */
   lobbyToken?: string;
   header?: HeaderSettings;
+  aside?: AsideSettings;
 };
 
 declare global {

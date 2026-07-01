@@ -1,6 +1,5 @@
 import type { HeaderMenuItem } from '../types';
-import type { CmfActionIconVariant } from '@/assets/theme/mantine/cmfActionIconVars';
-import type { CmfButtonVariant } from '@/assets/theme/mantine/cmfButtonVars';
+import type { CmfActionIconVariant, CmfButtonVariant } from '@/assets/theme';
 
 import { resolveButtonVariant } from './buttonVariant';
 import { isSpecialBlockKey } from './itemUtils';

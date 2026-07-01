@@ -1,10 +1,13 @@
-/* Design tokens — single source of truth for colors, spacing, radii, typography. */
+/* Design tokens — global + widget brand files. */
 
-@use 'assets/theme/mantine/brand-palette' as brand;
-@use 'assets/theme/tokens/cmf-button-tokens' as cmf-button;
-@use 'assets/theme/tokens/cmf-action-icon-tokens' as cmf-action-icon;
-@use 'assets/theme/tokens/header-tokens' as header;
-@forward 'assets/theme/tokens/cmf-button-tokens';
+@use 'assets/theme/mantine/brand/brand-palette'as brand;
+@use 'assets/theme/tokens/global/cmf-button-tokens'as cmf-button;
+@use 'assets/theme/tokens/global/cmf-action-icon-tokens'as cmf-action-icon;
+@use 'assets/theme/tokens/global/cmf-icon-tokens'as cmf-icon;
+@use 'assets/theme/tokens/global/cmf-mantine-base-tokens'as cmf-mantine-base;
+@use 'assets/theme/tokens/widgets/header/tokens'as header;
+@use 'assets/theme/tokens/widgets/sidebar/tokens'as sidebar;
+@forward 'assets/theme/tokens/global/cmf-button-tokens';
 
 @layer base {
   :root {
@@ -60,7 +63,10 @@
 
     @include cmf-button.root-tokens;
     @include cmf-action-icon.action-icon-root-tokens;
+    @include cmf-icon.root-tokens;
+    @include cmf-mantine-base.root-tokens;
     @include header.header-root-tokens;
+    @include sidebar.sidebar-root-tokens;
   }
 
   [data-theme='dark'],
@@ -69,14 +75,12 @@
 
     --color-bg-body: #0f172a;
     --color-text: #f8fafc;
-    --color-text-muted: #94a3b8;
+    --color-text-muted: #6b6b6b;
     --color-border: #1e293b;
 
-    --app-gradient-default-hover: linear-gradient(
-      45deg,
-      var(--mantine-color-brand-5) 0%,
-      var(--mantine-color-brand-7) 100%
-    );
+    --app-gradient-default-hover: linear-gradient(45deg,
+        var(--mantine-color-brand-5) 0%,
+        var(--mantine-color-brand-7) 100%);
   }
 
   [data-theme='light'],
@@ -88,10 +92,8 @@
     --color-text-muted: #64748b;
     --color-border: #e2e8f0;
 
-    --app-gradient-default-hover: linear-gradient(
-      45deg,
-      var(--mantine-color-brand-5) 0%,
-      var(--mantine-color-brand-7) 100%
-    );
+    --app-gradient-default-hover: linear-gradient(45deg,
+        var(--mantine-color-brand-5) 0%,
+        var(--mantine-color-brand-7) 100%);
   }
 }

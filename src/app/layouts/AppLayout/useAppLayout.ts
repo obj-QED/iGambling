@@ -1,4 +1,5 @@
 import type { HeaderMenuModel } from '@/widgets/header/types';
+import type { SidebarConfig } from '@/widgets/sidebar';
 
 import { useMemo } from 'react';
 
@@ -11,15 +12,18 @@ import { getInitialPath } from '@/shared/lib/routing';
 import { selectIsAuthenticated } from '@/store/slices/authSlice';
 import { type AppBannerModel, extractBannerFromInit } from '@/widgets/banner';
 import { type HeaderConfig, resolveHeaderConfig } from '@/widgets/header';
+import { resolveSidebarConfig } from '@/widgets/sidebar';
 
 import { extractPageMenuFromInit } from '../lib/extractPageMenuFromInit';
 import { resolveHeaderMenu } from '../lib/resolveHeaderMenu';
+import { resolveSidebarMenu } from '../lib/resolveSidebarMenu';
 
 export type UseAppLayoutResult = {
   headerMenu: HeaderMenuModel | null;
   headerConfig: HeaderConfig;
   footerMenu: HeaderMenuModel | null;
   sidebarMenu: HeaderMenuModel | null;
+  sidebarConfig: SidebarConfig;
   banner: AppBannerModel | null;
   isReady: boolean;
 };
@@ -38,8 +42,7 @@ export function useAppLayout(language: string, page = getInitialPath()): UseAppL
   }, [init.content]);
 
   const sidebarMenu = useMemo(() => {
-    if (init.content === undefined) return null;
-    return extractPageMenuFromInit(init.content, 'left', 'flat');
+    return resolveSidebarMenu(init.content);
   }, [init.content]);
 
   const banner = useMemo(() => {
@@ -48,12 +51,14 @@ export function useAppLayout(language: string, page = getInitialPath()): UseAppL
   }, [init.content]);
 
   const headerConfig = useMemo(() => resolveHeaderConfig(getSettings()), []);
+  const sidebarConfig = useMemo(() => resolveSidebarConfig(getSettings()), []);
 
   return {
     headerMenu,
     headerConfig,
     footerMenu,
     sidebarMenu,
+    sidebarConfig,
     banner,
     isReady: init.query.status === 'success',
   };

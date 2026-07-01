@@ -1,68 +1,82 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
 
 import { isHeaderSpecialBlockKey } from '@/shared/config/headerSpecialBlockKeys';
+import { cmfScopeAttrs } from '@/shared/lib/cmf/cmfScopeAttrs';
 
 import { HEADER_CONFIG_ONLY_BLOCK_KEYS } from '../types/items.types';
 
 const CONFIG_ONLY_BLOCK_KEY_SET = new Set<string>(HEADER_CONFIG_ONLY_BLOCK_KEYS);
 
-export function isSpecialBlockKey(key: string): boolean {
-  return isHeaderSpecialBlockKey(key);
+function itemName(item: HeaderMenuItem): string {
+  return item.name ?? '';
 }
 
-export function isConfigOnlyBlockKey(key: string): boolean {
-  return CONFIG_ONLY_BLOCK_KEY_SET.has(key);
+function itemImg(item: HeaderMenuItem): string {
+  return item.img ?? '';
+}
+
+function itemKey(item: HeaderMenuItem): string {
+  return item.key ?? '';
+}
+
+export function isSpecialBlockKey(key: string | undefined): boolean {
+  return isHeaderSpecialBlockKey(key ?? '');
+}
+
+export function isConfigOnlyBlockKey(key: string | undefined): boolean {
+  return CONFIG_ONLY_BLOCK_KEY_SET.has(key ?? '');
 }
 
 export function isRenderableItem(item: HeaderMenuItem): boolean {
   if (isConfigOnlyBlockKey(item.key)) return true;
 
-  const hasName = item.name.trim().length > 0;
-  const hasImg = (item.img?.trim().length ?? 0) > 0;
-  return hasName || hasImg;
+  return itemName(item).length > 0 || itemImg(item).length > 0;
 }
 
 export function isIconOnlyItem(item: HeaderMenuItem): boolean {
-  return item.name.trim().length === 0 && (item.img?.trim().length ?? 0) > 0;
+  return itemName(item).length === 0 && itemImg(item).length > 0;
 }
 
 export function hasItemName(item: HeaderMenuItem): boolean {
-  return item.name.trim().length > 0;
+  return itemName(item).length > 0;
 }
 
 export function hasItemImg(item: HeaderMenuItem): boolean {
-  return (item.img?.trim().length ?? 0) > 0;
+  return itemImg(item).length > 0;
 }
 
 export function resolveItemLabel(item: HeaderMenuItem): string {
-  const name = item.name.trim();
+  const name = itemName(item);
   if (name.length > 0) return name;
-  return item.key;
+  return itemKey(item);
 }
 
-export function resolveItemHref(url: string): string {
-  const trimmed = url.trim();
-  if (trimmed.length === 0) return '';
-  if (/^https?:\/\//i.test(trimmed)) return trimmed;
-  if (trimmed.startsWith('/') || trimmed.startsWith('#')) return trimmed;
-  return `/${trimmed.replace(/^\//, '')}`;
-}
+export { resolveItemHref } from '@/shared/lib';
 
-/** Resolved menu item type for `data-menu-type` — defaults to `button` when absent. */
-export function resolveMenuItemTypeAttr(item: HeaderMenuItem): 'button' | 'link' {
+export const HEADER_CMF_COMPONENT = 'header';
+
+export function resolveMenuItemTypeAttr(item: HeaderMenuItem): string {
   return item.type ?? 'button';
 }
 
 export function menuItemDataAttrs(item: HeaderMenuItem): {
+  'data-cmf-component': typeof HEADER_CMF_COMPONENT;
+  'data-cmf-key': string;
   'data-menu-key': string;
-  'data-menu-type'?: 'button' | 'link';
+  'data-menu-type'?: string;
 } {
+  const key = itemKey(item);
+  const scope = {
+    ...cmfScopeAttrs(HEADER_CMF_COMPONENT, key),
+    'data-menu-key': key,
+  };
+
   if (isSpecialBlockKey(item.key)) {
-    return { 'data-menu-key': item.key };
+    return scope;
   }
 
   return {
-    'data-menu-key': item.key,
+    ...scope,
     'data-menu-type': resolveMenuItemTypeAttr(item),
   };
 }

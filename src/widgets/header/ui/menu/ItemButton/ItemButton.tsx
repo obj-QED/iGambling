@@ -4,8 +4,11 @@ import { memo } from 'react';
 
 import { Button } from '@mantine/core';
 
+import { isValidAppHref } from '@/shared/lib';
 import { AppLink } from '@/shared/ui';
 
+import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
+import { resolveHeaderMenuButtonSize } from '../../../lib/headerMenuSize';
 import {
   hasItemImg,
   hasItemName,
@@ -14,7 +17,6 @@ import {
   resolveItemLabel,
 } from '../../../lib/itemUtils';
 import { resolveMenuItemButtonVariant } from '../../../lib/menuItemVariant';
-import { HEADER_MENU_BUTTON_SIZE } from '../icons/iconProps';
 import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
 import styles from '../../../styles/menu/ItemButton.module.scss';
@@ -25,24 +27,35 @@ type ItemButtonProps = {
 };
 
 function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
+  const menuSizes = useHeaderMenuSizes();
   const href = resolveItemHref(item.url);
+  const hrefDisabled = isValidAppHref(href) === false;
   const label = resolveItemLabel(item);
   const variant = resolveMenuItemButtonVariant(item);
+  const size = resolveHeaderMenuButtonSize(item, menuSizes);
   const leftSection =
     hasItemImg(item) === true ? <MenuItemImage item={item} alt={label} /> : undefined;
 
+  const sharedProps = {
+    className: styles.root,
+    variant,
+    size,
+    leftSection,
+    rightSection,
+    ...menuItemDataAttrs(item),
+  };
+
+  if (hrefDisabled) {
+    return (
+      <Button disabled {...sharedProps}>
+        {hasItemName(item) === true ? item.name : null}
+      </Button>
+    );
+  }
+
   return (
-    <Button
-      className={styles.root}
-      component={AppLink}
-      href={href}
-      variant={variant}
-      size={HEADER_MENU_BUTTON_SIZE}
-      leftSection={leftSection}
-      rightSection={rightSection}
-      {...menuItemDataAttrs(item)}
-    >
-      {hasItemName(item) === true ? item.name.trim() : null}
+    <Button component={AppLink} href={href} {...sharedProps}>
+      {hasItemName(item) === true ? item.name : null}
     </Button>
   );
 }

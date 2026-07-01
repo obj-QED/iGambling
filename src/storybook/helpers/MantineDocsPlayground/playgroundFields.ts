@@ -1,10 +1,6 @@
 import type { DocsPlaygroundField, DocsPlaygroundOption } from './types';
 
-import {
-  CMF_ACTION_ICON_SIZES,
-  CMF_ACTION_ICON_VARIANTS,
-} from '@/assets/theme/mantine/cmfActionIconVars';
-import { CMF_BUTTON_SIZES } from '@/assets/theme/mantine/cmfButtonVars';
+import { CMF_ACTION_ICON_SIZES, CMF_ACTION_ICON_VARIANTS, CMF_BUTTON_SIZES } from '@/assets/theme';
 
 import { MANTINE_RADIUS_OPTIONS, MANTINE_THEME_COLORS } from '../mantineArgTypes';
 

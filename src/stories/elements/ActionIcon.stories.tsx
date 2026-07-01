@@ -4,10 +4,7 @@ import { ActionIcon } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useArgs } from 'storybook/preview-api';
 
-import {
-  CMF_ACTION_ICON_SIZES,
-  CMF_ACTION_ICON_VARIANTS,
-} from '@/assets/theme/mantine/cmfActionIconVars';
+import { CMF_ACTION_ICON_SIZES, CMF_ACTION_ICON_VARIANTS } from '@/assets/theme';
 import {
   elementDocsPreviewParameters,
   elementPlaygroundParameters,

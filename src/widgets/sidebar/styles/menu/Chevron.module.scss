@@ -1,0 +1,9 @@
+@layer widget.menu {
+  .root {
+    width: var(--aside-menu-chevron-size, var(--mantine-font-size-xs, 0.75rem));
+    height: var(--aside-menu-chevron-size, var(--mantine-font-size-xs, 0.75rem));
+    flex-shrink: 0;
+
+    @include aside-chevron-rotate;
+  }
+}

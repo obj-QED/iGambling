@@ -1,0 +1,7 @@
+@layer widget.base {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--aside-section-gap, var(--spacing-xxs, 0.25rem));
+  }
+}

@@ -1,0 +1,26 @@
+@layer widget.base {
+  .root {
+    display: flex;
+    flex-direction: column;
+    width: var(--app-layout-sidebar-width, 400px);
+    flex-shrink: 0;
+    height: var(--aside-shell-height, 100vh);
+    max-height: var(--aside-shell-max-height, 100vh);
+    min-height: 0;
+    overflow: hidden;
+    padding: var(--aside-shell-padding, 0.5rem);
+
+    @media (max-width: $tablet) {
+      width: 100%;
+    }
+  }
+
+  .scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+
+    @include cmf-scrollbar('aside-scrollbar');
+  }
+}

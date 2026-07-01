@@ -1,0 +1,35 @@
+/**
+ * Sidebar menu rows — Button `type: link` (transparent) / `type: button` (outline).
+ * CMF layer 2: `--cmf-sidebar-button-*`
+ *
+ * Size: SCSS mixin arg `$size` at compile time (not from `--aside-size-button` at runtime).
+ */
+
+@mixin sidebar-menu-size($size: 'md') {
+  --aside-size-button: #{$size};
+}
+
+@mixin sidebar-menu-tokens($size: 'md') {
+  @include sidebar-menu-size($size);
+
+  --cmf-sidebar-button-transparent-bg: transparent;
+  --cmf-sidebar-button-transparent-color: var(--mantine-color-text);
+  --cmf-sidebar-button-transparent-hover: color-mix(
+    in srgb,
+    var(--mantine-color-text) 10%,
+    transparent
+  );
+  --cmf-sidebar-button-transparent-hover-color: var(--mantine-color-text);
+  --cmf-sidebar-button-transparent-disabled-color: var(--mantine-color-dimmed);
+  --cmf-sidebar-button-transparent-disabled-bg: color-mix(
+    in srgb,
+    var(--mantine-color-text) 4%,
+    transparent
+  );
+
+  --cmf-sidebar-button-outline-bg: var(--cmf-button-outline-bg);
+  --cmf-sidebar-button-outline-bd: var(--cmf-button-outline-bd);
+  --cmf-sidebar-button-outline-color: var(--cmf-button-outline-color);
+  --cmf-sidebar-button-outline-hover: var(--cmf-button-outline-hover);
+  --cmf-sidebar-button-outline-hover-color: var(--cmf-button-outline-hover-color);
+}

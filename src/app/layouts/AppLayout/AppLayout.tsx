@@ -19,12 +19,15 @@ import styles from './AppLayout.module.scss';
 function AppLayoutComponent() {
   const language = useLanguage();
   const isMobile = useIsMobile();
-  const { headerMenu, headerConfig, footerMenu, sidebarMenu, banner } = useAppLayout(language);
+  const { headerMenu, headerConfig, footerMenu, sidebarMenu, sidebarConfig, banner } =
+    useAppLayout(language);
   const pageLayout = resolvePageLayoutFromMatches(useMatches() as unknown as PageLayoutMatch[]);
 
   return (
     <div className={styles.root}>
-      {sidebarMenu && !isMobile ? <AppSidebar menu={sidebarMenu} className={styles.aside} /> : null}
+      {!isMobile ? (
+        <AppSidebar menu={sidebarMenu} config={sidebarConfig} className={styles.aside} />
+      ) : null}
 
       <div className={styles.content}>
         {headerMenu ? (

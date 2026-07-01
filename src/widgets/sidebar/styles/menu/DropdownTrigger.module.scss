@@ -1,0 +1,13 @@
+@layer widget.menu {
+  .root {
+    @include aside-menu-row-layout;
+  }
+
+  .label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

@@ -1,3 +1,5 @@
+export type { AsideSettings, AsideTypeKey } from './asideSettings';
+export { ASIDE_TYPE_KEYS } from './asideSettings';
 export type {
   HeaderBlockVariantSettings,
   HeaderCustomBlockConfig,

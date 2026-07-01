@@ -12,7 +12,11 @@ export function scssAdditionalData(content: string, filename: string): string {
   const isHeaderStyles =
     normalized.includes('/widgets/header/styles/') &&
     !normalized.endsWith('/widgets/header/styles/_mixins.scss');
+  const isSidebarStyles =
+    normalized.includes('/widgets/sidebar/styles/') &&
+    !normalized.endsWith('/widgets/sidebar/styles/_mixins.scss');
   const headerMixins = isHeaderStyles ? `@use "widgets/header/styles/mixins" as *; ` : '';
+  const sidebarMixins = isSidebarStyles ? `@use "widgets/sidebar/styles/mixins" as *; ` : '';
 
-  return `${scssGlobalPreamble} ${headerMixins}${content}`;
+  return `${scssGlobalPreamble} ${headerMixins}${sidebarMixins}${content}`;
 }

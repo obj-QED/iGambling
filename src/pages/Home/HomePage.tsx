@@ -1,4 +1,4 @@
-import { type CSSProperties, memo } from 'react';
+import { memo } from 'react';
 
 import {
   ActionIcon,
@@ -59,32 +59,6 @@ const INVALID_LINK_SAMPLES = [
   { href: '//evil.example', label: 'protocol-relative' },
   { href: '/#', label: 'root-hash' },
 ] as const;
-
-/** Demo: section override — brand palette, slightly shifted vs :root defaults. */
-const cmfBrandOverrideStyle = {
-  '--cmf-button-filled-bg': 'var(--mantine-color-brand-5)',
-  '--cmf-button-filled-color': '#fff',
-  '--cmf-button-filled-hover': 'var(--mantine-color-brand-4)',
-  '--cmf-button-filled-hover-color': '#fff',
-  '--cmf-button-outline-bg': 'transparent',
-  '--cmf-button-outline-color': 'var(--mantine-color-brand-2)',
-  '--cmf-button-outline-bd': '1px solid var(--mantine-color-brand-3)',
-  '--cmf-button-outline-hover': 'color-mix(in srgb, var(--mantine-color-brand-4) 12%, transparent)',
-  '--cmf-button-outline-hover-color': 'var(--mantine-color-brand-1)',
-} as CSSProperties;
-
-const cmfActionIconOverrideStyle = {
-  '--cmf-action-icon-filled-bg': 'var(--mantine-color-brand-5)',
-  '--cmf-action-icon-filled-color': '#fff',
-  '--cmf-action-icon-filled-hover': 'var(--mantine-color-brand-4)',
-  '--cmf-action-icon-filled-hover-color': '#fff',
-  '--cmf-action-icon-outline-bg': 'transparent',
-  '--cmf-action-icon-outline-color': 'var(--mantine-color-brand-2)',
-  '--cmf-action-icon-outline-bd': '1px solid var(--mantine-color-brand-3)',
-  '--cmf-action-icon-outline-hover':
-    'color-mix(in srgb, var(--mantine-color-brand-4) 12%, transparent)',
-  '--cmf-action-icon-outline-hover-color': 'var(--mantine-color-brand-1)',
-} as CSSProperties;
 
 const BRAND_SHADE_INDICES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 
@@ -196,8 +170,8 @@ function HomePageComponent() {
           </Group>
         </Stack>
 
-        <Stack gap="xs" style={cmfBrandOverrideStyle}>
-          <Title order={5}>CMF override: --cmf-button-filled-* / outline-*</Title>
+        <Stack gap="xs">
+          <Title order={5}>Brand CMF filled / outline (:root — header, aside, pages)</Title>
           <Group gap="sm">
             <Button variant="filled">filled</Button>
             <Button variant="outline">outline</Button>
@@ -265,8 +239,8 @@ function HomePageComponent() {
           </Group>
         </Stack>
 
-        <Stack gap="xs" style={cmfActionIconOverrideStyle}>
-          <Title order={5}>CMF override: --cmf-action-icon-filled-* / outline-*</Title>
+        <Stack gap="xs">
+          <Title order={5}>Brand CMF filled / outline (:root)</Title>
           <Group gap="sm">
             <ActionIcon variant="filled" aria-label="filled">
               <DemoIconGlyph />

@@ -1,1 +1,6 @@
-export { type AppHrefKind, getAppHrefKind, isValidAppHref } from './resolveAppHref';
+export {
+  type AppHrefKind,
+  getAppHrefKind,
+  isValidAppHref,
+  resolveItemHref,
+} from './resolveAppHref';

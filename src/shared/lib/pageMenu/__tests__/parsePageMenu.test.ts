@@ -28,9 +28,11 @@ describe('parsePageMenuItemDto (Zod boundary)', () => {
       name: 'CTA',
       type: 'button',
     });
+  });
 
+  it('passes through unknown menu item type', () => {
     expect(parsePageMenuItemDto({ key: 'bad', url: '/', name: 'Bad', type: 'modal' })?.type).toBe(
-      undefined,
+      'modal',
     );
   });
 
@@ -44,13 +46,36 @@ describe('parsePageMenuItemDto (Zod boundary)', () => {
     );
   });
 
+  it('cleans empty api fields before coerce', () => {
+    expect(
+      parsePageMenuItemDto({
+        key: 'promo',
+        name: 'Promo',
+        url: '/promo',
+        img: '',
+        items: [],
+        meta: {},
+        type: undefined,
+      }),
+    ).toEqual({
+      key: 'promo',
+      name: 'Promo',
+      url: '/promo',
+      type: undefined,
+    });
+  });
+
   it('rejects non-object', () => {
     expect(parsePageMenuItemDto(null)).toBeNull();
     expect(parsePageMenuItemDto('search')).toBeNull();
   });
 
+  it('accepts whitespace-only key from backend', () => {
+    expect(parsePageMenuItemDto({ key: '  ', name: 'x', url: '' })?.key).toBe('  ');
+  });
+
   it('rejects empty key', () => {
-    expect(parsePageMenuItemDto({ key: '  ', name: 'x' })).toBeNull();
+    expect(parsePageMenuItemDto({ key: '', name: 'x' })).toBeNull();
     expect(parsePageMenuItemDto({ key: 123, name: 'x' })).toBeNull();
   });
 

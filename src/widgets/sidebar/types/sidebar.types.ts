@@ -1,6 +1,3 @@
-import type { HeaderMenuModel } from '@/widgets/header';
+import type { RootProps } from './props.types';
 
-export type AppSidebarProps = {
-  menu: HeaderMenuModel;
-  className?: string;
-};
+export type AppSidebarProps = RootProps;

@@ -4,11 +4,8 @@ import type { PageMenuItemDto, PageMenuRootDto } from '@/shared/types/pageMenu';
 import { isSpecialBlockKey } from './itemUtils';
 
 function resolveSectionKey(item: PageMenuItemDto): string {
-  const keyFromKey = item.key.trim();
-  if (keyFromKey.length > 0) return keyFromKey;
-
-  const keyFromName = item.name.trim();
-  return keyFromName;
+  if (item.key.length > 0) return item.key;
+  return item.name;
 }
 
 export function mapItem(item: PageMenuItemDto): HeaderMenuItem {
@@ -19,6 +16,8 @@ export function mapItem(item: PageMenuItemDto): HeaderMenuItem {
     name: item.name,
     url: item.url,
     img: item.img,
+    imgShape: item.imgShape,
+    imgRadius: item.imgRadius,
     items: items !== undefined && items.length > 0 ? items : undefined,
   };
 

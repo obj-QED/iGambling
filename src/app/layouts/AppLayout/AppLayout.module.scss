@@ -8,6 +8,13 @@
 
   .aside {
     flex-shrink: 0;
+    align-self: flex-start;
+    position: sticky;
+    top: 0;
+    z-index: var(--z-index-sticky, 300);
+    height: var(--aside-shell-height, 100vh);
+    max-height: var(--aside-shell-max-height, 100vh);
+    min-height: 0;
   }
 
   .content {

@@ -1,0 +1,61 @@
+// Aside menu SCSS mixins — injected for widgets/sidebar/styles/** (see build/scss-config.ts).
+
+@use 'assets/styles/mixins/a11y' as a11y;
+@use 'assets/theme/tokens/global/cmf-icon-tokens' as cmf-icon;
+
+@mixin aside-menu-control-height {
+  min-height: var(--button-height, calc(2.25rem * var(--mantine-scale, 1)));
+  height: var(--button-height, calc(2.25rem * var(--mantine-scale, 1)));
+}
+
+/** Nav row chrome for non-Button surfaces (legacy links). Mantine Button uses `aside-menu-control-height` only. */
+@mixin aside-menu-row-layout {
+  @include aside-menu-control-height;
+
+  display: flex;
+  align-items: center;
+  gap: var(--aside-menu-gap, var(--spacing-xs, 0.375rem));
+  width: 100%;
+  padding: 0 var(--aside-menu-padding-x, var(--spacing-xs, 0.375rem));
+  font-size: var(--aside-menu-fz, var(--mantine-font-size-sm, 0.875rem));
+  text-align: left;
+  text-decoration: none;
+}
+
+@mixin aside-menu-icon {
+  @include cmf-icon.cmf-menu-media-icon;
+}
+
+@mixin aside-menu-image {
+  @include cmf-icon.cmf-menu-media-image;
+}
+
+@mixin aside-chevron-rotate {
+  transition: transform var(--aside-menu-chevron-transition, 200ms ease);
+  transform: rotate(0deg);
+
+  &[data-opened='true'] {
+    transform: rotate(180deg);
+  }
+
+  @include a11y.reduced-motion {
+    transition: none;
+  }
+}
+
+/** Special/promo blocks (`data-sidebar-block`) — override per key via `--aside-{key}-*` in theme. */
+@mixin aside-special-block-surface {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs, 0.25rem);
+  padding: var(--spacing-xs, 0.375rem);
+  border-radius: var(--aside-block-radius, var(--aside-menu-radius, var(--radius-sm, 0.5rem)));
+  border: var(--aside-block-bd, none);
+  text-decoration: none;
+  color: var(--aside-block-color, inherit);
+  background: var(--aside-block-bg, rgb(255 255 255 / 4%));
+
+  &:where(:hover, :focus-visible) {
+    background: var(--aside-block-hover-bg, rgb(255 255 255 / 8%));
+  }
+}

@@ -3,7 +3,7 @@ import type { Decorator } from '@storybook/react-vite';
 
 import { MantineProvider } from '@mantine/core';
 
-import { classNamesPrefix, mantineTheme } from '@/assets/theme/mantine/mantineTheme';
+import { classNamesPrefix, mantineTheme } from '@/assets/theme';
 
 type ColorScheme = 'light' | 'dark';
 

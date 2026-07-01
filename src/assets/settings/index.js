@@ -15,7 +15,7 @@
       layout: 'container',
       type: 'default',
       /** `true` → header menu from `src/widgets/header/mocks` */
-      mockMenu: false,
+      mockMenu: true,
       customBlocks: [
         // Into existing API section row (no new section):
         //   { section: 'block3', at: 'start' | 'end' | 0 | 1 | … }
@@ -28,6 +28,19 @@
           placement: { section: 'block3', at: 'end' },
           items: [{ key: 'color_scheme', url: '', name: '' }],
         },
+      ],
+    },
+
+    aside: {
+      width: 400,
+      type: 'default',
+      /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
+      mockMenu: true,
+      customBlocks: [
+        // Into existing API section row (no new section):
+        //   { section: 'block3', at: 'start' | 'end' | 0 | 1 | … }
+        // New section in header layout:
+        //   { header: 'start' | 'end' }
       ],
     },
   });

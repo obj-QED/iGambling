@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '@mantine/core';
 import { useArgs } from 'storybook/preview-api';
 
-import { CMF_BUTTON_SIZES, CMF_BUTTON_VARIANTS } from '@/assets/theme/mantine/cmfButtonVars';
+import { CMF_BUTTON_SIZES, CMF_BUTTON_VARIANTS } from '@/assets/theme';
 import {
   elementDocsPreviewParameters,
   elementPlaygroundParameters,

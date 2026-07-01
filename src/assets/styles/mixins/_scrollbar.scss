@@ -1,0 +1,37 @@
+/**
+ * Custom scrollbar — override via CSS vars on scope or `:root`.
+ *
+ * Defaults: `--cmf-scrollbar-*`
+ * Per block: `--{prefix}-scrollbar-*` (e.g. `--aside-scrollbar-thumb` on `[data-widget='sidebar']`).
+ */
+@mixin cmf-scrollbar($prefix: 'cmf-scrollbar') {
+  $thumb: --#{$prefix}-thumb;
+  $thumb-hover: --#{$prefix}-thumb-hover;
+  $track: --#{$prefix}-track;
+  $size: --#{$prefix}-size;
+  $radius: --#{$prefix}-radius;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(#{$thumb}, rgb(255 255 255 / 22%)) var(#{$track}, transparent);
+
+  &::-webkit-scrollbar {
+    width: var(#{$size}, 6px);
+    height: var(#{$size}, 6px);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(#{$track}, transparent);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(#{$thumb}, rgb(255 255 255 / 22%));
+    border-radius: var(#{$radius}, 999px);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(#{$thumb-hover}, rgb(255 255 255 / 32%));
+    background-clip: padding-box;
+  }
+}

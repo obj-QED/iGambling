@@ -4,6 +4,7 @@ import { memo } from 'react';
 
 import { Menu } from '@mantine/core';
 
+import { isValidAppHref } from '@/shared/lib';
 import { AppLink } from '@/shared/ui';
 
 import {
@@ -24,9 +25,9 @@ function DropdownMenuItemComponent({ item }: DropdownMenuItemProps) {
   const label = resolveItemLabel(item);
   const leftSection =
     hasItemImg(item) === true ? <MenuItemImage item={item} alt={label} /> : undefined;
-  const content = hasItemName(item) === true ? item.name.trim() : label;
+  const content = hasItemName(item) === true ? item.name : label;
 
-  if (href.length === 0) {
+  if (isValidAppHref(href) === false) {
     return (
       <Menu.Item leftSection={leftSection} disabled {...menuItemDataAttrs(item)}>
         {content}

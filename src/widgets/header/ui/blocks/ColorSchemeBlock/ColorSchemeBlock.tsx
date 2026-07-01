@@ -6,12 +6,16 @@ import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mant
 import { IconMoon, IconSunHigh } from '@tabler/icons-react';
 import clsx from 'clsx';
 
-import { HEADER_MENU_ACTION_ICON_SIZE, HEADER_TABLER_ICON_PROPS } from '../../menu/icons/iconProps';
+import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
+import { resolveHeaderMenuActionIconSize } from '../../../lib/headerMenuSize';
+import { menuItemDataAttrs } from '../../../lib/itemUtils';
+import { HEADER_TABLER_ICON_PROPS } from '../../menu/icons/iconProps';
 
 import styles from '../../../styles/blocks/ColorSchemeBlock.module.scss';
 import menuIconStyles from '../../../styles/menu/HeaderMenuIcon.module.scss';
 
 function ColorSchemeBlockComponent({ item }: BlockProps) {
+  const menuSizes = useHeaderMenuSizes();
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
@@ -24,9 +28,9 @@ function ColorSchemeBlockComponent({ item }: BlockProps) {
       className={styles.root}
       onClick={handleToggle}
       variant="default"
-      size={HEADER_MENU_ACTION_ICON_SIZE}
+      size={resolveHeaderMenuActionIconSize(menuSizes)}
       aria-label="Toggle color scheme"
-      data-menu-key={item.key}
+      {...menuItemDataAttrs(item)}
     >
       <IconSunHigh
         {...HEADER_TABLER_ICON_PROPS}

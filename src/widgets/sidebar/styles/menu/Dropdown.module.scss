@@ -1,0 +1,16 @@
+@layer widget.menu {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--aside-block-gap, var(--spacing-xxs, 0.25rem));
+  }
+
+  .list {
+    margin: 0;
+    padding: 0 0 0 var(--aside-menu-dropdown-indent, var(--spacing-md, 0.75rem));
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--aside-block-gap, var(--spacing-xxs, 0.25rem));
+  }
+}

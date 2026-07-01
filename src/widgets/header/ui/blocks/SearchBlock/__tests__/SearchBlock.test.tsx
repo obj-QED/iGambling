@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { mantineTheme } from '@/assets/theme/mantine/mantineTheme';
+import { mantineTheme } from '@/assets/theme';
 import { SearchBlock } from '@/widgets/header/ui/blocks/SearchBlock/SearchBlock';
 
 beforeAll(() => {

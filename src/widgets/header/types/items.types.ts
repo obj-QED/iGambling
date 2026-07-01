@@ -7,13 +7,20 @@ export { HEADER_SPECIAL_BLOCK_KEYS, type HeaderSpecialBlockKey };
 
 export type HeaderMenuItemType = 'button' | 'link';
 
+/** Square (1:1) or rectangular row media — API may send other values as-is. */
+export type HeaderMenuIconShape = 'square' | 'rect';
+
+/** `round` = 100%; `sm` = 6px (theme token). */
+export type HeaderMenuIconRadius = 'round' | 'sm';
+
 export type HeaderMenuItem = {
-  key: string;
-  url: string;
-  name: string;
+  key?: string;
+  url?: string;
+  name?: string;
   img?: string;
-  /** Only for default menu items — not used on special blocks (`search`, `logo`, …). */
-  type?: HeaderMenuItemType;
+  imgShape?: string;
+  imgRadius?: string;
+  type?: string;
   items?: HeaderMenuItem[];
 };
 

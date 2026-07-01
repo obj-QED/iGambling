@@ -1,18 +1,26 @@
 // Header menu SCSS mixins — injected only for widgets/header/styles/** (see vite.config.ts).
 
 @use 'assets/styles/mixins/a11y' as a11y;
+@use 'assets/theme/tokens/global/cmf-icon-tokens' as cmf-icon;
 
 @mixin header-menu-control-height {
-  min-height: var(--header-menu-control-height, calc(2.25rem * var(--mantine-scale, 1)));
-  height: var(--header-menu-control-height, calc(2.25rem * var(--mantine-scale, 1)));
+  min-height: var(--button-height, calc(2.25rem * var(--mantine-scale, 1)));
+  height: var(--button-height, calc(2.25rem * var(--mantine-scale, 1)));
 }
 
 @mixin header-menu-action-icon-control {
-  @include header-menu-control-height;
-
-  width: var(--header-menu-control-height, calc(2.25rem * var(--mantine-scale, 1)));
-  min-width: var(--header-menu-control-height, calc(2.25rem * var(--mantine-scale, 1)));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  width: var(--ai-size, calc(2.25rem * var(--mantine-scale, 1)));
+  min-width: var(--ai-size, calc(2.25rem * var(--mantine-scale, 1)));
+  height: var(--ai-size, calc(2.25rem * var(--mantine-scale, 1)));
+  min-height: var(--ai-size, calc(2.25rem * var(--mantine-scale, 1)));
+}
+
+@mixin header-menu-glyph-icon {
+  @include cmf-icon.cmf-menu-glyph-icon;
 }
 
 @mixin header-menu-button-control {
@@ -20,20 +28,16 @@
 }
 
 @mixin header-menu-icon {
-  width: var(--header-menu-icon-width, 50%);
-  height: var(--header-menu-icon-height, 50%);
-  border-radius: var(--header-button-icon-radius, var(--mantine-radius-sm, 0.25rem));
-  object-fit: contain;
-  flex-shrink: 0;
+  @include cmf-icon.cmf-menu-media-icon;
 }
 
 @mixin header-menu-logo {
   display: block;
   width: var(
     --header-logo-width,
-    var(--header-logo-height, var(--header-menu-control-height, 2.25rem))
+    var(--header-logo-height, var(--button-height, var(--cmf-button-sm-height, 2.25rem)))
   );
-  height: var(--header-logo-height, var(--header-menu-control-height, 2.25rem));
+  height: var(--header-logo-height, var(--button-height, var(--cmf-button-sm-height, 2.25rem)));
   object-fit: contain;
   object-position: center;
   flex-shrink: 0;

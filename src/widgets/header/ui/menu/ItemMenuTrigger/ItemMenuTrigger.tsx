@@ -4,6 +4,11 @@ import { forwardRef } from 'react';
 
 import { ActionIcon, Button } from '@mantine/core';
 
+import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
+import {
+  resolveHeaderMenuActionIconSize,
+  resolveHeaderMenuButtonSize,
+} from '../../../lib/headerMenuSize';
 import {
   hasItemImg,
   hasItemName,
@@ -16,7 +21,6 @@ import {
   resolveMenuItemActionIconVariant,
   resolveMenuItemButtonVariant,
 } from '../../../lib/menuItemVariant';
-import { HEADER_MENU_ACTION_ICON_SIZE, HEADER_MENU_BUTTON_SIZE } from '../icons/iconProps';
 import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
 import styles from '../../../styles/menu/ItemMenuTrigger.module.scss';
@@ -30,7 +34,10 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
   function ItemMenuTriggerComponent({ item, rightSection, ...rest }, ref) {
     if (isRenderableItem(item) === false) return null;
 
+    const menuSizes = useHeaderMenuSizes();
     const label = resolveItemLabel(item);
+    const actionIconSize = resolveHeaderMenuActionIconSize(menuSizes);
+    const buttonSize = resolveHeaderMenuButtonSize(item, menuSizes);
 
     if (isIconOnlyItem(item) === true && hasItemImg(item) === true) {
       return (
@@ -39,12 +46,12 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
           ref={ref}
           className={styles.actionIcon}
           variant={resolveMenuItemActionIconVariant(item)}
-          size={HEADER_MENU_ACTION_ICON_SIZE}
+          size={actionIconSize}
           aria-label={label}
           aria-haspopup="menu"
           {...menuItemDataAttrs(item)}
         >
-          <MenuItemImage item={item} alt={label} />
+          <MenuItemImage item={item} alt={label} inActionIcon />
         </ActionIcon>
       );
     }
@@ -58,14 +65,14 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
         ref={ref}
         className={styles.button}
         variant={resolveMenuItemButtonVariant(item)}
-        size={HEADER_MENU_BUTTON_SIZE}
+        size={buttonSize}
         leftSection={leftSection}
         rightSection={rightSection}
         aria-label={label}
         aria-haspopup="menu"
         {...menuItemDataAttrs(item)}
       >
-        {hasItemName(item) === true ? item.name.trim() : null}
+        {hasItemName(item) === true ? item.name : null}
       </Button>
     );
   },

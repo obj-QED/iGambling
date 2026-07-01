@@ -1,15 +1,39 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
+import { DEFAULT_HEADER_CONFIG } from '@/widgets/header/config/defaults';
+import { ConfigProvider } from '@/widgets/header/context/provider';
 import { ItemIcon } from '@/widgets/header/ui/menu/ItemIcon/ItemIcon';
 
-describe('ItemIcon', () => {
-  it('hides image when load fails', () => {
-    render(<ItemIcon src="/missing.png" alt="Logo" />);
+vi.mock('react-inlinesvg', () => ({
+  default: ({ src, onError }: { src: string; onError?: () => void }) => (
+    <svg data-testid="inline-svg" data-src={src} onError={onError} />
+  ),
+}));
 
-    const image = screen.getByRole('img', { name: 'Logo' });
+describe('ItemIcon', () => {
+  it('hides raster image when load fails', () => {
+    const { getByRole } = render(
+      <ConfigProvider config={DEFAULT_HEADER_CONFIG}>
+        <ItemIcon src="/missing.png" alt="Logo" />
+      </ConfigProvider>,
+    );
+
+    const image = getByRole('img', { name: 'Logo' });
     fireEvent.error(image);
 
     expect(image.className).toMatch(/hidden/);
+  });
+
+  it('renders inline SVG for .svg sources', () => {
+    const { getByTestId, getByRole } = render(
+      <ConfigProvider config={DEFAULT_HEADER_CONFIG}>
+        <ItemIcon src="/uploads/web.svg" alt="Web" shape="square" radius="round" />
+      </ConfigProvider>,
+    );
+
+    expect(getByTestId('inline-svg')).toHaveAttribute('data-src', '/uploads/web.svg');
+    expect(getByRole('img', { name: 'Web' })).toHaveAttribute('data-menu-icon-shape', 'square');
+    expect(getByRole('img', { name: 'Web' })).toHaveAttribute('data-menu-icon-radius', 'round');
   });
 });

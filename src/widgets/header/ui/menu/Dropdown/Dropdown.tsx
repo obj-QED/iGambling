@@ -7,7 +7,6 @@ import { Menu } from '@mantine/core';
 import { isRenderableItem } from '../../../lib/itemUtils';
 import { Chevron } from '../Chevron/Chevron';
 import { DropdownMenuItem } from '../DropdownMenuItem/DropdownMenuItem';
-import { HEADER_MENU_DROPDOWN_BUTTON_SCOPE, HEADER_MENU_SCOPE } from '../icons/iconProps';
 import { ItemMenuTrigger } from '../ItemMenuTrigger/ItemMenuTrigger';
 
 import styles from '../../../styles/menu/Dropdown.module.scss';
@@ -27,11 +26,7 @@ function DropdownComponent({ item }: DropdownProps) {
       <Menu.Target>
         <ItemMenuTrigger item={item} rightSection={<Chevron />} />
       </Menu.Target>
-      <Menu.Dropdown
-        className={styles.dropdown}
-        data-cmf-menu-scope={HEADER_MENU_SCOPE}
-        data-cmf-button-scope={HEADER_MENU_DROPDOWN_BUTTON_SCOPE}
-      >
+      <Menu.Dropdown className={styles.dropdown}>
         {children.map((child) => (
           <DropdownMenuItem key={child.key} item={child} />
         ))}

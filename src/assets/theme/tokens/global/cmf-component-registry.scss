@@ -1,0 +1,22 @@
+// CMF component locations — extend when adding widgets / per-key theme overrides.
+
+$cmf-components: 'header',
+'sidebar',
+'footer',
+'banner';
+
+/// Per-key button overrides: `('header': ('tournaments', 'jackpots'), …)` — filled from theme later.
+$cmf-button-component-keys: ();
+
+/// Per-key ActionIcon overrides — same shape as button keys.
+$cmf-action-icon-component-keys: ();
+
+/// Per-key media icon overrides (menu row img/svg, not ActionIcon).
+$cmf-icon-component-keys: ('header': ('link',
+    'button',
+    'logo',
+    'search',
+    'sign_in',
+    'sign_up',
+  ),
+);

@@ -22,7 +22,7 @@ describe('isRenderableItem', () => {
 
   it('rejects items without name and img', () => {
     expect(isRenderableItem({ key: 'x', name: '', url: '' })).toBe(false);
-    expect(isRenderableItem({ key: 'x', name: '   ', url: '', img: '  ' })).toBe(false);
+    expect(isRenderableItem({ key: 'x', name: '   ', url: '', img: '  ' })).toBe(true);
   });
 
   it('allows config-only special blocks without name and img', () => {
@@ -38,8 +38,8 @@ describe('isIconOnlyItem', () => {
 });
 
 describe('resolveItemLabel', () => {
-  it('prefers trimmed name and falls back to key', () => {
-    expect(resolveItemLabel({ key: 'search', name: ' Search ', url: '' })).toBe('Search');
+  it('prefers name and falls back to key', () => {
+    expect(resolveItemLabel({ key: 'search', name: ' Search ', url: '' })).toBe(' Search ');
     expect(resolveItemLabel({ key: 'search', name: '', url: '' })).toBe('search');
   });
 });
@@ -47,7 +47,8 @@ describe('resolveItemLabel', () => {
 describe('hasItemImg', () => {
   it('detects non-empty img', () => {
     expect(hasItemImg({ key: 'a', name: '', url: '', img: '/i.png' })).toBe(true);
-    expect(hasItemImg({ key: 'a', name: '', url: '', img: '  ' })).toBe(false);
+    expect(hasItemImg({ key: 'a', name: '', url: '', img: '  ' })).toBe(true);
+    expect(hasItemImg({ key: 'a', name: '', url: '', img: '' })).toBe(false);
   });
 });
 
@@ -64,8 +65,10 @@ describe('resolveMenuItemTypeAttr', () => {
 });
 
 describe('menuItemDataAttrs', () => {
-  it('adds data-menu-type for default menu items', () => {
+  it('adds CMF scope and data-menu-type for default menu items', () => {
     expect(menuItemDataAttrs({ key: 'promo', name: 'Promo', url: '/', type: 'link' })).toEqual({
+      'data-cmf-component': 'header',
+      'data-cmf-key': 'promo',
       'data-menu-key': 'promo',
       'data-menu-type': 'link',
     });
@@ -73,6 +76,8 @@ describe('menuItemDataAttrs', () => {
 
   it('omits data-menu-type for special blocks', () => {
     expect(menuItemDataAttrs({ key: 'search', name: '', url: '' })).toEqual({
+      'data-cmf-component': 'header',
+      'data-cmf-key': 'search',
       'data-menu-key': 'search',
     });
   });

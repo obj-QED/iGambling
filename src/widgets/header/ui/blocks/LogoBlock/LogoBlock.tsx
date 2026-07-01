@@ -13,9 +13,9 @@ function LogoBlockComponent({ item }: BlockProps) {
 
   if (!isRenderableItem(item)) return null;
 
-  const href = resolveItemHref(item.url || '/');
-  const alt = item.name.trim() || item.key;
-  const hasImg = (item.img?.trim().length ?? 0) > 0;
+  const href = resolveItemHref(item.url);
+  const alt = item.name || item.key;
+  const hasImg = (item.img?.length ?? 0) > 0;
 
   if (!hasImg) {
     return (

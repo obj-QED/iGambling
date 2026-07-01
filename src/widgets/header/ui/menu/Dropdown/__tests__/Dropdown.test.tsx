@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { mantineTheme } from '@/assets/theme/mantine/mantineTheme';
+import { mantineTheme } from '@/assets/theme';
 import { Dropdown } from '@/widgets/header/ui/menu/Dropdown/Dropdown';
 
 beforeAll(() => {

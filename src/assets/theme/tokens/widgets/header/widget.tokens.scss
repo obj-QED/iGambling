@@ -1,0 +1,18 @@
+/**
+ * Header shell — surface, layout, sections/blocks (not menu Button / link).
+ */
+
+@mixin header-widget-tokens {
+  --header-surface-bg: transparent;
+  --header-surface-border-color: transparent;
+  --header-surface-border-width: 0;
+  --header-surface-shadow: none;
+  --header-surface-backdrop-filter: none;
+  --header-height: auto;
+  --header-padding-x: 0;
+  --header-padding-y: 10px;
+  --header-section-gap: var(--spacing-md, 1rem);
+  --header-block-gap: var(--spacing-xs, 0.25rem);
+  --header-text-color: var(--color-text, inherit);
+  --header-text-muted: var(--color-text-muted, inherit);
+}

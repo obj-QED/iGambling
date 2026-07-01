@@ -4,8 +4,11 @@ import { memo, useCallback, useState } from 'react';
 
 import { ActionIcon } from '@mantine/core';
 
+import { isValidAppHref } from '@/shared/lib';
 import { AppLink } from '@/shared/ui';
 
+import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
+import { resolveHeaderMenuActionIconSize } from '../../../lib/headerMenuSize';
 import {
   hasItemImg,
   isIconOnlyItem,
@@ -14,7 +17,6 @@ import {
   resolveItemLabel,
 } from '../../../lib/itemUtils';
 import { resolveMenuItemActionIconVariant } from '../../../lib/menuItemVariant';
-import { HEADER_MENU_ACTION_ICON_SIZE } from '../icons/iconProps';
 import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
 import styles from '../../../styles/menu/ItemActionIcon.module.scss';
@@ -24,6 +26,7 @@ type ItemActionIconProps = {
 };
 
 function ItemActionIconComponent({ item }: ItemActionIconProps) {
+  const menuSizes = useHeaderMenuSizes();
   const [imgFailed, setImgFailed] = useState(false);
   const onImgFailed = useCallback(() => {
     setImgFailed(true);
@@ -34,23 +37,34 @@ function ItemActionIconComponent({ item }: ItemActionIconProps) {
   }
 
   const href = resolveItemHref(item.url);
+  const hrefDisabled = isValidAppHref(href) === false;
   const label = resolveItemLabel(item);
 
+  const content =
+    hasItemImg(item) === true ? (
+      <MenuItemImage item={item} alt={label} inActionIcon onImgFailed={onImgFailed} />
+    ) : (
+      label.slice(0, 1).toUpperCase()
+    );
+  const sharedProps = {
+    className: styles.root,
+    variant: resolveMenuItemActionIconVariant(item),
+    size: resolveHeaderMenuActionIconSize(menuSizes),
+    'aria-label': label,
+    ...menuItemDataAttrs(item),
+  };
+
+  if (hrefDisabled) {
+    return (
+      <ActionIcon disabled {...sharedProps}>
+        {content}
+      </ActionIcon>
+    );
+  }
+
   return (
-    <ActionIcon
-      className={styles.root}
-      component={AppLink}
-      href={href}
-      variant={resolveMenuItemActionIconVariant(item)}
-      size={HEADER_MENU_ACTION_ICON_SIZE}
-      aria-label={label}
-      {...menuItemDataAttrs(item)}
-    >
-      {hasItemImg(item) === true ? (
-        <MenuItemImage item={item} alt={label} onImgFailed={onImgFailed} />
-      ) : (
-        label.slice(0, 1).toUpperCase()
-      )}
+    <ActionIcon component={AppLink} href={href} {...sharedProps}>
+      {content}
     </ActionIcon>
   );
 }

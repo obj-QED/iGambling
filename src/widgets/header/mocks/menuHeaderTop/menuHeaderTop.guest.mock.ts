@@ -13,9 +13,23 @@ export const MENU_HEADER_TOP_GUEST_MOCK: MenuHeaderTopBlockMock = {
       type: null,
       items: [
         {
+          url: 'test',
+          name: 'Home',
+          key: 'home',
+          img: '/uploads/jlogo.webp',
+          type: 'button',
+        },
+        {
+          url: 'test',
+          name: 'Link',
+          key: 'link',
+          img: '/uploads/web.svg',
+          type: 'link',
+        },
+        {
           url: '/',
           name: 'Casino',
-          key: 'logo',
+          key: 'casino',
           img: '/uploads/logo.png',
           type: 'link',
         },

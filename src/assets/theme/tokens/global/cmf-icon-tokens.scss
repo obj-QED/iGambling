@@ -1,0 +1,136 @@
+// CMF media icon tokens (menu img/svg — not Mantine ActionIcon).
+// Cascade: --cmf-{component}-{key}-icon-* → --cmf-{component}-icon-* → --cmf-icon-*
+
+$cmf-icon-props: width,
+height,
+glyph-width,
+glyph-height,
+radius,
+radius-sm,
+radius-round,
+shape,
+radius-mode,
+object-fit;
+
+@mixin root-tokens {
+  --cmf-icon-box-ratio: 0.625;
+  --cmf-icon-width: calc(var(--cmf-button-sm-height, 2.25rem) * var(--cmf-icon-box-ratio));
+  --cmf-icon-height: var(--cmf-icon-width);
+  --cmf-icon-glyph-width: var(--cmf-icon-width);
+  --cmf-icon-glyph-height: var(--cmf-icon-height);
+  --cmf-icon-image-width: var(--cmf-icon-width);
+  --cmf-icon-image-height: var(--cmf-icon-height);
+  --cmf-icon-radius: var(--radius-sm, 6px);
+  --cmf-icon-radius-sm: var(--radius-sm, 6px);
+  --cmf-icon-radius-round: 100%;
+  --cmf-icon-shape: square;
+  --cmf-icon-radius-mode: sm;
+  --cmf-icon-object-fit: contain;
+}
+
+/// Resolved icon box on Mantine Button / ActionIcon — tied to control `size` (`--button-height` / `--ai-size`).
+@mixin cmf-control-icon-vars {
+  --cmf-icon-control-height: var(--button-height,
+      var(--ai-size, var(--cmf-button-sm-height, 2.25rem)));
+  --cmf-icon-width: calc(var(--cmf-icon-control-height) * var(--cmf-icon-box-ratio, 0.625));
+  --cmf-icon-height: var(--cmf-icon-width);
+  --cmf-icon-image-width: var(--cmf-icon-width);
+  --cmf-icon-image-height: var(--cmf-icon-height);
+  --cmf-icon-glyph-width: var(--cmf-icon-width);
+  --cmf-icon-glyph-height: var(--cmf-icon-height);
+}
+
+@mixin cmf-control-icon-media {
+  width: var(--cmf-icon-width);
+  height: var(--cmf-icon-height);
+  min-width: var(--cmf-icon-width);
+  min-height: var(--cmf-icon-height);
+  max-width: var(--cmf-icon-width);
+  max-height: var(--cmf-icon-height);
+  object-fit: var(--cmf-icon-object-fit, contain);
+  flex-shrink: 0;
+}
+
+@mixin cmf-control-icon-section {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--cmf-icon-width);
+  min-width: var(--cmf-icon-width);
+  height: var(--cmf-icon-height);
+  min-height: var(--cmf-icon-height);
+}
+
+@mixin cmf-icon-component-cascade($component) {
+  --cmf-icon-width: var(--cmf-#{$component}-icon-width, var(--cmf-icon-width));
+  --cmf-icon-height: var(--cmf-#{$component}-icon-height, var(--cmf-icon-height));
+  --cmf-icon-glyph-width: var(--cmf-#{$component}-icon-glyph-width, var(--cmf-icon-glyph-width));
+  --cmf-icon-glyph-height: var(--cmf-#{$component}-icon-glyph-height, var(--cmf-icon-glyph-height));
+  --cmf-icon-image-width: var(--cmf-#{$component}-icon-image-width, var(--cmf-icon-image-width));
+  --cmf-icon-image-height: var(--cmf-#{$component}-icon-image-height, var(--cmf-icon-image-height));
+  --cmf-icon-radius: var(--cmf-#{$component}-icon-radius, var(--cmf-icon-radius));
+  --cmf-icon-radius-sm: var(--cmf-#{$component}-icon-radius-sm, var(--cmf-icon-radius-sm));
+  --cmf-icon-radius-round: var(--cmf-#{$component}-icon-radius-round, var(--cmf-icon-radius-round));
+  --cmf-icon-shape: var(--cmf-#{$component}-icon-shape, var(--cmf-icon-shape));
+  --cmf-icon-radius-mode: var(--cmf-#{$component}-icon-radius-mode, var(--cmf-icon-radius-mode));
+  --cmf-icon-object-fit: var(--cmf-#{$component}-icon-object-fit, var(--cmf-icon-object-fit));
+}
+
+@mixin cmf-icon-key-cascade($component, $key) {
+  --cmf-icon-width: var(--cmf-#{$component}-#{$key}-icon-width,
+    var(--cmf-#{$component}-icon-width, var(--cmf-icon-width)));
+  --cmf-icon-height: var(--cmf-#{$component}-#{$key}-icon-height,
+    var(--cmf-#{$component}-icon-height, var(--cmf-icon-height)));
+  --cmf-icon-glyph-width: var(--cmf-#{$component}-#{$key}-icon-glyph-width,
+    var(--cmf-#{$component}-icon-glyph-width, var(--cmf-icon-glyph-width)));
+  --cmf-icon-glyph-height: var(--cmf-#{$component}-#{$key}-icon-glyph-height,
+    var(--cmf-#{$component}-icon-glyph-height, var(--cmf-icon-glyph-height)));
+  --cmf-icon-image-width: var(--cmf-#{$component}-#{$key}-icon-image-width,
+    var(--cmf-#{$component}-icon-image-width, var(--cmf-icon-image-width)));
+  --cmf-icon-image-height: var(--cmf-#{$component}-#{$key}-icon-image-height,
+    var(--cmf-#{$component}-icon-image-height, var(--cmf-icon-image-height)));
+  --cmf-icon-radius: var(--cmf-#{$component}-#{$key}-icon-radius,
+    var(--cmf-#{$component}-icon-radius, var(--cmf-icon-radius)));
+  --cmf-icon-radius-sm: var(--cmf-#{$component}-#{$key}-icon-radius-sm,
+    var(--cmf-#{$component}-icon-radius-sm, var(--cmf-icon-radius-sm)));
+  --cmf-icon-radius-round: var(--cmf-#{$component}-#{$key}-icon-radius-round,
+    var(--cmf-#{$component}-icon-radius-round, var(--cmf-icon-radius-round)));
+  --cmf-icon-shape: var(--cmf-#{$component}-#{$key}-icon-shape,
+    var(--cmf-#{$component}-icon-shape, var(--cmf-icon-shape)));
+  --cmf-icon-radius-mode: var(--cmf-#{$component}-#{$key}-icon-radius-mode,
+    var(--cmf-#{$component}-icon-radius-mode, var(--cmf-icon-radius-mode)));
+  --cmf-icon-object-fit: var(--cmf-#{$component}-#{$key}-icon-object-fit,
+    var(--cmf-#{$component}-icon-object-fit, var(--cmf-icon-object-fit)));
+}
+
+/// Tabler / inline SVG — same absolute box as img (`--cmf-icon-width` from control `size`).
+@mixin cmf-menu-glyph-icon {
+  @include cmf-control-icon-media;
+}
+
+/// img / inline SVG wrapper inside menu rows (svg, png, webp — one box).
+@mixin cmf-menu-media-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  @include cmf-control-icon-media;
+
+  border-radius: var(--cmf-icon-radius, var(--radius-sm, 6px));
+}
+
+@mixin cmf-menu-media-image {
+  @include cmf-menu-media-icon;
+}
+
+@mixin cmf-menu-media-icon-radius-modifiers {
+  &.radius_sm {
+    border-radius: var(--cmf-icon-radius-sm, var(--radius-sm, 6px));
+  }
+
+  &.radius_round {
+    border-radius: var(--cmf-icon-radius-round, 100%);
+  }
+}

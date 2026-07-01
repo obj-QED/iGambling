@@ -1,0 +1,6 @@
+@layer widget.menu {
+  .icon,
+  .image {
+    @include aside-menu-icon;
+  }
+}
