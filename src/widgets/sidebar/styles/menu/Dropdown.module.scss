@@ -2,7 +2,7 @@
   .root {
     display: flex;
     flex-direction: column;
-    gap: var(--aside-block-gap, var(--spacing-xxs, 0.25rem));
+    gap: var(--aside-block-gap, var(--spacing-xs, 0.5rem));
   }
 
   .list {
@@ -11,6 +11,6 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--aside-block-gap, var(--spacing-xxs, 0.25rem));
+    gap: var(--aside-block-gap, var(--spacing-xs, 0.5rem));
   }
 }

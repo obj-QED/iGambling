@@ -38,7 +38,7 @@
       mockMenu: true,
       openedDropdowns: ['category', 'providers', 'live_games', 'casino', 'betting'],
       scrollArea: {
-        scrollbarSize: 2,
+        scrollbarSize: 4,
         scrollHideDelay: 3000,
         type: 'auto',
         overscrollBehavior: 'contain',

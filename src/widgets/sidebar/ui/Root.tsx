@@ -43,10 +43,6 @@ function RootComponent({ menu, config, className }: RootProps) {
     '--app-layout-sidebar-width': `${config.width}px`,
   } as CSSProperties;
 
-  const scrollStyle = {
-    '--aside-scrollbar-size': `${config.scrollArea.scrollbarSize}px`,
-  } as CSSProperties;
-
   return (
     <SidebarConfigProvider config={config}>
       <SidebarDropdownProvider defaultOpenKeys={config.openedDropdowns}>
@@ -66,9 +62,7 @@ function RootComponent({ menu, config, className }: RootProps) {
               classNames={{
                 content: styles.scrollContent,
                 scrollbar: scrollAreaStyles.scrollbar,
-                thumb: scrollAreaStyles.thumb,
               }}
-              style={scrollStyle}
               h="100%"
               type={config.scrollArea.type}
               scrollbars="y"

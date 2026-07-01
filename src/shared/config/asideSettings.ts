@@ -17,7 +17,7 @@ export const ASIDE_SCROLL_AREA_OVERSCROLL = ['auto', 'contain', 'none'] as const
 export type AsideScrollAreaOverscrollBehavior = (typeof ASIDE_SCROLL_AREA_OVERSCROLL)[number];
 
 export type AsideScrollAreaSettings = {
-  /** Mantine ScrollArea thumb track width (px). Sync with `--aside-scrollbar-size`. */
+  /** Mantine ScrollArea thumb track width (px). From `settings.aside.scrollArea.scrollbarSize`. */
   scrollbarSize?: number;
   /** Hide delay (ms) for `hover` / `scroll` types. */
   scrollHideDelay?: number;

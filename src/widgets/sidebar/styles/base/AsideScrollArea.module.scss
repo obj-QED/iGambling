@@ -1,4 +1,4 @@
-// Mantine ScrollArea — unlayered; beat Mantine `.m_*` thumb/track defaults via higher specificity.
+// Unlayered — Mantine ScrollArea defaults override (see `classNames` on Root ScrollArea).
 .scrollbar:global([data-mantine-scrollbar]) {
   padding: 0;
   background-color: var(--aside-scrollbar-track, transparent);
@@ -8,17 +8,12 @@
     background-color: var(--aside-scrollbar-track, transparent);
   }
 
-  >.thumb {
+  >.thumb:global([data-state]) {
     background-color: var(--aside-scrollbar-thumb, rgb(255 255 255 / 28%));
     border-radius: var(--aside-scrollbar-radius, 999px);
   }
 
-  &:where(:hover, :active)>.thumb {
+  &:where(:hover, :active)>.thumb:global([data-state]) {
     background-color: var(--aside-scrollbar-thumb-hover, rgb(255 255 255 / 40%));
   }
-}
-
-.thumb:global([data-state]) {
-  background-color: var(--aside-scrollbar-thumb, rgb(255 255 255 / 28%));
-  border-radius: var(--aside-scrollbar-radius, 999px);
 }

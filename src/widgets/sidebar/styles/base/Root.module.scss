@@ -8,10 +8,10 @@
     max-height: var(--aside-shell-max-height, 100vh);
     min-height: 0;
     overflow: hidden;
-    padding: var(--aside-shell-padding, var(--spacing-md, 0.625rem));
+    padding: var(--aside-shell-padding, var(--mantine-spacing-md));
     padding-bottom: 0;
-    border-right: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+    border-right: 1px solid var(--aside-shell-border-color, var(--mantine-color-dark-4));
+    background-color: var(--aside-shell-bg, var(--mantine-color-body));
 
     @media (max-width: $tablet) {
       width: 100%;
@@ -21,15 +21,13 @@
   .scroll {
     flex: 1;
     min-height: 0;
-    margin-left: calc(var(--aside-shell-padding, var(--spacing-md, 0.625rem)) * -1);
-    margin-right: calc(var(--aside-shell-padding, var(--spacing-md, 0.625rem)) * -1);
-    padding: var(--aside-shell-padding, var(--spacing-md, 0.625rem));
-    padding-top: 0;
-    padding-bottom: 0;
-    --scrollarea-scrollbar-size: var(--aside-scrollbar-size, 2px);
+
+    @include aside-shell-edge-bleed;
+    @include aside-shell-edge-padding-x;
   }
 
   .scrollContent {
-    padding-bottom: var(--aside-scroll-content-padding-bottom, var(--spacing-md, 0.625rem));
+    padding-top: var(--aside-shell-padding-top, var(--mantine-spacing-md));
+    padding-bottom: var(--aside-shell-padding-bottom, var(--mantine-spacing-md));
   }
 }
