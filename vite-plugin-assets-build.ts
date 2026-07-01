@@ -2,7 +2,7 @@ import type { Plugin } from 'vite';
 
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { compileString } from 'sass';
+import { compile } from 'sass';
 
 async function collectFiles(dir: string, ext: string[]): Promise<string[]> {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -33,26 +33,14 @@ function themeBuildPlugin(): Plugin {
       const settingsDir = join(root, 'settings');
 
       try {
-        // theme → dist/theme.css
-        const themeFiles = await collectFiles(themeDir, ['.css', '.scss']);
-        if (themeFiles.length > 0) {
-          let css = '';
-          for (const file of themeFiles) {
-            const raw = await readFile(file, 'utf-8');
-            if (file.endsWith('.scss')) {
-              const { css: compiled } = compileString(raw, {
-                loadPaths: [join(process.cwd(), 'src')],
-                style: 'expanded',
-              });
-              css += compiled;
-            } else {
-              css += raw;
-            }
-            css += '\n';
-          }
-          await mkdir(outDir, { recursive: true });
-          await writeFile(join(outDir, 'theme.css'), css.trim(), 'utf-8');
-        }
+        // theme → dist/theme.css (single entry — partials are pulled via @use)
+        const themeEntry = join(themeDir, 'theme.scss');
+        const { css } = await compile(themeEntry, {
+          loadPaths: [join(process.cwd(), 'src')],
+          style: 'expanded',
+        });
+        await mkdir(outDir, { recursive: true });
+        await writeFile(join(outDir, 'theme.css'), css.trim(), 'utf-8');
 
         // settings → dist/settings.js
         const settingsFiles = await collectFiles(settingsDir, ['.js']);

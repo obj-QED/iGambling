@@ -1,17 +1,16 @@
-import type { HeaderMenuItem } from '../../../types';
-import type { ReactNode } from 'react';
+import type { SpecialIconBlockProps } from '../../../types';
 
-import { memo, useRef, useState } from 'react';
+import { memo, useRef } from 'react';
 
-import { ActionIcon } from '@mantine/core';
 import clsx from 'clsx';
 
-import { isValidAppHref } from '@/shared/lib';
-import { AppLink } from '@/shared/ui';
+import { AppActionIcon } from '@/elements/AppActionIcon';
+import { useCmfIconStyle } from '@/shared/hooks/useCmfIconStyle';
+import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
+import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib/cmfIcon';
 
 import { useConfig } from '../../../context/useConfig';
 import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
-import { useCmfMenuIconStyle } from '../../../hooks/useCmfMenuIconStyle';
 import { resolveHeaderMenuActionIconSize } from '../../../lib/headerMenuSize';
 import {
   hasItemImg,
@@ -21,80 +20,54 @@ import {
   resolveItemHref,
   resolveItemLabel,
 } from '../../../lib/itemUtils';
-import { resolveMenuItemIconRadius, resolveMenuItemIconShape } from '../../../lib/menuItemIcon';
-import { HeaderPhotoFallback } from '../../menu/icons/HeaderPhotoFallback';
 import { ItemIcon } from '../../menu/ItemIcon/ItemIcon';
 
 import styles from '../../../styles/blocks/SpecialIconBlock.module.scss';
-
-type SpecialIconBlockProps = {
-  item: HeaderMenuItem;
-  fallbackIcon: ReactNode;
-  className?: string;
-};
 
 function SpecialIconBlockComponent({ item, fallbackIcon, className }: SpecialIconBlockProps) {
   const config = useConfig();
   const menuSizes = useHeaderMenuSizes();
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
-  const cmfStyle = useCmfMenuIconStyle(iconRef);
+  const cmfStyle = useCmfIconStyle(iconRef);
   const actionIconSize = resolveHeaderMenuActionIconSize(menuSizes);
-  const [imgFailed, setImgFailed] = useState(false);
+  const { onImgError, showItemImg, hideImageControl, iconControlAttrs } =
+    useMenuItemMediaState(item);
 
   if (hasItemName(item) === false && hasItemImg(item) === false) return null;
   if (isRenderableItem(item) === false) return null;
 
   const label = resolveItemLabel(item);
   const href = resolveItemHref(item.url);
-  const hrefDisabled = isValidAppHref(href) === false;
   const icon =
-    hasItemImg(item) === true && imgFailed === false ? (
+    showItemImg === true ? (
       <ItemIcon
         ref={iconRef}
         inActionIcon
         src={item.img ?? ''}
         alt={label}
-        shape={resolveMenuItemIconShape(item, config, cmfStyle)}
-        radius={resolveMenuItemIconRadius(item, config, cmfStyle)}
-        onError={() => {
-          setImgFailed(true);
-        }}
+        shape={resolveCmfIconShape(item, config, cmfStyle)}
+        radius={resolveCmfIconRadius(item, config, cmfStyle)}
+        onError={onImgError}
       />
-    ) : hasItemImg(item) === true && imgFailed === true ? (
-      <HeaderPhotoFallback />
     ) : (
       fallbackIcon
     );
 
-  const rootClassName = clsx(styles.root, className);
-
-  if (hrefDisabled === false) {
-    return (
-      <ActionIcon
-        className={rootClassName}
-        component={AppLink}
-        href={href}
-        variant="default"
-        size={actionIconSize}
-        aria-label={label}
-        {...menuItemDataAttrs(item)}
-      >
-        {icon}
-      </ActionIcon>
-    );
-  }
-
   return (
-    <ActionIcon
-      className={rootClassName}
+    <AppActionIcon
+      name={item.name}
+      img={item.img}
+      href={href}
+      hidden={hideImageControl}
+      className={clsx(styles.root, className)}
       variant="default"
       size={actionIconSize}
       aria-label={label}
-      disabled
       {...menuItemDataAttrs(item)}
+      {...iconControlAttrs}
     >
       {icon}
-    </ActionIcon>
+    </AppActionIcon>
   );
 }
 

@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 
 /**
- * Local section overrides for Storybook — same values as `:root` in `cmf-button-tokens.scss`.
+ * Local section overrides for Storybook — same values as `:root` in `tokens/global/cmf-button-tokens.scss`.
  * Use when a story needs a scoped override (`--cmf-header-button-*`, etc.).
  */
 export const cmfButtonScopeOverrideStyle = {

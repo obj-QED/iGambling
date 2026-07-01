@@ -8,10 +8,10 @@ export { HEADER_SPECIAL_BLOCK_KEYS, type HeaderSpecialBlockKey };
 export type HeaderMenuItemType = 'button' | 'link';
 
 /** Square (1:1) or rectangular row media — API may send other values as-is. */
-export type HeaderMenuIconShape = 'square' | 'rect';
-
-/** `round` = 100%; `sm` = 6px (theme token). */
-export type HeaderMenuIconRadius = 'round' | 'sm';
+export type {
+  CmfIconRadius as HeaderMenuIconRadius,
+  CmfIconShape as HeaderMenuIconShape,
+} from '@/shared/types/cmfIcon.types';
 
 export type HeaderMenuItem = {
   key?: string;
@@ -21,6 +21,8 @@ export type HeaderMenuItem = {
   imgShape?: string;
   imgRadius?: string;
   type?: string;
+  badge?: string | number;
+  subtitle?: string;
   items?: HeaderMenuItem[];
 };
 

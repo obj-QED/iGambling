@@ -1,14 +1,10 @@
-import type { HeaderMenuModel } from '@/widgets/header';
+import type { ShellProps } from '../types';
 
 import { memo } from 'react';
 
 import { Section } from './Section';
 
 import styles from '../styles/base/Shell.module.scss';
-
-type ShellProps = {
-  menu: HeaderMenuModel;
-};
 
 function ShellComponent({ menu }: ShellProps) {
   const sections = menu.sections.filter((section) => section.items.length > 0);

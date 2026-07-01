@@ -1,14 +1,10 @@
-import type { ReactNode } from 'react';
+import type { ProtectedRouteProps } from '@/app/types';
 
 import { memo } from 'react';
 
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import { useAuthSession } from '@hooks/useAuthSession';
-
-type ProtectedRouteProps = {
-  children?: ReactNode;
-};
 
 /**
  * При отсутствии токена (isAuthenticated === false) редирект на /auth.

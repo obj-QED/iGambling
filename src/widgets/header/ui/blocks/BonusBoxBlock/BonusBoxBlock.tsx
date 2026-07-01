@@ -2,10 +2,11 @@ import type { BlockProps } from '../../../types';
 
 import { memo, useRef, useState } from 'react';
 
+import { useCmfIconStyle } from '@/shared/hooks/useCmfIconStyle';
+import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib/cmfIcon';
 import { AppLink } from '@/shared/ui';
 
 import { useConfig } from '../../../context/useConfig';
-import { useCmfMenuIconStyle } from '../../../hooks/useCmfMenuIconStyle';
 import {
   hasItemImg,
   hasItemName,
@@ -13,7 +14,6 @@ import {
   resolveItemHref,
   resolveItemLabel,
 } from '../../../lib/itemUtils';
-import { resolveMenuItemIconRadius, resolveMenuItemIconShape } from '../../../lib/menuItemIcon';
 import { HeaderPhotoFallback } from '../../menu/icons/HeaderPhotoFallback';
 import { ItemIcon } from '../../menu/ItemIcon/ItemIcon';
 
@@ -22,7 +22,7 @@ import styles from '../../../styles/blocks/BonusBoxBlock.module.scss';
 function BonusBoxBlockComponent({ item }: BlockProps) {
   const config = useConfig();
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
-  const cmfStyle = useCmfMenuIconStyle(iconRef);
+  const cmfStyle = useCmfIconStyle(iconRef);
   const [imgFailed, setImgFailed] = useState(false);
 
   if (hasItemName(item) === false && hasItemImg(item) === false) return null;
@@ -40,8 +40,8 @@ function BonusBoxBlockComponent({ item }: BlockProps) {
         className={styles.image}
         src={item.img ?? ''}
         alt={label}
-        shape={resolveMenuItemIconShape(item, config, cmfStyle)}
-        radius={resolveMenuItemIconRadius(item, config, cmfStyle)}
+        shape={resolveCmfIconShape(item, config, cmfStyle)}
+        radius={resolveCmfIconRadius(item, config, cmfStyle)}
         onError={() => {
           setImgFailed(true);
         }}

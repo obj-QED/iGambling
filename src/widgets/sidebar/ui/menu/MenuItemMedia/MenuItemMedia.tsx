@@ -1,21 +1,21 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { MenuItemMediaProps } from '../../../types';
 
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
 
-import clsx from 'clsx';
+import { useCmfIconStyle } from '@/shared/hooks/useCmfIconStyle';
+import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib/cmfIcon';
+import { CmfIcon } from '@/shared/ui/CmfIcon';
 
-import { hasItemImg, isSvgMediaSrc } from '../../../lib/itemUtils';
+import { hasItemImg } from '../../../lib/itemUtils';
 
-import styles from '../../../styles/menu/MenuItemMedia.module.scss';
-
-type MenuItemMediaProps = {
-  item: HeaderMenuItem;
-  alt: string;
-  className?: string;
-  onImgError?: () => void;
+const SIDEBAR_ICON_DEFAULTS = {
+  menuIconShape: 'square' as const,
+  menuIconRadius: 'sm' as const,
 };
 
 function MenuItemMediaComponent({ item, alt, className, onImgError }: MenuItemMediaProps) {
+  const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
+  const cmfStyle = useCmfIconStyle(iconRef);
   const [imgFailed, setImgFailed] = useState(false);
 
   const handleError = useCallback(() => {
@@ -25,15 +25,14 @@ function MenuItemMediaComponent({ item, alt, className, onImgError }: MenuItemMe
 
   if (hasItemImg(item) === false || imgFailed === true) return null;
 
-  const src = item.img ?? '';
-  const isSvg = isSvgMediaSrc(src);
-
   return (
-    <img
-      className={clsx(isSvg ? styles.icon : styles.image, className)}
-      src={src}
+    <CmfIcon
+      ref={iconRef}
+      className={className}
+      src={item.img ?? ''}
       alt={alt}
-      loading="lazy"
+      shape={resolveCmfIconShape(item, SIDEBAR_ICON_DEFAULTS, cmfStyle)}
+      radius={resolveCmfIconRadius(item, SIDEBAR_ICON_DEFAULTS, cmfStyle)}
       onError={handleError}
     />
   );

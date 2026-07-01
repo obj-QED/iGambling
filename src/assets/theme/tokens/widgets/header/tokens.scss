@@ -1,5 +1,5 @@
-@use 'menu.tokens' as menu;
-@use 'widget.tokens' as widget;
+@use './menu.tokens' as menu;
+@use './widget.tokens' as widget;
 
 @mixin header-root-tokens {
   @include menu.header-menu-tokens('sm');

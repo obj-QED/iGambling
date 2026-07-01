@@ -1,13 +1,12 @@
-import { type AnchorHTMLAttributes, forwardRef, type ReactNode } from 'react';
+import type { AppLinkProps } from './types';
+
+import { forwardRef } from 'react';
 
 import { Link } from 'react-router-dom';
 
 import { getAppHrefKind } from '@/shared/lib';
 
-export type AppLinkProps = Omit<AnchorHTMLAttributes<HTMLElement>, 'href'> & {
-  href: string;
-  children: ReactNode;
-};
+export type { AppLinkProps } from './types';
 
 export const AppLink = forwardRef<HTMLElement, AppLinkProps>(function AppLink(
   { href, children, className, ...rest },

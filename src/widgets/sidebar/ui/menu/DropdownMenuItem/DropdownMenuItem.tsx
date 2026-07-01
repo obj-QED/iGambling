@@ -1,4 +1,4 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { DropdownMenuItemProps } from '../../../types';
 
 import { memo } from 'react';
 
@@ -7,10 +7,6 @@ import { isRenderableItem } from '../../../lib/itemUtils';
 import { ItemButton } from '../ItemButton/ItemButton';
 
 import styles from '../../../styles/menu/DropdownMenuItem.module.scss';
-
-type DropdownMenuItemProps = {
-  item: HeaderMenuItem;
-};
 
 function DropdownMenuItemComponent({ item }: DropdownMenuItemProps) {
   const { visible } = useMenuItemRenderable(item);

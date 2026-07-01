@@ -1,6 +1,4 @@
-export type ApiEnvelope<TContent> = Record<string, unknown> & {
-  content: TContent;
-};
+import type { ApiEnvelope } from './types';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);

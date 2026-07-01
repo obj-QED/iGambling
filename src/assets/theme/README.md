@@ -39,3 +39,5 @@ Global defaults: `--cmf-scrollbar-*` in `tokens/global/cmf-mantine-base-tokens.s
 Mixin: `assets/styles/mixins/_scrollbar.scss` → `@include cmf-scrollbar('aside-scrollbar')`.
 
 Per-block override: set `--{prefix}-scrollbar-*` on scope (e.g. aside uses `--aside-scrollbar-*`).
+
+New widgets: `yarn scaffold widget:MyWidget` — creates `tokens/widgets/{kebab}/` and patches this file.

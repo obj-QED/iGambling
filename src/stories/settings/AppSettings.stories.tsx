@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Code, Stack, Text, Title } from '@mantine/core';
 
 import { getSettings } from '@/shared/config';
-import { createStorybookHeaderMenu } from '@/storybook/data';
+import { createStorybookHeaderMenu, createStorybookSidebarMenu } from '@/storybook/data';
 import {
   applyStorybookAppSettings,
   readStorybookAppSettingsGlobals,
@@ -11,6 +11,8 @@ import {
 } from '@/storybook/settings';
 import { AppHeader } from '@/widgets/header';
 import { resolveHeaderConfig } from '@/widgets/header/config/resolve';
+import { AppSidebar } from '@/widgets/sidebar';
+import { resolveSidebarConfig } from '@/widgets/sidebar/config/resolve';
 
 function SettingsJsonPreview() {
   const settings = getSettings();
@@ -29,6 +31,17 @@ function HeaderSettingsPreview() {
   return <AppHeader menu={menu} config={config} />;
 }
 
+function SidebarSettingsPreview() {
+  const menu = createStorybookSidebarMenu();
+  const config = resolveSidebarConfig();
+
+  return (
+    <div style={{ display: 'flex', minHeight: 480, background: 'var(--color-bg-body)' }}>
+      <AppSidebar menu={menu} config={config} />
+    </div>
+  );
+}
+
 const meta = {
   title: 'Settings/App',
   tags: ['autodocs'],
@@ -37,7 +50,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Runtime visual config from `window.__SETTINGS__`. Use the toolbar (Header layout, Header type, Header session, Color scheme slot) — values apply before each story.',
+          'Runtime visual config from `window.__SETTINGS__`. Toolbar controls header, aside, and color scheme — values apply before each story. Theme bridge: `@/assets/theme` (`mantine/theme/mantineTheme.ts`).',
       },
     },
   },
@@ -92,6 +105,22 @@ export const HeaderPreview: Story = {
       <Stack gap="md" p="md">
         <Title order={4}>Header with current settings</Title>
         <HeaderSettingsPreview />
+      </Stack>
+    );
+  },
+};
+
+export const SidebarPreview: Story = {
+  parameters: {
+    layout: 'padded',
+  },
+  render: (_args, context) => {
+    applyStorybookAppSettings(context.globals);
+
+    return (
+      <Stack gap="md">
+        <Title order={4}>Sidebar with current settings</Title>
+        <SidebarSettingsPreview />
       </Stack>
     );
   },

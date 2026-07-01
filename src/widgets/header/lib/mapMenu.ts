@@ -21,6 +21,14 @@ export function mapItem(item: PageMenuItemDto): HeaderMenuItem {
     items: items !== undefined && items.length > 0 ? items : undefined,
   };
 
+  if (item.badge !== undefined) {
+    mapped.badge = item.badge;
+  }
+
+  if (item.subtitle !== undefined) {
+    mapped.subtitle = item.subtitle;
+  }
+
   if (isSpecialBlockKey(item.key) === false && item.type !== undefined) {
     mapped.type = item.type;
   }

@@ -1,0 +1,22 @@
+@use '../../styles/mixins'as aside;
+
+@layer widget.layout {
+  .root {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: var(--aside-footer-gap, var(--spacing-xxs, 0.25rem));
+    padding: var(--aside-shell-padding, var(--spacing-md, 0.625rem));
+    margin-left: calc(var(--aside-shell-padding, var(--spacing-md, 0.625rem)) * -1);
+    margin-right: calc(var(--aside-shell-padding, var(--spacing-md, 0.625rem)) * -1);
+    border-top: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  }
+
+  .link {
+    @include aside.aside-menu-control-height;
+  }
+
+  .linkIcon {
+    @include aside.aside-menu-icon;
+  }
+}

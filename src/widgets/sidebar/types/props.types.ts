@@ -9,6 +9,7 @@ export type RootProps = {
 
 export type BlockProps = {
   item: HeaderMenuItem;
+  className?: string;
 };
 
 export type SectionProps = {

@@ -1,9 +1,9 @@
 /**
- * Публичный API слоя. Импорты снаружи — только из  или /lobby, /auth и т.д.
+ * Публичный API слоя. Импорты снаружи — только из `@/api` или `@/api/lobby`, `@/api/auth` и т.д.
  */
 export { baseApi, lobbyApiClient } from './baseApi';
 export { API_LOBBY_PATH } from './constants';
-export type { ApiEnvelope } from './contracts';
+export { useApiMutation, useApiQuery } from './hooks';
 export type {
   GetPageContent,
   GetPageParams,
@@ -25,5 +25,10 @@ export {
   useInvalidateInit,
 } from './lobby';
 export { queryClient } from './queryClient';
-export { useApiMutation } from './useApiMutation';
-export { useApiQuery } from './useApiQuery';
+export type { ApiEnvelope } from './types';
+export type {
+  UseApiMutationParams,
+  UseApiMutationResult,
+  UseApiQueryParams,
+  UseApiQueryResult,
+} from './types';

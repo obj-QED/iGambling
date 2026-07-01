@@ -21,7 +21,7 @@ flowchart TD
   section["HeaderSection"]
   blockRes["resolveBlockComponent"]
   blockReg["BLOCK_REGISTRY"]
-  menuUi["MenuItemButton / ActionIcon / Dropdown"]
+  menuUi["AppButton / AppActionIcon / Dropdown"]
 
   init --> find
   find --> parse

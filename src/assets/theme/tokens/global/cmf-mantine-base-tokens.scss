@@ -30,8 +30,8 @@
   --cmf-menu-item-hover-bg: var(--cmf-button-default-hover);
 
   /* layout primitives */
-  --cmf-group-gap: var(--mantine-spacing-md);
-  --cmf-stack-gap: var(--mantine-spacing-md);
+  --cmf-group-gap: var(--aside-shell-padding, var(--spacing-md, 0.625rem));
+  --cmf-stack-gap: var(--aside-shell-padding, var(--spacing-md, 0.625rem));
 
   /* scrollbar — override per widget/block via `--{prefix}-scrollbar-*` */
   --cmf-scrollbar-size: 6px;

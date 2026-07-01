@@ -3,21 +3,27 @@ import type { CSSProperties } from 'react';
 
 import { memo, useMemo } from 'react';
 
+import { ScrollArea } from '@mantine/core';
 import clsx from 'clsx';
 
 import { mergeCustomBlock } from '@/widgets/header';
 
 import { SidebarConfigProvider } from '../context/provider';
+import { SidebarDropdownProvider } from '../context/sidebarDropdownProvider';
 import { filterRenderableMenu } from '../lib/itemUtils';
+import { hasSidebarLayoutContent, splitSidebarMenu } from '../lib/splitSidebarMenu';
 import { TYPE_STRATEGY_REGISTRY } from '../registry/strategies';
+import { SidebarFooter } from './layout/SidebarFooter/SidebarFooter';
+import { SidebarHeader } from './layout/SidebarHeader/SidebarHeader';
 
+import scrollAreaStyles from '../styles/base/AsideScrollArea.module.scss';
 import styles from '../styles/base/Root.module.scss';
 
 import '../registry/registerBlocks';
 
 function RootComponent({ menu, config, className }: RootProps) {
   const TypeStrategy = TYPE_STRATEGY_REGISTRY[config.type];
-  const menuModel = useMemo(() => {
+  const layout = useMemo(() => {
     if (menu === null) return null;
 
     const merged =
@@ -26,10 +32,10 @@ function RootComponent({ menu, config, className }: RootProps) {
         menu,
       ) ?? menu;
 
-    return filterRenderableMenu(merged);
+    return splitSidebarMenu(filterRenderableMenu(merged));
   }, [menu, config.customBlocks]);
 
-  if (TypeStrategy === undefined || menuModel === null || menuModel.sections.length === 0) {
+  if (layout === null || hasSidebarLayoutContent(layout) === false) {
     return null;
   }
 
@@ -37,20 +43,47 @@ function RootComponent({ menu, config, className }: RootProps) {
     '--app-layout-sidebar-width': `${config.width}px`,
   } as CSSProperties;
 
+  const scrollStyle = {
+    '--aside-scrollbar-size': `${config.scrollArea.scrollbarSize}px`,
+  } as CSSProperties;
+
   return (
     <SidebarConfigProvider config={config}>
-      <aside
-        className={clsx(styles.root, className)}
-        style={rootStyle}
-        data-widget="sidebar"
-        data-cmf-component="sidebar"
-        data-type={config.type}
-        aria-label="Sidebar menu"
-      >
-        <div className={styles.scroll} data-sidebar-scroll>
-          <TypeStrategy menu={menuModel} config={config} />
-        </div>
-      </aside>
+      <SidebarDropdownProvider defaultOpenKeys={config.openedDropdowns}>
+        <aside
+          className={clsx(styles.root, className)}
+          style={rootStyle}
+          data-widget="sidebar"
+          data-cmf-component="sidebar"
+          data-type={config.type}
+          aria-label="Sidebar menu"
+        >
+          {layout.headerSection !== null ? <SidebarHeader section={layout.headerSection} /> : null}
+
+          {layout.mainMenu.sections.length > 0 ? (
+            <ScrollArea
+              className={styles.scroll}
+              classNames={{
+                content: styles.scrollContent,
+                scrollbar: scrollAreaStyles.scrollbar,
+                thumb: scrollAreaStyles.thumb,
+              }}
+              style={scrollStyle}
+              h="100%"
+              type={config.scrollArea.type}
+              scrollbars="y"
+              offsetScrollbars
+              overscrollBehavior={config.scrollArea.overscrollBehavior}
+              scrollbarSize={config.scrollArea.scrollbarSize}
+              scrollHideDelay={config.scrollArea.scrollHideDelay}
+            >
+              <TypeStrategy menu={layout.mainMenu} config={config} />
+            </ScrollArea>
+          ) : null}
+
+          {layout.footerSection !== null ? <SidebarFooter section={layout.footerSection} /> : null}
+        </aside>
+      </SidebarDropdownProvider>
     </SidebarConfigProvider>
   );
 }

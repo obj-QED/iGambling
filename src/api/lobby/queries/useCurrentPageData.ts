@@ -5,7 +5,7 @@ import { useMemo, useSyncExternalStore } from 'react';
 
 import { getInitialPath } from '@/shared/lib/routing';
 
-import { useApiQuery } from '../../useApiQuery';
+import { useApiQuery } from '../../hooks/useApiQuery';
 import { getLobbySessionRevision, subscribeLobbySession } from '../lobbySession';
 import { LOBBY_QUERY_POLICY } from '../policy';
 import { initQueryFn, pageQueryFn } from '../queryFns';

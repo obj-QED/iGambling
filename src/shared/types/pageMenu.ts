@@ -7,6 +7,8 @@ export type PageMenuItemDto = {
   imgShape?: string;
   imgRadius?: string;
   type?: string;
+  badge?: string | number;
+  subtitle?: string;
   items?: PageMenuItemDto[];
 };
 

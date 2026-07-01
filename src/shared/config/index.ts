@@ -1,5 +1,14 @@
-export type { AsideSettings, AsideTypeKey } from './asideSettings';
-export { ASIDE_TYPE_KEYS } from './asideSettings';
+export type {
+  AsideScrollAreaSettings,
+  AsideScrollAreaType,
+  AsideSettings,
+  AsideTypeKey,
+} from './asideSettings';
+export {
+  ASIDE_SCROLL_AREA_OVERSCROLL,
+  ASIDE_SCROLL_AREA_TYPES,
+  ASIDE_TYPE_KEYS,
+} from './asideSettings';
 export type {
   HeaderBlockVariantSettings,
   HeaderCustomBlockConfig,

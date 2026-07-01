@@ -16,7 +16,7 @@ function SectionComponent({ section }: SectionProps) {
       <ul className={styles.list}>
         {items.map((item) => (
           <li key={item.key} className={styles.item}>
-            <Block item={item} />
+            <Block item={item} className={styles.itemContent} />
           </li>
         ))}
       </ul>

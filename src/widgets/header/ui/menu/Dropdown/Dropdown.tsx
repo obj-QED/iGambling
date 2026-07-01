@@ -1,4 +1,4 @@
-import type { HeaderMenuItem } from '../../../types';
+import type { DropdownProps } from '../../../types';
 
 import { memo } from 'react';
 
@@ -10,10 +10,6 @@ import { DropdownMenuItem } from '../DropdownMenuItem/DropdownMenuItem';
 import { ItemMenuTrigger } from '../ItemMenuTrigger/ItemMenuTrigger';
 
 import styles from '../../../styles/menu/Dropdown.module.scss';
-
-type DropdownProps = {
-  item: HeaderMenuItem;
-};
 
 function DropdownComponent({ item }: DropdownProps) {
   if (isRenderableItem(item) === false) return null;

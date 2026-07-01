@@ -35,3 +35,38 @@
     background-clip: padding-box;
   }
 }
+
+/** Mantine `ScrollArea` custom scrollbar — use `classNames.scrollbar/thumb` (unlayered); not `@layer widget.*`. */
+@mixin cmf-mantine-scrollarea($prefix: 'aside-scrollbar', $behavior-prefix: 'aside-scrollarea') {
+  $thumb: --#{$prefix}-thumb;
+  $thumb-hover: --#{$prefix}-thumb-hover;
+  $track: --#{$prefix}-track;
+  $size: --#{$prefix}-size;
+  $radius: --#{$prefix}-radius;
+  $overscroll: --#{$behavior-prefix}-overscroll-behavior;
+
+  --scrollarea-scrollbar-size: var(#{$size}, 4px);
+  --scrollarea-over-scroll-behavior: var(#{$overscroll}, contain);
+
+  :global([data-mantine-scrollbar][data-orientation='vertical']) {
+    width: var(#{$size}, 2px);
+    padding: 0;
+    background: var(#{$track}, transparent);
+    border-radius: var(#{$radius}, 999px);
+    transition: opacity 150ms ease;
+
+    &:where(:hover, :active) {
+      background-color: var(#{$track}, transparent);
+    }
+
+    &> :global([data-state='visible']) {
+      background-color: var(#{$thumb}, rgb(255 255 255 / 28%));
+      border-radius: var(#{$radius}, 999px);
+      transition: background-color 150ms ease;
+    }
+
+    &:hover> :global([data-state='visible']) {
+      background-color: var(#{$thumb-hover}, rgb(255 255 255 / 40%));
+    }
+  }
+}

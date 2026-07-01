@@ -1,47 +1,40 @@
-import type { HeaderMenuItem } from '../../../types';
+import type { DropdownMenuItemProps } from '../../../types';
 
 import { memo } from 'react';
 
 import { Menu } from '@mantine/core';
 
+import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
 import { isValidAppHref } from '@/shared/lib';
 import { AppLink } from '@/shared/ui';
 
-import {
-  hasItemImg,
-  hasItemName,
-  menuItemDataAttrs,
-  resolveItemHref,
-  resolveItemLabel,
-} from '../../../lib/itemUtils';
+import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
 import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
-type DropdownMenuItemProps = {
-  item: HeaderMenuItem;
-};
-
 function DropdownMenuItemComponent({ item }: DropdownMenuItemProps) {
+  const { onImgError, showItemImg, iconControlAttrs } = useMenuItemMediaState(item);
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
-  const leftSection =
-    hasItemImg(item) === true ? <MenuItemImage item={item} alt={label} /> : undefined;
-  const content = hasItemName(item) === true ? item.name : label;
+  const leftSection = showItemImg ? (
+    <MenuItemImage item={item} alt={label} onImgFailed={onImgError} />
+  ) : undefined;
+  const content = item?.name ?? label;
+  const menuItemProps = {
+    leftSection,
+    ...menuItemDataAttrs(item),
+    ...iconControlAttrs,
+  };
 
   if (isValidAppHref(href) === false) {
     return (
-      <Menu.Item leftSection={leftSection} disabled {...menuItemDataAttrs(item)}>
+      <Menu.Item disabled {...menuItemProps}>
         {content}
       </Menu.Item>
     );
   }
 
   return (
-    <Menu.Item
-      component={AppLink}
-      href={href}
-      leftSection={leftSection}
-      {...menuItemDataAttrs(item)}
-    >
+    <Menu.Item component={AppLink} href={href} {...menuItemProps}>
       {content}
     </Menu.Item>
   );

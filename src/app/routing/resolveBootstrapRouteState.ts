@@ -1,6 +1,6 @@
 import type { InitKey, TranslationKey } from '@api/lobby/queryFns';
 import type { InitV2Content, Words } from '@api/lobby/types';
-import type { UseApiQueryResult } from '@api/useApiQuery';
+import type { UseApiQueryResult } from '@api/types';
 import type { QueryClient } from '@tanstack/react-query';
 
 export type BootstrapRouteState =

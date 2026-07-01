@@ -1,4 +1,4 @@
-import type { RootProps } from '../types';
+import type { ShellProps } from '../types';
 
 import { memo } from 'react';
 
@@ -8,8 +8,6 @@ import { LAYOUT_REGISTRY } from '../registry/layouts';
 import { Section } from './Section';
 
 import styles from '../styles/base/Shell.module.scss';
-
-type ShellProps = Pick<RootProps, 'menu' | 'config'>;
 
 function ShellComponent({ menu, config }: ShellProps) {
   const Layout = LAYOUT_REGISTRY[config.layout];

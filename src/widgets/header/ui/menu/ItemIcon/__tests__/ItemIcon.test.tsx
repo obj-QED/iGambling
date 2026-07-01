@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { DEFAULT_HEADER_CONFIG } from '@/widgets/header/config/defaults';
@@ -33,7 +33,11 @@ describe('ItemIcon', () => {
     );
 
     expect(getByTestId('inline-svg')).toHaveAttribute('data-src', '/uploads/web.svg');
-    expect(getByRole('img', { name: 'Web' })).toHaveAttribute('data-menu-icon-shape', 'square');
-    expect(getByRole('img', { name: 'Web' })).toHaveAttribute('data-menu-icon-radius', 'round');
+    expect(getByRole('img', { name: 'Web' })).toHaveAttribute(
+      'data-cmf-icon-src',
+      '/uploads/web.svg',
+    );
+    expect(getByRole('img', { name: 'Web' })).toHaveAttribute('data-cmf-icon-shape', 'square');
+    expect(getByRole('img', { name: 'Web' })).toHaveAttribute('data-cmf-icon-radius', 'round');
   });
 });

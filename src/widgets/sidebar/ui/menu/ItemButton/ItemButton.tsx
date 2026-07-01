@@ -1,39 +1,26 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { ItemButtonProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { Button } from '@mantine/core';
 import clsx from 'clsx';
 
+import { AppButton } from '@/elements/AppButton';
 import { isValidAppHref } from '@/shared/lib';
-import { AppLink } from '@/shared/ui';
 
 import { useMenuItemRenderable } from '../../../hooks/useMenuItemRenderable';
 import {
-  hasItemImg,
   hasItemName,
+  isIconOnlyItem,
   isRenderableItem,
   menuItemDataAttrs,
   resolveItemHref,
+  resolveItemLabel,
 } from '../../../lib/itemUtils';
 import { resolveMenuItemButtonVariant } from '../../../lib/menuItemVariant';
 import { ASIDE_MENU_BUTTON_SIZE } from '../icons/iconProps';
 import { MenuItemMedia } from '../MenuItemMedia/MenuItemMedia';
 
 import styles from '../../../styles/menu/ItemButton.module.scss';
-
-type ItemButtonProps = {
-  item: HeaderMenuItem;
-  rightSection?: React.ReactNode;
-  className?: string;
-  /** Nested row inside `[data-sidebar-dropdown]`. */
-  dropdownItem?: boolean;
-  /** Dropdown parent — always `button`, never navigates via `url`. */
-  dropdownTrigger?: boolean;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  'aria-expanded'?: boolean;
-  'aria-haspopup'?: boolean | 'menu';
-};
 
 function ItemButtonComponent({
   item,
@@ -45,51 +32,49 @@ function ItemButtonComponent({
   'aria-expanded': ariaExpanded,
   'aria-haspopup': ariaHaspopup,
 }: ItemButtonProps) {
-  const { visible, onImgError, label } = useMenuItemRenderable(item);
+  const { visible, onImgError, showItemImg, iconControlAttrs } = useMenuItemRenderable(item);
 
   if (isRenderableItem(item) === false || visible === false) return null;
 
+  const iconOnly = isIconOnlyItem(item);
   const href = resolveItemHref(item.url);
   const hrefDisabled = dropdownTrigger === false && isValidAppHref(href) === false;
-  const variant = resolveMenuItemButtonVariant(item);
-  const leftSection =
-    hasItemImg(item) === true ? (
-      <MenuItemMedia item={item} alt={label} onImgError={onImgError} />
-    ) : undefined;
-  const content = hasItemName(item) === true ? label : null;
-  const justify: 'flex-start' | 'space-between' = dropdownTrigger ? 'space-between' : 'flex-start';
-  const dataAttrs = menuItemDataAttrs(item);
-  const sharedProps = {
-    className: clsx(styles.root, dropdownTrigger && styles.dropdownTrigger, className),
-    variant,
-    size: ASIDE_MENU_BUTTON_SIZE,
-    fullWidth: true,
-    justify,
-    leftSection,
-    rightSection,
-    ...(dropdownItem ? { 'data-sidebar-dropdown-item': true } : {}),
-    ...(dropdownTrigger ? { 'data-sidebar-dropdown-trigger': true } : {}),
-    ...dataAttrs,
-    ...(dropdownTrigger
-      ? {
-          type: 'button' as const,
-          onClick,
-          'aria-expanded': ariaExpanded,
-          'aria-haspopup': ariaHaspopup,
-        }
-      : {}),
-    ...(hrefDisabled ? { disabled: true as const } : {}),
-  };
+  const displayLabel = hasItemName(item) ? item.name : undefined;
+  const ariaLabel = resolveItemLabel(item);
+  const leftSection = showItemImg ? (
+    <MenuItemMedia item={item} alt={ariaLabel} onImgError={onImgError} />
+  ) : undefined;
+  const justify: 'center' | 'flex-start' | 'space-between' =
+    dropdownTrigger === true ? 'space-between' : iconOnly === true ? 'center' : 'flex-start';
 
-  if (dropdownTrigger === false && hrefDisabled === false) {
-    return (
-      <Button component={AppLink} href={href} {...sharedProps}>
-        {content}
-      </Button>
-    );
-  }
-
-  return <Button {...sharedProps}>{content}</Button>;
+  return (
+    <AppButton
+      label={displayLabel}
+      aria-label={iconOnly === true ? ariaLabel : undefined}
+      href={dropdownTrigger === true ? undefined : href}
+      native={dropdownTrigger === true}
+      disabled={hrefDisabled === true}
+      className={clsx(styles.root, dropdownTrigger === true && styles.dropdownTrigger, className)}
+      variant={resolveMenuItemButtonVariant(item)}
+      size={ASIDE_MENU_BUTTON_SIZE}
+      fullWidth
+      justify={justify}
+      leftSection={leftSection}
+      rightSection={rightSection}
+      {...(dropdownItem === true ? { 'data-sidebar-dropdown-item': true } : {})}
+      {...(dropdownTrigger === true ? { 'data-sidebar-dropdown-trigger': true } : {})}
+      {...menuItemDataAttrs(item)}
+      {...iconControlAttrs}
+      {...(dropdownTrigger === true
+        ? {
+            type: 'button' as const,
+            onClick,
+            'aria-expanded': ariaExpanded,
+            'aria-haspopup': ariaHaspopup,
+          }
+        : {})}
+    />
+  );
 }
 
 export const ItemButton = memo(ItemButtonComponent);

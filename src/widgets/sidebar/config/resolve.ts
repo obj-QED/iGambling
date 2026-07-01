@@ -2,6 +2,8 @@ import type { SidebarConfig } from '../types';
 import type { PageMenuItemDto } from '@/shared/types/pageMenu';
 
 import {
+  ASIDE_SCROLL_AREA_OVERSCROLL,
+  ASIDE_SCROLL_AREA_TYPES,
   ASIDE_TYPE_KEYS,
   type AsideSettings,
   getSettings,
@@ -12,7 +14,7 @@ import {
 import { pickUnionValue, readString } from '@/shared/lib/coercion';
 import { parsePageMenuItemDto } from '@/shared/lib/pageMenu';
 
-import { DEFAULT_SIDEBAR_CONFIG } from './defaults';
+import { DEFAULT_SIDEBAR_CONFIG, DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG } from './defaults';
 
 function parseCustomBlockItems(items: HeaderCustomBlockInput[]): PageMenuItemDto[] {
   const parsed: PageMenuItemDto[] = [];
@@ -61,6 +63,38 @@ function resolveWidth(raw: unknown): number {
   return Math.max(0, Math.round(value));
 }
 
+function resolveFiniteNumber(raw: unknown, fallback: number): number {
+  return typeof raw === 'number' && Number.isFinite(raw) ? raw : fallback;
+}
+
+function resolveOpenedDropdowns(aside: AsideSettings): readonly string[] {
+  const raw = aside.openedDropdowns;
+  if (raw === undefined || Array.isArray(raw) === false) {
+    return DEFAULT_SIDEBAR_CONFIG.openedDropdowns;
+  }
+
+  return raw.filter((key): key is string => typeof key === 'string' && key.trim().length > 0);
+}
+
+function resolveScrollArea(aside: AsideSettings): SidebarConfig['scrollArea'] {
+  const raw = aside.scrollArea;
+  const defaults = DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG;
+
+  const scrollbarSize = resolveFiniteNumber(raw?.scrollbarSize, defaults.scrollbarSize);
+  const scrollHideDelay = resolveFiniteNumber(raw?.scrollHideDelay, defaults.scrollHideDelay);
+
+  return {
+    scrollbarSize: Math.max(1, Math.round(scrollbarSize)),
+    scrollHideDelay: Math.max(0, Math.round(scrollHideDelay)),
+    type: pickUnionValue(ASIDE_SCROLL_AREA_TYPES, raw?.type, defaults.type),
+    overscrollBehavior: pickUnionValue(
+      ASIDE_SCROLL_AREA_OVERSCROLL,
+      raw?.overscrollBehavior,
+      defaults.overscrollBehavior,
+    ),
+  };
+}
+
 export function resolveSidebarConfig(
   settings = getSettings(),
   overrides?: Partial<AsideSettings>,
@@ -70,6 +104,8 @@ export function resolveSidebarConfig(
   return {
     width: resolveWidth(aside.width),
     type: pickUnionValue(ASIDE_TYPE_KEYS, aside.type, DEFAULT_SIDEBAR_CONFIG.type),
+    openedDropdowns: resolveOpenedDropdowns(aside),
     customBlocks: resolveCustomBlocks(aside),
+    scrollArea: resolveScrollArea(aside),
   };
 }

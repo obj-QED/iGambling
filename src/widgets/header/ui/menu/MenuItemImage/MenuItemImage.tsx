@@ -1,21 +1,13 @@
-import type { HeaderMenuItem } from '../../../types';
+import type { MenuItemImageProps } from '../../../types';
 
 import { memo, useCallback, useRef, useState } from 'react';
 
-import { useConfig } from '../../../context/useConfig';
-import { useCmfMenuIconStyle } from '../../../hooks/useCmfMenuIconStyle';
-import { hasItemImg } from '../../../lib/itemUtils';
-import { resolveMenuItemIconRadius, resolveMenuItemIconShape } from '../../../lib/menuItemIcon';
-import { HeaderPhotoFallback } from '../icons/HeaderPhotoFallback';
-import { ItemIcon } from '../ItemIcon/ItemIcon';
+import { useCmfIconStyle } from '@/shared/hooks/useCmfIconStyle';
+import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib/cmfIcon';
 
-type MenuItemImageProps = {
-  item: HeaderMenuItem;
-  alt: string;
-  className?: string;
-  inActionIcon?: boolean;
-  onImgFailed?: () => void;
-};
+import { useConfig } from '../../../context/useConfig';
+import { hasItemImg } from '../../../lib/itemUtils';
+import { ItemIcon } from '../ItemIcon/ItemIcon';
 
 function MenuItemImageComponent({
   item,
@@ -26,7 +18,7 @@ function MenuItemImageComponent({
 }: MenuItemImageProps) {
   const config = useConfig();
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
-  const cmfStyle = useCmfMenuIconStyle(iconRef);
+  const cmfStyle = useCmfIconStyle(iconRef);
   const [imgFailed, setImgFailed] = useState(false);
 
   const handleError = useCallback(() => {
@@ -36,7 +28,7 @@ function MenuItemImageComponent({
 
   if (hasItemImg(item) === false) return null;
 
-  if (imgFailed === true) return <HeaderPhotoFallback />;
+  if (imgFailed === true) return null;
 
   return (
     <ItemIcon
@@ -45,8 +37,8 @@ function MenuItemImageComponent({
       inActionIcon={inActionIcon}
       src={item.img ?? ''}
       alt={alt}
-      shape={resolveMenuItemIconShape(item, config, cmfStyle)}
-      radius={resolveMenuItemIconRadius(item, config, cmfStyle)}
+      shape={resolveCmfIconShape(item, config, cmfStyle)}
+      radius={resolveCmfIconRadius(item, config, cmfStyle)}
       onError={handleError}
     />
   );

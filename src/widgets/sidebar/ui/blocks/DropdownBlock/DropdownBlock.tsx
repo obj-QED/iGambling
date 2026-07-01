@@ -4,8 +4,8 @@ import { memo } from 'react';
 
 import { Dropdown } from '../../menu/Dropdown/Dropdown';
 
-function DropdownBlockComponent({ item }: BlockProps) {
-  return <Dropdown item={item} />;
+function DropdownBlockComponent({ item, className }: BlockProps) {
+  return <Dropdown item={item} className={className} />;
 }
 
 export const DropdownBlock = memo(DropdownBlockComponent);

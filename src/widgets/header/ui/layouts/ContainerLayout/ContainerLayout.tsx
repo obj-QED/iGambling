@@ -1,12 +1,10 @@
-import { memo, type ReactNode } from 'react';
+import type { ContainerLayoutProps } from '../../../types';
+
+import { memo } from 'react';
 
 import { Container } from '@mantine/core';
 
 import styles from '../../../styles/layout/ContainerLayout.module.scss';
-
-type ContainerLayoutProps = {
-  children: ReactNode;
-};
 
 function ContainerLayoutComponent({ children }: ContainerLayoutProps) {
   return (

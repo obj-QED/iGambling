@@ -68,6 +68,7 @@ export function menuItemDataAttrs(item: HeaderMenuItem): {
   const key = itemKey(item);
   const scope = {
     ...cmfScopeAttrs(HEADER_CMF_COMPONENT, key),
+    'data-cmf-key': key,
     'data-menu-key': key,
   };
 

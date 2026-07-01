@@ -8,7 +8,10 @@
     max-height: var(--aside-shell-max-height, 100vh);
     min-height: 0;
     overflow: hidden;
-    padding: var(--aside-shell-padding, 0.5rem);
+    padding: var(--aside-shell-padding, var(--spacing-md, 0.625rem));
+    padding-bottom: 0;
+    border-right: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
 
     @media (max-width: $tablet) {
       width: 100%;
@@ -16,11 +19,17 @@
   }
 
   .scroll {
-    flex: 1 1 auto;
+    flex: 1;
     min-height: 0;
-    overflow: hidden auto;
-    overscroll-behavior: contain;
+    margin-left: calc(var(--aside-shell-padding, var(--spacing-md, 0.625rem)) * -1);
+    margin-right: calc(var(--aside-shell-padding, var(--spacing-md, 0.625rem)) * -1);
+    padding: var(--aside-shell-padding, var(--spacing-md, 0.625rem));
+    padding-top: 0;
+    padding-bottom: 0;
+    --scrollarea-scrollbar-size: var(--aside-scrollbar-size, 2px);
+  }
 
-    @include cmf-scrollbar('aside-scrollbar');
+  .scrollContent {
+    padding-bottom: var(--aside-scroll-content-padding-bottom, var(--spacing-md, 0.625rem));
   }
 }

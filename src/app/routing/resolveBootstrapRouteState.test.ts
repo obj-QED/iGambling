@@ -1,6 +1,6 @@
 import type { InitKey, TranslationKey } from '@api/lobby/queryFns';
 import type { InitV2Content, Words } from '@api/lobby/types';
-import type { UseApiQueryResult } from '@api/useApiQuery';
+import type { UseApiQueryResult } from '@api/types';
 
 import { QueryClient } from '@tanstack/react-query';
 import { describe, expect, it } from 'vitest';
@@ -39,7 +39,11 @@ describe('resolveBootstrapRouteState', () => {
       init: createQueryResult<InitV2Content>({ loading: true }),
       translation: createQueryResult<Words>({
         content: { hello: 'Hello' },
-        query: { status: 'success', isEnabled: true, fetchStatus: 'idle' } as UseApiQueryResult<Words>['query'],
+        query: {
+          status: 'success',
+          isEnabled: true,
+          fetchStatus: 'idle',
+        } as UseApiQueryResult<Words>['query'],
       }),
     });
 
@@ -95,7 +99,11 @@ describe('resolveBootstrapRouteState', () => {
       init: createQueryResult<InitV2Content>(),
       translation: createQueryResult<Words>({
         error: translationError,
-        query: { status: 'error', isEnabled: true, fetchStatus: 'idle' } as UseApiQueryResult<Words>['query'],
+        query: {
+          status: 'error',
+          isEnabled: true,
+          fetchStatus: 'idle',
+        } as UseApiQueryResult<Words>['query'],
       }),
     });
 

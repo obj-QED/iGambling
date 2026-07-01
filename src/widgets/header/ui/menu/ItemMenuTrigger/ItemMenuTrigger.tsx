@@ -1,8 +1,10 @@
-import type { HeaderMenuItem } from '../../../types';
+import type { ItemMenuTriggerProps } from '../../../types';
 
 import { forwardRef } from 'react';
 
-import { ActionIcon, Button } from '@mantine/core';
+import { AppActionIcon } from '@/elements/AppActionIcon';
+import { AppButton } from '@/elements/AppButton';
+import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
 
 import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
 import {
@@ -11,7 +13,6 @@ import {
 } from '../../../lib/headerMenuSize';
 import {
   hasItemImg,
-  hasItemName,
   isIconOnlyItem,
   isRenderableItem,
   menuItemDataAttrs,
@@ -25,44 +26,49 @@ import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
 import styles from '../../../styles/menu/ItemMenuTrigger.module.scss';
 
-type ItemMenuTriggerProps = {
-  item: HeaderMenuItem;
-  rightSection?: React.ReactNode;
-};
-
 const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerProps>(
   function ItemMenuTriggerComponent({ item, rightSection, ...rest }, ref) {
+    const menuSizes = useHeaderMenuSizes();
+    const { onImgError, showItemImg, hideImageControl, iconControlAttrs } =
+      useMenuItemMediaState(item);
+
     if (isRenderableItem(item) === false) return null;
 
-    const menuSizes = useHeaderMenuSizes();
     const label = resolveItemLabel(item);
     const actionIconSize = resolveHeaderMenuActionIconSize(menuSizes);
     const buttonSize = resolveHeaderMenuButtonSize(item, menuSizes);
+    const leftSection = showItemImg ? (
+      <MenuItemImage item={item} alt={label} onImgFailed={onImgError} />
+    ) : undefined;
 
     if (isIconOnlyItem(item) === true && hasItemImg(item) === true) {
       return (
-        <ActionIcon
+        <AppActionIcon
           {...rest}
           ref={ref}
+          native
+          name={item.name}
+          img={item.img}
+          hidden={hideImageControl}
           className={styles.actionIcon}
           variant={resolveMenuItemActionIconVariant(item)}
           size={actionIconSize}
           aria-label={label}
           aria-haspopup="menu"
           {...menuItemDataAttrs(item)}
+          {...iconControlAttrs}
         >
-          <MenuItemImage item={item} alt={label} inActionIcon />
-        </ActionIcon>
+          <MenuItemImage item={item} alt={label} inActionIcon onImgFailed={onImgError} />
+        </AppActionIcon>
       );
     }
 
-    const leftSection =
-      hasItemImg(item) === true ? <MenuItemImage item={item} alt={label} /> : undefined;
-
     return (
-      <Button
+      <AppButton
         {...rest}
         ref={ref}
+        native
+        label={item.name}
         className={styles.button}
         variant={resolveMenuItemButtonVariant(item)}
         size={buttonSize}
@@ -71,9 +77,8 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
         aria-label={label}
         aria-haspopup="menu"
         {...menuItemDataAttrs(item)}
-      >
-        {hasItemName(item) === true ? item.name : null}
-      </Button>
+        {...iconControlAttrs}
+      />
     );
   },
 );

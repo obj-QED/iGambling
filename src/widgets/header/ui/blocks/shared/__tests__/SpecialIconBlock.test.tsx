@@ -50,8 +50,8 @@ describe('SpecialIconBlock', () => {
     expect(container.querySelector('[data-menu-key="notification"]')).toBeNull();
   });
 
-  it('shows photo fallback when img fails to load', () => {
-    renderSpecialIconBlock({
+  it('hides action icon when img fails to load', () => {
+    const { container } = renderSpecialIconBlock({
       item: { key: 'notification', url: '/notification', name: '', img: '/missing.png' },
       fallbackIcon: <IconSearch {...HEADER_TABLER_ICON_PROPS} />,
     });
@@ -59,6 +59,6 @@ describe('SpecialIconBlock', () => {
     const image = screen.getByRole('img', { name: 'notification' });
     fireEvent.error(image);
 
-    expect(document.querySelector('svg.tabler-icon')).toBeTruthy();
+    expect(container.querySelector('[data-menu-key="notification"]')).toBeNull();
   });
 });

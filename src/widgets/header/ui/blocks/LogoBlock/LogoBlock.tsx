@@ -4,20 +4,20 @@ import { memo, useState } from 'react';
 
 import { AppLink } from '@/shared/ui';
 
-import { isRenderableItem, resolveItemHref } from '../../../lib/itemUtils';
+import { isRenderableItem, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
 
 import styles from '../../../styles/blocks/LogoBlock.module.scss';
 
 function LogoBlockComponent({ item }: BlockProps) {
   const [imgFailed, setImgFailed] = useState(false);
 
-  if (!isRenderableItem(item)) return null;
+  if (isRenderableItem(item) === false) return null;
 
   const href = resolveItemHref(item.url);
-  const alt = item.name || item.key;
+  const alt = resolveItemLabel(item);
   const hasImg = (item.img?.length ?? 0) > 0;
 
-  if (!hasImg) {
+  if (hasImg === false) {
     return (
       <AppLink href={href} className={styles.textLogo} data-menu-key={item.key}>
         {alt}
@@ -25,7 +25,7 @@ function LogoBlockComponent({ item }: BlockProps) {
     );
   }
 
-  if (imgFailed) return null;
+  if (imgFailed === true) return null;
 
   return (
     <AppLink href={href} className={styles.root} data-menu-key={item.key}>

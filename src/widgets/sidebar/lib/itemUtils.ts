@@ -18,6 +18,8 @@ function itemKey(item: HeaderMenuItem): string {
   return item.key ?? '';
 }
 
+export { itemKey };
+
 export function isSpecialBlockKey(key: string | undefined): boolean {
   return isSidebarSpecialBlockKey(key ?? '');
 }
@@ -117,8 +119,4 @@ export function filterRenderableMenu(menu: HeaderMenuModel): HeaderMenuModel {
   }
 
   return { sections };
-}
-
-export function isSvgMediaSrc(src: string): boolean {
-  return /\.svg(?:\?|#|$)/i.test(src);
 }

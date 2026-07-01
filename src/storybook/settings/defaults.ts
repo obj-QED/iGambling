@@ -20,4 +20,11 @@ export const STORYBOOK_APP_SETTINGS_DEFAULTS: AppSettings = {
     mockAuth: 'authenticated',
     customBlocks: [COLOR_SCHEME_CUSTOM_BLOCK],
   },
+  aside: {
+    width: 400,
+    type: 'default',
+    mockMenu: true,
+    openedDropdowns: ['category', 'providers', 'live_games', 'casino', 'betting'],
+    customBlocks: [],
+  },
 };

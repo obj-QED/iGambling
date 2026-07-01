@@ -1,0 +1,7 @@
+@use 'assets/theme/tokens/global/cmf-icon-tokens' as cmf-icon;
+
+@layer components {
+  .root {
+    @include cmf-icon.cmf-menu-media-icon;
+  }
+}

@@ -9,11 +9,15 @@ import {
 
 import { COLOR_SCHEME_CUSTOM_BLOCK } from './defaults';
 
+export type StorybookAsideWidthKey = '320' | '400' | '480';
+
 export type StorybookAppSettingsGlobals = {
   headerLayout: HeaderLayoutKey;
   headerType: HeaderTypeKey;
   headerAuth: HeaderMockAuthKey;
   headerColorSchemeSlot: boolean;
+  asideMockMenu: boolean;
+  asideWidth: StorybookAsideWidthKey;
 };
 
 export const STORYBOOK_APP_SETTINGS_GLOBAL_TYPES = {
@@ -63,6 +67,33 @@ export const STORYBOOK_APP_SETTINGS_GLOBAL_TYPES = {
       dynamicTitle: true,
     },
   },
+  asideMockMenu: {
+    name: 'Aside mock menu',
+    description: '`window.__SETTINGS__.aside.mockMenu` — sidebar menu from `widgets/sidebar/mocks`',
+    defaultValue: 'true',
+    toolbar: {
+      icon: 'sidebar',
+      items: [
+        { value: 'true', title: 'Mock on' },
+        { value: 'false', title: 'Mock off' },
+      ],
+      dynamicTitle: true,
+    },
+  },
+  asideWidth: {
+    name: 'Aside width',
+    description: '`window.__SETTINGS__.aside.width` (desktop px)',
+    defaultValue: '400' satisfies StorybookAsideWidthKey,
+    toolbar: {
+      icon: 'ruler',
+      items: [
+        { value: '320', title: '320px' },
+        { value: '400', title: '400px' },
+        { value: '480', title: '480px' },
+      ],
+      dynamicTitle: true,
+    },
+  },
 };
 
 export function readStorybookAppSettingsGlobals(
@@ -85,6 +116,10 @@ export function readStorybookAppSettingsGlobals(
     headerType,
     headerAuth,
     headerColorSchemeSlot: globals.headerColorSchemeSlot !== 'false',
+    asideMockMenu: globals.asideMockMenu !== 'false',
+    asideWidth: (['320', '400', '480'].includes(String(globals.asideWidth))
+      ? globals.asideWidth
+      : '400') as StorybookAsideWidthKey,
   };
 }
 
@@ -97,5 +132,16 @@ export function buildHeaderSettingsFromGlobals(globals: Record<string, unknown>)
     mockMenu: true,
     mockAuth: parsed.headerAuth,
     customBlocks: parsed.headerColorSchemeSlot ? [COLOR_SCHEME_CUSTOM_BLOCK] : [],
+  };
+}
+
+export function buildAsideSettingsFromGlobals(globals: Record<string, unknown>) {
+  const parsed = readStorybookAppSettingsGlobals(globals);
+
+  return {
+    width: Number(parsed.asideWidth),
+    type: 'default' as const,
+    mockMenu: parsed.asideMockMenu,
+    customBlocks: [],
   };
 }

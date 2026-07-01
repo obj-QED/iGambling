@@ -4,8 +4,8 @@ import { memo } from 'react';
 
 import { PromoBlock } from '../shared/PromoBlock';
 
-function WheelMdlBlockComponent({ item }: BlockProps) {
-  return <PromoBlock item={item} />;
+function WheelMdlBlockComponent({ item, className }: BlockProps) {
+  return <PromoBlock item={item} className={className} />;
 }
 
 export const WheelMdlBlock = memo(WheelMdlBlockComponent);

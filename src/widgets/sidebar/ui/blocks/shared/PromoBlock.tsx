@@ -1,6 +1,8 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { PromoBlockProps } from '../../../types';
 
 import { memo } from 'react';
+
+import clsx from 'clsx';
 
 import { AppLink } from '@/shared/ui';
 
@@ -16,11 +18,7 @@ import { MenuItemMedia } from '../../menu/MenuItemMedia/MenuItemMedia';
 
 import styles from '../../../styles/blocks/PromoBlock.module.scss';
 
-type PromoBlockProps = {
-  item: HeaderMenuItem;
-};
-
-function PromoBlockComponent({ item }: PromoBlockProps) {
+function PromoBlockComponent({ item, className }: PromoBlockProps) {
   const { visible, onImgError, label } = useMenuItemRenderable(item);
 
   if (isRenderableItem(item) === false || visible === false) return null;
@@ -41,7 +39,7 @@ function PromoBlockComponent({ item }: PromoBlockProps) {
     return (
       <AppLink
         href={href}
-        className={styles.root}
+        className={clsx(styles.root, className)}
         data-sidebar-block={item.key}
         {...menuItemKeyAttr(item)}
       >
@@ -51,7 +49,11 @@ function PromoBlockComponent({ item }: PromoBlockProps) {
   }
 
   return (
-    <div className={styles.root} data-sidebar-block={item.key} {...menuItemKeyAttr(item)}>
+    <div
+      className={clsx(styles.root, className)}
+      data-sidebar-block={item.key}
+      {...menuItemKeyAttr(item)}
+    >
       {content}
     </div>
   );

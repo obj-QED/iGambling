@@ -4,15 +4,16 @@
 
 @mixin sidebar-widget-tokens {
   --aside-menu-dropdown-indent: 0px;
-  --aside-section-gap: var(--spacing-xxs, 0.25rem);
-  --aside-block-gap: var(--spacing-xxs, 0.25rem);
+  --aside-section-gap: var(--spacing-sm, 0.5rem);
+  --aside-block-gap: var(--spacing-sm, 0.5rem);
   --aside-block-bg: rgb(255 255 255 / 4%);
   --aside-block-hover-bg: rgb(255 255 255 / 8%);
 
-  /** Aside scroll — defaults; per-block override via `--aside-scrollbar-*` on scope. */
-  --aside-scrollbar-size: var(--cmf-scrollbar-size, 6px);
-  --aside-scrollbar-radius: var(--cmf-scrollbar-radius, 999px);
-  --aside-scrollbar-thumb: var(--cmf-scrollbar-thumb, rgb(255 255 255 / 22%));
-  --aside-scrollbar-thumb-hover: var(--cmf-scrollbar-thumb-hover, rgb(255 255 255 / 32%));
-  --aside-scrollbar-track: var(--cmf-scrollbar-track, transparent);
+  /** Aside ScrollArea — track + thumb; theme-aware via `light-dark()`. */
+  --aside-scrollbar-size: 2px;
+  --aside-scrollbar-radius: 999px;
+  --aside-scrollbar-track: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-7));
+  --aside-scrollbar-thumb: light-dark(var(--mantine-color-gray-5), rgb(255 255 255 / 28%));
+  --aside-scrollbar-thumb-hover: light-dark(var(--mantine-color-gray-6), rgb(255 255 255 / 40%));
+  --aside-scrollarea-overscroll-behavior: contain;
 }

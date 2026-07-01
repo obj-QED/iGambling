@@ -1,26 +1,28 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { DropdownProps } from '../../../types';
 
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback } from 'react';
 
 import { Collapse } from '@mantine/core';
+import clsx from 'clsx';
 
+import { useSidebarDropdown } from '../../../context/useSidebarDropdown';
 import { useMenuItemRenderable } from '../../../hooks/useMenuItemRenderable';
-import { isRenderableItem } from '../../../lib/itemUtils';
+import { isRenderableItem, itemKey } from '../../../lib/itemUtils';
 import { DropdownMenuItem } from '../DropdownMenuItem/DropdownMenuItem';
 import { DropdownTrigger } from '../DropdownTrigger/DropdownTrigger';
 
 import styles from '../../../styles/menu/Dropdown.module.scss';
 
-type DropdownProps = {
-  item: HeaderMenuItem;
-};
+function DropdownComponent({ item, className }: DropdownProps) {
+  const menuKey = itemKey(item);
+  const { isOpen, toggle } = useSidebarDropdown();
+  const opened = isOpen(menuKey);
 
-function DropdownComponent({ item }: DropdownProps) {
-  const [opened, setOpened] = useState(false);
   const { visible } = useMenuItemRenderable(item);
-  const toggle = useCallback(() => {
-    setOpened((current) => !current);
-  }, []);
+
+  const onToggle = useCallback(() => {
+    toggle(menuKey);
+  }, [menuKey, toggle]);
 
   if (isRenderableItem(item) === false || visible === false) return null;
 
@@ -28,8 +30,8 @@ function DropdownComponent({ item }: DropdownProps) {
   if (children.length === 0) return null;
 
   return (
-    <div className={styles.root} data-sidebar-dropdown>
-      <DropdownTrigger item={item} opened={opened} onToggle={toggle} />
+    <div className={clsx(styles.root, className)} data-sidebar-dropdown>
+      <DropdownTrigger item={item} opened={opened} onToggle={onToggle} />
       <Collapse expanded={opened}>
         <ul className={styles.list} role="menu">
           {children.map((child) => (

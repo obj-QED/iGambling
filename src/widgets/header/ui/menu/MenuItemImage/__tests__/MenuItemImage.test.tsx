@@ -6,7 +6,7 @@ import { ConfigProvider } from '@/widgets/header/context/provider';
 import { MenuItemImage } from '@/widgets/header/ui/menu/MenuItemImage/MenuItemImage';
 
 describe('MenuItemImage', () => {
-  it('shows HeaderPhotoFallback when image load fails', () => {
+  it('removes image from DOM when load fails', () => {
     render(
       <ConfigProvider config={DEFAULT_HEADER_CONFIG}>
         <MenuItemImage
@@ -19,6 +19,5 @@ describe('MenuItemImage', () => {
     fireEvent.error(screen.getByRole('img', { name: 'profile' }));
 
     expect(screen.queryByRole('img', { name: 'profile' })).toBeNull();
-    expect(document.querySelector('svg')).not.toBeNull();
   });
 });

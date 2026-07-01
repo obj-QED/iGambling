@@ -2,7 +2,7 @@ import type { InitKey, TranslationKey } from '../queryFns';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useApiQuery } from '../../useApiQuery';
+import { useApiQuery } from '../../hooks/useApiQuery';
 import { LOBBY_QUERY_POLICY } from '../policy';
 import { initQueryFn, translationQueryFn } from '../queryFns';
 import { lobbyQueryKeys } from '../queryKeys';

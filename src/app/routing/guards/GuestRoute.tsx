@@ -1,14 +1,10 @@
-import type { ReactNode } from 'react';
+import type { GuestRouteProps } from '@/app/types';
 
 import { memo } from 'react';
 
 import { Navigate, Outlet } from 'react-router-dom';
 
 import { useAuthSession } from '@hooks/useAuthSession';
-
-type GuestRouteProps = {
-  children?: ReactNode;
-};
 
 function GuestRouteComponent({ children }: GuestRouteProps) {
   const { isAuthenticated } = useAuthSession();

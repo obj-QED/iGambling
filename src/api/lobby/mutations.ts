@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useApiMutation } from '../useApiMutation';
+import { useApiMutation } from '../hooks/useApiMutation';
 
 type InvalidateInitResponse = {
   value: boolean;
@@ -17,10 +17,10 @@ export function useInvalidateInit() {
     mutationFn: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
-          predicate: query => query.queryKey[0] === 'lobby' && query.queryKey[1] === 'init',
+          predicate: (query) => query.queryKey[0] === 'lobby' && query.queryKey[1] === 'init',
         }),
         queryClient.invalidateQueries({
-          predicate: query => query.queryKey[0] === 'lobby' && query.queryKey[1] === 'page',
+          predicate: (query) => query.queryKey[0] === 'lobby' && query.queryKey[1] === 'page',
         }),
       ]);
       return { content: { value: true } };

@@ -36,6 +36,13 @@
       type: 'default',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: true,
+      openedDropdowns: ['category', 'providers', 'live_games', 'casino', 'betting'],
+      scrollArea: {
+        scrollbarSize: 2,
+        scrollHideDelay: 3000,
+        type: 'auto',
+        overscrollBehavior: 'contain',
+      },
       customBlocks: [
         // Into existing API section row (no new section):
         //   { section: 'block3', at: 'start' | 'end' | 0 | 1 | … }

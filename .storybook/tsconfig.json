@@ -27,5 +27,13 @@
       "@pages/*": ["src/pages/*"]
     }
   },
-  "include": ["./**/*.ts", "./**/*.tsx", "../src/vite-env.d.ts", "../build/scss-config.ts"]
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "../src/vite-env.d.ts",
+    "../src/**/*.stories.@(ts|tsx)",
+    "../src/storybook/**/*.ts",
+    "../src/storybook/**/*.tsx",
+    "../build/scss-config.ts"
+  ]
 }

@@ -3,6 +3,20 @@ import type { HeaderMenuModel } from '@/widgets/header';
 export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
   sections: [
     {
+      key: 'header',
+      items: [
+        {
+          url: '/profile',
+          name: 'Harriette Spoonlicker',
+          key: 'account',
+          img: '/images/misc/default/header/icon_user.webp',
+          imgRadius: 'round',
+          subtitle: 'hspoonlicker@outlook.com',
+          type: 'link',
+        },
+      ],
+    },
+    {
       url: '#',
       name: 'left',
       key: 'left',
@@ -32,16 +46,16 @@ export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
         },
         {
           url: '/',
-          name: 'Home',
+          name: '',
           key: 'home',
-          img: 'images/menu/left/white/home.webp',
+          img: '/uploads/web.svg',
           type: 'button',
         },
         {
           url: 'jackpots',
           name: 'Jackpots',
           key: 'jackpots',
-          img: 'images/menu/left/white/jackpots.svg',
+          img: '/uploads/jlogo.webp',
           type: 'link',
         },
         {
@@ -820,6 +834,23 @@ export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
               img: '/images/tags/white/new.webp',
             },
           ],
+        },
+      ],
+    },
+    {
+      key: 'footer',
+      items: [
+        {
+          url: '/account/switch',
+          name: 'Change account',
+          key: 'change_account',
+          type: 'link',
+        },
+        {
+          url: '/logout',
+          name: 'Logout',
+          key: 'logout',
+          type: 'link',
         },
       ],
     },

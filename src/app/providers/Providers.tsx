@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import type { ProvidersProps } from '@/app/types';
 
 import { MantineProvider } from '@mantine/core';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -12,10 +12,6 @@ import { classNamesPrefix, defaultColorScheme, mantineTheme } from '@/assets/the
 
 import { DeviceBodySync } from './DeviceBodySync';
 import { ScrollFullscreenSync } from './ScrollFullscreenSync';
-
-type ProvidersProps = {
-  children: ReactNode;
-};
 
 export function Providers({ children }: ProvidersProps) {
   const isDev = import.meta.env.DEV;

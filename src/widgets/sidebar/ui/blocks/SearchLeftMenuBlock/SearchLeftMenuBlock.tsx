@@ -4,6 +4,7 @@ import { memo } from 'react';
 
 import { TextInput } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
+import clsx from 'clsx';
 
 import { AppLink } from '@/shared/ui';
 
@@ -11,7 +12,7 @@ import { isRenderableItem, menuItemKeyAttr, resolveItemHref } from '../../../lib
 
 import styles from '../../../styles/blocks/SearchLeftMenuBlock.module.scss';
 
-function SearchLeftMenuBlockComponent({ item }: BlockProps) {
+function SearchLeftMenuBlockComponent({ item, className }: BlockProps) {
   if (isRenderableItem(item) === false) return null;
 
   const href = resolveItemHref(item.url);
@@ -29,14 +30,14 @@ function SearchLeftMenuBlockComponent({ item }: BlockProps) {
 
   if (href.length > 0) {
     return (
-      <AppLink href={href} className={styles.root} {...menuItemKeyAttr(item)}>
+      <AppLink href={href} className={clsx(styles.root, className)} {...menuItemKeyAttr(item)}>
         {input}
       </AppLink>
     );
   }
 
   return (
-    <div className={styles.root} {...menuItemKeyAttr(item)}>
+    <div className={clsx(styles.root, className)} {...menuItemKeyAttr(item)}>
       {input}
     </div>
   );
