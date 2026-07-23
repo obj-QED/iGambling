@@ -29,11 +29,11 @@ export const mantinePlaygroundParameters = {
   controls: { expanded: true },
 };
 
-export function mantineVariantArgType(options: readonly string[]) {
+export function mantineVariantArgType(options: readonly string[], category = 'Appearance') {
   return {
     control: 'select',
     options: [...options],
-    table: { category: 'Appearance' },
+    table: { category },
   };
 }
 

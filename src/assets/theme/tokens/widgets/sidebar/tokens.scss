@@ -50,5 +50,9 @@
    *   --cmf-icon-*
    * Same for --cmf-action-icon-sidebar-*. Avoid bare % on Button icons.
    */
-
+  --cmf-icon-shape: rect;
+  --cmf-button-sidebar-icon-scale: 0.7;
+  --cmf-button-sidebar-icon-aspect: 1.5;
+  --cmf-action-icon-sidebar-icon-scale: 0.7;
+  --cmf-action-icon-sidebar-icon-aspect: 1.5;
 }

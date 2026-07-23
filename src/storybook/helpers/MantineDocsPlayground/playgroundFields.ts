@@ -54,6 +54,26 @@ export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     options: toOptions(MANTINE_RADIUS_OPTIONS),
   },
   { type: 'text', name: 'children', label: 'Text' },
+  {
+    type: 'segmented',
+    name: 'iconScale',
+    label: 'Icon scale',
+    options: [
+      { value: '0.5', label: '0.5' },
+      { value: '0.7', label: '0.7' },
+      { value: '1', label: '1' },
+    ],
+  },
+  {
+    type: 'segmented',
+    name: 'iconAspect',
+    label: 'Icon aspect',
+    options: [
+      { value: '1', label: '1' },
+      { value: '1.5', label: '1.5' },
+      { value: '2', label: '2' },
+    ],
+  },
   { type: 'switch', name: 'disabled', label: 'Disabled' },
   { type: 'switch', name: 'loading', label: 'Loading' },
   { type: 'switch', name: 'fullWidth', label: 'Full width' },
@@ -88,6 +108,26 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     options: toOptions(MANTINE_RADIUS_OPTIONS),
   },
   { type: 'text', name: 'aria-label', label: 'Aria label' },
+  {
+    type: 'segmented',
+    name: 'iconScale',
+    label: 'Icon scale',
+    options: [
+      { value: '0.5', label: '0.5' },
+      { value: '0.7', label: '0.7' },
+      { value: '1', label: '1' },
+    ],
+  },
+  {
+    type: 'segmented',
+    name: 'iconAspect',
+    label: 'Icon aspect',
+    options: [
+      { value: '1', label: '1' },
+      { value: '1.5', label: '1.5' },
+      { value: '2', label: '2' },
+    ],
+  },
   { type: 'switch', name: 'disabled', label: 'Disabled' },
   { type: 'switch', name: 'loading', label: 'Loading' },
 ];
@@ -107,6 +147,8 @@ export const mantineDocsPlaygroundParameters = {
       'fullWidth',
       'children',
       'aria-label',
+      'iconScale',
+      'iconAspect',
     ],
   },
 };

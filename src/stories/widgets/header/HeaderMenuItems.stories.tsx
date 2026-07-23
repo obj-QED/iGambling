@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Group, Stack, Text } from '@mantine/core';
 
 import { getHeaderMenuItemFixture } from '@/storybook/fixtures/headerMenuItems';
+import { cmfComponentIconCascadeStyle } from '@/storybook/helpers/cmfScopeOverrides';
 import { elementDocsPreviewParameters } from '@/storybook/helpers/elementStoryParameters';
 import { HeaderMenuControlsShell } from '@/storybook/helpers/headerMenuControls';
 import { Dropdown } from '@/widgets/header/ui/menu/Dropdown/Dropdown';
@@ -19,7 +20,7 @@ const meta = {
       ...elementDocsPreviewParameters.docs,
       description: {
         component:
-          'Default menu item renderers (`DefaultItemBlock`). Stable fixtures from `public/uploads` — not tied to header Mock toolbar.',
+          'Default menu item renderers (`DefaultItemBlock`). Icon size via CMF cascade on `[data-widget=header]` / `--cmf-button-header-icon-*` / `--cmf-action-icon-header-icon-*`. Fixtures from `public/uploads`.',
       },
     },
   },
@@ -67,6 +68,58 @@ export const Overview: Story = {
             Broken image · fallback glyph when name is set
           </Text>
           <ItemButton item={getHeaderMenuItemFixture('brokenImgWithName')} />
+        </Stack>
+      </Stack>
+    </HeaderMenuControlsShell>
+  ),
+};
+
+export const IconCascade: Story = {
+  parameters: {
+    ...elementDocsPreviewParameters,
+    docs: {
+      description: {
+        story:
+          'Override `--cmf-button-icon-*` / `--cmf-action-icon-icon-*` around menu items (same cascade as widget tokens).',
+      },
+    },
+  },
+  render: () => (
+    <HeaderMenuControlsShell>
+      <Stack gap="xl" align="flex-start">
+        <Stack gap="xs" align="flex-start">
+          <Text size="sm" fw={600}>
+            ActionIcon · scale 0.5 / 0.7 / 1
+          </Text>
+          <Group gap="md">
+            {(['0.5', '0.7', '1'] as const).map((scale) => (
+              <div
+                key={scale}
+                style={cmfComponentIconCascadeStyle('action-icon', 'header', {
+                  scale,
+                  aspect: 1,
+                })}
+              >
+                <ItemActionIcon item={getHeaderMenuItemFixture('iconOnlyLink')} />
+              </div>
+            ))}
+          </Group>
+        </Stack>
+
+        <Stack gap="xs" align="flex-start">
+          <Text size="sm" fw={600}>
+            Button · aspect 1 / 1.5 / 2 (sidebar-like)
+          </Text>
+          <Group gap="md">
+            {(['1', '1.5', '2'] as const).map((aspect) => (
+              <div
+                key={aspect}
+                style={cmfComponentIconCascadeStyle('button', 'header', { scale: 0.7, aspect })}
+              >
+                <ItemButton item={getHeaderMenuItemFixture('iconAndText')} />
+              </div>
+            ))}
+          </Group>
         </Stack>
       </Stack>
     </HeaderMenuControlsShell>

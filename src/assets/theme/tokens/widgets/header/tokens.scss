@@ -52,11 +52,10 @@
 
   /*
    * Icons — size vs --ai-size / --button-height (not Button row width).
-   *   scale: 0.7  → width = box * 0.7
-   *   width: 24px | 1.25rem | calc(var(--ai-size) * 0.7)
-   *   height: auto | 12px
-   *   aspect: 1 | 2 | 16/9
-   * Avoid bare % on Button leftSection (it's % of wide row). OK on ActionIcon.
+   * Cascade: key → component → size → control → --cmf-icon-*
    */
-
+  --cmf-action-icon-header-icon-scale: 0.7;
+  --cmf-action-icon-header-icon-aspect: 1;
+  --cmf-button-header-icon-scale: 0.7;
+  --cmf-button-header-icon-aspect: 1;
 }

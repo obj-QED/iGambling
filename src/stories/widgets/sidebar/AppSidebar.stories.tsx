@@ -37,7 +37,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Left aside shell with scrollable menu. Toolbar **Aside mock menu** and **Aside width** map to `window.__SETTINGS__.aside`. CMF theme: `@/assets/theme`.',
+          'Left aside shell with scrollable menu. Toolbar **Aside mock menu** and **Aside width** map to `window.__SETTINGS__.aside`. Icon media: `--cmf-button-sidebar-icon-{scale|aspect|width|height}` in `sidebar/tokens.scss`.',
       },
     },
   },
