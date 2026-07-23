@@ -1,9 +1,17 @@
-@layer widget.menu {
+@layer widget.element {
   .root {
     width: var(--header-chevron-icon-size, var(--cmf-button-xs-fz, 0.75rem));
     height: var(--header-chevron-icon-size, var(--cmf-button-xs-fz, 0.75rem));
     flex-shrink: 0;
+    transition: transform var(--header-chevron-transition, 200ms ease);
+    transform: rotate(0deg);
 
-    @include header-chevron-rotate;
+    &[data-open='true'] {
+      transform: rotate(180deg);
+    }
+
+    @include reduced-motion {
+      transition: none;
+    }
   }
 }

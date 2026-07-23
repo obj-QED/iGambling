@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 
 /**
  * Local section overrides for Storybook — same values as `:root` in `tokens/global/cmf-button-tokens.scss`.
- * Use when a story needs a scoped override (`--cmf-header-button-*`, etc.).
+ * Use when a story needs a scoped override (`--cmf-button-{component}-*`, `--cmf-button-{variant}-*`).
  */
 export const cmfButtonScopeOverrideStyle = {
   '--cmf-button-filled-bg': 'var(--mantine-color-brand-5)',
@@ -14,6 +14,7 @@ export const cmfButtonScopeOverrideStyle = {
   '--cmf-button-outline-bd': '1px solid var(--mantine-color-brand-3)',
   '--cmf-button-outline-hover': 'color-mix(in srgb, var(--mantine-color-brand-4) 12%, transparent)',
   '--cmf-button-outline-hover-color': 'var(--mantine-color-brand-1)',
+  // component-scoped example: `--cmf-button-sidebar-bg`
 } as CSSProperties;
 
 export const cmfActionIconScopeOverrideStyle = {

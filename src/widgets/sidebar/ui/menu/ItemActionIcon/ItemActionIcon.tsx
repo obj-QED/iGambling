@@ -3,18 +3,21 @@ import type { ItemActionIconProps } from '../../../types';
 import { memo } from 'react';
 
 import { AppActionIcon } from '@/elements/AppActionIcon';
-import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
+import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { useMediaState } from '@/shared/hooks/useMediaState';
 
+import { useAsideMenuButtonSize } from '../../../hooks/useAsideMenuButtonSize';
 import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
-import { resolveMenuItemButtonVariant } from '../../../lib/menuItemVariant';
-import { ASIDE_MENU_BUTTON_SIZE } from '../icons/iconProps';
+import { resolveMenuItemActionIconVariant } from '../../../lib/menuItemVariant';
 import { MenuItemMedia } from '../MenuItemMedia/MenuItemMedia';
 
 import styles from '../../../styles/menu/ItemActionIcon.module.scss';
 
 function ItemActionIconComponent({ item }: ItemActionIconProps) {
+  const { menuActiveAttrs } = useMenuActive(item);
   const { onImgError, hideImageControl, iconControlAttrs, showItemImg } =
-    useMenuItemMediaState(item);
+    useMediaState(item);
+  const size = useAsideMenuButtonSize();
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
 
@@ -25,10 +28,11 @@ function ItemActionIconComponent({ item }: ItemActionIconProps) {
       href={href}
       hidden={hideImageControl}
       className={styles.root}
-      variant={resolveMenuItemButtonVariant(item)}
-      size={ASIDE_MENU_BUTTON_SIZE}
+      variant={resolveMenuItemActionIconVariant(item)}
+      size={size}
       aria-label={label}
       {...menuItemDataAttrs(item)}
+      {...menuActiveAttrs}
       {...iconControlAttrs}
     >
       {showItemImg ? <MenuItemMedia item={item} alt={label} onImgError={onImgError} /> : null}

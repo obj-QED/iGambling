@@ -1,4 +1,4 @@
-import type { ApiEnvelope } from '../contracts';
+import type { ApiEnvelope } from '../types';
 
 export type LobbyPayload = Record<string, unknown>;
 

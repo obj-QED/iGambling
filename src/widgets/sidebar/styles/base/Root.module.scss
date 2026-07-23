@@ -21,9 +21,8 @@
   .scroll {
     flex: 1;
     min-height: 0;
-
-    @include aside-shell-edge-bleed;
-    @include aside-shell-edge-padding-x;
+    margin-inline: calc(var(--aside-shell-padding, var(--mantine-spacing-md)) * -1);
+    padding-inline: var(--aside-shell-padding, var(--mantine-spacing-md));
   }
 
   .scrollContent {

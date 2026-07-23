@@ -2,9 +2,14 @@ import type { BlockProps } from '../../../types';
 
 import { memo, useState } from 'react';
 
-import { AppLink } from '@/shared/ui';
+import { AppButton } from '@/elements/AppButton';
 
-import { isRenderableItem, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
+import {
+  isRenderableItem,
+  menuItemDataAttrs,
+  resolveItemHref,
+  resolveItemLabel,
+} from '../../../lib/itemUtils';
 
 import styles from '../../../styles/blocks/LogoBlock.module.scss';
 
@@ -19,27 +24,39 @@ function LogoBlockComponent({ item }: BlockProps) {
 
   if (hasImg === false) {
     return (
-      <AppLink href={href} className={styles.textLogo} data-menu-key={item.key}>
-        {alt}
-      </AppLink>
+      <AppButton
+        href={href}
+        label={alt}
+        variant="transparent"
+        className={styles.textLogo}
+        aria-label={alt}
+        {...menuItemDataAttrs(item)}
+      />
     );
   }
 
   if (imgFailed === true) return null;
 
   return (
-    <AppLink href={href} className={styles.root} data-menu-key={item.key}>
-      <img
-        className={styles.image}
-        src={item.img}
-        alt={alt}
-        loading="eager"
-        decoding="async"
-        onError={() => {
-          setImgFailed(true);
-        }}
-      />
-    </AppLink>
+    <AppButton
+      href={href}
+      variant="transparent"
+      className={styles.root}
+      aria-label={alt}
+      leftSection={
+        <img
+          className={styles.image}
+          src={item.img}
+          alt={alt}
+          loading="eager"
+          decoding="async"
+          onError={() => {
+            setImgFailed(true);
+          }}
+        />
+      }
+      {...menuItemDataAttrs(item)}
+    />
   );
 }
 

@@ -4,7 +4,11 @@ import { ActionIcon } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useArgs } from 'storybook/preview-api';
 
-import { CMF_ACTION_ICON_SIZES, CMF_ACTION_ICON_VARIANTS } from '@/assets/theme';
+import {
+  CMF_ACTION_ICON_SIZES,
+  CMF_ACTION_ICON_VARIANTS,
+  MANTINE_ACTION_ICON_VARIANTS,
+} from '@/assets/theme';
 import {
   elementDocsPreviewParameters,
   elementPlaygroundParameters,
@@ -17,6 +21,11 @@ import {
   mantineTextArgType,
   mantineVariantArgType,
 } from '@/storybook/helpers/mantineArgTypes';
+
+const ACTION_ICON_STORY_VARIANTS = [
+  ...MANTINE_ACTION_ICON_VARIANTS,
+  ...CMF_ACTION_ICON_VARIANTS,
+] as const;
 import {
   ACTION_ICON_DOCS_PLAYGROUND_FIELDS,
   MantineDocsPlayground,
@@ -36,7 +45,7 @@ const meta = {
     layout: 'padded',
   },
   argTypes: {
-    variant: mantineVariantArgType(CMF_ACTION_ICON_VARIANTS),
+    variant: mantineVariantArgType(ACTION_ICON_STORY_VARIANTS),
     color: mantineColorArgType(),
     size: mantineSizeArgType(CMF_ACTION_ICON_SIZES),
     radius: mantineRadiusArgType(),
@@ -79,7 +88,7 @@ export const AllVariants: Story = {
   },
   render: () => (
     <VariantMatrix
-      items={CMF_ACTION_ICON_VARIANTS}
+      items={ACTION_ICON_STORY_VARIANTS}
       columns={4}
       renderItem={(variant) => (
         <ActionIcon variant={variant} aria-label={variant}>

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '@mantine/core';
 import { useArgs } from 'storybook/preview-api';
 
-import { CMF_BUTTON_SIZES, CMF_BUTTON_VARIANTS } from '@/assets/theme';
+import { CMF_BUTTON_SIZES, CMF_BUTTON_VARIANTS, MANTINE_BUTTON_VARIANTS } from '@/assets/theme';
 import {
   elementDocsPreviewParameters,
   elementPlaygroundParameters,
@@ -16,6 +16,11 @@ import {
   mantineTextArgType,
   mantineVariantArgType,
 } from '@/storybook/helpers/mantineArgTypes';
+
+const BUTTON_STORY_VARIANTS = [
+  ...MANTINE_BUTTON_VARIANTS,
+  ...CMF_BUTTON_VARIANTS.filter((variant) => variant !== 'exception'),
+] as const;
 import {
   BUTTON_DOCS_PLAYGROUND_FIELDS,
   MantineDocsPlayground,
@@ -31,7 +36,7 @@ const meta = {
     layout: 'padded',
   },
   argTypes: {
-    variant: mantineVariantArgType(CMF_BUTTON_VARIANTS),
+    variant: mantineVariantArgType(BUTTON_STORY_VARIANTS),
     color: mantineColorArgType(),
     size: mantineSizeArgType(CMF_BUTTON_SIZES),
     radius: mantineRadiusArgType(),
@@ -71,7 +76,7 @@ export const AllVariants: Story = {
   },
   render: () => (
     <VariantMatrix
-      items={CMF_BUTTON_VARIANTS}
+      items={BUTTON_STORY_VARIANTS}
       columns={4}
       renderItem={(variant) => <Button variant={variant}>{variant}</Button>}
     />

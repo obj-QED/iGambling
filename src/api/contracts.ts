@@ -1,4 +1,6 @@
-import type { ApiEnvelope } from './types';
+import type { ApiEnvelope } from './types/contracts.types';
+
+export type { ApiEnvelope };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);

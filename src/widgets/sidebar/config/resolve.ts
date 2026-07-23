@@ -1,5 +1,5 @@
 import type { SidebarConfig } from '../types';
-import type { PageMenuItemDto } from '@/shared/types/pageMenu';
+import type { MenuItemDto } from '@/shared/types/menu';
 
 import {
   ASIDE_SCROLL_AREA_OVERSCROLL,
@@ -12,15 +12,15 @@ import {
   type HeaderCustomBlockSettings,
 } from '@/shared/config';
 import { pickUnionValue, readString } from '@/shared/lib/coercion';
-import { parsePageMenuItemDto } from '@/shared/lib/pageMenu';
+import { parseMenuItemDto } from '@/shared/lib/menu';
 
 import { DEFAULT_SIDEBAR_CONFIG, DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG } from './defaults';
 
-function parseCustomBlockItems(items: HeaderCustomBlockInput[]): PageMenuItemDto[] {
-  const parsed: PageMenuItemDto[] = [];
+function parseCustomBlockItems(items: HeaderCustomBlockInput[]): MenuItemDto[] {
+  const parsed: MenuItemDto[] = [];
 
   for (const entry of items) {
-    const item = parsePageMenuItemDto(entry);
+    const item = parseMenuItemDto(entry);
     if (item !== null) parsed.push(item);
   }
 

@@ -1,4 +1,4 @@
-/** Shared gradient strings — used by theme.scss (--app-gradient-*), mantineTheme, buttonVars fallbacks. */
+/** Shared gradient strings — used by theme.scss (--app-gradient-*) and mantineTheme. */
 
 export const APP_GRADIENT_DEG = 45;
 

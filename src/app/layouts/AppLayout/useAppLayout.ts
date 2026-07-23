@@ -14,7 +14,7 @@ import { type AppBannerModel, extractBannerFromInit } from '@/widgets/banner';
 import { type HeaderConfig, resolveHeaderConfig } from '@/widgets/header';
 import { resolveSidebarConfig } from '@/widgets/sidebar';
 
-import { extractPageMenuFromInit } from '../lib/extractPageMenuFromInit';
+import { extractMenuFromInit } from '../lib/extractPageMenuFromInit';
 import { resolveHeaderMenu } from '../lib/resolveHeaderMenu';
 import { resolveSidebarMenu } from '../lib/resolveSidebarMenu';
 
@@ -38,7 +38,7 @@ export function useAppLayout(language: string, page = getInitialPath()): UseAppL
 
   const footerMenu = useMemo(() => {
     if (init.content === undefined) return null;
-    return extractPageMenuFromInit(init.content, 'footer', 'sections');
+    return extractMenuFromInit(init.content, 'footer', 'sections');
   }, [init.content]);
 
   const sidebarMenu = useMemo(() => {

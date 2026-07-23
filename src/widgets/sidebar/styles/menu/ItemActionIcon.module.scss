@@ -1,7 +1,5 @@
 @layer components {
-  .root:global(.cmf-ActionIcon-root) {
-    @include aside-menu-control-height;
-
+  .root[data-cmf-control='action-icon'] {
     width: 100%;
     min-width: 0;
   }

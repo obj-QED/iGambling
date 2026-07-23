@@ -1,8 +1,10 @@
 // Header widget SCSS layers (nested under global `widget`).
-// widget.base    — shell, surface tokens, sections
-// widget.layout  — container / container-fluid wrappers
-// widget.blocks  — domain blocks (logo, wallet, …)
-// widget.menu    — menu primitives (button, dropdown, icon)
-// widget.variant — type/shape/theme overrides via CSS vars on .root[data-type]
+// Order (weakest → strongest): see `assets/styles/layer-order.css`
+// Tokens SoT: `assets/theme/tokens/widgets/header/tokens.scss` → `[data-widget='header']`
+// widget.base      — shell, surface tokens, sections
+// widget.layout    — container / container-fluid wrappers
+// widget.variant   — type/shape/theme overrides via CSS vars on .root[data-type]
+// widget.component — domain blocks (logo, wallet, …)
+// widget.element   — menu primitives (button, dropdown, icon)
 // Type skin: styles/variant/type-<name>.scss
 //   .root[data-type='classic'] { --header-surface-bg: …; }

@@ -1,4 +1,4 @@
-import type { PageMenuItemDto } from '@/shared/types/pageMenu';
+import type { MenuItemDto } from '@/shared/types/menu';
 
 export type HeaderLayoutKey = 'container' | 'container-fluid';
 
@@ -37,7 +37,7 @@ export type HeaderCustomBlockInput = {
 export type HeaderCustomBlockConfig = {
   key: string;
   placement: HeaderCustomBlockPlacement;
-  items: PageMenuItemDto[];
+  items: MenuItemDto[];
 };
 
 /** Raw custom block from `window.__SETTINGS__`. */

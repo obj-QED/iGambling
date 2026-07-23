@@ -16,9 +16,9 @@ export type HeaderMenuSizes = {
 };
 
 export const DEFAULT_HEADER_MENU_SIZES: HeaderMenuSizes = {
-  button: 'sm',
-  link: 'sm',
-  actionIcon: 'sm',
+  button: 'md',
+  link: 'md',
+  actionIcon: 'md',
 };
 
 function parseButtonSize(value: string): CmfButtonSize | undefined {

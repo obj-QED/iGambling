@@ -2,15 +2,15 @@ import type { BlockProps } from '../../../types';
 
 import { memo, useRef, useState } from 'react';
 
+import { AppButton } from '@/elements/AppButton';
 import { useCmfIconStyle } from '@/shared/hooks/useCmfIconStyle';
 import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib/cmfIcon';
-import { AppLink } from '@/shared/ui';
 
-import { useConfig } from '../../../context/useConfig';
 import {
   hasItemImg,
   hasItemName,
   isRenderableItem,
+  menuItemDataAttrs,
   resolveItemHref,
   resolveItemLabel,
 } from '../../../lib/itemUtils';
@@ -20,7 +20,6 @@ import { ItemIcon } from '../../menu/ItemIcon/ItemIcon';
 import styles from '../../../styles/blocks/BonusBoxBlock.module.scss';
 
 function BonusBoxBlockComponent({ item }: BlockProps) {
-  const config = useConfig();
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
   const cmfStyle = useCmfIconStyle(iconRef);
   const [imgFailed, setImgFailed] = useState(false);
@@ -31,7 +30,7 @@ function BonusBoxBlockComponent({ item }: BlockProps) {
 
   const label = resolveItemLabel(item);
   const href = resolveItemHref(item.url);
-  const content =
+  const leftSection =
     imgFailed === true ? (
       <HeaderPhotoFallback />
     ) : (
@@ -40,32 +39,24 @@ function BonusBoxBlockComponent({ item }: BlockProps) {
         className={styles.image}
         src={item.img ?? ''}
         alt={label}
-        shape={resolveCmfIconShape(item, config, cmfStyle)}
-        radius={resolveCmfIconRadius(item, config, cmfStyle)}
+        shape={resolveCmfIconShape(item, cmfStyle)}
+        radius={resolveCmfIconRadius(item, cmfStyle)}
         onError={() => {
           setImgFailed(true);
         }}
       />
     );
 
-  if (href.length > 0) {
-    return (
-      <AppLink
-        href={href}
-        className={styles.root}
-        aria-label={label}
-        data-header-block={item.key}
-        data-menu-key={item.key}
-      >
-        {content}
-      </AppLink>
-    );
-  }
-
   return (
-    <span className={styles.root} data-header-block={item.key} data-menu-key={item.key}>
-      {content}
-    </span>
+    <AppButton
+      href={href}
+      variant="transparent"
+      className={styles.root}
+      aria-label={label}
+      leftSection={leftSection}
+      data-header-block={item.key}
+      {...menuItemDataAttrs(item)}
+    />
   );
 }
 

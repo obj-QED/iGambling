@@ -1,5 +1,10 @@
 /** Shared Storybook controls shaped like Mantine docs (variant, color, size, radius). */
 
+import { MANTINE_BUTTON_VARIANTS } from '@/assets/theme';
+
+/** @deprecated Prefer `MANTINE_BUTTON_VARIANTS` / `MANTINE_ACTION_ICON_VARIANTS` from `@/assets/theme`. */
+export const MANTINE_STANDARD_VARIANTS = MANTINE_BUTTON_VARIANTS;
+
 export const MANTINE_THEME_COLORS = [
   'brand',
   'gray',

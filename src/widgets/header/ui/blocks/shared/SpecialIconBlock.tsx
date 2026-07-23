@@ -2,14 +2,11 @@ import type { SpecialIconBlockProps } from '../../../types';
 
 import { memo, useRef } from 'react';
 
-import clsx from 'clsx';
-
 import { AppActionIcon } from '@/elements/AppActionIcon';
 import { useCmfIconStyle } from '@/shared/hooks/useCmfIconStyle';
-import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
+import { useMediaState } from '@/shared/hooks/useMediaState';
 import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib/cmfIcon';
 
-import { useConfig } from '../../../context/useConfig';
 import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
 import { resolveHeaderMenuActionIconSize } from '../../../lib/headerMenuSize';
 import {
@@ -22,16 +19,12 @@ import {
 } from '../../../lib/itemUtils';
 import { ItemIcon } from '../../menu/ItemIcon/ItemIcon';
 
-import styles from '../../../styles/blocks/SpecialIconBlock.module.scss';
-
 function SpecialIconBlockComponent({ item, fallbackIcon, className }: SpecialIconBlockProps) {
-  const config = useConfig();
   const menuSizes = useHeaderMenuSizes();
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
   const cmfStyle = useCmfIconStyle(iconRef);
   const actionIconSize = resolveHeaderMenuActionIconSize(menuSizes);
-  const { onImgError, showItemImg, hideImageControl, iconControlAttrs } =
-    useMenuItemMediaState(item);
+  const { onImgError, showItemImg, hideImageControl, iconControlAttrs } = useMediaState(item);
 
   if (hasItemName(item) === false && hasItemImg(item) === false) return null;
   if (isRenderableItem(item) === false) return null;
@@ -42,11 +35,10 @@ function SpecialIconBlockComponent({ item, fallbackIcon, className }: SpecialIco
     showItemImg === true ? (
       <ItemIcon
         ref={iconRef}
-        inActionIcon
         src={item.img ?? ''}
         alt={label}
-        shape={resolveCmfIconShape(item, config, cmfStyle)}
-        radius={resolveCmfIconRadius(item, config, cmfStyle)}
+        shape={resolveCmfIconShape(item, cmfStyle)}
+        radius={resolveCmfIconRadius(item, cmfStyle)}
         onError={onImgError}
       />
     ) : (
@@ -59,7 +51,7 @@ function SpecialIconBlockComponent({ item, fallbackIcon, className }: SpecialIco
       img={item.img}
       href={href}
       hidden={hideImageControl}
-      className={clsx(styles.root, className)}
+      className={className}
       variant="default"
       size={actionIconSize}
       aria-label={label}

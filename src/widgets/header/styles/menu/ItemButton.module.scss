@@ -1,5 +1,8 @@
-@layer widget.menu {
+@layer widget.element {
   .root {
-    @include header-menu-button-control;
+
+    /* Header menu row: intrinsic width — do not shrink under flex (clips label). */
+    flex-shrink: 0;
+    width: auto;
   }
 }

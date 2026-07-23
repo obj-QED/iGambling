@@ -8,7 +8,7 @@ type MenuItemVariantSource = Pick<HeaderMenuItem, 'key' | 'type'>;
 
 export function resolveMenuItemButtonVariant(item: MenuItemVariantSource): CmfButtonVariant {
   if (isSpecialBlockKey(item.key) === false && item.type === 'link') return 'transparent';
-  return resolveButtonVariant(item.key);
+  return resolveButtonVariant(item.key ?? '');
 }
 
 export function resolveMenuItemActionIconVariant(

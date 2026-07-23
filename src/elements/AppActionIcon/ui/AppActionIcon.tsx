@@ -4,8 +4,7 @@ import { forwardRef } from 'react';
 
 import { ActionIcon } from '@mantine/core';
 
-import { isValidAppHref } from '@/shared/lib';
-import { AppLink } from '@/shared/ui';
+import { resolveAppButtonHrefState, useAppHrefClickHandler } from '@/shared/lib';
 
 function hasActionIconContent(name?: string, img?: string): boolean {
   return (img?.length ?? 0) > 0 || (name?.length ?? 0) > 0;
@@ -13,34 +12,41 @@ function hasActionIconContent(name?: string, img?: string): boolean {
 
 export const AppActionIcon = forwardRef<HTMLButtonElement, AppActionIconProps>(
   function AppActionIcon(
-    { name, img, href, children, hidden = false, native = false, disabled, ...actionIconProps },
+    {
+      name,
+      img,
+      href: hrefProp,
+      children,
+      hidden = false,
+      native = false,
+      disabled,
+      onClick,
+      type = 'button',
+      ...actionIconProps
+    },
     ref,
   ) {
     if (hidden === true || hasActionIconContent(name, img) === false) return null;
 
-    if (native === true) {
-      return (
-        <ActionIcon ref={ref} disabled={disabled} {...actionIconProps}>
-          {children}
-        </ActionIcon>
-      );
-    }
+    const { href, disabledForHref } = resolveAppButtonHrefState(hrefProp, native);
+    const hrefNavigationEnabled = href !== undefined;
+    const navigateHref = useAppHrefClickHandler(href, hrefNavigationEnabled);
 
-    if (href === undefined || isValidAppHref(href) === false) {
-      return (
-        <ActionIcon ref={ref} disabled {...actionIconProps}>
-          {children}
-        </ActionIcon>
-      );
-    }
+    const handleClick = hrefNavigationEnabled
+      ? (event: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(event);
+        if (event.defaultPrevented) return;
+        navigateHref(event);
+      }
+      : onClick;
 
     return (
       <ActionIcon
         ref={ref}
-        component={AppLink}
-        href={href}
-        disabled={disabled}
         {...actionIconProps}
+        type={type}
+        disabled={disabled ?? disabledForHref}
+        onClick={handleClick}
       >
         {children}
       </ActionIcon>

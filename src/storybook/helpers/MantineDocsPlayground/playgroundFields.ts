@@ -1,6 +1,13 @@
 import type { DocsPlaygroundField, DocsPlaygroundOption } from './types';
 
-import { CMF_ACTION_ICON_SIZES, CMF_ACTION_ICON_VARIANTS, CMF_BUTTON_SIZES } from '@/assets/theme';
+import {
+  CMF_ACTION_ICON_SIZES,
+  CMF_ACTION_ICON_VARIANTS,
+  CMF_BUTTON_SIZES,
+  CMF_BUTTON_VARIANTS,
+  MANTINE_ACTION_ICON_VARIANTS,
+  MANTINE_BUTTON_VARIANTS,
+} from '@/assets/theme';
 
 import { MANTINE_RADIUS_OPTIONS, MANTINE_THEME_COLORS } from '../mantineArgTypes';
 
@@ -15,26 +22,8 @@ function toOptions(values: readonly string[]): DocsPlaygroundOption[] {
   return values.map((value) => ({ value, label: titleCase(value) }));
 }
 
-const MANTINE_STANDARD_VARIANTS = [
-  'default',
-  'filled',
-  'light',
-  'outline',
-  'subtle',
-  'transparent',
-  'white',
-  'gradient',
-] as const;
-
-const CMF_BUTTON_VARIANTS = ['hero', 'hero-light', 'hero-outline'] as const;
-
-const CMF_ACTION_ICON_HERO_VARIANTS = CMF_ACTION_ICON_VARIANTS.filter((variant) =>
-  variant.startsWith('hero'),
-);
-
-const MANTINE_ACTION_ICON_VARIANTS = CMF_ACTION_ICON_VARIANTS.filter(
-  (variant) => !variant.startsWith('hero'),
-);
+/** Docs control — hero* only (`exception` is menu-key driven). */
+const CMF_BUTTON_DOCS_VARIANTS = CMF_BUTTON_VARIANTS.filter((variant) => variant !== 'exception');
 
 export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
   {
@@ -42,8 +31,8 @@ export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     name: 'variant',
     label: 'Variant',
     groups: [
-      { label: 'Mantine', options: toOptions(MANTINE_STANDARD_VARIANTS) },
-      { label: 'CMF', options: toOptions(CMF_BUTTON_VARIANTS) },
+      { label: 'Mantine', options: toOptions(MANTINE_BUTTON_VARIANTS) },
+      { label: 'CMF', options: toOptions(CMF_BUTTON_DOCS_VARIANTS) },
     ],
   },
   {
@@ -76,11 +65,8 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     name: 'variant',
     label: 'Variant',
     groups: [
-      {
-        label: 'Mantine',
-        options: toOptions(MANTINE_ACTION_ICON_VARIANTS),
-      },
-      { label: 'CMF', options: toOptions(CMF_ACTION_ICON_HERO_VARIANTS) },
+      { label: 'Mantine', options: toOptions(MANTINE_ACTION_ICON_VARIANTS) },
+      { label: 'CMF', options: toOptions(CMF_ACTION_ICON_VARIANTS) },
     ],
   },
   {

@@ -1,14 +1,14 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
-import type { PageMenuItemDto, PageMenuRootDto } from '@/shared/types/pageMenu';
+import type { MenuItemDto, MenuRootDto } from '@/shared/types/menu';
 
 import { isSpecialBlockKey } from './itemUtils';
 
-function resolveSectionKey(item: PageMenuItemDto): string {
+function resolveSectionKey(item: MenuItemDto): string {
   if (item.key.length > 0) return item.key;
   return item.name;
 }
 
-export function mapItem(item: PageMenuItemDto): HeaderMenuItem {
+export function mapItem(item: MenuItemDto): HeaderMenuItem {
   const items = item.items?.map((child) => mapItem(child));
 
   const mapped: HeaderMenuItem = {
@@ -36,7 +36,7 @@ export function mapItem(item: PageMenuItemDto): HeaderMenuItem {
   return mapped;
 }
 
-function mapSection(item: PageMenuItemDto): HeaderSection | null {
+function mapSection(item: MenuItemDto): HeaderSection | null {
   const key = resolveSectionKey(item);
   if (key.length === 0) return null;
 
@@ -45,7 +45,7 @@ function mapSection(item: PageMenuItemDto): HeaderSection | null {
   return { key, items };
 }
 
-export function mapRoot(root: PageMenuRootDto): HeaderMenuModel {
+export function mapRoot(root: MenuRootDto): HeaderMenuModel {
   const sections = root.items
     .map((entry) => mapSection(entry))
     .filter((section): section is HeaderSection => section !== null);
@@ -53,7 +53,7 @@ export function mapRoot(root: PageMenuRootDto): HeaderMenuModel {
   return { sections };
 }
 
-export function mapFlat(root: PageMenuRootDto, sectionKey: string): HeaderMenuModel {
+export function mapFlat(root: MenuRootDto, sectionKey: string): HeaderMenuModel {
   const items = root.items.map((entry) => mapItem(entry));
 
   return {

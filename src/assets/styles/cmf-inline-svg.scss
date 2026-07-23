@@ -1,0 +1,51 @@
+/**
+ * Inline SVG / img — size vs --ai-size / --button-height.
+ *
+ * Dimensions:
+ *   width/height ← `--cmf-control-icon-*` (Button/ActionIcon cascade)
+ *               ← `--cmf-icon-*` (theme/widget)
+ *               ← `--_cmf-icon-*-auto` (box × scale × aspect)
+ *
+ * max-* uses the same override chain so explicit cascade lengths are not
+ * clipped by `--_cmf-icon-box`.
+ */
+@layer components {
+  [data-cmf-icon-src] {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    overflow: hidden;
+    --_cmf-icon-box: var(--ai-size, var(--button-height, 1.25rem));
+    --_cmf-icon-s: var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7));
+    --_cmf-icon-a: max(0.001, var(--cmf-control-icon-aspect, var(--cmf-icon-aspect, 1)));
+    --_cmf-icon-w-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, var(--_cmf-icon-a)));
+    --_cmf-icon-h-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, calc(1 / var(--_cmf-icon-a))));
+
+    width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-w-auto)));
+    height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-h-auto)));
+    max-width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-box)));
+    max-height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-box)));
+    object-fit: var(--cmf-icon-object-fit, contain);
+  }
+
+  [data-cmf-icon-src] svg[data-src] {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  [data-cmf-icon-src] svg[data-src] :where([fill]:not([fill='none'], [fill='currentColor'])) {
+    fill: currentcolor;
+  }
+
+  [data-cmf-icon-src] svg[data-src] :where([stroke]:not([stroke='none'], [stroke='currentColor'])) {
+    stroke: currentcolor;
+  }
+
+  [data-cmf-icon-src][data-cmf-icon-radius='sm'] {
+    border-radius: var(--cmf-icon-radius-sm);
+  }
+
+  [data-cmf-icon-src][data-cmf-icon-radius='round'] {
+    border-radius: var(--cmf-icon-radius-round);
+  }
+}

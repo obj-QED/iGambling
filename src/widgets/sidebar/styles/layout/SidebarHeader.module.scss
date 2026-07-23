@@ -1,39 +1,43 @@
-@use '../../styles/mixins'as aside;
-
-@layer widget.layout {
+@layer widget.base {
   .root {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     gap: var(--aside-header-gap, var(--spacing-xs, 0.375rem));
+    margin-inline: calc(var(--aside-shell-padding, var(--mantine-spacing-md)) * -1);
+    padding-inline: var(--aside-shell-padding, var(--mantine-spacing-md));
     padding-top: 0;
-
-    @include aside.aside-shell-edge-bleed;
-    @include aside.aside-shell-edge-padding-x;
-
     padding-bottom: var(--aside-shell-padding, var(--mantine-spacing-md));
     color: var(--aside-header-color, inherit);
     border-bottom: 1px solid var(--aside-header-border-color, var(--mantine-color-dark-4));
   }
 
   .mainLink {
-    @include aside.aside-menu-row-layout;
-
+    display: flex;
+    align-items: center;
+    gap: var(--aside-menu-gap, var(--spacing-xs, 0.375rem));
+    width: 100%;
     justify-content: space-between;
     border-radius: var(--aside-menu-radius, var(--radius-sm, 0.5rem));
     color: inherit;
+    min-height: var(--button-height, calc(2.25rem * var(--mantine-scale, 1)));
+    height: auto;
+    padding: var(--button-padding-x);
+
+    :global(.cmf-Button-inner) {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    :global(.cmf-Button-label) {
+      flex: 1 1 auto;
+      min-width: 0;
+      text-align: start;
+    }
 
     &:where(:hover, :focus-visible) {
       background: var(--aside-block-hover-bg, rgb(255 255 255 / 8%));
     }
-  }
-
-  .mainLinkInner {
-    display: flex;
-    align-items: center;
-    gap: var(--aside-menu-gap, var(--spacing-sm, 0.625rem));
-    min-width: 0;
-    flex: 1 1 auto;
   }
 
   .mainLinkText {
@@ -62,14 +66,10 @@
   }
 
   .mainLinkIcon {
-    @include aside.aside-menu-icon;
-
     flex-shrink: 0;
   }
 
   .mainLinkAvatar {
-    @include aside.aside-menu-image;
-
     flex-shrink: 0;
     width: var(--aside-header-avatar-size, 2.5rem);
     height: var(--aside-header-avatar-size, 2.5rem);

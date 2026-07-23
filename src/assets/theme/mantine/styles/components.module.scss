@@ -1,93 +1,106 @@
-// Button / ActionIcon state visuals: gradient via theme classNames; disabled/loading via cmf-* static classes.
+// Shared Mantine theme classNames — Title, Container, Button/ActionIcon gradient hover.
+// Button size table + visual cascade live in `Button.extend` vars (`buttonVars.ts` → element.style).
+
 @use './gradient-variant-states'as gradient;
 
-.button {
-  font-family: var(--font-family-base);
-  font-weight: 500;
+@layer mantine-rebase {
+  .heading {
+    font-family: var(--cmf-heading-font-family);
+    font-weight: var(--cmf-heading-font-weight);
+    line-height: var(--cmf-heading-line-height);
+    color: var(--cmf-heading-color);
 
-  @include gradient.gradient-variant-states('button');
-}
+    &:is(h1) {
+      font-size: var(--h1-font-size);
+    }
 
-.actionIcon {
-  font-family: var(--font-family-base);
+    &:is(h2) {
+      font-size: var(--h2-font-size);
+    }
 
-  @include gradient.gradient-variant-states('ai');
-}
+    &:is(h3) {
+      font-size: var(--h3-font-size);
+    }
 
-.menuDropdown {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs);
-  min-width: 12rem;
-  background: var(--cmf-menu-dropdown-bg, var(--mantine-color-body));
-}
+    &:is(h4) {
+      font-size: var(--h4-font-size);
+    }
 
-.menuItem {
-  font-family: var(--font-family-base);
-  font-weight: 500;
-  text-decoration: none;
-  width: 100%;
-  min-height: var(--cmf-button-sm-height, 2.25rem);
-  padding-inline: var(--spacing-md);
-  border-radius: var(--cmf-button-radius, var(--radius-md));
-  background: var(--cmf-menu-item-bg, var(--cmf-button-default-bg));
-  border: var(--cmf-button-default-bd);
-  color: var(--cmf-menu-item-color, var(--cmf-button-default-color));
-}
+    &:is(h5) {
+      font-size: var(--h5-font-size);
+    }
 
-.menuItemLabel {
-  flex: 1;
-  text-align: start;
-}
-
-.heading {
-  font-family: var(--font-family-headings);
-  font-weight: var(--cmf-title-fw, var(--heading-font-weight));
-  line-height: var(--cmf-title-lh, var(--heading-line-height));
-  color: var(--cmf-title-color, var(--heading-color));
-
-  &:is(h1) {
-    font-size: var(--h1-font-size);
-    font-family: Outfit, sans-serif;
-    font-weight: 900;
+    &:is(h6) {
+      font-size: var(--h6-font-size);
+    }
   }
 
-  &:is(h2) {
-    font-size: var(--h2-font-size);
+  .responsiveContainer {
+    --container-size-responsive: var(--container-max-pc);
+
+    @media (max-width: $laptop) {
+      --container-size-responsive: var(--container-max-laptop);
+    }
+
+    @media (max-width: $tablet) {
+      --container-size-responsive: var(--container-max-tablet);
+    }
+
+    @media (max-width: $mobile) {
+      --container-size-responsive: var(--container-max-mobile);
+    }
   }
 
-  &:is(h3) {
-    font-size: var(--h3-font-size);
+  /*
+   * Mantine Button label uses `text-box-trim: trim-both` + `overflow: hidden` with
+   * `line-height: 1` on root — clips glyph ink (esp. md+ / IBM Plex). Reset trim.
+   */
+  .buttonLabel {
+    text-box-trim: none;
+    text-box-edge: auto;
   }
 
-  &:is(h4) {
-    font-size: var(--h4-font-size);
+  .button {
+    @include gradient.gradient-variant-hover('button');
+
+    /* Keep control height stable when section media is present */
+    min-height: var(--button-height);
+
+    :where([data-cmf-icon-src]) {
+      --_cmf-icon-box: var(--button-height, 1.25rem);
+      --_cmf-icon-s: var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7));
+      --_cmf-icon-a: max(0.001, var(--cmf-control-icon-aspect, var(--cmf-icon-aspect, 1)));
+      --_cmf-icon-w-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, var(--_cmf-icon-a)));
+      --_cmf-icon-h-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, calc(1 / var(--_cmf-icon-a))));
+
+      width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-w-auto)));
+      height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-h-auto)));
+      max-width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-box)));
+      max-height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-box)));
+      object-fit: var(--cmf-icon-object-fit, contain);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
   }
 
-  &:is(h5) {
-    font-size: var(--h5-font-size);
-  }
+  .actionIcon {
+    @include gradient.gradient-variant-hover('ai');
 
-  &:is(h6) {
-    font-size: var(--h6-font-size);
-  }
-}
+    :where(svg, [data-cmf-icon-src]) {
+      box-sizing: border-box;
+      flex-shrink: 0;
+      overflow: hidden;
+      --_cmf-icon-box: var(--ai-size, 1.25rem);
+      --_cmf-icon-s: var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7));
+      --_cmf-icon-a: max(0.001, var(--cmf-control-icon-aspect, var(--cmf-icon-aspect, 1)));
+      --_cmf-icon-w-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, var(--_cmf-icon-a)));
+      --_cmf-icon-h-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, calc(1 / var(--_cmf-icon-a))));
 
-// Container size="responsive": Mantine sets inline --container-size: var(--container-size-responsive)
-// and max-width: var(--container-size). Define the responsive token here (not max-width directly).
-.responsiveContainer {
-  --container-size-responsive: var(--container-max-pc);
-
-  @media (max-width: $laptop) {
-    --container-size-responsive: var(--container-max-laptop);
-  }
-
-  @media (max-width: $tablet) {
-    --container-size-responsive: var(--container-max-tablet);
-  }
-
-  @media (max-width: $mobile) {
-    --container-size-responsive: var(--container-max-mobile);
+      width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-w-auto)));
+      height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-h-auto)));
+      max-width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-box)));
+      max-height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-box)));
+      object-fit: var(--cmf-icon-object-fit, contain);
+    }
   }
 }

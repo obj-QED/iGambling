@@ -1,7 +1,27 @@
-@use 'assets/theme/tokens/global/cmf-icon-tokens' as cmf-icon;
-
 @layer components {
   .root {
-    @include cmf-icon.cmf-menu-media-icon;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    /*
+     * Box = --ai-size | --button-height (not Button row width).
+     * Explicit w/h from cascade; auto = scale×aspect. No height:auto + % loops.
+     */
+    --_cmf-icon-box: var(--ai-size, var(--button-height, 1.25rem));
+    --_cmf-icon-s: var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7));
+    --_cmf-icon-a: max(0.001, var(--cmf-control-icon-aspect, var(--cmf-icon-aspect, 1)));
+    --_cmf-icon-w-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, var(--_cmf-icon-a)));
+    --_cmf-icon-h-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, calc(1 / var(--_cmf-icon-a))));
+
+    width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-w-auto)));
+    height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-h-auto)));
+    max-width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-box)));
+    max-height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-box)));
+    object-fit: var(--cmf-icon-object-fit, contain);
+    border-radius: var(--cmf-icon-radius, var(--radius-sm, 6px));
   }
 }

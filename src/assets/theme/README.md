@@ -7,7 +7,8 @@ theme/
 ├── tokens/              # CSS variables — single source of truth
 │   ├── theme.scss       # entry (imported by src/assets/index.scss)
 │   ├── global/          # CMF base, icons, controls registry
-│   └── widgets/         # per-widget overrides (header, sidebar, …)
+│   └── widgets/         # per-widget scopes
+│       └── header/      # [data-widget='header'] — size / surface / button / action-icon
 ├── mantine/             # Mantine bridge — see mantine/README.md
 │   ├── index.ts         # public barrel
 │   ├── theme/           # mantineTheme, gradientTokens
@@ -25,12 +26,14 @@ theme/
 
 ## CMF — all Mantine components except Container
 
-| Priority | Layer                    | CSS vars                     | Where                            |
-| -------- | ------------------------ | ---------------------------- | -------------------------------- |
-| 1        | cmf-component-key-{ctrl} | `--cmf-{loc}-{key}-{slug}-*` | `tokens/widgets/{loc}/cmf*.scss` |
-| 2        | cmf-component-{ctrl}     | `--cmf-{loc}-{slug}-*`       | same                             |
-| 3        | cmf-{ctrl} (base)        | `--cmf-{slug}-*`             | `:root` (`tokens/global/`)       |
-| 4        | Mantine                  | fallbacks                    | `mantine/vars/*Vars.ts`          |
+| Priority | Layer                         | CSS vars                                                   |
+| -------- | ----------------------------- | ---------------------------------------------------------- |
+| 1        | control+variant+component+key | `--cmf-button-{variant}-{component}-{key}-*`               |
+| 2        | control+variant+component     | `--cmf-button-{variant}-{component}-*`                     |
+| 3        | control+variant (base)        | `--cmf-button-{variant}-*`                                 |
+| 4        | Mantine                       | fallbacks in `mantine/styles/_control-module-cascade.scss` |
+
+Cascade resolved in CSS module (no `element.style`). Layers (`assets/styles/layer-order.css`): `reset → base → env → mantine → **mantine-rebase** → components → page → widget → **theme**`.
 
 ## Scrollbar
 

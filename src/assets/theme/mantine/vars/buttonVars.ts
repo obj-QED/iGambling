@@ -1,337 +1,240 @@
-import type { MantineTheme } from '@mantine/core';
 import type { CSSProperties } from 'react';
 
-import {
-  CMF_BUTTON_SIZES,
-  type CmfButtonSize,
-  type CmfButtonVariant,
-  type CmfButtonVariantCoreProp,
-} from '../cmf/cmfButtonVars';
-import { buildCmfControlToken, type CmfScope, resolveCmfScope } from '../cmf/cmfCascadeResolve';
+import { CMF_BUTTON_SIZES, type CmfButtonSize, type CmfButtonVariant } from '../cmf/cmfButtonVars';
+import { buildCmfButtonPropToken, type CmfScope, resolveCmfScope } from '../cmf/cmfCascadeResolve';
+import { resolveCmfIconControlVars } from '../cmf/cmfIconControlVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from '../theme/gradientTokens';
-import { resolveMantineComponentRadius } from './mantineRadiusVars';
-import {
-  type MantineVariantColorProps,
-  resolveMantineVariantColorVars,
-} from './mantineVariantColorVars';
 
 const MANTINE_BUTTON_BORDER = 'calc(0.0625rem * var(--mantine-scale)) solid var(--color-border)';
 const MANTINE_BUTTON_BORDER_TRANSPARENT =
   'calc(0.0625rem * var(--mantine-scale)) solid transparent';
 
-/** Last-resort fallbacks when CMF tokens are unset (Mantine palette / scale). */
-const MANTINE_VARIANT_FALLBACKS: Record<
-  CmfButtonVariant,
-  Record<CmfButtonVariantCoreProp, string>
-> = {
+type VariantPaint = {
+  bg: string;
+  bd: string;
+  hover: string;
+  'hover-color': string;
+};
+
+/** Last-resort fallbacks when CMF tokens are unset. */
+const MANTINE_VARIANT_FALLBACKS: Record<CmfButtonVariant, VariantPaint> = {
   filled: {
     bg: 'var(--mantine-color-brand-4)',
-    hover: 'var(--mantine-color-brand-3)',
-    color: 'var(--mantine-primary-color-contrast)',
     bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    hover: 'var(--mantine-color-brand-3)',
     'hover-color': 'var(--mantine-primary-color-contrast)',
   },
   outline: {
     bg: 'transparent',
     bd: 'calc(0.0625rem * var(--mantine-scale)) solid color-mix(in srgb, var(--mantine-color-brand-4) 42%, var(--mantine-color-default-border))',
-    color: 'var(--mantine-color-text)',
     hover: 'var(--mantine-color-brand-light-hover)',
     'hover-color': 'var(--mantine-color-text)',
   },
   light: {
     bg: 'var(--mantine-color-brand-light)',
     bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
-    color: 'var(--mantine-color-brand-light-color)',
     hover: 'var(--mantine-color-brand-light-hover)',
     'hover-color': 'var(--mantine-color-brand-light-color)',
   },
   subtle: {
     bg: 'transparent',
     bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
-    color: 'var(--mantine-color-dimmed)',
     hover: 'var(--mantine-color-brand-light-hover)',
     'hover-color': 'var(--mantine-color-text)',
   },
   default: {
     bg: 'var(--mantine-color-default)',
     bd: MANTINE_BUTTON_BORDER,
-    color: 'var(--mantine-color-text)',
     hover: 'var(--mantine-color-default-hover)',
     'hover-color': 'var(--mantine-color-text)',
   },
   transparent: {
     bg: 'transparent',
     bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
-    color: 'var(--mantine-color-text)',
     hover: 'transparent',
     'hover-color': 'var(--mantine-color-text)',
   },
   white: {
     bg: 'var(--mantine-color-white)',
     bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
-    color: 'var(--mantine-color-black)',
     hover: 'var(--mantine-color-white)',
     'hover-color': 'var(--mantine-color-black)',
   },
   gradient: {
-    bg: 'var(--app-gradient-default, ' + APP_GRADIENT_DEFAULT + ')',
+    bg: `var(--app-gradient-default, ${APP_GRADIENT_DEFAULT})`,
     bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
-    color: 'var(--mantine-primary-color-contrast)',
-    hover: 'var(--app-gradient-default-hover, ' + APP_GRADIENT_DEFAULT_HOVER + ')',
+    hover: `var(--app-gradient-default-hover, ${APP_GRADIENT_DEFAULT_HOVER})`,
     'hover-color': 'var(--mantine-primary-color-contrast)',
   },
   hero: {
-    bg: 'var(--mantine-color-default)',
-    bd: MANTINE_BUTTON_BORDER,
-    color: 'var(--mantine-color-text)',
-    hover: 'var(--mantine-color-default-hover)',
-    'hover-color': 'var(--mantine-color-text)',
+    bg: '#059669',
+    bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    hover: '#047857',
+    'hover-color': 'var(--mantine-color-white)',
   },
   'hero-light': {
-    bg: 'var(--mantine-color-brand-light)',
+    bg: 'color-mix(in srgb, #059669 14%, transparent)',
     bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
-    color: 'var(--mantine-color-brand-light-color)',
-    hover: 'var(--mantine-color-brand-light-hover)',
-    'hover-color': 'var(--mantine-color-brand-light-color)',
+    hover: 'color-mix(in srgb, #059669 22%, transparent)',
+    'hover-color': 'var(--mantine-color-text)',
   },
   'hero-outline': {
     bg: 'transparent',
-    bd: MANTINE_BUTTON_BORDER,
-    color: 'var(--mantine-color-text)',
-    hover: 'color-mix(in srgb, var(--mantine-color-brand-4) 8%, transparent)',
+    bd: '1px solid #059669',
+    hover: 'color-mix(in srgb, #059669 12%, transparent)',
     'hover-color': 'var(--mantine-color-text)',
   },
-};
-
-const MANTINE_SIZE_FALLBACKS: Record<
-  CmfButtonSize,
-  { height: string; 'padding-x': string; fz: string }
-> = {
-  xs: {
-    height: 'calc(1.875rem * var(--mantine-scale))',
-    'padding-x': 'var(--mantine-spacing-sm)',
-    fz: 'var(--mantine-font-size-xs)',
-  },
-  sm: {
-    height: 'calc(2.25rem * var(--mantine-scale))',
-    'padding-x': 'var(--mantine-spacing-sm)',
-    fz: 'var(--mantine-font-size-sm)',
-  },
-  md: {
-    height: 'calc(2.625rem * var(--mantine-scale))',
-    'padding-x': 'var(--mantine-spacing-md)',
-    fz: 'var(--mantine-font-size-sm)',
-  },
-  lg: {
-    height: 'calc(3.125rem * var(--mantine-scale))',
-    'padding-x': 'var(--mantine-spacing-md)',
-    fz: 'var(--mantine-font-size-md)',
-  },
-  xl: {
-    height: 'calc(3.75rem * var(--mantine-scale))',
-    'padding-x': 'var(--mantine-spacing-lg)',
-    fz: 'var(--mantine-font-size-lg)',
+  exception: {
+    bg: '#d97706',
+    bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    hover: '#b45309',
+    'hover-color': 'var(--mantine-color-white)',
   },
 };
 
-function buildButtonSizeVars(scope?: CmfScope): Record<CmfButtonSize, Record<string, string>> {
-  return {
-    xs: {
-      '--button-height': cmfButtonTokenCascaded(
-        'xs-height',
-        MANTINE_SIZE_FALLBACKS.xs.height,
-        scope,
-      ),
-      '--button-padding-x': cmfButtonTokenCascaded(
-        'xs-padding-x',
-        MANTINE_SIZE_FALLBACKS.xs['padding-x'],
-        scope,
-      ),
-      '--button-fz': cmfButtonTokenCascaded('xs-fz', MANTINE_SIZE_FALLBACKS.xs.fz, scope),
-    },
-    sm: {
-      '--button-height': cmfButtonTokenCascaded(
-        'sm-height',
-        MANTINE_SIZE_FALLBACKS.sm.height,
-        scope,
-      ),
-      '--button-padding-x': cmfButtonTokenCascaded(
-        'sm-padding-x',
-        MANTINE_SIZE_FALLBACKS.sm['padding-x'],
-        scope,
-      ),
-      '--button-fz': cmfButtonTokenCascaded('sm-fz', MANTINE_SIZE_FALLBACKS.sm.fz, scope),
-    },
-    md: {
-      '--button-height': cmfButtonTokenCascaded(
-        'md-height',
-        MANTINE_SIZE_FALLBACKS.md.height,
-        scope,
-      ),
-      '--button-padding-x': cmfButtonTokenCascaded(
-        'md-padding-x',
-        MANTINE_SIZE_FALLBACKS.md['padding-x'],
-        scope,
-      ),
-      '--button-fz': cmfButtonTokenCascaded('md-fz', MANTINE_SIZE_FALLBACKS.md.fz, scope),
-    },
-    lg: {
-      '--button-height': cmfButtonTokenCascaded(
-        'lg-height',
-        MANTINE_SIZE_FALLBACKS.lg.height,
-        scope,
-      ),
-      '--button-padding-x': cmfButtonTokenCascaded(
-        'lg-padding-x',
-        MANTINE_SIZE_FALLBACKS.lg['padding-x'],
-        scope,
-      ),
-      '--button-fz': cmfButtonTokenCascaded('lg-fz', MANTINE_SIZE_FALLBACKS.lg.fz, scope),
-    },
-    xl: {
-      '--button-height': cmfButtonTokenCascaded(
-        'xl-height',
-        MANTINE_SIZE_FALLBACKS.xl.height,
-        scope,
-      ),
-      '--button-padding-x': cmfButtonTokenCascaded(
-        'xl-padding-x',
-        MANTINE_SIZE_FALLBACKS.xl['padding-x'],
-        scope,
-      ),
-      '--button-fz': cmfButtonTokenCascaded('xl-fz', MANTINE_SIZE_FALLBACKS.xl.fz, scope),
-    },
-  };
-}
-
-function cmfButtonTokenCascaded(suffix: string, fallback: string, scope?: CmfScope): string {
-  return buildCmfControlToken('button', suffix, fallback, scope);
-}
+const MANTINE_SIZE_FZ: Record<CmfButtonSize, string> = {
+  xs: 'var(--mantine-font-size-xs)',
+  sm: 'var(--mantine-font-size-sm)',
+  md: 'var(--mantine-font-size-md)',
+  lg: 'var(--mantine-font-size-lg)',
+  xl: 'var(--mantine-font-size-xl)',
+};
 
 function resolveButtonSize(size: unknown): CmfButtonSize {
   if (typeof size === 'string' && (CMF_BUTTON_SIZES as readonly string[]).includes(size)) {
     return size as CmfButtonSize;
   }
-
   return 'md';
 }
 
-const MANTINE_DISABLED_FALLBACKS = {
-  bg: 'var(--mantine-color-disabled)',
-  color: 'var(--mantine-color-disabled-color)',
-  hover: 'var(--mantine-color-disabled)',
-  'hover-color': 'var(--mantine-color-disabled-color)',
-} as const;
-
-function isCmfButtonVariant(variant: string | undefined): variant is CmfButtonVariant {
-  return variant !== undefined && variant in MANTINE_VARIANT_FALLBACKS;
+/** Runtime guard for finite paint keys (Mantine built-ins + CMF custom). */
+export function isCmfButtonPaintVariant(variant: string): variant is CmfButtonVariant {
+  return variant in MANTINE_VARIANT_FALLBACKS;
 }
 
-function cmfButtonDisabledTokenCascaded(
-  variant: CmfButtonVariant,
-  prop: 'bg' | 'color' | 'hover' | 'hover-color',
-  scope: CmfScope | undefined,
-  fallback: string,
-): string {
-  const generic = cmfButtonTokenCascaded(`disabled-${prop}`, fallback, scope);
-  return cmfButtonTokenCascaded(`${variant}-disabled-${prop}`, generic, scope);
+/** `exception-timer` → cascade as `exception` (data-variant stays `exception-*` for CSS). */
+function resolveVariant(variant: string | undefined): CmfButtonVariant {
+  if (typeof variant === 'string' && variant.startsWith('exception-')) {
+    return 'exception';
+  }
+  return variant !== undefined && isCmfButtonPaintVariant(variant) ? variant : 'default';
 }
 
-function cmfButtonLoadingTokenCascaded(
-  variant: CmfButtonVariant,
-  prop: 'bg' | 'color' | 'bd',
-  scope: CmfScope | undefined,
-  fallback: string,
-): string {
-  const generic = cmfButtonTokenCascaded(`loading-${prop}`, fallback, scope);
-  return cmfButtonTokenCascaded(`${variant}-loading-${prop}`, generic, scope);
-}
-
-function resolveButtonVariantVars(
-  variant: string | undefined,
-  scope?: CmfScope,
-): Record<string, string> {
-  const key: CmfButtonVariant = isCmfButtonVariant(variant) ? variant : 'default';
-  const mantine = MANTINE_VARIANT_FALLBACKS[key];
-
-  return {
-    '--button-bg': cmfButtonTokenCascaded(`${key}-bg`, mantine.bg, scope),
-    '--button-bd': cmfButtonTokenCascaded(`${key}-bd`, mantine.bd, scope),
-    '--button-color': cmfButtonTokenCascaded(`${key}-color`, mantine.color, scope),
-    '--button-hover': cmfButtonTokenCascaded(`${key}-hover`, mantine.hover, scope),
-    '--button-hover-color': cmfButtonTokenCascaded(
-      `${key}-hover-color`,
-      mantine['hover-color'],
-      scope,
-    ),
-    '--button-disabled-bg': cmfButtonDisabledTokenCascaded(
-      key,
-      'bg',
-      scope,
-      MANTINE_DISABLED_FALLBACKS.bg,
-    ),
-    '--button-disabled-color': cmfButtonDisabledTokenCascaded(
-      key,
-      'color',
-      scope,
-      MANTINE_DISABLED_FALLBACKS.color,
-    ),
-    '--button-disabled-hover': cmfButtonDisabledTokenCascaded(
-      key,
-      'hover',
-      scope,
-      MANTINE_DISABLED_FALLBACKS.hover,
-    ),
-    '--button-disabled-hover-color': cmfButtonDisabledTokenCascaded(
-      key,
-      'hover-color',
-      scope,
-      MANTINE_DISABLED_FALLBACKS['hover-color'],
-    ),
-    '--button-loading-bg': cmfButtonLoadingTokenCascaded(key, 'bg', scope, 'var(--button-bg)'),
-    '--button-loading-color': cmfButtonLoadingTokenCascaded(
-      key,
-      'color',
-      scope,
-      'var(--button-color)',
-    ),
-    '--button-loading-bd': cmfButtonLoadingTokenCascaded(key, 'bd', scope, 'var(--button-bd)'),
-  };
-}
-
-type ButtonVarsProps = MantineVariantColorProps & {
+type ButtonVarsProps = {
   size?: unknown;
   radius?: unknown;
+  variant?: string;
   justify?: CSSProperties['justifyContent'];
   cmfComponent?: string;
   cmfKey?: string;
   'data-cmf-component'?: string;
   'data-cmf-key'?: string;
-  'data-menu-key'?: string;
 };
 
-/** Mantine theme `vars` — merged after varsResolver, overrides --mantine-* inline styles. */
-export function resolveButtonRootVars(
-  theme: MantineTheme,
-  props: ButtonVarsProps,
-): Record<string, string> {
+/** Prefer data-cmf-key; if missing, peel key from `exception-{key}`. */
+function resolveButtonScope(props: ButtonVarsProps, rawVariant: string | undefined): CmfScope {
   const scope = resolveCmfScope(props as Record<string, unknown>);
-  const size = resolveButtonSize(props.size);
-  const sizeVars = buildButtonSizeVars(scope);
-  const base = {
-    ...sizeVars[size],
-    '--button-radius': resolveMantineComponentRadius(
-      props.radius,
-      cmfButtonTokenCascaded('radius', 'var(--mantine-radius-md)', scope),
-    ),
-    '--button-justify': cmfButtonTokenCascaded(
-      'justify',
-      String(props.justify ?? 'flex-start'),
-      scope,
-    ),
-    ...resolveButtonVariantVars(props.variant, scope),
-  };
-  const colorVars = resolveMantineVariantColorVars(theme, props, 'button');
+  if (scope.key !== undefined) return scope;
+  if (typeof rawVariant !== 'string' || rawVariant.startsWith('exception-') === false) {
+    return scope;
+  }
+  const key = rawVariant.slice('exception-'.length);
+  return key.length > 0 ? { ...scope, key } : scope;
+}
 
-  return colorVars ? { ...base, ...colorVars } : base;
+function resolveRadius(radius: unknown, cmfFallback: string): string {
+  if (typeof radius === 'number' && Number.isFinite(radius)) {
+    return `${radius}px`;
+  }
+  if (typeof radius === 'string' && radius.trim().length > 0) {
+    const value = radius.trim();
+    if (
+      value.startsWith('var(') ||
+      value.includes('rem') ||
+      value.includes('px') ||
+      value.includes('%')
+    ) {
+      return value;
+    }
+    return `var(--mantine-radius-${value}, var(--mantine-radius-md))`;
+  }
+  return cmfFallback;
+}
+
+/**
+ * Inline style CMF cascade:
+ * - with `data-cmf-*`: component(+key) → variant|size|shared
+ * - without: variant → size → (shared for radius/justify)
+ * Size table tokens (`--button-height-sm`, …) stay in Mantine CSS as fallbacks.
+ */
+export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, string> {
+  const scope = resolveButtonScope(props, props.variant);
+  const size = resolveButtonSize(props.size);
+  const variant = resolveVariant(props.variant);
+  const paint = MANTINE_VARIANT_FALLBACKS[variant];
+
+  return {
+    '--button-justify': buildCmfButtonPropToken('justify', String(props.justify ?? 'flex-start'), {
+      scope,
+      variant,
+      size,
+      tail: 'shared',
+    }),
+    '--button-radius': resolveRadius(
+      props.radius,
+      buildCmfButtonPropToken('radius', 'var(--mantine-radius-md)', {
+        scope,
+        variant,
+        size,
+        tail: 'shared',
+      }),
+    ),
+    '--button-height': buildCmfButtonPropToken('height', `var(--button-height-${size})`, {
+      scope,
+      variant,
+      size,
+      tail: 'size',
+    }),
+    '--button-padding-x': buildCmfButtonPropToken('padding-x', `var(--button-padding-x-${size})`, {
+      scope,
+      variant,
+      size,
+      tail: 'size',
+    }),
+    '--button-fz': buildCmfButtonPropToken('fz', MANTINE_SIZE_FZ[size], {
+      scope,
+      variant,
+      size,
+      tail: 'size',
+    }),
+    ...resolveCmfIconControlVars({
+      scope,
+      size,
+      buildToken: buildCmfButtonPropToken,
+    }),
+    '--button-bg': buildCmfButtonPropToken('bg', paint.bg, {
+      scope,
+      variant,
+      size,
+      tail: 'variant',
+    }),
+    '--button-bd': buildCmfButtonPropToken('bd', paint.bd, {
+      scope,
+      variant,
+      size,
+      tail: 'variant',
+    }),
+    '--button-hover': buildCmfButtonPropToken('hover', paint.hover, {
+      scope,
+      variant,
+      size,
+      tail: 'variant',
+    }),
+    '--button-hover-color': buildCmfButtonPropToken('hover-color', paint['hover-color'], {
+      scope,
+      variant,
+      size,
+      tail: 'variant',
+    }),
+  };
 }

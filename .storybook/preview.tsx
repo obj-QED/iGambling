@@ -1,3 +1,4 @@
+/* CSS layers first — before `@/assets/theme` (import sort). */
 import type { Preview } from '@storybook/react-vite';
 
 import { MemoryRouter } from 'react-router-dom';
@@ -7,8 +8,7 @@ import { withAppSettings } from '@/storybook/decorators/withAppSettings';
 import { withMantineColorScheme } from '@/storybook/decorators/withMantineColorScheme';
 import { STORYBOOK_APP_SETTINGS_GLOBAL_TYPES } from '@/storybook/settings';
 
-import '@mantine/core/styles.css';
-import '@/assets/index.scss';
+import '@/assets/styles-bootstrap';
 
 const preview: Preview = {
   globalTypes: {

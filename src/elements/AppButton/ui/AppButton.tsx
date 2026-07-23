@@ -4,42 +4,51 @@ import { forwardRef } from 'react';
 
 import { Button } from '@mantine/core';
 
-import { isValidAppHref } from '@/shared/lib';
-import { AppLink } from '@/shared/ui';
+import { resolveAppButtonHrefState, useAppHrefClickHandler } from '@/shared/lib';
+
+import { hasAppButtonContent } from '../types/props.types';
 
 export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function AppButton(
-  { label, href, native = false, disabled, leftSection, rightSection, ...buttonProps },
-  ref,
-) {
-  const hasLabel = (label?.length ?? 0) > 0;
-  const hasSection = leftSection !== undefined || rightSection !== undefined;
-
-  if (hasLabel === false && hasSection === false) return null;
-
-  const content = hasLabel ? label : null;
-  const sharedProps = {
-    ref,
+  {
+    label,
+    href: hrefProp,
+    native = false,
     disabled,
     leftSection,
     rightSection,
-    ...buttonProps,
-  };
+    onClick,
+    type = 'button',
+    justify,
+    ...buttonProps
+  },
+  ref,
+) {
+  if (hasAppButtonContent(label, leftSection, rightSection) === false) return null;
 
-  if (native === true) {
-    return <Button {...sharedProps}>{content}</Button>;
-  }
+  const { href, disabledForHref } = resolveAppButtonHrefState(hrefProp, native);
+  const hrefNavigationEnabled = href !== undefined;
+  const navigateHref = useAppHrefClickHandler(href, hrefNavigationEnabled);
 
-  if (href === undefined || isValidAppHref(href) === false) {
-    return (
-      <Button {...sharedProps} disabled>
-        {content}
-      </Button>
-    );
-  }
+  const handleClick = hrefNavigationEnabled
+    ? (event: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(event);
+      if (event.defaultPrevented) return;
+      navigateHref(event);
+    }
+    : onClick;
 
   return (
-    <Button {...sharedProps} component={AppLink} href={href}>
-      {content}
+    <Button
+      ref={ref}
+      {...buttonProps}
+      type={type}
+      disabled={disabled ?? disabledForHref}
+      leftSection={leftSection}
+      rightSection={rightSection}
+      onClick={handleClick}
+      justify={justify}
+    >
+      {label ?? null}
     </Button>
   );
 });

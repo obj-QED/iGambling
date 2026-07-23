@@ -1,7 +1,54 @@
-@use './menu.tokens' as menu;
-@use './widget.tokens' as widget;
+/**
+ * Sidebar (aside) widget tokens — single SoT for `[data-widget='sidebar']`.
+ * Flat CSS variables only (edit values here).
+ */
 
 @mixin sidebar-root-tokens {
-  @include menu.sidebar-menu-tokens('md');
-  @include widget.sidebar-widget-tokens;
+  /* Mantine size key (useAsideMenuButtonSizeFromElement) */
+  --aside-size-button: sm;
+
+  /* Header strip */
+  --aside-header-gap: var(--spacing-xs, 0.375rem);
+  --aside-header-color: inherit;
+  --aside-header-border-color: var(--mantine-color-dark-4);
+  --aside-header-avatar-size: 2.5rem;
+  --cmf-button-sidebar-account-padding-x: 10px 10px 10px 20px;
+
+  /* Footer strip */
+  --aside-footer-gap: var(--spacing-xs, 0.5rem);
+  --aside-footer-border-color: var(--mantine-color-dark-4);
+
+  /* Menu */
+  --aside-menu-gap: var(--spacing-xs, 0.375rem);
+  --aside-menu-radius: var(--radius-sm, 0.5rem);
+  --aside-menu-fz: var(--mantine-font-size-sm, 0.875rem);
+  --aside-menu-dropdown-indent: var(--spacing-md, 0.75rem);
+
+  /* Chevron */
+  --aside-menu-chevron-size: var(--mantine-font-size-md);
+  --aside-menu-chevron-transition: 200ms ease;
+
+  /* Scrollbar */
+  --aside-scrollbar-track: transparent;
+  --aside-scrollbar-thumb: rgb(255 255 255 / 28%);
+  --aside-scrollbar-thumb-hover: rgb(255 255 255 / 40%);
+  --aside-scrollbar-radius: 999px;
+
+  /* Button CMF (component scope) — key overrides: --cmf-button-sidebar-{key}-{prop} */
+  --cmf-button-sidebar-radius: var(--cmf-button-radius, var(--mantine-radius-md));
+  --cmf-button-sidebar-justify: flex-start;
+
+  /* ActionIcon CMF (component scope) */
+  --cmf-action-icon-sidebar-radius: var(--cmf-action-icon-radius, var(--mantine-radius-md));
+
+  /*
+   * Icon cascade (edit here — inherits into Button/ActionIcon):
+   *   --cmf-button-sidebar-{key}-icon-{scale|aspect|width|height}
+   *   --cmf-button-sidebar-icon-*
+   *   --cmf-button-{sm|md|…}-icon-*
+   *   --cmf-button-icon-*
+   *   --cmf-icon-*
+   * Same for --cmf-action-icon-sidebar-*. Avoid bare % on Button icons.
+   */
+
 }

@@ -4,7 +4,8 @@ import { forwardRef } from 'react';
 
 import { AppActionIcon } from '@/elements/AppActionIcon';
 import { AppButton } from '@/elements/AppButton';
-import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
+import { useMediaState } from '@/shared/hooks/useMediaState';
+import { useMenuActive } from '@/shared/hooks/useMenuActive';
 
 import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
 import {
@@ -24,13 +25,11 @@ import {
 } from '../../../lib/menuItemVariant';
 import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
-import styles from '../../../styles/menu/ItemMenuTrigger.module.scss';
-
 const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerProps>(
   function ItemMenuTriggerComponent({ item, rightSection, ...rest }, ref) {
     const menuSizes = useHeaderMenuSizes();
-    const { onImgError, showItemImg, hideImageControl, iconControlAttrs } =
-      useMenuItemMediaState(item);
+    const { menuActiveAttrs } = useMenuActive(item);
+    const { onImgError, showItemImg, hideImageControl, iconControlAttrs } = useMediaState(item);
 
     if (isRenderableItem(item) === false) return null;
 
@@ -50,15 +49,15 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
           name={item.name}
           img={item.img}
           hidden={hideImageControl}
-          className={styles.actionIcon}
           variant={resolveMenuItemActionIconVariant(item)}
           size={actionIconSize}
           aria-label={label}
           aria-haspopup="menu"
           {...menuItemDataAttrs(item)}
+          {...menuActiveAttrs}
           {...iconControlAttrs}
         >
-          <MenuItemImage item={item} alt={label} inActionIcon onImgFailed={onImgError} />
+          <MenuItemImage item={item} alt={label} onImgFailed={onImgError} />
         </AppActionIcon>
       );
     }
@@ -69,7 +68,6 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
         ref={ref}
         native
         label={item.name}
-        className={styles.button}
         variant={resolveMenuItemButtonVariant(item)}
         size={buttonSize}
         leftSection={leftSection}
@@ -77,6 +75,7 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
         aria-label={label}
         aria-haspopup="menu"
         {...menuItemDataAttrs(item)}
+        {...menuActiveAttrs}
         {...iconControlAttrs}
       />
     );

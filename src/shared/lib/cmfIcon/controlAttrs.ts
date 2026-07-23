@@ -1,14 +1,10 @@
 import type { CmfIconControlAttrs } from './types/controlAttrs.types';
 
-import { isSvgMediaSrc } from './icon';
-
-/** Svg src on Button / ActionIcon root — only while menu icon is visible. */
-export function cmfIconControlAttrs(
-  src: string | undefined,
-  showItemImg: boolean,
-): CmfIconControlAttrs {
-  if (showItemImg === false || src === undefined || src.length === 0) return {};
-  if (isSvgMediaSrc(src) === false) return {};
-
-  return { 'data-cmf-icon-src': src };
+/**
+ * Previously mirrored `data-cmf-icon-src` onto Button / ActionIcon roots for SVG menus.
+ * That collided with `[data-cmf-icon-src]` media sizing (control collapsed to icon box).
+ * Attr belongs only on CmfIcon / media nodes — keep this as a no-op for call-site stability.
+ */
+export function cmfIconControlAttrs(_src?: string, _showItemImg?: boolean): CmfIconControlAttrs {
+  return {};
 }

@@ -1,7 +1,7 @@
 import type { HeaderMenuModel } from '@/widgets/header/types';
 import type { InitV2Content } from '@api/lobby/types';
 
-import { findMenuHeaderTopItems } from '@/shared/lib/pageMenu';
+import { findMenuHeaderTopItems } from '@/shared/lib/menu';
 import { mapRoot } from '@/widgets/header/lib/mapMenu';
 
 /** Extracts header menu from `page.blocks` → `menuHeaderTop.menu`. */

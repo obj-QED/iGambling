@@ -23,6 +23,7 @@ export function Providers({ children }: ProvidersProps) {
           theme={mantineTheme}
           defaultColorScheme={defaultColorScheme}
           classNamesPrefix={classNamesPrefix}
+          deduplicateInlineStyles
         >
           <DeviceBodySync />
           <ScrollFullscreenSync />

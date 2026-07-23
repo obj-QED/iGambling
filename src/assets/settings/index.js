@@ -26,7 +26,7 @@
         {
           key: 'block3-tools',
           placement: { section: 'block3', at: 'end' },
-          items: [{ key: 'color_scheme', url: '', name: '' }],
+          items: [{ key: 'color_scheme', name: '' }],
         },
       ],
     },

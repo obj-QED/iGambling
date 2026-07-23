@@ -1,15 +1,15 @@
-import type { PageMenuItemDto } from '@/shared/types/pageMenu';
+import type { MenuItemDto } from '@/shared/types/menu';
 import type { HeaderMenuItem, HeaderMenuModel } from '@/widgets/header/types';
 
-import { parsePageMenuItemDto } from '@/shared/lib/pageMenu';
+import { parseMenuItemDto } from '@/shared/lib/menu';
 import { mapRoot } from '@/widgets/header/lib/mapMenu';
 import { MENU_HEADER_TOP_AUTHENTICATED_MOCK } from '@/widgets/header/mocks/menuHeaderTop/menuHeaderTop.authenticated.mock';
 
-function parseMockItems(): PageMenuItemDto[] {
-  const items: PageMenuItemDto[] = [];
+function parseMockItems(): MenuItemDto[] {
+  const items: MenuItemDto[] = [];
 
   for (const entry of MENU_HEADER_TOP_AUTHENTICATED_MOCK.menu) {
-    const parsed = parsePageMenuItemDto(entry);
+    const parsed = parseMenuItemDto(entry);
     if (parsed !== null) items.push(parsed);
   }
 

@@ -1,9 +1,21 @@
-@layer widget.menu {
+@layer widget.element {
   .root {
-    width: var(--aside-menu-chevron-size, var(--mantine-font-size-xs, 0.75rem));
-    height: var(--aside-menu-chevron-size, var(--mantine-font-size-xs, 0.75rem));
+    width: var(--aside-menu-chevron-size, var(--mantine-font-size-md));
+    height: var(--aside-menu-chevron-size, var(--mantine-font-size-md));
+    min-width: var(--aside-menu-chevron-size, var(--mantine-font-size-md));
+    min-height: var(--aside-menu-chevron-size, var(--mantine-font-size-md));
+    max-width: var(--aside-menu-chevron-size, var(--mantine-font-size-md));
+    max-height: var(--aside-menu-chevron-size, var(--mantine-font-size-md));
     flex-shrink: 0;
+    transition: transform var(--aside-menu-chevron-transition, 200ms ease);
+    transform: rotate(0deg);
 
-    @include aside-chevron-rotate;
+    &[data-opened='true'] {
+      transform: rotate(180deg);
+    }
+
+    @include reduced-motion {
+      transition: none;
+    }
   }
 }

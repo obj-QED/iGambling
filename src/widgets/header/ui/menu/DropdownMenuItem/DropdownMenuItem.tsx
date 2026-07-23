@@ -4,39 +4,41 @@ import { memo } from 'react';
 
 import { Menu } from '@mantine/core';
 
-import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
-import { isValidAppHref } from '@/shared/lib';
-import { AppLink } from '@/shared/ui';
+import { AppButton } from '@/elements/AppButton';
+import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { useMediaState } from '@/shared/hooks/useMediaState';
 
+import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
+import { resolveHeaderMenuButtonSize } from '../../../lib/headerMenuSize';
 import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
+import { resolveMenuItemButtonVariant } from '../../../lib/menuItemVariant';
 import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
 function DropdownMenuItemComponent({ item }: DropdownMenuItemProps) {
-  const { onImgError, showItemImg, iconControlAttrs } = useMenuItemMediaState(item);
+  const menuSizes = useHeaderMenuSizes();
+  const { menuActiveAttrs } = useMenuActive(item);
+  const { onImgError, showItemImg, iconControlAttrs } = useMediaState(item);
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
   const leftSection = showItemImg ? (
     <MenuItemImage item={item} alt={label} onImgFailed={onImgError} />
   ) : undefined;
   const content = item?.name ?? label;
-  const menuItemProps = {
-    leftSection,
-    ...menuItemDataAttrs(item),
-    ...iconControlAttrs,
-  };
-
-  if (isValidAppHref(href) === false) {
-    return (
-      <Menu.Item disabled {...menuItemProps}>
-        {content}
-      </Menu.Item>
-    );
-  }
 
   return (
-    <Menu.Item component={AppLink} href={href} {...menuItemProps}>
-      {content}
-    </Menu.Item>
+    <Menu.Item
+      component={AppButton}
+      href={href}
+      label={content}
+      leftSection={leftSection}
+      variant={resolveMenuItemButtonVariant(item)}
+      size={resolveHeaderMenuButtonSize(item, menuSizes)}
+      fullWidth
+      justify="flex-start"
+      {...menuItemDataAttrs(item)}
+      {...menuActiveAttrs}
+      {...iconControlAttrs}
+    />
   );
 }
 

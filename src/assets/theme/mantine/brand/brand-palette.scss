@@ -1,38 +1,36 @@
-/* Brand 10-shade palettes — SoT for CSS; fallbacks in brandPalette.ts */
+/* Brand 10-shade palettes — SoT for CSS; Mantine reads via `var(--brand-color-*)` in brandPalette.ts */
 
-// Light theme: teal (0–4 tints, 5–9 shades) — readable on white surfaces
-$palette-light: (
-  0: var(--app-pallet-0, #f0fdfa),
-  1: var(--app-pallet-1, #ccfbf1),
-  2: var(--app-pallet-2, #99f6e4),
-  3: var(--app-pallet-3, #5eead4),
-  4: var(--app-pallet-4, #2dd4bf),
-  5: var(--app-pallet-5, #14b8a6),
-  6: var(--app-pallet-6, #0d9488),
-  7: var(--app-pallet-7, #0f766e),
-  8: var(--app-pallet-8, #115e59),
-  9: var(--app-pallet-9, #134e4a),
+// Light: deeper shades for text/borders on white (outline/light readable)
+$palette-light: (0: #f0fdfa,
+  1: #ccfbf1,
+  2: #5eead4,
+  3: #2dd4bf,
+  4: #14b8a6,
+  5: #0d9488,
+  6: #0f766e,
+  7: #115e59,
+  8: #134e4a,
+  9: #042f2e,
 );
 
-// Dark theme: cyan — readable on slate body
-$palette-dark: (
-  0: var(--app-pallet-0, #ecfeff),
-  1: var(--app-pallet-1, #cffafe),
-  2: var(--app-pallet-2, #a5f3fc),
-  3: var(--app-pallet-3, #67e8f9),
-  4: var(--app-pallet-4, #22d3ee),
-  5: var(--app-pallet-5, #06b6d4),
-  6: var(--app-pallet-6, #0891b2),
-  7: var(--app-pallet-7, #0e7490),
-  8: var(--app-pallet-8, #155e75),
-  9: var(--app-pallet-9, #164e63),
+// Dark: cyan — readable on slate body
+$palette-dark: (0: #ecfeff,
+  1: #cffafe,
+  2: #a5f3fc,
+  3: #67e8f9,
+  4: #22d3ee,
+  5: #06b6d4,
+  6: #0891b2,
+  7: #0e7490,
+  8: #155e75,
+  9: #164e63,
 );
 
 @mixin apply-palette($palette) {
-  @each $index, $color in $palette {
+  @each $index,
+  $color in $palette {
     --brand-color-#{$index}: #{$color};
-    --mantine-color-brand-#{$index}: #{$color};
   }
 
-  --color-primary: var(--mantine-color-brand-6);
+  --color-primary: var(--brand-color-6);
 }

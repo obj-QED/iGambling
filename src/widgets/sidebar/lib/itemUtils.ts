@@ -58,33 +58,21 @@ export function resolveItemLabel(item: HeaderMenuItem): string {
 
 export { resolveItemHref } from '@/shared/lib';
 
-export function resolveMenuItemTypeAttr(item: HeaderMenuItem): string {
-  return item.type ?? 'button';
-}
-
 export function menuItemKeyAttr(item: HeaderMenuItem): { 'data-key': string } {
   return { 'data-key': itemKey(item) };
 }
 
 export function menuItemDataAttrs(item: HeaderMenuItem): {
   'data-cmf-component': typeof SIDEBAR_CMF_COMPONENT;
+  'data-cmf-key': string;
   'data-key': string;
-  'data-menu-key': string;
-  'data-menu-type'?: string;
 } {
-  const keyAttrs = {
-    ...menuItemKeyAttr(item),
-    ...cmfScopeAttrs(SIDEBAR_CMF_COMPONENT, itemKey(item)),
-    'data-menu-key': itemKey(item),
-  };
-
-  if (isSpecialBlockKey(item.key)) {
-    return keyAttrs;
-  }
-
   return {
-    ...keyAttrs,
-    'data-menu-type': resolveMenuItemTypeAttr(item),
+    ...menuItemKeyAttr(item),
+    ...(cmfScopeAttrs(SIDEBAR_CMF_COMPONENT, itemKey(item)) as {
+      'data-cmf-component': typeof SIDEBAR_CMF_COMPONENT;
+      'data-cmf-key': string;
+    }),
   };
 }
 

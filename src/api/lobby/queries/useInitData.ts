@@ -1,4 +1,5 @@
 import type { InitKey, TranslationKey } from '../queryFns';
+import type { InitV2Content, Words } from '../types';
 
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -13,7 +14,7 @@ export function useInitData(language: string, page: string) {
   const translationKey: TranslationKey = lobbyQueryKeys.translation(language);
   const translationState = queryClient.getQueryState(translationKey);
 
-  const translation = useApiQuery({
+  const translation = useApiQuery<Words, TranslationKey>({
     queryKey: translationKey,
     queryFn: translationQueryFn,
     enabled: Boolean(language),
@@ -26,7 +27,7 @@ export function useInitData(language: string, page: string) {
   const isTranslationReady =
     translation.query.status === 'success' || translationState?.status === 'success';
 
-  const init = useApiQuery({
+  const init = useApiQuery<InitV2Content, InitKey>({
     queryKey: initKey,
     queryFn: initQueryFn,
     enabled: Boolean(language) && isTranslationReady,

@@ -1,7 +1,62 @@
-@use './menu.tokens' as menu;
-@use './widget.tokens' as widget;
+/**
+ * Header widget tokens — single SoT for `[data-widget='header']`.
+ * Flat CSS variables only (edit values here).
+ */
 
 @mixin header-root-tokens {
-  @include menu.header-menu-tokens('sm');
-  @include widget.header-widget-tokens;
+
+  /* Mantine size keys (useHeaderMenuSizesFromElement) — SoT for control size */
+  --header-size-button: md;
+  --header-size-link: md;
+  --header-size-action-icon: md;
+
+  /* Surface */
+  --header-surface-bg: transparent;
+  --header-surface-border-color: transparent;
+  --header-surface-border-width: 0;
+  --header-surface-shadow: none;
+  --header-surface-backdrop-filter: none;
+
+  /* Shell */
+  --header-height: auto;
+  --header-padding-x: 0;
+  --header-padding-y: 10px;
+  --header-section-gap: var(--spacing-md, 1rem);
+  --header-block-gap: var(--spacing-xs, 0.25rem);
+  --header-text-color: var(--color-text, inherit);
+
+  /* Logo */
+  --header-logo-height: var(--button-height, 2.625rem);
+  --header-logo-width: 120px;
+  --cmf-button-header-logo-padding-x: 0;
+
+  /* Chevron */
+  --header-chevron-icon-size: var(--cmf-button-md-fz, 1rem);
+  --header-chevron-transition: 200ms ease;
+
+  /* Bonus box */
+  --header-bonus-box-bg: var(--cmf-action-icon-default-bg, var(--mantine-color-default));
+  --header-bonus-box-color: var(--cmf-action-icon-default-color, var(--mantine-color-text));
+  --header-bonus-box-radius: var(--cmf-action-icon-radius, var(--mantine-radius-md));
+  --header-bonus-box-bd: var(--cmf-action-icon-default-bd, transparent);
+
+  /* Button CMF (component scope) — key overrides: --cmf-button-header-sign_in-bg */
+  --cmf-button-header-radius: var(--cmf-button-radius, var(--mantine-radius-md));
+  --cmf-button-header-justify: center;
+
+  /* ActionIcon CMF (component scope) */
+  --cmf-action-icon-header-home-color: var(--brand-color-5);
+  --cmf-action-icon-header-home-hover-color: var(--brand-color-4);
+
+  --cmf-action-icon-header-size: calc(2.625rem * var(--mantine-scale));
+
+  /*
+   * Icons — size vs --ai-size / --button-height (not Button row width).
+   *   scale: 0.7  → width = box * 0.7
+   *   width: 24px | 1.25rem | calc(var(--ai-size) * 0.7)
+   *   height: auto | 12px
+   *   aspect: 1 | 2 | 16/9
+   * Avoid bare % on Button leftSection (it's % of wide row). OK on ActionIcon.
+   */
+
 }

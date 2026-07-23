@@ -3,9 +3,11 @@
     --header-surface-bg: var(--header-surface-bg, transparent);
   }
 
-  // [data-mantine-color-scheme='dark'] .root[data-type='classic'] {
-  //   --header-surface-bg: var(--color-bg-body, #0f172a);
-  //   --header-surface-border-color: var(--color-border, #1e293b);
-  //   --header-surface-border-width: 1px;
-  // }
+  /*
+  [data-mantine-color-scheme='dark'] .root[data-type='classic'] {
+    --header-surface-bg: var(--color-bg-body, #0f172a);
+    --header-surface-border-color: var(--color-border, #1e293b);
+    --header-surface-border-width: 1px;
+  }
+  */
 }

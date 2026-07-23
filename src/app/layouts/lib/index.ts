@@ -1,1 +1,6 @@
-export { extractPageMenuFromInit, type PageMenuExtractMode } from './extractPageMenuFromInit';
+export {
+  extractMenuFromInit,
+  extractPageMenuFromInit,
+  type MenuExtractMode,
+  type PageMenuExtractMode,
+} from './extractPageMenuFromInit';

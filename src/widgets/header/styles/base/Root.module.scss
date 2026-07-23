@@ -4,17 +4,12 @@
   .root {
     width: 100%;
     background: var(--header-surface-bg, transparent);
-    border-bottom: var(--header-surface-border-width, 0) solid var(--header-surface-border-color, transparent);
+    border-bottom: var(--header-surface-border-width, 0) solid
+      var(--header-surface-border-color, transparent);
     box-shadow: var(--header-surface-shadow, none);
     backdrop-filter: var(--header-surface-backdrop-filter, none);
     color: var(--header-text-color, var(--color-text, inherit));
     min-height: var(--header-height, auto);
     padding: var(--header-padding-y, 10px) var(--header-padding-x, 0);
-  }
-}
-
-@layer widget.variant {
-  .root[data-icon-shape='rect'] {
-    --header-logo-width: calc(var(--header-logo-height, var(--cmf-button-sm-height, 2.25rem)) * 1.25);
   }
 }

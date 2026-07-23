@@ -3,7 +3,8 @@ import type { ItemButtonProps } from '../../../types';
 import { memo } from 'react';
 
 import { AppButton } from '@/elements/AppButton';
-import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
+import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { useMediaState } from '@/shared/hooks/useMediaState';
 
 import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
 import { resolveHeaderMenuButtonSize } from '../../../lib/headerMenuSize';
@@ -15,7 +16,8 @@ import styles from '../../../styles/menu/ItemButton.module.scss';
 
 function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
   const menuSizes = useHeaderMenuSizes();
-  const { onImgError, showItemImg, iconControlAttrs } = useMenuItemMediaState(item);
+  const { menuActiveAttrs } = useMenuActive(item);
+  const { onImgError, showItemImg, iconControlAttrs } = useMediaState(item);
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
   const leftSection = showItemImg ? (
@@ -29,9 +31,11 @@ function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
       className={styles.root}
       variant={resolveMenuItemButtonVariant(item)}
       size={resolveHeaderMenuButtonSize(item, menuSizes)}
+      justify="flex-start"
       leftSection={leftSection}
       rightSection={rightSection}
       {...menuItemDataAttrs(item)}
+      {...menuActiveAttrs}
       {...iconControlAttrs}
     />
   );

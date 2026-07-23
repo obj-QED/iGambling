@@ -1,9 +1,9 @@
 import type { HeaderMenuModel } from '../types';
 import type { MenuHeaderTopBlockMock } from './menuHeaderTop/types';
-import type { PageMenuItemDto } from '@/shared/types/pageMenu';
+import type { MenuItemDto } from '@/shared/types/menu';
 
 import { getSettings } from '@/shared/config';
-import { parsePageMenuItemDto } from '@/shared/lib/pageMenu';
+import { parseMenuItemDto } from '@/shared/lib/menu';
 
 import { mapRoot } from '../lib/mapMenu';
 import { MENU_HEADER_TOP_AUTHENTICATED_MOCK } from './menuHeaderTop/menuHeaderTop.authenticated.mock';
@@ -13,11 +13,11 @@ export type GetHeaderMenuMockOptions = {
   isAuthenticated?: boolean;
 };
 
-function parseMockMenuItems(block: MenuHeaderTopBlockMock): PageMenuItemDto[] {
-  const items: PageMenuItemDto[] = [];
+function parseMockMenuItems(block: MenuHeaderTopBlockMock): MenuItemDto[] {
+  const items: MenuItemDto[] = [];
 
   for (const entry of block.menu) {
-    const parsed = parsePageMenuItemDto(entry);
+    const parsed = parseMenuItemDto(entry);
     if (parsed !== null) items.push(parsed);
   }
 

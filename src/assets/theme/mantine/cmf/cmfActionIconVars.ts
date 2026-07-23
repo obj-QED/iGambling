@@ -1,135 +1,40 @@
-/** Mantine `--ai-*` tokens bridged through optional CMF overrides from theme.scss. */
-export const CMF_ACTION_ICON_STYLE_PROPS = [
-  'bg',
-  'bd',
-  'color',
-  'hover',
-  'hover-color',
-  'radius',
-  'size',
-] as const;
+import type { ActionIconVariant, MantineSize } from '@mantine/core';
 
-export const CMF_ACTION_ICON_VARIANTS = [
+/**
+ * CMF-only ActionIcon variants.
+ * Built-ins: Mantine `ActionIconVariant` (props already allow `variant | (string & {})`).
+ */
+export const CMF_ACTION_ICON_VARIANTS = ['hero', 'hero-light', 'hero-outline'] as const;
+
+export type CmfActionIconCustomVariant = (typeof CMF_ACTION_ICON_VARIANTS)[number];
+
+/** Paint / cascade keys = Mantine built-ins + CMF custom. */
+export type CmfActionIconVariant = ActionIconVariant | CmfActionIconCustomVariant;
+
+/** Runtime list tied to Mantine `ActionIconVariant` (TS errors if upstream adds/renames). */
+export const MANTINE_ACTION_ICON_VARIANTS = [
   'filled',
-  'outline',
   'light',
-  'subtle',
-  'default',
+  'outline',
   'transparent',
   'white',
+  'subtle',
+  'default',
   'gradient',
-  'hero',
-  'hero-light',
-  'hero-outline',
-] as const;
+] as const satisfies ReadonlyArray<ActionIconVariant>;
 
-export const CMF_ACTION_ICON_SIZES = [
+export const MANTINE_SIZES = [
   'xs',
   'sm',
   'md',
   'lg',
   'xl',
-  'input-xs',
-  'input-sm',
-  'input-md',
-  'input-lg',
-  'input-xl',
-] as const;
+] as const satisfies ReadonlyArray<MantineSize>;
 
-export type CmfActionIconStyleProp = (typeof CMF_ACTION_ICON_STYLE_PROPS)[number];
-export type CmfActionIconVariant = (typeof CMF_ACTION_ICON_VARIANTS)[number];
-export type CmfActionIconSize = (typeof CMF_ACTION_ICON_SIZES)[number];
+/** ActionIcon size prop: MantineSize | `input-${MantineSize}`. */
+export type CmfActionIconSize = MantineSize | `input-${MantineSize}`;
 
-export const CMF_ACTION_ICON_DISABLED_PROPS = [
-  'disabled-bg',
-  'disabled-color',
-  'disabled-hover',
-  'disabled-hover-color',
-] as const;
-
-export const CMF_ACTION_ICON_LOADING_PROPS = ['loading-bg', 'loading-color', 'loading-bd'] as const;
-
-export type CmfActionIconVariantCoreProp = 'bg' | 'bd' | 'color' | 'hover' | 'hover-color';
-export type CmfActionIconDisabledProp = (typeof CMF_ACTION_ICON_DISABLED_PROPS)[number];
-export type CmfActionIconLoadingProp = (typeof CMF_ACTION_ICON_LOADING_PROPS)[number];
-export type CmfActionIconVariantStyleProp =
-  | CmfActionIconVariantCoreProp
-  | CmfActionIconDisabledProp
-  | CmfActionIconLoadingProp;
-export type CmfActionIconSizeStyleProp = 'size';
-
-export function cmfActionIconVar(prop: CmfActionIconStyleProp): string {
-  return `--cmf-action-icon-${prop}`;
-}
-
-export function cmfActionIconVariantVar(
-  variant: CmfActionIconVariant,
-  prop: CmfActionIconVariantStyleProp,
-): string {
-  return `--cmf-action-icon-${variant}-${prop}`;
-}
-
-export function cmfScopedActionIconVariantVar(
-  scopeKey: string,
-  variant: CmfActionIconVariant,
-  prop: CmfActionIconVariantStyleProp,
-): string {
-  return `--cmf-${scopeKey}-action-icon-${variant}-${prop}`;
-}
-
-export function cmfActionIconToken(prop: CmfActionIconStyleProp, fallback?: string): string {
-  return fallback !== undefined
-    ? `var(${cmfActionIconVar(prop)}, ${fallback})`
-    : `var(${cmfActionIconVar(prop)})`;
-}
-
-export function cmfActionIconVariantToken(
-  variant: CmfActionIconVariant,
-  prop: CmfActionIconVariantStyleProp,
-  fallback?: string,
-): string {
-  const token = cmfActionIconVariantVar(variant, prop);
-
-  return fallback !== undefined ? `var(${token}, ${fallback})` : `var(${token})`;
-}
-
-export function cmfActionIconDisabledToken(
-  variant: CmfActionIconVariant,
-  prop: 'bg' | 'color' | 'hover' | 'hover-color',
-  fallback?: string,
-): string {
-  const variantToken = `--cmf-action-icon-${variant}-disabled-${prop}`;
-  const genericToken = `--cmf-action-icon-disabled-${prop}`;
-  const generic =
-    fallback !== undefined ? `var(${genericToken}, ${fallback})` : `var(${genericToken})`;
-
-  return `var(${variantToken}, ${generic})`;
-}
-
-export function cmfActionIconLoadingToken(
-  variant: CmfActionIconVariant,
-  prop: 'bg' | 'color' | 'bd',
-  fallback: string,
-): string {
-  const variantToken = `--cmf-action-icon-${variant}-loading-${prop}`;
-  const genericToken = `--cmf-action-icon-loading-${prop}`;
-
-  return `var(${variantToken}, var(${genericToken}, ${fallback}))`;
-}
-
-export function cmfActionIconSizeVar(
-  size: CmfActionIconSize,
-  prop: CmfActionIconSizeStyleProp,
-): string {
-  return `--cmf-action-icon-${size}-${prop}`;
-}
-
-export function cmfActionIconSizeToken(
-  size: CmfActionIconSize,
-  prop: CmfActionIconSizeStyleProp,
-  fallback?: string,
-): string {
-  const token = cmfActionIconSizeVar(size, prop);
-
-  return fallback !== undefined ? `var(${token}, ${fallback})` : `var(${token})`;
-}
+export const CMF_ACTION_ICON_SIZES = [
+  ...MANTINE_SIZES,
+  ...MANTINE_SIZES.map((size) => `input-${size}` as const),
+] as const satisfies ReadonlyArray<CmfActionIconSize>;

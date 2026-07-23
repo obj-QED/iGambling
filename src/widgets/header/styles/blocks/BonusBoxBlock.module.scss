@@ -1,15 +1,28 @@
-@layer widget.blocks {
+@layer widget.component {
   .root {
-    @include header-menu-action-icon-control;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
     line-height: 0;
-    cursor: not-allowed;
-    opacity: 0.5;
+    padding: 0;
+    background: var(--header-bonus-box-bg, var(--cmf-action-icon-default-bg));
+    color: var(--header-bonus-box-color, var(--cmf-action-icon-default-color));
+    border-radius: var(
+      --header-bonus-box-radius,
+      var(--cmf-action-icon-radius, var(--mantine-radius-sm, 0.25rem))
+    );
+    border: var(
+      --header-bonus-box-bd,
+      var(
+        --cmf-action-icon-default-bd,
+        calc(0.0625rem * var(--mantine-scale)) solid var(--mantine-color-default-border)
+      )
+    );
 
-    @include header-custom-block-surface('bonus-box');
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
   }
 
   .image {

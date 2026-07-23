@@ -6,6 +6,5 @@ export type CmfIconProps = {
   shape?: CmfIconShape;
   radius?: CmfIconRadius;
   className?: string;
-  inActionIcon?: boolean;
   onError?: () => void;
 };

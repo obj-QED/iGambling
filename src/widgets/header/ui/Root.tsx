@@ -28,8 +28,6 @@ function RootComponent({ menu, config, className }: RootProps) {
     return null;
   }
 
-  const menuIconShape = config.menuIconShape ?? 'square';
-
   return (
     <ConfigProvider config={config}>
       <HeaderMenuSizesContext.Provider value={menuSizes}>
@@ -40,7 +38,6 @@ function RootComponent({ menu, config, className }: RootProps) {
           data-cmf-component="header"
           data-layout={config.layout}
           data-type={config.type}
-          data-icon-shape={menuIconShape}
         >
           <TypeStrategy menu={menuModel} config={config} />
         </header>

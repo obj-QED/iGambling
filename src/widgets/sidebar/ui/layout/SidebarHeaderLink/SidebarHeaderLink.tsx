@@ -2,13 +2,14 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { Badge, UnstyledButton } from '@mantine/core';
+import { Badge } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 
-import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
-import { isValidAppHref } from '@/shared/lib';
-import { AppLink } from '@/shared/ui';
+import { AppButton } from '@/elements/AppButton';
+import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { useMediaState } from '@/shared/hooks/useMediaState';
 
+import { useAsideMenuButtonSize } from '../../../hooks/useAsideMenuButtonSize';
 import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
 import { MenuItemMedia } from '../../menu/MenuItemMedia/MenuItemMedia';
 
@@ -19,7 +20,9 @@ function hasAccountSubtitle(subtitle: string | undefined): subtitle is string {
 }
 
 function SidebarHeaderLinkComponent({ item }: BlockProps) {
-  const { onImgError, showItemImg } = useMenuItemMediaState(item);
+  const { onImgError, showItemImg } = useMediaState(item);
+  const { menuActiveAttrs } = useMenuActive(item);
+  const size = useAsideMenuButtonSize();
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
   const subtitle = item.subtitle;
@@ -32,52 +35,41 @@ function SidebarHeaderLinkComponent({ item }: BlockProps) {
       onImgError={onImgError}
       className={isAccountProfile === true ? styles.mainLinkAvatar : styles.mainLinkIcon}
     />
-  ) : null;
+  ) : undefined;
 
-  const textBlock =
+  const labelContent =
     isAccountProfile === true ? (
       <div className={styles.mainLinkText}>
         <span className={styles.mainLinkTitle}>{label}</span>
         <span className={styles.mainLinkSubtitle}>{subtitle}</span>
       </div>
     ) : (
-      <span>{label}</span>
+      label
     );
 
-  const content = (
-    <>
-      <div className={styles.mainLinkInner}>
-        {avatar}
-        {textBlock}
-      </div>
-      {isAccountProfile === true ? (
-        <IconChevronRight className={styles.mainLinkChevron} size={16} stroke={1.5} aria-hidden />
-      ) : null}
-      {isAccountProfile === false && badge !== undefined && String(badge).length > 0 ? (
-        <Badge size="sm" variant="filled" className={styles.mainLinkBadge}>
-          {badge}
-        </Badge>
-      ) : null}
-    </>
-  );
-
-  if (isValidAppHref(href) === false) {
-    return (
-      <UnstyledButton className={styles.mainLink} disabled {...menuItemDataAttrs(item)}>
-        {content}
-      </UnstyledButton>
-    );
-  }
+  const rightSection =
+    isAccountProfile === true ? (
+      <IconChevronRight className={styles.mainLinkChevron} size={16} stroke={1.5} aria-hidden />
+    ) : badge !== undefined && String(badge).length > 0 ? (
+      <Badge size="sm" variant="filled" className={styles.mainLinkBadge}>
+        {badge}
+      </Badge>
+    ) : undefined;
 
   return (
-    <UnstyledButton
-      component={AppLink}
+    <AppButton
       href={href}
+      label={labelContent}
+      variant="transparent"
+      size={size}
+      fullWidth
+      justify="space-between"
       className={styles.mainLink}
+      leftSection={avatar}
+      rightSection={rightSection}
       {...menuItemDataAttrs(item)}
-    >
-      {content}
-    </UnstyledButton>
+      {...menuActiveAttrs}
+    />
   );
 }
 

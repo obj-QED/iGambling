@@ -14,7 +14,6 @@ export type MenuItemImageProps = {
   item: HeaderMenuItem;
   alt: string;
   className?: string;
-  inActionIcon?: boolean;
   onImgFailed?: () => void;
 };
 

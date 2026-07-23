@@ -5,18 +5,10 @@ import { memo, useCallback, useRef, useState } from 'react';
 import { useCmfIconStyle } from '@/shared/hooks/useCmfIconStyle';
 import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib/cmfIcon';
 
-import { useConfig } from '../../../context/useConfig';
 import { hasItemImg } from '../../../lib/itemUtils';
 import { ItemIcon } from '../ItemIcon/ItemIcon';
 
-function MenuItemImageComponent({
-  item,
-  alt,
-  className,
-  inActionIcon = false,
-  onImgFailed,
-}: MenuItemImageProps) {
-  const config = useConfig();
+function MenuItemImageComponent({ item, alt, className, onImgFailed }: MenuItemImageProps) {
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
   const cmfStyle = useCmfIconStyle(iconRef);
   const [imgFailed, setImgFailed] = useState(false);
@@ -34,11 +26,10 @@ function MenuItemImageComponent({
     <ItemIcon
       ref={iconRef}
       className={className}
-      inActionIcon={inActionIcon}
       src={item.img ?? ''}
       alt={alt}
-      shape={resolveCmfIconShape(item, config, cmfStyle)}
-      radius={resolveCmfIconRadius(item, config, cmfStyle)}
+      shape={resolveCmfIconShape(item, cmfStyle)}
+      radius={resolveCmfIconRadius(item, cmfStyle)}
       onError={handleError}
     />
   );

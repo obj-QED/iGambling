@@ -3,7 +3,8 @@ import type { ItemActionIconProps } from '../../../types';
 import { memo } from 'react';
 
 import { AppActionIcon } from '@/elements/AppActionIcon';
-import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
+import { useMediaState } from '@/shared/hooks/useMediaState';
+import { useMenuActive } from '@/shared/hooks/useMenuActive';
 
 import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
 import { resolveHeaderMenuActionIconSize } from '../../../lib/headerMenuSize';
@@ -16,16 +17,15 @@ import {
 import { resolveMenuItemActionIconVariant } from '../../../lib/menuItemVariant';
 import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
 
-import styles from '../../../styles/menu/ItemActionIcon.module.scss';
-
 function ItemActionIconComponent({ item }: ItemActionIconProps) {
   const menuSizes = useHeaderMenuSizes();
-  const { onImgError, hideImageControl, iconControlAttrs } = useMenuItemMediaState(item);
+  const { menuActiveAttrs } = useMenuActive(item);
+  const { onImgError, hideImageControl, iconControlAttrs } = useMediaState(item);
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
   const content =
     hasItemImg(item) === true ? (
-      <MenuItemImage item={item} alt={label} inActionIcon onImgFailed={onImgError} />
+      <MenuItemImage item={item} alt={label} onImgFailed={onImgError} />
     ) : (
       label.slice(0, 1).toUpperCase()
     );
@@ -36,11 +36,11 @@ function ItemActionIconComponent({ item }: ItemActionIconProps) {
       img={item.img}
       href={href}
       hidden={hideImageControl}
-      className={styles.root}
       variant={resolveMenuItemActionIconVariant(item)}
       size={resolveHeaderMenuActionIconSize(menuSizes)}
       aria-label={label}
       {...menuItemDataAttrs(item)}
+      {...menuActiveAttrs}
       {...iconControlAttrs}
     >
       {content}

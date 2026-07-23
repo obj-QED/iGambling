@@ -18,7 +18,7 @@ function normalizeIconRadiusMode(raw: string): CmfIconRadius | undefined {
   return undefined;
 }
 
-/** Read resolved CMF icon shape/radius from row scope (`[data-menu-key]` or widget root). */
+/** Read resolved CMF icon shape/radius from row scope (`[data-cmf-key]` or widget root). */
 export function readCmfIconStyle(scopeEl: HTMLElement | null): CmfIconStyle {
   if (scopeEl === null) return {};
 
@@ -33,14 +33,8 @@ export function findCmfIconScope(fromEl: HTMLElement | null): HTMLElement | null
   if (fromEl === null) return null;
 
   return (
-    fromEl.closest('[data-menu-key]') ??
+    fromEl.closest('[data-cmf-key]') ??
     fromEl.closest('[data-widget="header"]') ??
     fromEl.closest('[data-widget="sidebar"]')
   );
 }
-
-/** @deprecated Use `readCmfIconStyle` */
-export const readCmfMenuIconStyle = readCmfIconStyle;
-
-/** @deprecated Use `findCmfIconScope` */
-export const findMenuIconScope = findCmfIconScope;

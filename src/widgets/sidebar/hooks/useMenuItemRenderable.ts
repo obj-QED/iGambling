@@ -1,11 +1,11 @@
 import type { HeaderMenuItem } from '@/widgets/header';
 
-import { useMenuItemMediaState } from '@/shared/hooks/useMenuItemMediaState';
+import { useMediaState } from '@/shared/hooks/useMediaState';
 
 import { resolveItemLabel, shouldRenderMenuItem } from '../lib/itemUtils';
 
 export function useMenuItemRenderable(item: HeaderMenuItem) {
-  const media = useMenuItemMediaState(item);
+  const media = useMediaState(item);
 
   return {
     visible: shouldRenderMenuItem(item, media.imgFailed),

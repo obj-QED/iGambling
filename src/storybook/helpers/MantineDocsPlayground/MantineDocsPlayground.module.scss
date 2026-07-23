@@ -1,105 +1,103 @@
-@layer fdd-base {
-  .root {
-    max-width: 52rem;
-    margin: 0 auto;
-    padding: var(--spacing-lg, 1.5rem);
-  }
+.root {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: var(--spacing-lg, 1.5rem);
+}
 
-  .preview {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 12.5rem;
-    padding: var(--spacing-xl, 2rem);
-    border: 1px solid var(--color-border, var(--mantine-color-default-border));
-    border-radius: var(--radius-md, var(--mantine-radius-md));
-    background: var(--color-bg-body, var(--mantine-color-body));
-  }
+.preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 12.5rem;
+  padding: var(--spacing-xl, 2rem);
+  border: 1px solid var(--color-border, var(--mantine-color-default-border));
+  border-radius: var(--radius-md, var(--mantine-radius-md));
+  background: var(--color-bg-body, var(--mantine-color-body));
+}
 
-  .controls {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md, 1rem);
-    padding-top: var(--spacing-lg, 1.5rem);
-  }
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 1rem);
+  padding-top: var(--spacing-lg, 1.5rem);
+}
 
-  .row {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-md, 1rem);
-    flex-wrap: wrap;
-  }
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md, 1rem);
+  flex-wrap: wrap;
+}
 
-  .label {
-    flex: 0 0 5.5rem;
-    padding-top: 0.35rem;
-    font-size: var(--mantine-font-size-sm);
-    font-weight: 500;
-    color: var(--mantine-color-dimmed);
-  }
+.label {
+  flex: 0 0 5.5rem;
+  padding-top: 0.35rem;
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+  color: var(--mantine-color-dimmed);
+}
 
-  .control {
-    flex: 1 1 16rem;
-    min-width: 0;
-  }
+.control {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
 
-  .variantSections {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm, 0.75rem);
-  }
+.variantSections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 0.75rem);
+}
 
-  .variantSection {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs, 0.5rem);
-  }
+.variantSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 0.5rem);
+}
 
-  .variantSectionLabel {
-    font-size: var(--mantine-font-size-xs);
-    font-weight: 600;
-    color: var(--mantine-color-dimmed);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
+.variantSectionLabel {
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  color: var(--mantine-color-dimmed);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
 
-  .variantGroup {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-xs, 0.5rem);
-  }
+.variantGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs, 0.5rem);
+}
 
-  .colorGroup {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-xs, 0.5rem);
-  }
+.colorGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs, 0.5rem);
+}
 
-  .colorSwatch {
-    width: 1.5rem;
-    height: 1.5rem;
-    padding: 0;
-    border: 2px solid transparent;
-    border-radius: var(--mantine-radius-sm);
-    background: var(--swatch-color);
-    cursor: pointer;
-    transition:
-      border-color 120ms ease,
-      transform 120ms ease;
+.colorSwatch {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--mantine-radius-sm);
+  background: var(--swatch-color);
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    transform 120ms ease;
 
-    &:hover {
-      transform: scale(1.05);
-    }
+  &:hover {
+    transform: scale(1.05);
   }
+}
 
-  .colorSwatchSelected {
-    border-color: var(--mantine-color-text);
-    box-shadow: 0 0 0 1px var(--color-bg-body, var(--mantine-color-body));
-  }
+.colorSwatchSelected {
+  border-color: var(--mantine-color-text);
+  box-shadow: 0 0 0 1px var(--color-bg-body, var(--mantine-color-body));
+}
 
-  .switches {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-md, 1rem);
-  }
+.switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md, 1rem);
 }

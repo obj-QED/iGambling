@@ -1,41 +1,22 @@
-import {
-  ActionIcon,
-  Button,
-  Code,
-  Collapse,
-  Container,
-  Group,
-  type MantineThemeComponents,
-  Menu,
-  SegmentedControl,
-  Stack,
-  Switch,
-  Text,
-  TextInput,
-  Title,
-  UnstyledButton,
-} from '@mantine/core';
+import { ActionIcon, Button, Container, type MantineThemeComponents, Title } from '@mantine/core';
 import cx from 'clsx';
 
 import { resolveActionIconRootVars } from '../vars/actionIconVars';
 import { resolveButtonRootVars } from '../vars/buttonVars';
-import { resolveTextInputRootVars } from '../vars/textInputVars';
-import { resolveTitleRootVars } from '../vars/titleVars';
 
 import classes from '../styles/components.module.scss';
 
-/**
- * Mantine CMF cascade — all themed components except Container.
- *
- * Layers (high → low): cmf-component-key-{ctrl} → cmf-component-{ctrl} → cmf-{ctrl} → Mantine
- * Scope: `data-cmf-component` + optional `data-menu-key` on control root.
- */
 export const themeComponents: MantineThemeComponents = {
   Title: Title.extend({
     classNames: { root: classes.heading },
-    vars: (theme, props) => ({
-      root: resolveTitleRootVars(theme, props as Record<string, unknown>),
-    }),
+    vars: () =>
+      ({
+        root: {
+          '--title-fw': null,
+          '--title-lh': null,
+          '--title-fz': null,
+        },
+      }) as never,
   }),
 
   /** Container — layout only, no CMF layers. */
@@ -45,45 +26,33 @@ export const themeComponents: MantineThemeComponents = {
     }),
   }),
 
+  /**
+   * Button — CMF cascade in `vars` (bg/bd/hover/height/padding-x/radius/fz).
+   * Size table tokens (`--button-height-sm`, …) remain in Mantine CSS as fallbacks.
+   * Gradient hover: `background-image` via `classes.button` (Mantine uses background-color).
+   */
   Button: Button.extend({
-    defaultProps: { autoContrast: true, variant: 'default' },
-    classNames: { root: classes.button },
-    vars: (theme, props) => ({ root: resolveButtonRootVars(theme, props) }),
-  }),
-
-  ActionIcon: ActionIcon.extend({
-    defaultProps: { autoContrast: true, variant: 'default' },
-    classNames: { root: classes.actionIcon },
-    vars: (theme, props) => ({ root: resolveActionIconRootVars(theme, props) }),
-  }),
-
-  TextInput: TextInput.extend({
-    vars: (theme, props) => ({
-      wrapper: resolveTextInputRootVars(theme, props as Record<string, unknown>),
-    }),
-  }),
-
-  Menu: Menu.extend({
     classNames: {
-      dropdown: classes.menuDropdown,
-      item: classes.menuItem,
-      itemLabel: classes.menuItemLabel,
+      root: classes.button,
+      label: classes.buttonLabel,
     },
+    vars: (_theme, props) =>
+      ({
+        root: resolveButtonRootVars(props as Parameters<typeof resolveButtonRootVars>[0]),
+      }) as never,
   }),
 
-  Text: Text.extend({}),
-
-  Group: Group.extend({}),
-
-  Stack: Stack.extend({}),
-
-  Collapse: Collapse.extend({}),
-
-  Code: Code.extend({}),
-
-  Switch: Switch.extend({}),
-
-  SegmentedControl: SegmentedControl.extend({}),
-
-  UnstyledButton: UnstyledButton.extend({}),
+  /**
+   * ActionIcon — same CMF cascade shape as Button (`--ai-*` / `--cmf-action-icon-*`).
+   * Gradient hover via `classes.actionIcon`.
+   */
+  ActionIcon: ActionIcon.extend({
+    classNames: {
+      root: classes.actionIcon,
+    },
+    vars: (_theme, props) =>
+      ({
+        root: resolveActionIconRootVars(props as Parameters<typeof resolveActionIconRootVars>[0]),
+      }) as never,
+  }),
 };

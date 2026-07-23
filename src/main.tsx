@@ -1,3 +1,4 @@
+/* CSS layers + Mantine + tokens — must stay above app imports (import sort). */
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -11,9 +12,7 @@ import { getBrowserLanguage } from '@hooks/useLanguage';
 
 import { initDeviceBodyClasses } from '@/shared/lib/device';
 
-import '@mantine/core/styles.css';
-import '@/assets/index.scss';
-
+import './assets/styles-bootstrap';
 import '@/assets/settings/index.js';
 
 const root = createRoot(document.getElementById('root')!);

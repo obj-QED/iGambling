@@ -1,15 +1,17 @@
 import type { RootProps } from '../types';
 import type { CSSProperties } from 'react';
 
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 
 import { ScrollArea } from '@mantine/core';
 import clsx from 'clsx';
 
 import { mergeCustomBlock } from '@/widgets/header';
 
+import { AsideMenuSizeContext } from '../context/asideMenuSizeContext';
 import { SidebarConfigProvider } from '../context/provider';
 import { SidebarDropdownProvider } from '../context/sidebarDropdownProvider';
+import { useAsideMenuButtonSizeFromElement } from '../hooks/useAsideMenuButtonSizeFromElement';
 import { filterRenderableMenu } from '../lib/itemUtils';
 import { hasSidebarLayoutContent, splitSidebarMenu } from '../lib/splitSidebarMenu';
 import { TYPE_STRATEGY_REGISTRY } from '../registry/strategies';
@@ -22,6 +24,8 @@ import styles from '../styles/base/Root.module.scss';
 import '../registry/registerBlocks';
 
 function RootComponent({ menu, config, className }: RootProps) {
+  const [sidebarEl, setSidebarEl] = useState<HTMLElement | null>(null);
+  const menuButtonSize = useAsideMenuButtonSizeFromElement(sidebarEl);
   const TypeStrategy = TYPE_STRATEGY_REGISTRY[config.type];
   const layout = useMemo(() => {
     if (menu === null) return null;
@@ -45,39 +49,46 @@ function RootComponent({ menu, config, className }: RootProps) {
 
   return (
     <SidebarConfigProvider config={config}>
-      <SidebarDropdownProvider defaultOpenKeys={config.openedDropdowns}>
-        <aside
-          className={clsx(styles.root, className)}
-          style={rootStyle}
-          data-widget="sidebar"
-          data-cmf-component="sidebar"
-          data-type={config.type}
-          aria-label="Sidebar menu"
-        >
-          {layout.headerSection !== null ? <SidebarHeader section={layout.headerSection} /> : null}
+      <AsideMenuSizeContext.Provider value={menuButtonSize}>
+        <SidebarDropdownProvider defaultOpenKeys={config.openedDropdowns}>
+          <aside
+            ref={setSidebarEl}
+            className={clsx(styles.root, className)}
+            style={rootStyle}
+            data-widget="sidebar"
+            data-cmf-component="sidebar"
+            data-type={config.type}
+            aria-label="Sidebar menu"
+          >
+            {layout.headerSection !== null ? (
+              <SidebarHeader section={layout.headerSection} />
+            ) : null}
 
-          {layout.mainMenu.sections.length > 0 ? (
-            <ScrollArea
-              className={styles.scroll}
-              classNames={{
-                content: styles.scrollContent,
-                scrollbar: scrollAreaStyles.scrollbar,
-              }}
-              h="100%"
-              type={config.scrollArea.type}
-              scrollbars="y"
-              offsetScrollbars
-              overscrollBehavior={config.scrollArea.overscrollBehavior}
-              scrollbarSize={config.scrollArea.scrollbarSize}
-              scrollHideDelay={config.scrollArea.scrollHideDelay}
-            >
-              <TypeStrategy menu={layout.mainMenu} config={config} />
-            </ScrollArea>
-          ) : null}
+            {layout.mainMenu.sections.length > 0 ? (
+              <ScrollArea
+                className={styles.scroll}
+                classNames={{
+                  content: styles.scrollContent,
+                  scrollbar: scrollAreaStyles.scrollbar,
+                }}
+                h="100%"
+                type={config.scrollArea.type}
+                scrollbars="y"
+                offsetScrollbars
+                overscrollBehavior={config.scrollArea.overscrollBehavior}
+                scrollbarSize={config.scrollArea.scrollbarSize}
+                scrollHideDelay={config.scrollArea.scrollHideDelay}
+              >
+                <TypeStrategy menu={layout.mainMenu} config={config} />
+              </ScrollArea>
+            ) : null}
 
-          {layout.footerSection !== null ? <SidebarFooter section={layout.footerSection} /> : null}
-        </aside>
-      </SidebarDropdownProvider>
+            {layout.footerSection !== null ? (
+              <SidebarFooter section={layout.footerSection} />
+            ) : null}
+          </aside>
+        </SidebarDropdownProvider>
+      </AsideMenuSizeContext.Provider>
     </SidebarConfigProvider>
   );
 }

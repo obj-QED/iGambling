@@ -1,9 +1,7 @@
 import type {
   CmfIconDataAttrs,
   CmfIconStyle,
-  ResolveCmfIconRadiusDefaults,
   ResolveCmfIconRadiusItem,
-  ResolveCmfIconShapeDefaults,
   ResolveCmfIconShapeItem,
 } from './types';
 import type { CmfIconRadius, CmfIconShape } from '@/shared/types/cmfIcon.types';
@@ -22,22 +20,22 @@ function isKnownIconRadius(value: string | undefined): value is CmfIconRadius {
   return value === 'round' || value === 'sm';
 }
 
+/** item.imgShape → CSS cascade (`--cmf-icon-shape`) → square */
 export function resolveCmfIconShape(
   item: ResolveCmfIconShapeItem,
-  defaults: ResolveCmfIconShapeDefaults,
   cmfStyle?: CmfIconStyle,
 ): CmfIconShape {
   if (isKnownIconShape(item.imgShape)) return item.imgShape;
-  return cmfStyle?.shape ?? defaults.menuIconShape ?? 'square';
+  return cmfStyle?.shape ?? 'square';
 }
 
+/** item.imgRadius → CSS cascade (`--cmf-icon-radius-mode`) → sm */
 export function resolveCmfIconRadius(
   item: ResolveCmfIconRadiusItem,
-  defaults: ResolveCmfIconRadiusDefaults,
   cmfStyle?: CmfIconStyle,
 ): CmfIconRadius {
   if (isKnownIconRadius(item.imgRadius)) return item.imgRadius;
-  return cmfStyle?.radiusMode ?? defaults.menuIconRadius ?? 'sm';
+  return cmfStyle?.radiusMode ?? 'sm';
 }
 
 export function cmfIconDataAttrs(
@@ -51,12 +49,3 @@ export function cmfIconDataAttrs(
     'data-cmf-icon-radius': radius,
   };
 }
-
-/** @deprecated Use `resolveCmfIconShape` */
-export const resolveMenuItemIconShape = resolveCmfIconShape;
-
-/** @deprecated Use `resolveCmfIconRadius` */
-export const resolveMenuItemIconRadius = resolveCmfIconRadius;
-
-/** @deprecated Use `cmfIconDataAttrs` */
-export const menuItemIconDataAttrs = cmfIconDataAttrs;

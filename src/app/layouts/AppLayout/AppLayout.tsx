@@ -30,11 +30,11 @@ function AppLayoutComponent() {
       ) : null}
 
       <div className={styles.content}>
-        {headerMenu ? (
+        {headerMenu !== null ? (
           <AppHeader menu={headerMenu} config={headerConfig} className={styles.header} />
         ) : null}
 
-        {banner ? <AppBanner banner={banner} className={styles.banner} /> : null}
+        {banner !== null ? <AppBanner banner={banner} className={styles.banner} /> : null}
 
         <Container
           className={styles.page}
@@ -50,7 +50,7 @@ function AppLayoutComponent() {
           )}
         </Container>
 
-        {footerMenu ? <AppFooter menu={footerMenu} className={styles.footer} /> : null}
+        {footerMenu !== null ? <AppFooter menu={footerMenu} className={styles.footer} /> : null}
       </div>
     </div>
   );

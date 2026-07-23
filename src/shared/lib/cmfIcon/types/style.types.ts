@@ -4,6 +4,3 @@ export type CmfIconStyle = {
   shape?: CmfIconShape;
   radiusMode?: CmfIconRadius;
 };
-
-/** @deprecated Use `CmfIconStyle` */
-export type CmfMenuIconStyle = CmfIconStyle;

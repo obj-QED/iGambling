@@ -7,12 +7,6 @@ export { HEADER_SPECIAL_BLOCK_KEYS, type HeaderSpecialBlockKey };
 
 export type HeaderMenuItemType = 'button' | 'link';
 
-/** Square (1:1) or rectangular row media — API may send other values as-is. */
-export type {
-  CmfIconRadius as HeaderMenuIconRadius,
-  CmfIconShape as HeaderMenuIconShape,
-} from '@/shared/types/cmfIcon.types';
-
 export type HeaderMenuItem = {
   key?: string;
   url?: string;

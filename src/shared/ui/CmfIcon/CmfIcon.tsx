@@ -14,7 +14,7 @@ export type { CmfIconProps } from './types';
 
 export const CmfIcon = memo(
   forwardRef<HTMLImageElement | HTMLSpanElement, CmfIconProps>(function CmfIcon(
-    { src, alt, shape = 'square', radius = 'sm', className, inActionIcon = false, onError },
+    { src, alt, shape = 'square', radius = 'sm', className, onError },
     ref,
   ) {
     const [hidden, setHidden] = useState(false);
@@ -26,7 +26,7 @@ export const CmfIcon = memo(
 
     if (hidden === true) return null;
 
-    const rootClassName = clsx(styles.root, inActionIcon && styles.inActionIcon, className);
+    const rootClassName = clsx(styles.root, className);
     const dataAttrs = cmfIconDataAttrs(src, shape, radius);
 
     if (isSvgMediaSrc(src) === true) {

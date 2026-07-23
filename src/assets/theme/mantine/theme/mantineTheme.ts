@@ -27,7 +27,6 @@ export const mantineTheme = createTheme({
   autoContrast: true,
   luminanceThreshold: 0.3,
   cursorType: 'pointer',
-
   defaultGradient: {
     from: APP_GRADIENT_FROM,
     to: APP_GRADIENT_TO,
@@ -35,10 +34,11 @@ export const mantineTheme = createTheme({
   },
 
   primaryColor: 'brand',
-  primaryShade: { light: 6, dark: 5 },
+  primaryShade: { light: 5, dark: 5 },
   colors: { brand },
 
-  fontFamily: 'var(--font-family-base)',
+  fontFamily: 'var(--font-family-base, "IBM Plex Sans", sans-serif)',
+  fontSmoothing: true,
   defaultRadius: 'md',
 
   radius: {
@@ -47,7 +47,17 @@ export const mantineTheme = createTheme({
     lg: 'var(--radius-lg)',
   },
 
+  fontSizes: {
+    xxs: 'var(--font-size-xxs)',
+    xs: 'var(--font-size-xs)',
+    sm: 'var(--font-size-sm)',
+    md: 'var(--font-size-md)',
+    lg: 'var(--font-size-lg)',
+    xl: 'var(--font-size-xl)',
+  },
+
   spacing: {
+    xxs: 'var(--spacing-xxs)',
     xs: 'var(--spacing-xs)',
     sm: 'var(--spacing-sm)',
     md: 'var(--spacing-md)',

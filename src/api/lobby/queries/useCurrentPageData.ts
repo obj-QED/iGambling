@@ -37,7 +37,7 @@ export function useCurrentPageDataState(
   const isNavigation = page !== initialPath;
 
   const pageKey: PageKey = lobbyQueryKeys.page(language, page, sessionRevision);
-  const pageQuery = useApiQuery({
+  const pageQuery = useApiQuery<GetPageContent, PageKey>({
     queryKey: pageKey,
     queryFn: pageQueryFn,
     enabled: Boolean(language) && isNavigation,
@@ -49,7 +49,7 @@ export function useCurrentPageDataState(
   });
 
   const initKey: InitKey = lobbyQueryKeys.init(language, initialPath);
-  const initQuery = useApiQuery({
+  const initQuery = useApiQuery<InitV2Content, InitKey>({
     queryKey: initKey,
     queryFn: initQueryFn,
     enabled: Boolean(language) && !isNavigation,

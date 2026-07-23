@@ -30,5 +30,5 @@ export function resolveBlockComponent(item: HeaderMenuItem): ComponentType<Block
     return requireBlock('menuDropdown');
   }
 
-  return requireBlock(resolveBlockRegistryKey(item.key));
+  return requireBlock(resolveBlockRegistryKey(item.key ?? ''));
 }

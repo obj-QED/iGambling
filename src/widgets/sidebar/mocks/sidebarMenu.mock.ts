@@ -17,11 +17,7 @@ export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
       ],
     },
     {
-      url: '#',
-      name: 'left',
       key: 'left',
-      img: '',
-      type: 'link',
       items: [
         {
           url: '?search=ice',

@@ -7,17 +7,56 @@ export type CmfScopedProps = {
 };
 
 declare module '@mantine/core' {
-  export interface ActionIconProps extends CmfScopedProps {}
-  export interface ButtonProps extends CmfScopedProps {}
-  export interface CodeProps extends CmfScopedProps {}
-  export interface CollapseProps extends CmfScopedProps {}
-  export interface GroupProps extends CmfScopedProps {}
-  export interface MenuProps extends CmfScopedProps {}
-  export interface SegmentedControlProps extends CmfScopedProps {}
-  export interface StackProps extends CmfScopedProps {}
-  export interface SwitchProps extends CmfScopedProps {}
-  export interface TextProps extends CmfScopedProps {}
-  export interface TextInputProps extends CmfScopedProps {}
-  export interface TitleProps extends CmfScopedProps {}
-  export interface UnstyledButtonProps extends CmfScopedProps {}
+  export interface ActionIconProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface ButtonProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface CodeProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface CollapseProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface GroupProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface MenuProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface SegmentedControlProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface StackProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface SwitchProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface TextProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface TextInputProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface TitleProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
+  export interface UnstyledButtonProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
 }

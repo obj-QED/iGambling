@@ -171,14 +171,6 @@ function HomePageComponent() {
         </Stack>
 
         <Stack gap="xs">
-          <Title order={5}>Brand CMF filled / outline (:root — header, aside, pages)</Title>
-          <Group gap="sm">
-            <Button variant="filled">filled</Button>
-            <Button variant="outline">outline</Button>
-          </Group>
-        </Stack>
-
-        <Stack gap="xs">
           <Title order={5}>Hero variants (default / light / outline)</Title>
           <Group gap="sm">
             <Button variant="hero">hero default</Button>
@@ -236,18 +228,6 @@ function HomePageComponent() {
                 <DemoIconGlyph />
               </ActionIcon>
             ))}
-          </Group>
-        </Stack>
-
-        <Stack gap="xs">
-          <Title order={5}>Brand CMF filled / outline (:root)</Title>
-          <Group gap="sm">
-            <ActionIcon variant="filled" aria-label="filled">
-              <DemoIconGlyph />
-            </ActionIcon>
-            <ActionIcon variant="outline" aria-label="outline">
-              <DemoIconGlyph />
-            </ActionIcon>
           </Group>
         </Stack>
 

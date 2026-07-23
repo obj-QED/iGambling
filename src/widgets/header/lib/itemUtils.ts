@@ -55,30 +55,13 @@ export { resolveItemHref } from '@/shared/lib';
 
 export const HEADER_CMF_COMPONENT = 'header';
 
-export function resolveMenuItemTypeAttr(item: HeaderMenuItem): string {
-  return item.type ?? 'button';
-}
-
 export function menuItemDataAttrs(item: HeaderMenuItem): {
   'data-cmf-component': typeof HEADER_CMF_COMPONENT;
   'data-cmf-key': string;
-  'data-menu-key': string;
-  'data-menu-type'?: string;
 } {
-  const key = itemKey(item);
-  const scope = {
-    ...cmfScopeAttrs(HEADER_CMF_COMPONENT, key),
-    'data-cmf-key': key,
-    'data-menu-key': key,
-  };
-
-  if (isSpecialBlockKey(item.key)) {
-    return scope;
-  }
-
-  return {
-    ...scope,
-    'data-menu-type': resolveMenuItemTypeAttr(item),
+  return cmfScopeAttrs(HEADER_CMF_COMPONENT, itemKey(item)) as {
+    'data-cmf-component': typeof HEADER_CMF_COMPONENT;
+    'data-cmf-key': string;
   };
 }
 

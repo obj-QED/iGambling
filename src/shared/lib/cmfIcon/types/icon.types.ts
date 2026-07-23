@@ -4,16 +4,8 @@ export type ResolveCmfIconShapeItem = {
   imgShape?: string;
 };
 
-export type ResolveCmfIconShapeDefaults = {
-  menuIconShape?: CmfIconShape;
-};
-
 export type ResolveCmfIconRadiusItem = {
   imgRadius?: string;
-};
-
-export type ResolveCmfIconRadiusDefaults = {
-  menuIconRadius?: CmfIconRadius;
 };
 
 export type CmfIconDataAttrs = {
