@@ -12,7 +12,13 @@
     "custom-property-pattern": null,
     "custom-property-empty-line-before": null,
     "value-keyword-case": ["lower", { "ignoreKeywords": ["Georgia", "Outfit"] }],
-    "property-no-vendor-prefix": null
+    "property-no-vendor-prefix": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global", "local"]
+      }
+    ]
   },
   "overrides": [
     {
