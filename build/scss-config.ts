@@ -7,7 +7,8 @@ export const scssBreakpoints = Object.entries(BREAKPOINTS_PX)
 const scssGlobalPreamble = `@use "assets/styles/mixins" as *; ${scssBreakpoints}`;
 
 /** Global SCSS preamble — breakpoints + shared mixins. Layer order lives in `layer-order.css`. */
-export function scssAdditionalData(content: string, _filename: string): string {
+export function scssAdditionalData(content: string, filename: string): string {
+  void filename;
   // All `@use` must come first (Sass).
   return `${scssGlobalPreamble} ${content}`;
 }

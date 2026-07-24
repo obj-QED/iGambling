@@ -54,7 +54,7 @@ function renderField<T extends Record<string, unknown>>(
       <SegmentedControl
         fullWidth
         size="xs"
-        value={String(value ?? field.options[0]?.value ?? '')}
+        value={String(value == null ? (field.options[0]?.value ?? '') : value)}
         onChange={(next) => {
           onChange({ [field.name]: next } as Partial<T>);
         }}

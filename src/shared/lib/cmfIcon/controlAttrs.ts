@@ -5,6 +5,8 @@ import type { CmfIconControlAttrs } from './types/controlAttrs.types';
  * That collided with `[data-cmf-icon-src]` media sizing (control collapsed to icon box).
  * Attr belongs only on CmfIcon / media nodes — keep this as a no-op for call-site stability.
  */
-export function cmfIconControlAttrs(_src?: string, _showItemImg?: boolean): CmfIconControlAttrs {
+export function cmfIconControlAttrs(src?: string, showItemImg?: boolean): CmfIconControlAttrs {
+  void src;
+  void showItemImg;
   return {};
 }

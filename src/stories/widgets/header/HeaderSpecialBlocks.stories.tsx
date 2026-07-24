@@ -3,10 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Group, Stack, Text } from '@mantine/core';
 
 import { elementDocsPreviewParameters } from '@/storybook/helpers/elementStoryParameters';
-import {
-  getHeaderMenuControlItems,
-  HeaderMenuControlsShell,
-} from '@/storybook/helpers/headerMenuControls';
+import { getHeaderMenuControlItems } from '@/storybook/helpers/getHeaderMenuControlItems';
+import { HeaderMenuControlsShell } from '@/storybook/helpers/headerMenuControls';
 import { ColorSchemeBlock } from '@/widgets/header/ui/blocks/ColorSchemeBlock/ColorSchemeBlock';
 import { SearchBlock } from '@/widgets/header/ui/blocks/SearchBlock/SearchBlock';
 import { WalletBlock } from '@/widgets/header/ui/blocks/WalletBlock/WalletBlock';

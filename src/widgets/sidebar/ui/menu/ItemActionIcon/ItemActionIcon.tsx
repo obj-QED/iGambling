@@ -3,8 +3,8 @@ import type { ItemActionIconProps } from '../../../types';
 import { memo } from 'react';
 
 import { AppActionIcon } from '@/elements/AppActionIcon';
-import { useMenuActive } from '@/shared/hooks/useMenuActive';
 import { useMediaState } from '@/shared/hooks/useMediaState';
+import { useMenuActive } from '@/shared/hooks/useMenuActive';
 
 import { useAsideMenuButtonSize } from '../../../hooks/useAsideMenuButtonSize';
 import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';

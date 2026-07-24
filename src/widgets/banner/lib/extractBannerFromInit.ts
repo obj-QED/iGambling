@@ -10,10 +10,14 @@ function readString(value: unknown): string {
 function normalizeSlide(raw: unknown): AppBannerSlide | null {
   if (!isRecord(raw)) return null;
 
+  const background = readString(raw.background);
+  const text = readString(raw.text);
+  const url = readString(raw.url);
+
   return {
-    background: readString(raw.background) || undefined,
-    text: readString(raw.text) || undefined,
-    url: readString(raw.url) || undefined,
+    background: background.length > 0 ? background : undefined,
+    text: text.length > 0 ? text : undefined,
+    url: url.length > 0 ? url : undefined,
   };
 }
 

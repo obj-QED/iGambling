@@ -23,11 +23,11 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
   },
   ref,
 ) {
-  if (hasAppButtonContent(label, leftSection, rightSection) === false) return null;
-
   const { href, disabledForHref } = resolveAppButtonHrefState(hrefProp, native);
   const hrefNavigationEnabled = href !== undefined;
   const navigateHref = useAppHrefClickHandler(href, hrefNavigationEnabled);
+
+  if (hasAppButtonContent(label, leftSection, rightSection) === false) return null;
 
   const handleClick = hrefNavigationEnabled
     ? (event: React.MouseEvent<HTMLButtonElement>) => {

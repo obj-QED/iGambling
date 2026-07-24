@@ -6,8 +6,8 @@ import { Badge } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 
 import { AppButton } from '@/elements/AppButton';
-import { useMenuActive } from '@/shared/hooks/useMenuActive';
 import { useMediaState } from '@/shared/hooks/useMediaState';
+import { useMenuActive } from '@/shared/hooks/useMenuActive';
 
 import { useAsideMenuButtonSize } from '../../../hooks/useAsideMenuButtonSize';
 import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';

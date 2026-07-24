@@ -26,11 +26,11 @@ export const AppActionIcon = forwardRef<HTMLButtonElement, AppActionIconProps>(
     },
     ref,
   ) {
-    if (hidden === true || hasActionIconContent(name, img) === false) return null;
-
     const { href, disabledForHref } = resolveAppButtonHrefState(hrefProp, native);
     const hrefNavigationEnabled = href !== undefined;
     const navigateHref = useAppHrefClickHandler(href, hrefNavigationEnabled);
+
+    if (hidden === true || hasActionIconContent(name, img) === false) return null;
 
     const handleClick = hrefNavigationEnabled
       ? (event: React.MouseEvent<HTMLButtonElement>) => {

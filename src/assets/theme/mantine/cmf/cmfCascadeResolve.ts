@@ -108,21 +108,21 @@ function buildCmfControlPropToken(
 
   if (hasComponent === false) {
     // Plain control: variant → size → (shared)
-    if (variant) {
+    if (typeof variant === 'string' && variant.length > 0) {
       names.push(cmfControlName(control, variant, prop));
     }
-    if (size) {
+    if (typeof size === 'string' && size.length > 0) {
       names.push(cmfControlName(control, size, prop));
     }
     if (tail === 'shared') {
       names.push(cmfControlName(control, prop));
     }
-  } else if (tail === 'variant' && variant) {
+  } else if (tail === 'variant' && typeof variant === 'string' && variant.length > 0) {
     names.push(cmfControlName(control, variant, prop));
-  } else if (tail === 'size' && size) {
+  } else if (tail === 'size' && typeof size === 'string' && size.length > 0) {
     names.push(cmfControlName(control, size, prop));
   } else if (tail === 'shared') {
-    if (includeSizeInShared === true && size) {
+    if (includeSizeInShared === true && typeof size === 'string' && size.length > 0) {
       names.push(cmfControlName(control, size, prop));
     }
     names.push(cmfControlName(control, prop));
