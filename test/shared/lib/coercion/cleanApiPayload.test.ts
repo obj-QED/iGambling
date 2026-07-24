@@ -4,7 +4,8 @@ import { cleanApiPayload } from '@/shared/lib/coercion/cleanApiPayload';
 
 describe('cleanApiPayload', () => {
   it('removes undefined, empty string, empty array, empty object', () => {
-    expect(cleanApiPayload(undefined)).toBeUndefined();
+    const missing: unknown = undefined;
+    expect(cleanApiPayload(missing)).toBeUndefined();
     expect(cleanApiPayload('')).toBeUndefined();
     expect(cleanApiPayload([])).toBeUndefined();
     expect(cleanApiPayload({})).toBeUndefined();

@@ -24,7 +24,7 @@ function RootComponent({ menu, config, className }: RootProps) {
     return filterRenderableMenu(merged);
   }, [menu, config.customBlocks]);
 
-  if (TypeStrategy === undefined || menuModel.sections.length === 0) {
+  if (menuModel.sections.length === 0) {
     return null;
   }
 
