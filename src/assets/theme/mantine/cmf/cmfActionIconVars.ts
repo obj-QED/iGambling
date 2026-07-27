@@ -4,9 +4,8 @@ import type { ActionIconVariant, MantineSize } from '@mantine/core';
  * CMF-only ActionIcon variants.
  * Built-ins: Mantine `ActionIconVariant` (props already allow `variant | (string & {})`).
  */
-export const CMF_ACTION_ICON_VARIANTS = ['hero', 'hero-light', 'hero-outline'] as const;
 
-export type CmfActionIconCustomVariant = (typeof CMF_ACTION_ICON_VARIANTS)[number];
+export type CmfActionIconCustomVariant = string & {};
 
 /** Paint / cascade keys = Mantine built-ins + CMF custom. */
 export type CmfActionIconVariant = ActionIconVariant | CmfActionIconCustomVariant;

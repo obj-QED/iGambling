@@ -1,9 +1,10 @@
 /**
  * Sidebar (aside) widget tokens — single SoT for `[data-widget='sidebar']`.
- * Flat CSS variables only (edit values here).
+ * Flat CSS variables only (edit values here / in prod theme.css — no Sass mixins).
  */
 
 @mixin sidebar-root-tokens {
+
   /* Mantine size key (useAsideMenuButtonSizeFromElement) */
   --aside-size-button: sm;
 
@@ -22,16 +23,21 @@
   --aside-menu-gap: var(--spacing-xs, 0.375rem);
   --aside-menu-radius: var(--radius-sm, 0.5rem);
   --aside-menu-fz: var(--mantine-font-size-sm, 0.875rem);
-  --aside-menu-dropdown-indent: var(--spacing-md, 0.75rem);
+  --aside-menu-dropdown-indent: var(--spacing-sm, 0.5rem);
 
   /* Chevron */
   --aside-menu-chevron-size: var(--mantine-font-size-md);
   --aside-menu-chevron-transition: 200ms ease;
 
-  /* Scrollbar */
-  --aside-scrollbar-track: transparent;
-  --aside-scrollbar-thumb: rgb(255 255 255 / 28%);
-  --aside-scrollbar-thumb-hover: rgb(255 255 255 / 40%);
+  /*
+   * Scrollbar — set concrete colors here (do NOT wrap `--cmf-scrollbar-*`:
+   * globals are always defined on :root, so aliases never reach these fallbacks).
+   * Mixin reads: --aside-scrollbar-* → --cmf-scrollbar-* → brand.
+   */
+  --aside-scrollbar-track: var(--brand-color-9);
+  --aside-scrollbar-thumb: var(--brand-color-6);
+  --aside-scrollbar-thumb-hover: var(--brand-color-6);
+  --aside-scrollbar-size: 2px;
   --aside-scrollbar-radius: 999px;
 
   /* Button CMF (component scope) — key overrides: --cmf-button-sidebar-{key}-{prop} */
@@ -45,7 +51,7 @@
    * Icon cascade (edit here — inherits into Button/ActionIcon):
    *   --cmf-button-sidebar-{key}-icon-{scale|aspect|width|height}
    *   --cmf-button-sidebar-icon-*
-   *   --cmf-button-{sm|md|…}-icon-*
+   *   --cmf-button-{data-variant}-icon-*  (e.g. outline / default)
    *   --cmf-button-icon-*
    *   --cmf-icon-*
    * Same for --cmf-action-icon-sidebar-*. Avoid bare % on Button icons.
@@ -55,4 +61,28 @@
   --cmf-button-sidebar-icon-aspect: 1.5;
   --cmf-action-icon-sidebar-icon-scale: 0.7;
   --cmf-action-icon-sidebar-icon-aspect: 1.5;
+
+  /*
+   * Active bar — flat vars only (prod theme may replace this file without Sass).
+   * Cascade: key → component → data-variant → fallback
+   */
+  --cmf-button-sidebar-active-position: left;
+  --cmf-button-sidebar-active-size: 2px;
+  --cmf-button-sidebar-active-color: var(--brand-color-5);
+  --cmf-button-sidebar-active-inset: 0 auto 0 0;
+  --cmf-button-sidebar-active-width: var(--cmf-button-sidebar-active-size);
+  --cmf-button-sidebar-active-height: 100%;
+
+  // --cmf-button-sidebar-active-radius-tl: 0px;
+  // --cmf-button-sidebar-active-radius-bl: 0px;
+
+  --cmf-action-icon-sidebar-active-position: left;
+  --cmf-action-icon-sidebar-active-size: 2px;
+  --cmf-action-icon-sidebar-active-color: var(--brand-color-5);
+  --cmf-action-icon-sidebar-active-inset: 0 auto 0 0;
+  --cmf-action-icon-sidebar-active-width: var(--cmf-action-icon-sidebar-active-size);
+  --cmf-action-icon-sidebar-active-height: 100%;
+
+  // --cmf-action-icon-sidebar-active-radius-tl: 0px;
+  // --cmf-action-icon-sidebar-active-radius-bl: 0px;
 }

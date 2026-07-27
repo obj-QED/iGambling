@@ -1,6 +1,7 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '@/widgets/header';
 
 import { cmfScopeAttrs } from '@/shared/lib/cmf/cmfScopeAttrs';
+import { menuApiTypeAttrs } from '@/shared/lib/menu';
 
 import { isSidebarSpecialBlockKey } from '../config/sidebarSpecialBlockKeys';
 
@@ -66,6 +67,7 @@ export function menuItemDataAttrs(item: HeaderMenuItem): {
   'data-cmf-component': typeof SIDEBAR_CMF_COMPONENT;
   'data-cmf-key': string;
   'data-key': string;
+  'api-type'?: 'button' | 'link';
 } {
   return {
     ...menuItemKeyAttr(item),
@@ -73,6 +75,7 @@ export function menuItemDataAttrs(item: HeaderMenuItem): {
       'data-cmf-component': typeof SIDEBAR_CMF_COMPONENT;
       'data-cmf-key': string;
     }),
+    ...menuApiTypeAttrs(item.type),
   };
 }
 

@@ -1,14 +1,34 @@
+@use 'assets/styles/mixins/scrollbar' as *;
+
 @layer base {
+  /* Viewport fallback (macOS may ignore part of root scrollbar styling). */
+  html {
+    @include cmf-scrollbar;
+
+    height: 100%;
+    overflow: hidden;
+  }
+
   body {
+    height: 100%;
     background: var(--root-body-bg, #fff);
     font-family: var(--root-font-family, 'IBM Plex Sans', sans-serif);
     color: var(--root-color-text, #111827);
     font-size: var(--root-font-size, 1rem);
+    overflow: hidden;
     min-height: 100vh;
   }
 
+  /*
+   * Global app scroller — deterministic scrollbar styling from `--cmf-scrollbar-*`
+   * across browsers where `html/body` scrollbar customization is limited.
+   */
   #root {
+    @include cmf-scrollbar;
+
+    height: 100%;
     min-height: 100vh;
+    overflow: hidden auto;
   }
 
   button {

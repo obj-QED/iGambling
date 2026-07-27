@@ -2,6 +2,7 @@ import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
 
 import { isHeaderSpecialBlockKey } from '@/shared/config/headerSpecialBlockKeys';
 import { cmfScopeAttrs } from '@/shared/lib/cmf/cmfScopeAttrs';
+import { menuApiTypeAttrs } from '@/shared/lib/menu';
 
 import { HEADER_CONFIG_ONLY_BLOCK_KEYS } from '../types/items.types';
 
@@ -58,10 +59,14 @@ export const HEADER_CMF_COMPONENT = 'header';
 export function menuItemDataAttrs(item: HeaderMenuItem): {
   'data-cmf-component': typeof HEADER_CMF_COMPONENT;
   'data-cmf-key': string;
+  'api-type'?: 'button' | 'link';
 } {
-  return cmfScopeAttrs(HEADER_CMF_COMPONENT, itemKey(item)) as {
-    'data-cmf-component': typeof HEADER_CMF_COMPONENT;
-    'data-cmf-key': string;
+  return {
+    ...(cmfScopeAttrs(HEADER_CMF_COMPONENT, itemKey(item)) as {
+      'data-cmf-component': typeof HEADER_CMF_COMPONENT;
+      'data-cmf-key': string;
+    }),
+    ...menuApiTypeAttrs(item.type),
   };
 }
 

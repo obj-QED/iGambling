@@ -1,9 +1,21 @@
 /**
- * Custom scrollbar — override via CSS vars on scope or `:root`.
+ * Scrollbar colors — override via CSS vars on any scope.
  *
- * Defaults: `--cmf-scrollbar-*`
- * Per block: `--{prefix}-scrollbar-*` (e.g. `--aside-scrollbar-thumb` on `[data-widget='sidebar']`).
+ * Global defaults (`:root`):
+ *   --cmf-scrollbar-track / -thumb / -thumb-hover / -size / -radius
+ *
+ * Per block: pass `$prefix` (e.g. `aside-scrollbar`) and set `--aside-scrollbar-*`.
+ * Fallback chain: `--{prefix}-*` → `--cmf-scrollbar-*` → brand.
  */
+
+$cmf-scrollbar-track-fallback: var(--cmf-scrollbar-track, var(--brand-color-8));
+$cmf-scrollbar-thumb-fallback: var(--cmf-scrollbar-thumb, var(--brand-color-9));
+$cmf-scrollbar-thumb-hover-fallback: var(--cmf-scrollbar-thumb-hover,
+  var(--cmf-scrollbar-thumb, var(--brand-color-9)));
+$cmf-scrollbar-size-fallback: var(--cmf-scrollbar-size, 6px);
+$cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
+
+/// Native overflow scrollbar (`overflow: auto|scroll`).
 @mixin cmf-scrollbar($prefix: 'cmf-scrollbar') {
   $thumb: --#{$prefix}-thumb;
   $thumb-hover: --#{$prefix}-thumb-hover;
@@ -12,31 +24,76 @@
   $radius: --#{$prefix}-radius;
 
   scrollbar-width: thin;
-  scrollbar-color: var(#{$thumb}, rgb(255 255 255 / 22%)) var(#{$track}, transparent);
+  scrollbar-color: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback}) var(#{$track}, #{$cmf-scrollbar-track-fallback});
 
   &::-webkit-scrollbar {
-    width: var(#{$size}, 6px);
-    height: var(#{$size}, 6px);
+    width: var(#{$size}, #{$cmf-scrollbar-size-fallback});
+    height: var(#{$size}, #{$cmf-scrollbar-size-fallback});
   }
 
   &::-webkit-scrollbar-track {
-    background: var(#{$track}, transparent);
+    background: var(#{$track}, #{$cmf-scrollbar-track-fallback});
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(#{$thumb}, rgb(255 255 255 / 22%));
-    border-radius: var(#{$radius}, 999px);
+    background: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
+    border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
     border: 2px solid transparent;
     background-clip: padding-box;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: var(#{$thumb-hover}, rgb(255 255 255 / 32%));
+    background: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
     background-clip: padding-box;
   }
 }
 
-/** Mantine `ScrollArea` custom scrollbar — use `classNames.scrollbar/thumb` (unlayered); not `@layer widget.*`. */
+/**
+ * Mantine `ScrollArea` — unlayered CSS module with `classNames.scrollbar` + `thumb`.
+ * Not inside `@layer widget.*` (must beat `@layer mantine`).
+ *
+ * Size: set `--scrollarea-scrollbar-size` on the ScrollArea root (see sidebar `.scroll`),
+ * from `--{prefix}-size` → `--cmf-scrollbar-size`. Do not pass Mantine `scrollbarSize`
+ * if theme tokens should win (inline prop overrides CSS vars).
+ *
+ * @include cmf-mantine-scrollbar('aside-scrollbar');
+ */
+@mixin cmf-mantine-scrollbar($prefix: 'cmf-scrollbar') {
+  $thumb: --#{$prefix}-thumb;
+  $thumb-hover: --#{$prefix}-thumb-hover;
+  $track: --#{$prefix}-track;
+  $size: --#{$prefix}-size;
+  $radius: --#{$prefix}-radius;
+
+  .scrollbar:global([data-mantine-scrollbar]) {
+    padding: 0;
+    background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
+    border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
+
+    &:where([data-orientation='vertical']) {
+      width: var(--scrollarea-scrollbar-size, var(#{$size}, #{$cmf-scrollbar-size-fallback}));
+    }
+
+    &:where([data-orientation='horizontal']) {
+      height: var(--scrollarea-scrollbar-size, var(#{$size}, #{$cmf-scrollbar-size-fallback}));
+    }
+
+    &:where(:hover, :active) {
+      background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
+    }
+  }
+
+  .thumb:global([data-state]) {
+    background-color: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
+    border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
+  }
+
+  .scrollbar:global([data-mantine-scrollbar]):where(:hover, :active)>.thumb:global([data-state]) {
+    background-color: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
+  }
+}
+
+/** @deprecated Use `cmf-mantine-scrollbar` (classNames.scrollbar/thumb). */
 @mixin cmf-mantine-scrollarea($prefix: 'aside-scrollbar', $behavior-prefix: 'aside-scrollarea') {
   $thumb: --#{$prefix}-thumb;
   $thumb-hover: --#{$prefix}-thumb-hover;
@@ -45,28 +102,28 @@
   $radius: --#{$prefix}-radius;
   $overscroll: --#{$behavior-prefix}-overscroll-behavior;
 
-  --scrollarea-scrollbar-size: var(#{$size}, 4px);
+  --scrollarea-scrollbar-size: var(#{$size}, #{$cmf-scrollbar-size-fallback});
   --scrollarea-over-scroll-behavior: var(#{$overscroll}, contain);
 
   :global([data-mantine-scrollbar][data-orientation='vertical']) {
     width: var(#{$size}, 2px);
     padding: 0;
-    background: var(#{$track}, transparent);
-    border-radius: var(#{$radius}, 999px);
+    background: var(#{$track}, #{$cmf-scrollbar-track-fallback});
+    border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
     transition: opacity 150ms ease;
 
     &:where(:hover, :active) {
-      background-color: var(#{$track}, transparent);
+      background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
     }
 
-    &> :global([data-state='visible']) {
-      background-color: var(#{$thumb}, rgb(255 255 255 / 28%));
-      border-radius: var(#{$radius}, 999px);
+    &> :global([data-state]) {
+      background-color: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
+      border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
       transition: background-color 150ms ease;
     }
 
-    &:hover> :global([data-state='visible']) {
-      background-color: var(#{$thumb-hover}, rgb(255 255 255 / 40%));
+    &:hover> :global([data-state]) {
+      background-color: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
     }
   }
 }

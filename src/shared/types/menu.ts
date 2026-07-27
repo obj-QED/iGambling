@@ -1,4 +1,6 @@
 /** Parsed menu item DTO — validated at API/config boundary only. */
+export type MenuItemApiType = 'button' | 'link';
+
 export type MenuItemDto = {
   key: string;
   name: string;
@@ -6,7 +8,7 @@ export type MenuItemDto = {
   img?: string;
   imgShape?: string;
   imgRadius?: string;
-  type?: string;
+  type?: MenuItemApiType | string;
   badge?: string | number;
   subtitle?: string;
   items?: MenuItemDto[];

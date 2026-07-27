@@ -1,0 +1,69 @@
+// Active edge bar via ::after + corner radius by edge position.
+// Runtime vars: --{prefix}-active-* (from CMF JS cascade).
+// @include cmf-control-active-after('button');
+// @include cmf-control-active-after('button', $position: bottom); // only that edge radius
+
+@mixin cmf-control-shadow($prefix) {
+  box-shadow: var(--#{$prefix}-shadow, none);
+}
+
+/// Square the corners on the active edge (`$position`: top | right | bottom | left).
+@mixin cmf-control-active-radius($prefix, $position) {
+  @if $position==bottom {
+    border-bottom-left-radius: var(--#{$prefix}-active-radius-bl,
+      var(--#{$prefix}-active-radius, 0));
+    border-bottom-right-radius: var(--#{$prefix}-active-radius-br,
+      var(--#{$prefix}-active-radius, 0));
+  }
+
+  @else if $position==top {
+    border-top-left-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0));
+    border-top-right-radius: var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0));
+  }
+
+  @else if $position==left {
+    border-top-left-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0));
+    border-bottom-left-radius: var(--#{$prefix}-active-radius-bl,
+      var(--#{$prefix}-active-radius, 0));
+  }
+
+  @else if $position==right {
+    border-top-right-radius: var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0));
+    border-bottom-right-radius: var(--#{$prefix}-active-radius-br,
+      var(--#{$prefix}-active-radius, 0));
+  }
+}
+
+/// Active indicator. Optional `$position` limits radius to that edge;
+/// omit to wire all four edges via cascaded `--*-active-radius-{tl|tr|bl|br}`.
+@mixin cmf-control-active-after($prefix, $position: null) {
+  &[data-active='true'] {
+    position: relative;
+
+    @if $position {
+      @include cmf-control-active-radius($prefix, $position);
+    }
+
+    @else {
+      // Cascade-driven: only corners with tokens become square; others keep control radius.
+      border-radius: var(--#{$prefix}-active-radius-tl,
+        var(--#{$prefix}-active-radius, var(--#{$prefix}-radius))) var(--#{$prefix}-active-radius-tr,
+        var(--#{$prefix}-active-radius, var(--#{$prefix}-radius))) var(--#{$prefix}-active-radius-br,
+        var(--#{$prefix}-active-radius, var(--#{$prefix}-radius))) var(--#{$prefix}-active-radius-bl,
+        var(--#{$prefix}-active-radius, var(--#{$prefix}-radius)));
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+      background-color: var(--#{$prefix}-active-color, var(--brand-color-5));
+
+      /* Default = bottom bar; widgets override via cascade / cmf-active-bar-tokens */
+      inset: var(--#{$prefix}-active-inset, auto 0 0 0);
+      width: var(--#{$prefix}-active-width, 100%);
+      height: var(--#{$prefix}-active-height, 2px);
+    }
+  }
+}

@@ -52,14 +52,22 @@ describe('hasItemImg', () => {
 });
 
 describe('menuItemDataAttrs', () => {
-  it('adds CMF scope for menu items', () => {
+  it('adds CMF scope and api-type for menu items', () => {
     expect(menuItemDataAttrs({ key: 'promo', name: 'Promo', url: '/', type: 'link' })).toEqual({
       'data-cmf-component': 'header',
       'data-cmf-key': 'promo',
+      'api-type': 'link',
+    });
+    expect(
+      menuItemDataAttrs({ key: 'sign_up', name: 'Sign Up', url: '/', type: 'button' }),
+    ).toEqual({
+      'data-cmf-component': 'header',
+      'data-cmf-key': 'sign_up',
+      'api-type': 'button',
     });
   });
 
-  it('adds CMF scope for special blocks', () => {
+  it('adds CMF scope for special blocks without api-type when unset', () => {
     expect(menuItemDataAttrs({ key: 'search', name: '', url: '' })).toEqual({
       'data-cmf-component': 'header',
       'data-cmf-key': 'search',

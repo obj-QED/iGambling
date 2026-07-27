@@ -16,7 +16,6 @@
     --_cmf-icon-a: max(0.001, var(--cmf-control-icon-aspect, var(--cmf-icon-aspect, 1)));
     --_cmf-icon-w-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, var(--_cmf-icon-a)));
     --_cmf-icon-h-auto: calc(var(--_cmf-icon-box) * var(--_cmf-icon-s) * min(1, calc(1 / var(--_cmf-icon-a))));
-
     width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-w-auto)));
     height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-h-auto)));
     max-width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-box)));

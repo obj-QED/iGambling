@@ -6,15 +6,15 @@ type BuildIconPropToken = (
   fallback: string,
   options: {
     scope?: CmfScope;
-    size?: string | null;
+    variant?: string | null;
     tail?: CmfControlCascadeTail;
-    includeSizeInShared?: boolean;
+    includeVariantInShared?: boolean;
   },
 ) => string;
 
 type ResolveCmfIconControlVarsOptions = {
   scope: CmfScope;
-  size: string;
+  variant: string;
   buildToken: BuildIconPropToken;
 };
 
@@ -24,23 +24,22 @@ type ResolveCmfIconControlVarsOptions = {
  * Cascade (most specific → least):
  *   1. `--cmf-{button|action-icon}-{component}-{key}-icon-{scale|aspect|width|height}`
  *   2. `--cmf-{button|action-icon}-{component}-icon-*`
- *   3. `--cmf-{button|action-icon}-{size}-icon-*` (e.g. sm / md)
+ *   3. `--cmf-{button|action-icon}-{variant}-icon-*` (data-variant)
  *   4. `--cmf-{button|action-icon}-icon-*`
  *   5. `--cmf-icon-*` (theme / widget)
  *
- * Auto box sizing (`--_cmf-icon-*-auto`) lives only in SCSS on the media node —
- * never as a Button inline fallback (that made `--cmf-control-icon-*` IACVT/empty).
+ * Auto box sizing (`--_cmf-icon-*-auto`) lives only in SCSS on the media node.
  */
 export function resolveCmfIconControlVars({
   scope,
-  size,
+  variant,
   buildToken,
 }: ResolveCmfIconControlVarsOptions): Record<string, string> {
   const iconOpts = {
     scope,
-    size,
+    variant,
     tail: 'shared' as const,
-    includeSizeInShared: true,
+    includeVariantInShared: true,
   };
 
   return {

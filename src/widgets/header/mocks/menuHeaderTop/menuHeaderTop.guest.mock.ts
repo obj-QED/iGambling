@@ -27,7 +27,7 @@ export const MENU_HEADER_TOP_GUEST_MOCK: MenuHeaderTopBlockMock = {
           type: 'link',
         },
         {
-          url: '#',
+          url: '/',
           name: 'Casino',
           key: 'casino',
           img: '/uploads/logo.png',

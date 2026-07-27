@@ -80,27 +80,6 @@ const MANTINE_VARIANT_FALLBACKS: Record<CmfActionIconVariant, VariantPaint> = {
     hover: `var(--app-gradient-default-hover, ${APP_GRADIENT_DEFAULT_HOVER})`,
     'hover-color': 'var(--mantine-primary-color-contrast)',
   },
-  hero: {
-    bg: '#059669',
-    color: 'var(--mantine-color-white)',
-    bd: MANTINE_AI_BORDER_TRANSPARENT,
-    hover: '#047857',
-    'hover-color': 'var(--mantine-color-white)',
-  },
-  'hero-light': {
-    bg: 'color-mix(in srgb, #059669 14%, transparent)',
-    color: 'var(--mantine-color-text)',
-    bd: MANTINE_AI_BORDER_TRANSPARENT,
-    hover: 'color-mix(in srgb, #059669 22%, transparent)',
-    'hover-color': 'var(--mantine-color-text)',
-  },
-  'hero-outline': {
-    bg: 'transparent',
-    color: 'var(--mantine-color-text)',
-    bd: '1px solid #059669',
-    hover: 'color-mix(in srgb, #059669 12%, transparent)',
-    'hover-color': 'var(--mantine-color-text)',
-  },
 };
 
 function resolveActionIconSize(size: unknown): CmfActionIconSize {
@@ -149,8 +128,9 @@ type ActionIconVarsProps = {
 
 /**
  * Inline style CMF cascade (mirrors Button):
- * - with `data-cmf-*`: component(+key) → variant|size|shared
- * - without: variant → size → (shared for radius)
+ * - with `data-cmf-*`: component(+key) → data-variant|shared
+ * - without: data-variant → (shared for radius)
+ * Size table (`--ai-size-sm`, …) stays in Mantine CSS as fallbacks only.
  */
 export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<string, string> {
   const scope: CmfScope = resolveCmfScope(props as Record<string, unknown>);
@@ -164,50 +144,119 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
       buildCmfActionIconPropToken('radius', 'var(--mantine-radius-md)', {
         scope,
         variant,
-        size,
         tail: 'shared',
       }),
     ),
     '--ai-size': buildCmfActionIconPropToken('size', `var(--ai-size-${size})`, {
       scope,
       variant,
-      size,
-      tail: 'size',
+      tail: 'variant',
     }),
     ...resolveCmfIconControlVars({
       scope,
-      size,
+      variant,
       buildToken: buildCmfActionIconPropToken,
     }),
     '--ai-bg': buildCmfActionIconPropToken('bg', paint.bg, {
       scope,
       variant,
-      size,
       tail: 'variant',
     }),
     '--ai-color': buildCmfActionIconPropToken('color', paint.color, {
       scope,
       variant,
-      size,
       tail: 'variant',
     }),
     '--ai-bd': buildCmfActionIconPropToken('bd', paint.bd, {
       scope,
       variant,
-      size,
       tail: 'variant',
     }),
     '--ai-hover': buildCmfActionIconPropToken('hover', paint.hover, {
       scope,
       variant,
-      size,
       tail: 'variant',
     }),
     '--ai-hover-color': buildCmfActionIconPropToken('hover-color', paint['hover-color'], {
       scope,
       variant,
-      size,
       tail: 'variant',
     }),
+    '--ai-shadow': buildCmfActionIconPropToken('shadow', 'none', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-active-position': buildCmfActionIconPropToken('active-position', 'bottom', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-active-size': buildCmfActionIconPropToken('active-size', '2px', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-active-color': buildCmfActionIconPropToken('active-color', 'var(--brand-color-5)', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-active-inset': buildCmfActionIconPropToken('active-inset', 'auto 0 0 0', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-active-width': buildCmfActionIconPropToken('active-width', '100%', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-active-height': buildCmfActionIconPropToken('active-height', '2px', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-active-radius': buildCmfActionIconPropToken('active-radius', 'var(--ai-radius)', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-active-radius-tl': buildCmfActionIconPropToken(
+      'active-radius-tl',
+      buildCmfActionIconPropToken('active-radius', 'var(--ai-radius)', {
+        scope,
+        variant,
+        tail: 'variant',
+      }),
+      { scope, variant, tail: 'variant' },
+    ),
+    '--ai-active-radius-tr': buildCmfActionIconPropToken(
+      'active-radius-tr',
+      buildCmfActionIconPropToken('active-radius', 'var(--ai-radius)', {
+        scope,
+        variant,
+        tail: 'variant',
+      }),
+      { scope, variant, tail: 'variant' },
+    ),
+    '--ai-active-radius-br': buildCmfActionIconPropToken(
+      'active-radius-br',
+      buildCmfActionIconPropToken('active-radius', 'var(--ai-radius)', {
+        scope,
+        variant,
+        tail: 'variant',
+      }),
+      { scope, variant, tail: 'variant' },
+    ),
+    '--ai-active-radius-bl': buildCmfActionIconPropToken(
+      'active-radius-bl',
+      buildCmfActionIconPropToken('active-radius', 'var(--ai-radius)', {
+        scope,
+        variant,
+        tail: 'variant',
+      }),
+      { scope, variant, tail: 'variant' },
+    ),
   };
 }

@@ -5,9 +5,7 @@ import type { ButtonVariant, MantineSize } from '@mantine/core';
  * Built-ins: Mantine `ButtonVariant`.
  * `exception-*` data-variant maps to paint key `exception` in `buttonVars`.
  */
-export const CMF_BUTTON_VARIANTS = ['hero', 'hero-light', 'hero-outline', 'exception'] as const;
-
-export type CmfButtonCustomVariant = (typeof CMF_BUTTON_VARIANTS)[number];
+export type CmfButtonCustomVariant = string & {};
 
 /** Paint / cascade keys = Mantine built-ins + CMF custom (finite; not `exception-${string}`). */
 export type CmfButtonVariant = ButtonVariant | CmfButtonCustomVariant;

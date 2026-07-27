@@ -23,6 +23,9 @@
     min-height: 0;
     margin-inline: calc(var(--aside-shell-padding, var(--mantine-spacing-md)) * -1);
     padding-inline: var(--aside-shell-padding, var(--mantine-spacing-md));
+
+    /* Theme SoT — do not pass Mantine `scrollbarSize` (inline wins over this). */
+    --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
   }
 
   .scrollContent {

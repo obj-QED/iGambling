@@ -40,48 +40,48 @@ describe('cmfCascadeResolve', () => {
     );
   });
 
-  it('includeSizeInShared inserts size before shared control token', () => {
+  it('includeVariantInShared inserts data-variant before shared control token', () => {
     const token = buildCmfButtonPropToken('icon-height', 'var(--cmf-icon-height)', {
       scope: { component: 'sidebar', key: 'home' },
-      size: 'sm',
+      variant: 'outline',
       tail: 'shared',
-      includeSizeInShared: true,
+      includeVariantInShared: true,
     });
 
     expect(token).toBe(
-      'var(--cmf-button-sidebar-home-icon-height, var(--cmf-button-sidebar-icon-height, var(--cmf-button-sm-icon-height, var(--cmf-button-icon-height, var(--cmf-icon-height)))))',
+      'var(--cmf-button-sidebar-home-icon-height, var(--cmf-button-sidebar-icon-height, var(--cmf-button-outline-icon-height, var(--cmf-button-icon-height, var(--cmf-icon-height)))))',
     );
   });
 
-  it('builds size fz tail', () => {
-    const token = buildCmfButtonPropToken('fz', '1rem', {
+  it('builds height via variant (not size)', () => {
+    const token = buildCmfButtonPropToken('height', 'var(--button-height-sm)', {
       scope: { component: 'header' },
-      size: 'sm',
-      tail: 'size',
-    });
-
-    expect(token).toBe('var(--cmf-button-header-fz, var(--cmf-button-sm-fz, 1rem))');
-  });
-
-  it('without component: variant → size', () => {
-    const token = buildCmfButtonPropToken('bg', '#059669', {
-      variant: 'hero',
-      size: 'md',
+      variant: 'default',
       tail: 'variant',
     });
 
-    expect(token).toBe('var(--cmf-button-hero-bg, var(--cmf-button-md-bg, #059669))');
+    expect(token).toBe(
+      'var(--cmf-button-header-height, var(--cmf-button-default-height, var(--button-height-sm)))',
+    );
   });
 
-  it('without component + shared: variant → size → shared', () => {
+  it('without component: data-variant only', () => {
+    const token = buildCmfButtonPropToken('bg', '#059669', {
+      variant: 'hero',
+      tail: 'variant',
+    });
+
+    expect(token).toBe('var(--cmf-button-hero-bg, #059669)');
+  });
+
+  it('without component + shared: data-variant → shared', () => {
     const token = buildCmfButtonPropToken('radius', 'var(--mantine-radius-md)', {
       variant: 'hero',
-      size: 'md',
       tail: 'shared',
     });
 
     expect(token).toBe(
-      'var(--cmf-button-hero-radius, var(--cmf-button-md-radius, var(--cmf-button-radius, var(--mantine-radius-md))))',
+      'var(--cmf-button-hero-radius, var(--cmf-button-radius, var(--mantine-radius-md)))',
     );
   });
 

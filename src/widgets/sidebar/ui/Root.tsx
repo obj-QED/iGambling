@@ -70,13 +70,13 @@ function RootComponent({ menu, config, className }: RootProps) {
                 classNames={{
                   content: styles.scrollContent,
                   scrollbar: scrollAreaStyles.scrollbar,
+                  thumb: scrollAreaStyles.thumb,
                 }}
                 h="100%"
                 type={config.scrollArea.type}
                 scrollbars="y"
                 offsetScrollbars
                 overscrollBehavior={config.scrollArea.overscrollBehavior}
-                scrollbarSize={config.scrollArea.scrollbarSize}
                 scrollHideDelay={config.scrollArea.scrollHideDelay}
               >
                 <TypeStrategy menu={layout.mainMenu} config={config} />

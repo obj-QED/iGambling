@@ -1,6 +1,6 @@
 /**
  * Header widget tokens — single SoT for `[data-widget='header']`.
- * Flat CSS variables only (edit values here).
+ * Flat CSS variables only (edit values here / in prod theme.css — no Sass mixins).
  */
 
 @mixin header-root-tokens {
@@ -52,10 +52,32 @@
 
   /*
    * Icons — size vs --ai-size / --button-height (not Button row width).
-   * Cascade: key → component → size → control → --cmf-icon-*
+   * Cascade: key → component → data-variant → control → --cmf-icon-*
    */
   --cmf-action-icon-header-icon-scale: 0.7;
   --cmf-action-icon-header-icon-aspect: 1;
   --cmf-button-header-icon-scale: 0.7;
   --cmf-button-header-icon-aspect: 1;
+
+  /*
+   * Active bar — flat vars only (prod theme may replace this file without Sass).
+   * Cascade: key → component → data-variant → fallback
+   */
+  --cmf-button-header-active-position: bottom;
+  --cmf-button-header-active-size: 2px;
+  --cmf-button-header-active-color: var(--brand-color-5);
+  --cmf-button-header-active-inset: auto 0 0 0;
+  --cmf-button-header-active-width: 100%;
+  --cmf-button-header-active-height: var(--cmf-button-header-active-size);
+  --cmf-button-header-active-radius-bl: 0px;
+  --cmf-button-header-active-radius-br: 0px;
+
+  --cmf-action-icon-header-active-position: bottom;
+  --cmf-action-icon-header-active-size: 2px;
+  --cmf-action-icon-header-active-color: var(--brand-color-5);
+  --cmf-action-icon-header-active-inset: auto 0 0 0;
+  --cmf-action-icon-header-active-width: 100%;
+  --cmf-action-icon-header-active-height: var(--cmf-action-icon-header-active-size);
+  --cmf-action-icon-header-active-radius-bl: 0px;
+  --cmf-action-icon-header-active-radius-br: 0px;
 }
