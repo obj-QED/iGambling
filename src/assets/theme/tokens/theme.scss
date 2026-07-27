@@ -80,9 +80,18 @@
     --cmf-scrollbar-size: 6px;
     --cmf-scrollbar-radius: 999px;
 
-    --cmf-button-hero-bg: color-mix(in srgb, #059669 100%, transparent);
-    --cmf-button-hero-hover: color-mix(in srgb, #047857 75%, transparent);
-    --cmf-button-hero-color: color-mix(in srgb, #fff 95%, transparent);
+    --cmf-button-hero-bg: light-dark(
+      color-mix(in srgb, #059669 100%, transparent),
+      color-mix(in srgb, #059669 100%, transparent)
+    );
+    --cmf-button-hero-hover: light-dark(
+      color-mix(in srgb, #047857 75%, transparent),
+      color-mix(in srgb, #047857 75%, transparent)
+    );
+    --cmf-button-hero-color: light-dark(
+      color-mix(in srgb, #fff 95%, transparent),
+      color-mix(in srgb, #fff 95%, transparent)
+    );
   }
 
   [data-widget='header'] {
