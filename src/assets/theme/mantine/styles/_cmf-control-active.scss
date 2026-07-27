@@ -14,20 +14,14 @@
       var(--#{$prefix}-active-radius, 0));
     border-bottom-right-radius: var(--#{$prefix}-active-radius-br,
       var(--#{$prefix}-active-radius, 0));
-  }
-
-  @else if $position==top {
+  } @else if $position==top {
     border-top-left-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0));
     border-top-right-radius: var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0));
-  }
-
-  @else if $position==left {
+  } @else if $position==left {
     border-top-left-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0));
     border-bottom-left-radius: var(--#{$prefix}-active-radius-bl,
       var(--#{$prefix}-active-radius, 0));
-  }
-
-  @else if $position==right {
+  } @else if $position==right {
     border-top-right-radius: var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0));
     border-bottom-right-radius: var(--#{$prefix}-active-radius-br,
       var(--#{$prefix}-active-radius, 0));
@@ -42,9 +36,7 @@
 
     @if $position {
       @include cmf-control-active-radius($prefix, $position);
-    }
-
-    @else {
+    } @else {
       // Cascade-driven: only corners with tokens become square; others keep control radius.
       border-radius: var(--#{$prefix}-active-radius-tl,
         var(--#{$prefix}-active-radius, var(--#{$prefix}-radius))) var(--#{$prefix}-active-radius-tr,

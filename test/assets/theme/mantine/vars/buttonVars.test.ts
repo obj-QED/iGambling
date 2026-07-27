@@ -41,11 +41,15 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-fz']).toBe('var(--cmf-button-default-fz, var(--mantine-font-size-sm))');
   });
 
-  it('falls back to default variant for unknown variant keys', () => {
+  it('cascades custom variants by name; paint last-resort is Mantine default', () => {
     const vars = resolveButtonRootVars({ variant: 'not-a-real-variant' });
 
-    expect(vars['--button-bg']).toContain('var(--cmf-button-default-bg');
-    expect(vars['--button-hover']).toContain('var(--cmf-button-default-hover');
+    expect(vars['--button-bg']).toBe(
+      'var(--cmf-button-not-a-real-variant-bg, var(--mantine-color-default))',
+    );
+    expect(vars['--button-hover']).toBe(
+      'var(--cmf-button-not-a-real-variant-hover, var(--mantine-color-default-hover))',
+    );
   });
 
   it('uses Mantine radius prop when provided', () => {
@@ -120,12 +124,17 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-hover']).toContain('--app-gradient-default-hover');
   });
 
-  it('does not double-wrap hero / exception CMF tokens in paint fallback', () => {
+  it('cascades hero by name with Mantine default paint fallback (not remapped to default key)', () => {
     const hero = resolveButtonRootVars({ variant: 'hero' });
     const exception = resolveButtonRootVars({ variant: 'exception' });
 
-    expect(hero['--button-bg']).toBe('var(--cmf-button-hero-bg, #059669)');
-    expect(hero['--button-hover']).toBe('var(--cmf-button-hero-hover, #047857)');
+    expect(hero['--button-bg']).toBe('var(--cmf-button-hero-bg, var(--mantine-color-default))');
+    expect(hero['--button-hover']).toBe(
+      'var(--cmf-button-hero-hover, var(--mantine-color-default-hover))',
+    );
+    expect(hero['--button-color']).toBe(
+      'var(--cmf-button-hero-color, var(--mantine-color-default-color))',
+    );
     expect(exception['--button-bg']).toBe('var(--cmf-button-exception-bg, #d97706)');
     expect(exception['--button-hover']).toBe('var(--cmf-button-exception-hover, #b45309)');
   });

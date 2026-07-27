@@ -22,7 +22,6 @@ $cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
   $track: --#{$prefix}-track;
   $size: --#{$prefix}-size;
   $radius: --#{$prefix}-radius;
-
   scrollbar-width: thin;
   scrollbar-color: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback}) var(#{$track}, #{$cmf-scrollbar-track-fallback});
 

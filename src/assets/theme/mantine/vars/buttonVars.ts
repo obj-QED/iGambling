@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 
-import { CMF_BUTTON_SIZES, type CmfButtonSize, type CmfButtonVariant } from '../cmf/cmfButtonVars';
+import { CMF_BUTTON_SIZES, type CmfButtonSize } from '../cmf/cmfButtonVars';
 import { buildCmfButtonPropToken, type CmfScope, resolveCmfScope } from '../cmf/cmfCascadeResolve';
 import { resolveCmfIconControlVars } from '../cmf/cmfIconControlVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from '../theme/gradientTokens';
@@ -17,8 +17,11 @@ type VariantPaint = {
   'hover-color': string;
 };
 
-/** Last-resort fallbacks when CMF tokens are unset. */
-const MANTINE_VARIANT_FALLBACKS: Record<CmfButtonVariant, VariantPaint> = {
+/**
+ * Last-resort paint when CMF tokens are unset.
+ * Known keys only — custom variants (hero, …) cascade by name and reuse `default` paint.
+ */
+const MANTINE_VARIANT_FALLBACKS = {
   filled: {
     bg: 'var(--mantine-color-brand-4)',
     color: 'var(--mantine-primary-color-contrast)',
@@ -82,6 +85,14 @@ const MANTINE_VARIANT_FALLBACKS: Record<CmfButtonVariant, VariantPaint> = {
     hover: '#b45309',
     'hover-color': 'var(--mantine-color-white)',
   },
+} as const satisfies Record<string, VariantPaint>;
+
+type CmfButtonPaintKey = keyof typeof MANTINE_VARIANT_FALLBACKS;
+
+type ResolvedButtonVariant = {
+  /** Cascade segment: `--cmf-button-{cascade}-*` */
+  cascade: string;
+  paint: VariantPaint;
 };
 
 const MANTINE_SIZE_FZ: Record<CmfButtonSize, string> = {
@@ -99,17 +110,26 @@ function resolveButtonSize(size: unknown): CmfButtonSize {
   return 'md';
 }
 
-/** Runtime guard for finite paint keys (Mantine built-ins + CMF custom). */
-export function isCmfButtonPaintVariant(variant: string): variant is CmfButtonVariant {
-  return variant in MANTINE_VARIANT_FALLBACKS;
+/** Runtime guard for finite paint keys (Mantine built-ins + `exception`). */
+export function isCmfButtonPaintVariant(variant: string): variant is CmfButtonPaintKey {
+  return Object.hasOwn(MANTINE_VARIANT_FALLBACKS, variant);
 }
 
-/** `exception-timer` → cascade as `exception` (data-variant stays `exception-*` for CSS). */
-function resolveVariant(variant: string | undefined): CmfButtonVariant {
+/**
+ * Cascade key = data-variant (or `exception` for `exception-*`).
+ * Unknown custom variants keep their name in cascade; paint last-resort = Mantine `default`.
+ */
+function resolveVariant(variant: string | undefined): ResolvedButtonVariant {
   if (typeof variant === 'string' && variant.startsWith('exception-')) {
-    return 'exception';
+    return { cascade: 'exception', paint: MANTINE_VARIANT_FALLBACKS.exception };
   }
-  return variant !== undefined && isCmfButtonPaintVariant(variant) ? variant : 'default';
+  if (variant !== undefined && isCmfButtonPaintVariant(variant)) {
+    return { cascade: variant, paint: MANTINE_VARIANT_FALLBACKS[variant] };
+  }
+  if (typeof variant === 'string' && variant.trim().length > 0) {
+    return { cascade: variant.trim(), paint: MANTINE_VARIANT_FALLBACKS.default };
+  }
+  return { cascade: 'default', paint: MANTINE_VARIANT_FALLBACKS.default };
 }
 
 type ButtonVarsProps = {
@@ -162,8 +182,7 @@ function resolveRadius(radius: unknown, cmfFallback: string): string {
 export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, string> {
   const scope = resolveButtonScope(props, props.variant);
   const size = resolveButtonSize(props.size);
-  const variant = resolveVariant(props.variant);
-  const paint = MANTINE_VARIANT_FALLBACKS[variant];
+  const { cascade: variant, paint } = resolveVariant(props.variant);
 
   return {
     '--button-justify': buildCmfButtonPropToken('justify', String(props.justify ?? 'flex-start'), {

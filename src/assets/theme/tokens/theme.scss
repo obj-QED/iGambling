@@ -1,8 +1,8 @@
 /* Design tokens — structural SoT + brand palettes / gradients + widget scopes. */
 
-@use 'assets/theme/mantine/brand/brand-palette'as brand;
-@use 'assets/theme/tokens/widgets/header/tokens'as header;
-@use 'assets/theme/tokens/widgets/sidebar/tokens'as sidebar;
+@use 'assets/theme/mantine/brand/brand-palette' as brand;
+@use 'assets/theme/tokens/widgets/header/tokens' as header;
+@use 'assets/theme/tokens/widgets/sidebar/tokens' as sidebar;
 
 @layer theme {
   :root {
@@ -79,6 +79,10 @@
     --cmf-scrollbar-thumb-hover: var(--brand-color-4);
     --cmf-scrollbar-size: 6px;
     --cmf-scrollbar-radius: 999px;
+
+    --cmf-button-hero-bg: color-mix(in srgb, #059669 100%, transparent);
+    --cmf-button-hero-hover: color-mix(in srgb, #047857 75%, transparent);
+    --cmf-button-hero-color: color-mix(in srgb, #fff 95%, transparent);
   }
 
   [data-widget='header'] {
@@ -98,12 +102,16 @@
     --color-text-muted: #6b6b6b;
     --color-border: #1e293b;
 
-    --app-gradient-default: linear-gradient(45deg,
-        var(--mantine-color-brand-4) 0%,
-        color-mix(in srgb, var(--mantine-color-brand-4) 70%, black) 100%);
-    --app-gradient-default-hover: linear-gradient(45deg,
-        var(--mantine-color-brand-2) 0%,
-        var(--mantine-color-brand-4) 100%);
+    --app-gradient-default: linear-gradient(
+      45deg,
+      var(--mantine-color-brand-4) 0%,
+      color-mix(in srgb, var(--mantine-color-brand-4) 70%, black) 100%
+    );
+    --app-gradient-default-hover: linear-gradient(
+      45deg,
+      var(--mantine-color-brand-2) 0%,
+      var(--mantine-color-brand-4) 100%
+    );
   }
 
   [data-theme='light'],
@@ -115,11 +123,15 @@
     --color-text-muted: #64748b;
     --color-border: #e2e8f0;
 
-    --app-gradient-default: linear-gradient(45deg,
-        var(--mantine-color-brand-4) 0%,
-        color-mix(in srgb, var(--mantine-color-brand-4) 70%, black) 100%);
-    --app-gradient-default-hover: linear-gradient(45deg,
-        var(--mantine-color-brand-5) 0%,
-        var(--mantine-color-brand-7) 100%);
+    --app-gradient-default: linear-gradient(
+      45deg,
+      var(--mantine-color-brand-4) 0%,
+      color-mix(in srgb, var(--mantine-color-brand-4) 70%, black) 100%
+    );
+    --app-gradient-default-hover: linear-gradient(
+      45deg,
+      var(--mantine-color-brand-5) 0%,
+      var(--mantine-color-brand-7) 100%
+    );
   }
 }

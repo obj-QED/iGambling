@@ -1,8 +1,4 @@
-import {
-  CMF_ACTION_ICON_SIZES,
-  type CmfActionIconSize,
-  type CmfActionIconVariant,
-} from '../cmf/cmfActionIconVars';
+import { CMF_ACTION_ICON_SIZES, type CmfActionIconSize } from '../cmf/cmfActionIconVars';
 import {
   buildCmfActionIconPropToken,
   type CmfScope,
@@ -22,8 +18,8 @@ type VariantPaint = {
   'hover-color': string;
 };
 
-/** Last-resort fallbacks when CMF tokens are unset. */
-const MANTINE_VARIANT_FALLBACKS: Record<CmfActionIconVariant, VariantPaint> = {
+/** Last-resort paint when CMF tokens are unset. Custom variants reuse `default` paint. */
+const MANTINE_VARIANT_FALLBACKS = {
   filled: {
     bg: 'var(--mantine-color-brand-4)',
     color: 'var(--mantine-primary-color-contrast)',
@@ -80,6 +76,13 @@ const MANTINE_VARIANT_FALLBACKS: Record<CmfActionIconVariant, VariantPaint> = {
     hover: `var(--app-gradient-default-hover, ${APP_GRADIENT_DEFAULT_HOVER})`,
     'hover-color': 'var(--mantine-primary-color-contrast)',
   },
+} as const satisfies Record<string, VariantPaint>;
+
+type CmfActionIconPaintKey = keyof typeof MANTINE_VARIANT_FALLBACKS;
+
+type ResolvedActionIconVariant = {
+  cascade: string;
+  paint: VariantPaint;
 };
 
 function resolveActionIconSize(size: unknown): CmfActionIconSize {
@@ -89,12 +92,19 @@ function resolveActionIconSize(size: unknown): CmfActionIconSize {
   return 'md';
 }
 
-function isCmfActionIconVariant(variant: string | undefined): variant is CmfActionIconVariant {
-  return variant !== undefined && variant in MANTINE_VARIANT_FALLBACKS;
+function isCmfActionIconPaintVariant(variant: string): variant is CmfActionIconPaintKey {
+  return Object.hasOwn(MANTINE_VARIANT_FALLBACKS, variant);
 }
 
-function resolveVariant(variant: string | undefined): CmfActionIconVariant {
-  return isCmfActionIconVariant(variant) ? variant : 'default';
+/** Custom variants keep cascade name; paint last-resort = Mantine `default`. */
+function resolveVariant(variant: string | undefined): ResolvedActionIconVariant {
+  if (variant !== undefined && isCmfActionIconPaintVariant(variant)) {
+    return { cascade: variant, paint: MANTINE_VARIANT_FALLBACKS[variant] };
+  }
+  if (typeof variant === 'string' && variant.trim().length > 0) {
+    return { cascade: variant.trim(), paint: MANTINE_VARIANT_FALLBACKS.default };
+  }
+  return { cascade: 'default', paint: MANTINE_VARIANT_FALLBACKS.default };
 }
 
 function resolveRadius(radius: unknown, cmfFallback: string): string {
@@ -135,8 +145,7 @@ type ActionIconVarsProps = {
 export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<string, string> {
   const scope: CmfScope = resolveCmfScope(props as Record<string, unknown>);
   const size = resolveActionIconSize(props.size);
-  const variant = resolveVariant(props.variant);
-  const paint = MANTINE_VARIANT_FALLBACKS[variant];
+  const { cascade: variant, paint } = resolveVariant(props.variant);
 
   return {
     '--ai-radius': resolveRadius(

@@ -44,10 +44,24 @@ describe('resolveActionIconRootVars', () => {
     );
   });
 
-  it('falls back to default variant for unknown keys', () => {
+  it('cascades custom variants by name; paint last-resort is Mantine default', () => {
     const vars = resolveActionIconRootVars({ variant: 'not-real' });
 
-    expect(vars['--ai-bg']).toContain('var(--cmf-action-icon-default-bg');
+    expect(vars['--ai-bg']).toBe(
+      'var(--cmf-action-icon-not-real-bg, var(--mantine-color-default))',
+    );
+    expect(vars['--ai-hover']).toBe(
+      'var(--cmf-action-icon-not-real-hover, var(--mantine-color-default-hover))',
+    );
+  });
+
+  it('cascades hero by name with Mantine default paint fallback', () => {
+    const vars = resolveActionIconRootVars({ variant: 'hero' });
+
+    expect(vars['--ai-bg']).toBe('var(--cmf-action-icon-hero-bg, var(--mantine-color-default))');
+    expect(vars['--ai-color']).toBe(
+      'var(--cmf-action-icon-hero-color, var(--mantine-color-default-color))',
+    );
   });
 
   it('emits icon cascade with data-variant (not size)', () => {
