@@ -15,7 +15,7 @@ export type AppTooltipProps = {
   config: TooltipConfig;
   /** Optional place-level override merged on top of `config`. */
   override?: Partial<TooltipConfig>;
-  /** CMF scope for style cascade on the floating tooltip. */
+  /** CMF scope for CSS cascade on the floating tooltip (`data-cmf-*`). */
   cmfComponent?: string;
   cmfKey?: string;
   className?: string;

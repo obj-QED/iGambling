@@ -1,5 +1,6 @@
 // Shared Mantine theme classNames — Title, Container, Button/ActionIcon gradient hover.
-// CMF cascade lives in CSS (`_cmf-control-cascade.scss`) — no inline `vars()` on controls.
+// CMF cascade: `_cmf-control-cascade.scss` (no inline `vars()`). Edit tokens, not engine.
+// Guide: `mantine/cmf/CASCADE.md` — header/sidebar tokens + :root tooltips.
 
 @use './gradient-variant-states' as gradient;
 @use './cmf-control-active' as cmfControl;

@@ -12,6 +12,9 @@ import {
   resolveMenuItemButtonVariant,
 } from '../../../lib';
 
+/** Cascade SoT key — match `--cmf-button-header-logo-*` tokens. */
+const LOGO_CMF_KEY = 'logo';
+
 function LogoBlockComponent({ item }: BlockProps) {
   if (!isRenderableItem(item)) return null;
 
@@ -22,6 +25,7 @@ function LogoBlockComponent({ item }: BlockProps) {
       img={item.img}
       variant={resolveMenuItemButtonVariant(item)}
       {...menuItemDataAttrs(item)}
+      data-cmf-key={LOGO_CMF_KEY}
     />
   );
 }

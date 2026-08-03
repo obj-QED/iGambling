@@ -1,10 +1,17 @@
 /**
- * Header widget tokens — single SoT for `[data-widget='header']`.
- * Flat CSS variables only (edit values here / in prod theme.css — no Sass mixins).
+ * Header widget tokens — SoT for `[data-widget='header']`.
+ * Flat CSS vars only (edit here / prod theme.css — no Sass mixins).
+ *
+ * CMF Button / ActionIcon — change look HERE:
+ *   --cmf-button-header-{key?}-{prop}       e.g. --cmf-button-header-sign_in-bg
+ *   --cmf-action-icon-header-{key?}-{prop}  e.g. --cmf-action-icon-header-home-color
+ * Winner: key → role → component → data-variant → shared → base
+ * Cascade engine: mantine/styles/_cmf-control-cascade.scss
+ * Guide: mantine/cmf/CASCADE.md
+ * Tooltip tokens live on :root in tokens/theme.scss (portal).
  */
 
 @mixin header-root-tokens {
-
   /* Mantine size keys (useHeaderMenuSizesFromElement) — SoT for control size */
   --header-size-button: md;
   --header-size-link: md;
@@ -43,7 +50,7 @@
   --header-bonus-box-radius: var(--cmf-action-icon-radius, var(--mantine-radius-md));
   --header-bonus-box-bd: var(--cmf-action-icon-default-bd, transparent);
 
-  /* Button CMF (component scope) — key overrides: --cmf-button-header-sign_in-bg */
+  /* Button / ActionIcon CMF — see file header + mantine/cmf/CASCADE.md */
   --cmf-button-header-radius: var(--cmf-button-radius, var(--mantine-radius-md));
   --cmf-button-header-justify: center;
 
@@ -57,10 +64,7 @@
   --cmf-action-icon-header-home-radius: 0;
   --cmf-action-icon-header-radius-disabled: var(--mantine-radius-md);
 
-  /*
-   * Icons — size vs --ai-size / --button-height (not Button row width).
-   * Cascade: key → component → data-variant → control → --cmf-icon-*
-   */
+  /* Icons: --cmf-*-header-{key?}-icon-* — full order in CASCADE.md */
   --cmf-action-icon-header-icon-scale: 0.7;
   --cmf-action-icon-header-icon-aspect: 1;
   --cmf-button-header-icon-scale: 0.7;

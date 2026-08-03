@@ -1,5 +1,8 @@
 /**
- * CMF control token cascade (JS) — Button / ActionIcon.
+ * CMF control token cascade (JS) — Button / ActionIcon naming reference + tests.
+ *
+ * Runtime SoT is CSS: `styles/_cmf-control-cascade.scss` (theme clears Mantine inline vars).
+ * How to edit styles / winner order: `CASCADE.md` in this folder.
  *
  * With `data-cmf-component` / key / role:
  *   1. `--cmf-{control}-{component}-{key}-{prop}`

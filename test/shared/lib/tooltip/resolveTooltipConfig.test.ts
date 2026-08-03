@@ -19,9 +19,14 @@ describe('resolveTooltipConfig', () => {
       enabled: false,
       position: 'left',
       delay: 400,
+      closeDelay: 300,
       withArrow: true,
       offset: 5,
     });
+  });
+
+  it('merges closeDelay from settings', () => {
+    expect(resolveTooltipConfig({ closeDelay: 500 }).closeDelay).toBe(500);
   });
 
   it('passthroughs typed Mantine tooltip props', () => {

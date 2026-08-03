@@ -29,7 +29,7 @@ function ColorSchemeBlockComponent({ item }: BlockProps) {
         onClick={handleToggle}
         variant={resolveMenuItemActionIconVariant(item)}
         size={resolveHeaderMenuActionIconSize(menuSizes)}
-        aria-label={item.label?.trim() || item.name || 'Toggle color scheme'}
+        aria-label={item.name?.trim() || 'Toggle color scheme'}
         {...menuItemDataAttrs(item)}
       >
         {computedColorScheme === 'light' ? (

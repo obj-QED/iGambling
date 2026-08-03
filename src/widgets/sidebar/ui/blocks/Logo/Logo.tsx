@@ -25,10 +25,12 @@ import styles from './styles.module.scss';
 /** Fallback for AppLogo / aria when item has neither `label` nor `name`. */
 const LOGO_FALLBACK_LABEL = 'Logo';
 const LOGO_TRIGGER_KEY_SUFFIX = '-trigger';
+/** Cascade SoT keys — match `--cmf-*-sidebar-logo*` / `--cmf-*-sidebar-logo-trigger-*` tokens. */
+const LOGO_CMF_KEY = 'logo';
+const LOGO_TRIGGER_CMF_KEY = 'logo-trigger';
 
+/** Visible / aria title — `name` only. `label` is tooltip HTML (AppTooltip). */
 function resolveLogoLabel(item: { label?: string; name?: string }): string {
-  const fromLabel = item.label?.trim() ?? '';
-  if (fromLabel.length > 0) return fromLabel;
   const fromName = item.name?.trim() ?? '';
   if (fromName.length > 0) return fromName;
   return LOGO_FALLBACK_LABEL;
@@ -45,18 +47,18 @@ function LogoMark({ label, img, className }: { label: string; img?: string; clas
 }
 
 function resolveTriggerItem(item: HeaderMenuItem): HeaderMenuItem {
-  const baseKey = itemKey(item) || 'logo';
+  const baseKey = itemKey(item) || LOGO_CMF_KEY;
   return {
     ...item,
     key: `${baseKey}${LOGO_TRIGGER_KEY_SUFFIX}`,
-    name: item.label?.trim() || item.name || 'Menu',
+    name: item.name?.trim() || 'Menu',
   };
 }
 
 /**
- * Two controls, two keys:
- * - trigger → `{item.key}-trigger` (IconArticle)
- * - logo → `item.key` (AppLogo / compact mark)
+ * Two controls:
+ * - `data-key` = item key / `{item.key}-trigger` (identity)
+ * - `data-cmf-key` = `logo` / `logo-trigger` (token cascade — not the API key)
  */
 function LogoComponent({ item, className }: BlockProps) {
   const { tooltip } = useSidebarConfig();
@@ -68,8 +70,16 @@ function LogoComponent({ item, className }: BlockProps) {
   const label = resolveLogoLabel(item);
   const variant = resolveLogoControlVariant(item);
   const triggerItem = resolveTriggerItem(item);
-  const triggerAttrs = { ...menuItemDataAttrs(triggerItem), disabled: false };
-  const logoAttrs = { ...menuItemDataAttrs(item), disabled: false };
+  const triggerAttrs = {
+    ...menuItemDataAttrs(triggerItem),
+    'data-cmf-key': LOGO_TRIGGER_CMF_KEY,
+    disabled: false,
+  };
+  const logoAttrs = {
+    ...menuItemDataAttrs(item),
+    'data-cmf-key': LOGO_CMF_KEY,
+    disabled: false,
+  };
 
   const trigger = (
     <AppActionIcon
@@ -109,7 +119,7 @@ function LogoComponent({ item, className }: BlockProps) {
           name={item.name}
           config={tooltip}
           cmfComponent="sidebar"
-          cmfKey={itemKey(item) || 'logo'}
+          cmfKey={LOGO_CMF_KEY}
         >
           {logo}
         </AppTooltip>

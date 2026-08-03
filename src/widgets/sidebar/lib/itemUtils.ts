@@ -65,9 +65,8 @@ export function hasItemImg(item: HeaderMenuItem): boolean {
   return itemImg(item).length > 0;
 }
 
+/** Visible control title — `name` only. `label` is tooltip/HTML copy (see AppTooltip). */
 export function resolveItemLabel(item: HeaderMenuItem): string {
-  const fromLabel = item.label?.trim() ?? '';
-  if (fromLabel.length > 0) return fromLabel;
   const name = itemName(item);
   if (name.length > 0) return name;
   return itemKey(item);

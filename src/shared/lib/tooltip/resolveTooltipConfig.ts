@@ -21,7 +21,7 @@ export function resolveTooltipConfig(...layers: Array<TooltipSettings | undefine
   for (const layer of layers) {
     if (!layer) continue;
 
-    const { enabled, delay, openDelay, position, withArrow, offset, ...rest } = layer;
+    const { enabled, delay, openDelay, closeDelay, position, withArrow, offset, ...rest } = layer;
 
     current = {
       ...current,
@@ -29,6 +29,7 @@ export function resolveTooltipConfig(...layers: Array<TooltipSettings | undefine
       enabled: enabled ?? current.enabled,
       position: pickUnionValue(TOOLTIP_POSITIONS, position, current.position),
       delay: resolveFiniteNumber(delay ?? openDelay, current.delay),
+      closeDelay: resolveFiniteNumber(closeDelay, current.closeDelay),
       withArrow: withArrow ?? current.withArrow,
       offset: resolveFiniteNumber(offset, current.offset),
     };

@@ -9,6 +9,6 @@ registerBlocks({
   search_leftmenu: Search,
   timer: TimerBlock,
   wheel_mdl: WheelMdlBlock,
-  logo: Logo,
+  aside_header_logo: Logo,
   menuDropdown: DropdownBlock,
 });

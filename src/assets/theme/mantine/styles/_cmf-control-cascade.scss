@@ -1,13 +1,28 @@
-// CMF Button / ActionIcon cascade in CSS (replaces Mantine `vars()` inline styles).
+// =============================================================================
+// CMF Button / ActionIcon — CSS cascade engine
+// =============================================================================
 //
-// IMPORTANT: never self-reassign `--x: var(--token, var(--x))` on the same element —
-// CSS custom-property fallbacks do not see the previous same-element value.
-// Use intermediate layers instead (invalid layer → next):
-//   key → role → component → variant → shared → base(paint/size)
+// HOW TO CHANGE STYLES → edit tokens, not this file:
+//   tokens/widgets/header/tokens.scss
+//   tokens/widgets/sidebar/tokens.scss
+// Full guide: ../cmf/CASCADE.md
+//
+// Winner (first defined token wins):
+//   key → role → component → data-variant → shared → base(paint/size)
+//
+// Token shape:
+//   --cmf-button-{header|sidebar}-{key?}-{prop}
+//   --cmf-action-icon-{header|sidebar}-{key?}-{prop}
+//
+// New menu key for key-layer: add to `$cmf-control-keys` below.
+// Never write `--x: var(--token, var(--x))` on the same node (self-ref breaks).
+// =============================================================================
 
 $cmf-control-sizes: xs, sm, md, lg, xl;
 $cmf-control-components: header, sidebar;
 $cmf-control-roles: parent, child, trigger;
+
+/* Opt-in key layer — must match `data-cmf-key` (Logo uses semantic logo / logo-trigger). */
 $cmf-control-keys:
   logo, home, casino, search, wallet, sign_in, sign_up, color_scheme, notification, bonus_box,
   account, dropdown, logo-trigger, dropdown-trigger, search_leftmenu, timer, wheel_mdl, promo;
@@ -105,7 +120,8 @@ $cmf-ai-variants: map-remove(
   'hero-outline'
 );
 
-/// Public runtime var ← optional layers (invalid → next) ← base.
+/// Resolve public runtime var from intermediate layers (invalid → next).
+/// Layers set by selectors below — do not assign `--_cmf-*` from tokens.
 @mixin cmf-resolve($public, $id) {
   #{$public}: var(
     --_cmf-#{$id}-key,
@@ -123,10 +139,12 @@ $cmf-ai-variants: map-remove(
   --_cmf-#{$id}-base: #{$value};
 }
 
+/// Wire one intermediate layer to a SoT token (unset token → layer invalid → fallthrough).
 @mixin cmf-layer-token($id, $layer, $token) {
   --_cmf-#{$id}-#{$layer}: var(#{$token});
 }
 
+/* ---- props exposed as --cmf-button-* / --cmf-action-icon-* ---- */
 $cmf-button-paint-props: bg, color, bd, hover, hover-color;
 $cmf-button-variant-props:
   height, padding-x, fz, bd-width, shadow, active-position, active-size, active-color, active-inset,
@@ -142,6 +160,9 @@ $cmf-ai-variant-props:
 $cmf-ai-shared-props: radius, radius-disabled;
 $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
 
+/* ========================================================================== */
+/* Button — applied from components.module.scss `.button`                     */
+/* ========================================================================== */
 @mixin cmf-button-cascade {
   /* --- bases (size table + paint + shared defaults) --- */
   @include cmf-layer-base('btn-height', var(--button-height-md));
@@ -311,6 +332,10 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
   }
 }
 
+/* ========================================================================== */
+/* ActionIcon — applied from components.module.scss `.actionIcon`             */
+/* Props use `size` (not `height`). Tokens: --cmf-action-icon-*               */
+/* ========================================================================== */
 @mixin cmf-action-icon-cascade {
   @include cmf-layer-base('ai-size', var(--ai-size-md));
   @include cmf-layer-base('ai-radius', var(--mantine-radius-md));

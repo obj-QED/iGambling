@@ -80,6 +80,28 @@
     --cmf-scrollbar-size: 6px;
     --cmf-scrollbar-radius: 999px;
 
+    /*
+     * Tooltip SoT on :root (portaled floating inherits from html).
+     * Edit here — cascade: key → component → base. Guide: mantine/cmf/CASCADE.md
+     *   --tooltip-{header|sidebar}-{key}-{bg|color|radius|max-width}
+     *   --tooltip-{header|sidebar}-{bg|color|radius|max-width}
+     *   --tooltip-{bg|color|radius|max-width}
+     */
+    --tooltip-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-3));
+    --tooltip-color: light-dark(var(--mantine-color-white), var(--mantine-color-white));
+    --tooltip-radius: var(--mantine-radius-default);
+    --tooltip-max-width: 16rem;
+
+    --tooltip-header-bg: var(--tooltip-bg);
+    --tooltip-header-color: var(--tooltip-color);
+    --tooltip-header-radius: var(--tooltip-radius);
+    --tooltip-header-max-width: var(--tooltip-max-width);
+
+    --tooltip-sidebar-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-6));
+    --tooltip-sidebar-color: var(--mantine-color-white);
+    --tooltip-sidebar-radius: var(--mantine-radius-default);
+    --tooltip-sidebar-max-width: 16rem;
+
     --cmf-button-hero-bg: light-dark(
       color-mix(in srgb, #059669 100%, transparent),
       color-mix(in srgb, #059669 100%, transparent)
@@ -109,7 +131,7 @@
     --color-bg-body: #0f172a;
     --color-text: #f8fafc;
     --color-text-muted: #6b6b6b;
- 
+
     --app-gradient-default: linear-gradient(
       45deg,
       var(--mantine-color-brand-4) 0%,
@@ -129,7 +151,7 @@
     --color-bg-body: #fff;
     --color-text: #0f172a;
     --color-text-muted: #64748b;
- 
+
     --app-gradient-default: linear-gradient(
       45deg,
       var(--mantine-color-brand-4) 0%,

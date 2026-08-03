@@ -48,9 +48,17 @@ describe('isIconOnlyItem', () => {
 });
 
 describe('resolveItemLabel', () => {
-  it('prefers name and falls back to key', () => {
+  it('prefers name and falls back to key (ignores HTML tooltip label)', () => {
     expect(resolveItemLabel({ key: 'search', name: ' Search ', url: '' })).toBe(' Search ');
     expect(resolveItemLabel({ key: 'search', name: '', url: '' })).toBe('search');
+    expect(
+      resolveItemLabel({
+        key: 'logo',
+        name: 'Logo',
+        url: '/',
+        label: 'Tooltip <b>HTML</b> copy',
+      }),
+    ).toBe('Logo');
   });
 });
 

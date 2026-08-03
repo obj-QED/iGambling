@@ -51,7 +51,7 @@
 
     aside: {
       width: 'calc(2.625rem * var(--mantine-scale) + 1.25rem)',
-      type: 'default', // 'default' | 'compact'
+      type: 'compact', // 'default' | 'compact'
       layout: 'container',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: true,
@@ -59,12 +59,14 @@
       /**
        * Tooltip for aside (Mantine-compatible). Omit → pack default.
        * Cascade: pack → aside.tooltip → place override in AppTooltip.
-       * Styles: --tooltip-sidebar-{item|search}-* → --tooltip-sidebar-* → --tooltip-bg|color|radius
+       * Styles (CSS cascade on floating, tokens on :root):
+       * --tooltip-sidebar-{item|search}-max-width|bg|… → --tooltip-sidebar-* → --tooltip-*
        */
       tooltip: {
         enabled: true,
         position: 'right',
-        delay: 200,
+        delay: 100,
+        closeDelay: 50,
         multiline: true,
       },
       /** Global for aside (all types). Omit → pack defaults. Any Mantine ScrollArea prop allowed. */
@@ -103,10 +105,10 @@
           items: [
             {
               img: 'https://999ggg.net/uploads/logo.png',
-              key: 'logo',
+              key: 'aside_header_logo',
               name: 'Logo',
               label:
-                'Tooltip content can be hovered, for example to follow  <a href="https://mantine.dev" target="_blank">this link</a>',
+                'Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  <a href="/" target="_blank">this link</a>',
               type: 'link',
               variant: 'transparent',
             },

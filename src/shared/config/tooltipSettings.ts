@@ -53,6 +53,8 @@ export type TooltipConfig = TooltipMantineSettings & {
   enabled: boolean;
   position: TooltipPosition;
   delay: number;
+  /** Close delay (ms) — needed to move into / select interactive tooltip text. */
+  closeDelay: number;
   withArrow: boolean;
   offset: number;
 };
@@ -61,6 +63,11 @@ export const DEFAULT_TOOLTIP_CONFIG: TooltipConfig = {
   enabled: false,
   position: 'top',
   delay: 0,
+  /**
+   * Keep open long enough to move into the floating label (needs
+   * `pointer-events: auto` on AppTooltip `.tooltip`) and select HTML copy.
+   */
+  closeDelay: 300,
   withArrow: true,
   offset: 5,
 };

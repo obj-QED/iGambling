@@ -14,7 +14,7 @@ export const MENU_HEADER_TOP_GUEST_MOCK: MenuHeaderTopBlockMock = {
       items: [
         {
           url: '/',
-          name: 'Home',
+          name: '',
           key: 'logo',
           img: 'https://999ggg.net/uploads/logo.png',
           type: 'link',
