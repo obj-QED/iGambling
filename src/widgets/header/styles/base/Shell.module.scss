@@ -1,0 +1,11 @@
+@layer widget.base {
+  .sections {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: var(--header-sections-wrap, wrap);
+    min-width: 0;
+    gap: var(--header-section-gap, var(--spacing-md, 1rem));
+    justify-content: var(--header-sections-justify, space-between);
+  }
+}

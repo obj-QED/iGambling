@@ -1,0 +1,55 @@
+// =============================================================================
+// Tooltip CMF cascade (portal → tokens MUST be on `:root`)
+// =============================================================================
+//
+// HOW TO CHANGE STYLES → tokens/theme.scss `:root`:
+//   --tooltip-{header|sidebar}-{key}-{bg|color|radius|max-width}
+//   --tooltip-{header|sidebar}-{bg|color|radius|max-width}
+//   --tooltip-{bg|color|radius|max-width}   (optional alias layer)
+//
+// Winner: key → component → base (engine). Guide: mantine/cmf/CASCADE.md
+// New key: add to `$cmf-tooltip-keys` below.
+// Never `--tooltip-bg: var(--token, var(--tooltip-bg))` on the same node.
+// =============================================================================
+
+$cmf-tooltip-components: header, sidebar;
+$cmf-tooltip-keys:
+  item, search, logo, home, casino, wallet, sign_in, sign_up, color_scheme, notification, bonus_box,
+  account, dropdown, logo-trigger, dropdown-trigger, search_leftmenu, timer, wheel_mdl, promo;
+$cmf-tooltip-props: bg, color, radius, max-width;
+
+@mixin cmf-tooltip-resolve($prop) {
+  --tooltip-#{$prop}: var(
+    --_cmf-tip-#{$prop}-key,
+    var(--_cmf-tip-#{$prop}-comp, var(--_cmf-tip-#{$prop}-base))
+  );
+}
+
+/// Call inside `.tooltip { }`.
+@mixin cmf-tooltip-cascade {
+  --_cmf-tip-bg-base: light-dark(var(--mantine-color-gray-9), var(--mantine-color-gray-2));
+  --_cmf-tip-color-base: light-dark(var(--mantine-color-white), var(--mantine-color-black));
+  --_cmf-tip-radius-base: var(--mantine-radius-default);
+  --_cmf-tip-max-width-base: 16rem;
+
+  @each $prop in $cmf-tooltip-props {
+    @include cmf-tooltip-resolve($prop);
+  }
+  max-width: var(--tooltip-max-width);
+
+  @each $component in $cmf-tooltip-components {
+    &:where([data-cmf-component='#{$component}']) {
+      @each $prop in $cmf-tooltip-props {
+        --_cmf-tip-#{$prop}-comp: var(--tooltip-#{$component}-#{$prop});
+      }
+
+      @each $key in $cmf-tooltip-keys {
+        &:where([data-cmf-key='#{$key}']) {
+          @each $prop in $cmf-tooltip-props {
+            --_cmf-tip-#{$prop}-key: var(--tooltip-#{$component}-#{$key}-#{$prop});
+          }
+        }
+      }
+    }
+  }
+}

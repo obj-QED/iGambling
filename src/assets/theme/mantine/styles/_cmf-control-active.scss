@@ -1,0 +1,76 @@
+// Active edge bar via ::after + corner radius by edge position.
+// Runtime vars: --{prefix}-active-* (from CMF CSS cascade).
+//
+// Prefer unlayered compound selectors (see components.module.scss) so CSS Modules
+// does not emit an empty `.actionIcon {}` / `.button {}` shell.
+
+@mixin cmf-control-shadow($prefix) {
+  box-shadow: var(--#{$prefix}-shadow, none);
+}
+
+@mixin cmf-control-disabled-radius($prefix) {
+  &:where(:disabled, [data-disabled], [aria-disabled='true']) {
+    border-radius: var(--#{$prefix}-radius-disabled, var(--#{$prefix}-radius));
+  }
+}
+
+/// Square the corners on the active edge (`$position`: top | right | bottom | left).
+@mixin cmf-control-active-radius($prefix, $position) {
+  @if $position==bottom {
+    border-bottom-left-radius: var(
+      --#{$prefix}-active-radius-bl,
+      var(--#{$prefix}-active-radius, 0)
+    );
+    border-bottom-right-radius: var(
+      --#{$prefix}-active-radius-br,
+      var(--#{$prefix}-active-radius, 0)
+    );
+  } @else if $position==top {
+    border-top-left-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0));
+    border-top-right-radius: var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0));
+  } @else if $position==left {
+    border-top-left-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0));
+    border-bottom-left-radius: var(
+      --#{$prefix}-active-radius-bl,
+      var(--#{$prefix}-active-radius, 0)
+    );
+  } @else if $position==right {
+    border-top-right-radius: var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0));
+    border-bottom-right-radius: var(
+      --#{$prefix}-active-radius-br,
+      var(--#{$prefix}-active-radius, 0)
+    );
+  }
+}
+
+/// Body of the active indicator (no selector wrapper).
+@mixin cmf-control-active-after-body($prefix, $position: null) {
+  position: relative;
+
+  @if $position {
+    @include cmf-control-active-radius($prefix, $position);
+  } @else {
+    border-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-radius))
+      var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-radius))
+      var(--#{$prefix}-active-radius-br, var(--#{$prefix}-radius))
+      var(--#{$prefix}-active-radius-bl, var(--#{$prefix}-radius));
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    background-color: var(--#{$prefix}-active-color, var(--brand-color-5));
+    inset: var(--#{$prefix}-active-inset, auto 0 0 0);
+    width: var(--#{$prefix}-active-width, 100%);
+    height: var(--#{$prefix}-active-height, 2px);
+  }
+}
+
+/// Nested form: use inside `.button` / `.actionIcon` when those blocks already have other rules.
+@mixin cmf-control-active-after($prefix, $position: null) {
+  &[data-active='true']:where(:not(:disabled, [data-disabled], [aria-disabled='true'])) {
+    @include cmf-control-active-after-body($prefix, $position);
+  }
+}

@@ -1,0 +1,46 @@
+@layer widget.element {
+  .trigger {
+    flex-shrink: 0;
+  }
+
+  /*
+   * Outer shell: same overflow on both axes (`hidden`) so border-radius clips.
+   * Mixed `overflow-x`/`overflow-y` breaks radius clipping in Chromium/WebKit.
+   * Scroll lives on `.scroll` (not Mantine ScrollArea).
+   */
+  .dropdown {
+    --popover-radius: var(--header-deep-menu-radius, var(--mantine-radius-md));
+    --popover-border-color: transparent;
+    z-index: var(--z-index-dropdown, 200);
+    min-width: var(--header-deep-menu-min-width, 14rem);
+    padding: 0;
+    overflow: hidden;
+    color: var(--header-deep-menu-color, var(--mantine-color-text));
+    background: var(--header-deep-menu-bg, var(--mantine-color-body));
+    border: var(--header-deep-menu-bd, 1px solid var(--color-border, transparent));
+    border-radius: var(--popover-radius);
+    box-shadow: var(--header-deep-menu-shadow, none);
+  }
+
+  .scroll {
+    display: flex;
+    flex-direction: column;
+    gap: var(--header-deep-menu-gap, var(--mantine-spacing-xs));
+    max-height: var(
+      --header-deep-menu-max-height,
+      calc(
+        var(--header-deep-menu-padding, var(--mantine-spacing-xs)) * 2 +
+          var(--header-deep-menu-visible-rows, 7) *
+          var(--header-deep-menu-row-height, var(--button-height-md, 2.625rem)) +
+          (var(--header-deep-menu-visible-rows, 7) - 1) *
+          var(--header-deep-menu-gap, var(--mantine-spacing-xs))
+      )
+    );
+    padding: var(--header-deep-menu-padding, var(--mantine-spacing-xs));
+    overflow: hidden auto;
+  }
+
+  .label {
+    color: var(--header-deep-menu-label-color, var(--mantine-color-dimmed));
+  }
+}

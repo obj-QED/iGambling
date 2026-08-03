@@ -1,0 +1,35 @@
+@layer widget.base {
+  .root {
+    display: flex;
+    flex-direction: column;
+    width: var(--app-layout-sidebar-width, 400px);
+    flex-shrink: 0;
+    height: var(--aside-shell-height, 100vh);
+    max-height: var(--aside-shell-max-height, 100vh);
+    min-height: 0;
+    overflow: hidden;
+    padding: var(--aside-shell-padding, var(--mantine-spacing-md));
+    padding-bottom: 0;
+    border-right: 1px solid var(--aside-shell-border-color, var(--mantine-color-dark-4));
+    background-color: var(--aside-shell-bg, var(--mantine-color-body));
+
+    @media (max-width: $tablet) {
+      width: 100%;
+    }
+  }
+
+  .scroll {
+    flex: 1;
+    min-height: 0;
+    margin-inline: calc(var(--aside-shell-padding, var(--mantine-spacing-md)) * -1);
+    padding-inline: var(--aside-shell-padding, var(--mantine-spacing-md));
+
+    /* Theme SoT — do not pass Mantine `scrollbarSize` (inline wins over this). */
+    --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
+  }
+
+  .scrollContent {
+    padding-top: var(--aside-shell-padding-top, var(--mantine-spacing-md));
+    padding-bottom: var(--aside-shell-padding-bottom, var(--mantine-spacing-md));
+  }
+}

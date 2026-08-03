@@ -1,0 +1,45 @@
+@layer page {
+  .root {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    min-width: 0;
+  }
+
+  .aside {
+    flex-shrink: 0;
+    align-self: flex-start;
+    position: sticky;
+    top: 0;
+    z-index: var(--z-index-sticky, 300);
+    height: var(--aside-shell-height, 100vh);
+    max-height: var(--aside-shell-max-height, 100vh);
+    min-height: 0;
+  }
+
+  .content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .header,
+  .banner,
+  .footer {
+    flex-shrink: 0;
+  }
+
+  .page {
+    width: 100%;
+    flex: 1 1 auto;
+    padding-block: var(--spacing-lg, 1.5rem);
+  }
+
+  .infoPageContent {
+    max-width: var(--app-info-page-max-width, 48rem);
+    margin-inline: auto;
+    line-height: 1.6;
+  }
+}

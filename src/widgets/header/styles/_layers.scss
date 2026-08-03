@@ -1,0 +1,9 @@
+// Header widget SCSS layers (nested under global `widget`).
+// Order (weakest → strongest): see `assets/styles/layer-order.css`
+// Tokens SoT: `assets/theme/tokens/widgets/header/tokens.scss` → `[data-widget='header']`
+// widget.base      — shell, surface tokens, sections
+// widget.element   — item primitives (button, dropdown, icon)
+// widget.component — domain blocks (logo, wallet, …) override element
+// widget.layout    — container / regions override component chrome
+// widget.variant   — type skins (last): styles/type/<Name>Type.module.scss
+// Type chrome: compose `.root` from type module onto `<header>` via `resolveHeaderTypeStyles`.

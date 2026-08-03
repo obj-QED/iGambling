@@ -1,0 +1,47 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-standard-scss"],
+  "rules": {
+    "comment-empty-line-before": [
+      "always",
+      {
+        "ignore": ["after-comment"]
+      }
+    ],
+    "no-descending-specificity": null,
+    "property-no-deprecated": null,
+    "custom-property-pattern": null,
+    "custom-property-empty-line-before": null,
+    "value-keyword-case": ["lower", { "ignoreKeywords": ["Georgia", "Outfit"] }],
+    "property-no-vendor-prefix": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global", "local"]
+      }
+    ],
+    "rule-empty-line-before": [
+      "always",
+      {
+        "except": ["first-nested"],
+        "ignore": ["after-comment"]
+      }
+    ],
+    "declaration-empty-line-before": "never",
+    "block-closing-brace-empty-line-before": "never"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.module.scss"],
+      "extends": ["./stylelint.module-scss.json"],
+      "rules": {
+        "selector-class-pattern": null
+      }
+    },
+    {
+      "files": ["src/assets/theme/mantine/**/*.scss"],
+      "rules": {
+        "selector-class-pattern": null
+      }
+    }
+  ]
+}

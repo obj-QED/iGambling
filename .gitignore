@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+
+# Yarn Berry — local install cache; regenerate via `yarn install`
+.yarn/install-state.gz
+
+# Build
+dist/
+
+# Vite
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# Env (секреты — не коммитить)
+.env
+.env.local
+.env.*.local
+
+# Logs & cache
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.cache/
+.parcel-cache/
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Optional
+*.pem
+.cursor/*
+!.cursor/agents/
+!.cursor/agents/**
+!.cursor/rules/
+!.cursor/rules/**
+!.cursor/hooks.json
+!.cursor/hooks/
+!.cursor/hooks/**
+!.cursor/GLOBAL_SETUP.md
+!.cursor/skills/
+!.cursor/skills/**/SKILL.md
+
+ai-rules/
+!ai-rules/
+!ai-rules/*.md
+
+docs/*
+.cursorrules
+.cursor/*
+ai-rules/*
+scripts/*
+
+*storybook.log
+storybook-static
+reports/

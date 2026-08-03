@@ -1,0 +1,147 @@
+/**
+ * App settings. Server-side builds may override `dist/settings.js`.
+ * Build merges everything under `src/assets/settings/` into `dist/settings.js` (sorted by filename).
+ */
+(function () {
+  window.__SETTINGS__ = window.__SETTINGS__ || {};
+  Object.assign(window.__SETTINGS__, {
+    appName: 'iGambling',
+    version: '1.0.0',
+    params: {
+      /** Mobile/tablet: enter browser fullscreen on first scroll. Set `false` to disable. */
+      fullWidth: true, // * TODO: rename to fullscreen
+    },
+    header: {
+      layout: 'container',
+      type: 'dropdown', // omit / empty → 'dropdown'; 'default' | 'custom' | 'dropdown' | …
+      /** `true` → header menu from `src/widgets/header/mocks` */
+      mockMenu: true,
+      /**
+       * Global adapter variants for special blocks — apply wherever they render
+       * (default bar, dropdown outside row, …). Per-type override: `types.<type>.blockVariants`.
+       * Values are open strings: use a key registered on that block’s variant registry
+       * (e.g. search: compact|icon|input|modal, wallet: compact|full|drawer).
+       * Unknown / omitted → `compact`.
+       */
+      blockVariants: {
+        search: 'compact',
+        wallet: 'compact',
+      },
+
+      tooltip: {
+        enabled: true,
+        position: 'bottom',
+        delay: 200,
+      },
+
+      customBlocks: [
+        // Into existing API section row (no new section):
+        //   { section: 'block3', at: 'start' | 'end' | 0 | 1 | … }
+        // New section in header layout:
+        //   { header: 'start' | 'end' }
+        //   { beforeSection: 'block1' } | { afterSection: 'block3' }
+        // Legacy: 'prepend' | 'append' | { sectionKey, position }
+        {
+          key: 'block3-tools',
+          placement: { section: 'block3', at: 'end' },
+          items: [{ key: 'color_scheme', label: 'Color scheme' }],
+        },
+      ],
+    },
+
+    aside: {
+      width: 'calc(2.625rem * var(--mantine-scale) + 1.25rem)',
+      type: 'compact', // 'default' | 'compact'
+      layout: 'container',
+      /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
+      mockMenu: true,
+      openedDropdowns: ['category', 'providers', 'live_games', 'casino', 'betting'],
+      /**
+       * Tooltip for aside (Mantine-compatible). Omit → pack default.
+       * Cascade: pack → aside.tooltip → place override in AppTooltip.
+       * Styles (CSS cascade on floating, tokens on :root):
+       * --tooltip-sidebar-{item|search}-max-width|bg|… → --tooltip-sidebar-* → --tooltip-*
+       */
+      tooltip: {
+        enabled: true,
+        position: 'right',
+        delay: 100,
+        closeDelay: 50,
+        multiline: true,
+      },
+      /** Global for aside (all types). Omit → pack defaults. Any Mantine ScrollArea prop allowed. */
+      scrollArea: {
+        scrollbarSize: 4,
+        scrollHideDelay: 3000,
+        type: 'auto',
+        overscrollBehavior: 'contain',
+        offsetScrollbars: true,
+      },
+      // Special blocks for header and footer, key: ['logo', 'search_leftmenu', 'wheel_mdl', 'timer']
+      customBlocks: [
+        // Into existing API section (creates section if missing — e.g. header/footer):
+        //   { section: 'header', at: 'start' | 'end' | 0 | 1 | … }
+        // New section at start/end of aside menu:
+        //   { header: 'start' | 'end' }  — section key = customBlocks[].key
+        {
+          key: 'header',
+          placement: { header: 'start' },
+          items: [
+            {
+              url: '/profile',
+              name: 'Developer',
+              key: 'account',
+              img: 'public/icons/tabler/user.svg',
+              imgRadius: 'round',
+              subtitle: 'developer@example.com',
+              type: 'link',
+              variant: 'transparent',
+            },
+          ],
+        },
+        {
+          key: 'logo-rail',
+          placement: { section: 'header', at: 'start' },
+          items: [
+            {
+              img: 'https://999ggg.net/uploads/logo.png',
+              key: 'aside_header_logo',
+              name: 'Logo',
+              label:
+                'Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  <a href="/" target="_blank">this link</a>',
+              type: 'link',
+              variant: 'transparent',
+            },
+          ],
+        },
+        {
+          key: 'footer',
+          placement: { section: 'footer', at: 'start' },
+          items: [
+            {
+              url: '/account/switch',
+              name: 'Change account',
+              key: 'change_account',
+              type: 'link',
+              variant: 'transparent',
+            },
+            {
+              url: '/logout',
+              name: 'Logout',
+              key: 'logout',
+              type: 'button',
+              variant: 'outline',
+            },
+          ],
+        },
+      ],
+      /**
+       * Per-type regions only (layout gates). Pack-specific blocks stay in Strategy / pack.blocks.
+       * types.compact.regions.header = false → hide header chrome in Strategy.
+       */
+      // types: {
+      //   compact: { regions: { header: true, main: true, footer: true } },
+      // },
+    },
+  });
+})();

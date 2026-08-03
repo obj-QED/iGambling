@@ -1,0 +1,170 @@
+/**
+ * Header widget tokens — SoT for `[data-widget='header']`.
+ * Flat CSS vars only (edit here / prod theme.css — no Sass mixins).
+ *
+ * CMF Button / ActionIcon — change look HERE:
+ *   --cmf-button-header-{key?}-{prop}       e.g. --cmf-button-header-sign_in-bg
+ *   --cmf-action-icon-header-{key?}-{prop}  e.g. --cmf-action-icon-header-home-color
+ * Winner: key → role → component → data-variant → shared → base
+ * Cascade engine: mantine/styles/_cmf-control-cascade.scss
+ * Guide: mantine/cmf/CASCADE.md
+ * Tooltip tokens live on :root in tokens/theme.scss (portal).
+ */
+
+@mixin header-root-tokens {
+  /* Mantine size keys (useHeaderMenuSizesFromElement) — SoT for control size */
+  --header-size-button: md;
+  --header-size-link: md;
+  --header-size-action-icon: md;
+
+  /* Surface */
+  --header-surface-bg: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8));
+  --header-surface-border-color: light-dark(
+    var(--mantine-color-gray-3),
+    var(--mantine-color-dark-4)
+  );
+  --header-surface-border-width: 0;
+  --header-surface-shadow: none;
+  --header-surface-backdrop-filter: none;
+
+  /* Shell */
+  --header-height: auto;
+  --header-padding-x: 0;
+  --header-padding-y: 10px;
+  --header-section-gap: var(--spacing-md, 1rem);
+  --header-block-gap: var(--spacing-xs, 0.25rem);
+  --header-text-color: var(--color-text, inherit);
+
+  /* Logo */
+  --header-logo-height: var(--button-height, 2.625rem);
+  --header-logo-width: 120px;
+  --cmf-button-header-logo-padding-x: 0;
+
+  /* Chevron */
+  --header-chevron-icon-size: var(--cmf-button-md-fz, 1rem);
+  --header-chevron-transition: 200ms ease;
+
+  /* Bonus box */
+  --header-bonus-box-bg: var(--cmf-action-icon-default-bg, var(--mantine-color-default));
+  --header-bonus-box-color: var(--cmf-action-icon-default-color, var(--mantine-color-text));
+  --header-bonus-box-radius: var(--cmf-action-icon-radius, var(--mantine-radius-md));
+  --header-bonus-box-bd: var(--cmf-action-icon-default-bd, transparent);
+
+  /* Button / ActionIcon CMF — see file header + mantine/cmf/CASCADE.md */
+  --cmf-button-header-radius: var(--cmf-button-radius, var(--mantine-radius-md));
+  --cmf-button-header-justify: center;
+
+  /* ActionIcon CMF (component scope) */
+  --cmf-action-icon-header-home-color: var(--brand-color-5);
+  --cmf-action-icon-header-home-hover-color: var(--brand-color-4);
+
+  --cmf-action-icon-header-size: calc(2.625rem * var(--mantine-scale));
+
+  /* Home icon radius */
+  --cmf-action-icon-header-home-radius: 0;
+  --cmf-action-icon-header-radius-disabled: var(--mantine-radius-md);
+
+  /* Icons: --cmf-*-header-{key?}-icon-* — full order in CASCADE.md */
+  --cmf-action-icon-header-icon-scale: 0.7;
+  --cmf-action-icon-header-icon-aspect: 1;
+  --cmf-button-header-icon-scale: 0.7;
+  --cmf-button-header-icon-aspect: 1;
+
+  /*
+   * Active bar — flat vars only (prod theme may replace this file without Sass).
+   * Cascade: key → component → data-variant → fallback
+   */
+  --cmf-button-header-active-position: bottom;
+  --cmf-button-header-active-size: 2px;
+  --cmf-button-header-active-color: var(--brand-color-5);
+  --cmf-button-header-active-inset: auto 0 0 0;
+  --cmf-button-header-active-width: 100%;
+  --cmf-button-header-active-height: var(--cmf-button-header-active-size);
+
+  --cmf-action-icon-header-active-position: bottom;
+  --cmf-action-icon-header-active-size: 2px;
+  --cmf-action-icon-header-active-color: var(--brand-color-5);
+  --cmf-action-icon-header-active-inset: auto 0 0 0;
+  --cmf-action-icon-header-active-width: 100%;
+  --cmf-action-icon-header-active-height: var(--cmf-action-icon-header-active-size);
+
+  --cmf-action-icon-header-wallet-radius: 0;
+  --cmf-action-icon-header-color_scheme-bd: light-dark(
+    var(--mantine-color-gray-3),
+    var(--mantine-color-dark-4)
+  );
+
+  /* Button and ActionIcon border width */
+  --cmf-button-header-bd-width: calc(0.0625rem * var(--mantine-scale));
+  --cmf-action-icon-header-bd-width: calc(0.0625rem * var(--mantine-scale));
+  --cmf-button-header-sign_in-bd-width: calc(0.0625rem * var(--mantine-scale));
+
+  /*
+   * `type: dropdown` — deep menu chrome.
+   * Row / trigger paint: `--cmf-*-header-dropdown-*` (independent from bar `--cmf-*-header-*`).
+   * Surfaces via `light-dark(light, dark)` — readable contrast in both schemes.
+   */
+  &[data-type='dropdown'] {
+    --cmf-action-icon-header-dropdown-size: calc(2.625rem * var(--mantine-scale));
+
+    --header-deep-menu-min-width: 14rem;
+    --header-deep-menu-padding: var(--mantine-spacing-xs);
+    --header-deep-menu-gap: var(--mantine-spacing-xs);
+    --header-deep-menu-visible-rows: 7;
+    --header-deep-menu-row-height: var(--button-height-md, 2.625rem);
+    --header-deep-menu-radius: var(--mantine-radius-md);
+
+    /* Panel chrome */
+    --header-deep-menu-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-6));
+    --header-deep-menu-color: light-dark(var(--mantine-color-dark-9), var(--mantine-color-gray-0));
+    --header-deep-menu-bd: 1px solid
+      light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    --header-deep-menu-label-color: light-dark(
+      var(--mantine-color-gray-6),
+      var(--mantine-color-dark-1)
+    );
+    --header-deep-menu-shadow: light-dark(
+      var(--shadow-md, 0 4px 12px rgb(15 23 42 / 12%)),
+      var(--shadow-md, 0 4px 12px rgb(0 0 0 / 35%))
+    );
+
+    /* Logo keeps its own transparent shell */
+    --cmf-button-header-logo-bg: transparent;
+    --cmf-button-header-logo-hover: transparent;
+    --cmf-button-header-logo-bd: transparent;
+    --cmf-button-header-logo-padding-x: 0;
+
+    /* Deep menu rows — component scope `header-dropdown` */
+    --cmf-button-header-dropdown-bg: light-dark(
+      var(--mantine-color-gray-0),
+      var(--mantine-color-dark-5)
+    );
+    --cmf-button-header-dropdown-color: light-dark(
+      var(--mantine-color-dark-9),
+      var(--mantine-color-gray-0)
+    );
+    --cmf-button-header-dropdown-hover: light-dark(
+      var(--mantine-color-gray-2),
+      var(--mantine-color-dark-4)
+    );
+    --cmf-button-header-dropdown-hover-color: light-dark(
+      var(--mantine-color-black),
+      var(--mantine-color-white)
+    );
+    --cmf-button-header-dropdown-bd: light-dark(
+      var(--mantine-color-gray-2),
+      var(--mantine-color-dark-4)
+    );
+    --cmf-button-header-dropdown-justify: flex-start;
+
+    /* Trigger / icons inside deep menu */
+    --cmf-action-icon-header-dropdown-trigger-color: light-dark(
+      var(--mantine-color-gray-0),
+      var(--mantine-color-gray-2)
+    );
+    --cmf-action-icon-header-dropdown-trigger-hover-color: light-dark(
+      var(--mantine-color-gray-1),
+      var(--mantine-color-white)
+    );
+  }
+}

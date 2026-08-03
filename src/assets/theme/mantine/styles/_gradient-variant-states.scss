@@ -1,0 +1,20 @@
+// Mantine hover uses `background-color`; gradients need `background-image`.
+@mixin gradient-variant-hover($prefix) {
+  &[data-variant='gradient']:where(:not(:disabled, [data-disabled], [data-loading])) {
+    @media (hover: hover) {
+      &:hover {
+        background-color: transparent;
+        background-image: var(--#{$prefix}-hover);
+        color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
+      }
+    }
+
+    @media (hover: none) {
+      &:active {
+        background-color: transparent;
+        background-image: var(--#{$prefix}-hover);
+        color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
+      }
+    }
+  }
+}

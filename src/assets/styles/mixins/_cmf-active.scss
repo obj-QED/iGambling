@@ -1,0 +1,41 @@
+/**
+ * Optional Sass helper — DO NOT use in widget `tokens.scss`.
+ * Prod theme is flat CSS vars only (`--cmf-button-{component}-active-*`).
+ * Prefer editing those vars in header/sidebar tokens or dist theme.css.
+ */
+@mixin cmf-active-bar-tokens($control,
+  $variant,
+  $position,
+  $size: 2px,
+  $color: var(--brand-color-5),
+  $radius: 0px) {
+  --cmf-#{$control}-#{$variant}-active-position: #{$position};
+  --cmf-#{$control}-#{$variant}-active-size: #{$size};
+  --cmf-#{$control}-#{$variant}-active-color: #{$color};
+
+  @if $position==bottom {
+    --cmf-#{$control}-#{$variant}-active-inset: auto 0 0 0;
+    --cmf-#{$control}-#{$variant}-active-width: 100%;
+    --cmf-#{$control}-#{$variant}-active-height: #{$size};
+    --cmf-#{$control}-#{$variant}-active-radius-bl: #{$radius};
+    --cmf-#{$control}-#{$variant}-active-radius-br: #{$radius};
+  } @else if $position==top {
+    --cmf-#{$control}-#{$variant}-active-inset: 0 0 auto 0;
+    --cmf-#{$control}-#{$variant}-active-width: 100%;
+    --cmf-#{$control}-#{$variant}-active-height: #{$size};
+    --cmf-#{$control}-#{$variant}-active-radius-tl: #{$radius};
+    --cmf-#{$control}-#{$variant}-active-radius-tr: #{$radius};
+  } @else if $position==left {
+    --cmf-#{$control}-#{$variant}-active-inset: 0 auto 0 0;
+    --cmf-#{$control}-#{$variant}-active-width: #{$size};
+    --cmf-#{$control}-#{$variant}-active-height: 100%;
+    --cmf-#{$control}-#{$variant}-active-radius-tl: #{$radius};
+    --cmf-#{$control}-#{$variant}-active-radius-bl: #{$radius};
+  } @else if $position==right {
+    --cmf-#{$control}-#{$variant}-active-inset: 0 0 0 auto;
+    --cmf-#{$control}-#{$variant}-active-width: #{$size};
+    --cmf-#{$control}-#{$variant}-active-height: 100%;
+    --cmf-#{$control}-#{$variant}-active-radius-tr: #{$radius};
+    --cmf-#{$control}-#{$variant}-active-radius-br: #{$radius};
+  }
+}

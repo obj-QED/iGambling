@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "types": ["node"],
+    "baseUrl": "..",
+    "paths": {
+      "@/*": ["src/*"],
+      "@ui": ["src/shared/ui"],
+      "@ui/*": ["src/shared/ui/*"],
+      "@schemas": ["src/schemas"],
+      "@schemas/*": ["src/schemas/*"],
+      "@shared/*": ["src/shared/*"],
+      "@api/*": ["src/api/*"],
+      "@store": ["src/store/index.ts"],
+      "@store/*": ["src/store/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@pages": ["src/pages/index.ts"],
+      "@pages/*": ["src/pages/*"]
+    }
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "../src/vite-env.d.ts",
+    "../src/**/*.stories.@(ts|tsx)",
+    "../src/storybook/**/*.ts",
+    "../src/storybook/**/*.tsx",
+    "../build/scss-config.ts"
+  ]
+}

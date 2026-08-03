@@ -1,0 +1,37 @@
+name: Setup Node and Yarn
+description: Node 22 + Corepack + Yarn version from packageManager (no Yarn 1 fallback)
+
+inputs:
+  node-version:
+    description: Node.js version
+    required: false
+    default: "22"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Enable Corepack
+      shell: bash
+      run: corepack enable
+
+    - name: Activate Yarn from packageManager
+      shell: bash
+      run: |
+        YARN_VERSION=$(node -p "require('./package.json').packageManager.split('@')[1]")
+        corepack prepare "yarn@${YARN_VERSION}" --activate
+        yarn --version
+
+    - uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock', '.yarnrc.yml') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: Install dependencies
+      shell: bash
+      run: yarn install --immutable

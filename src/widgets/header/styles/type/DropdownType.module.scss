@@ -1,0 +1,36 @@
+/**
+ * Dropdown header type — desktop full shell + mobile exceptions / DeepPanel.
+ * `.root` composes onto `<header>` via `resolveHeaderTypeStyles`.
+ * `.desktop` / `.mobile` / `.outside` used by `DropdownTypeStrategy`.
+ */
+
+@layer widget.variant {
+  .root {
+    min-width: 0;
+  }
+}
+
+@layer widget.base {
+
+  /* Desktop: full section shell. Mobile: exceptions + DeepPanel only. */
+  .desktop {
+    display: block;
+
+    @media (max-width: $tablet) {
+      display: none;
+    }
+  }
+
+  .mobile {
+    display: none;
+
+    @media (max-width: $tablet) {
+      display: block;
+    }
+  }
+
+  .outside {
+    flex: 1;
+    min-width: 0;
+  }
+}

@@ -1,0 +1,25 @@
+@use './cmf-tooltip-cascade' as tip;
+
+@layer fdd-base {
+  .target {
+    display: inline-flex;
+    max-width: 100%;
+
+    /* Do not clip ActionIcon/Button `[data-active]::after` edge bar. */
+    overflow: visible;
+  }
+
+  /*
+   * Mantine Tooltip defaults to `pointer-events: none` — cursor never enters the
+   * floating node, so close fires immediately and text cannot be selected.
+   * Pair with `closeDelay` so the pointer can cross the offset gap first.
+   *
+   * Paint / radius / max-width: CSS cascade via data-cmf-* (see `_cmf-tooltip-cascade.scss`).
+   */
+  .tooltip {
+    @include tip.cmf-tooltip-cascade;
+    pointer-events: auto;
+    user-select: text;
+    cursor: text;
+  }
+}

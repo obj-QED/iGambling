@@ -1,0 +1,8 @@
+@layer widget.element {
+  .root {
+
+    /* Header menu row: intrinsic width — do not shrink under flex (clips label). */
+    flex-shrink: 0;
+    width: auto;
+  }
+}

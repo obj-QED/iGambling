@@ -1,0 +1,10 @@
+/**
+ * Default header type — section shell.
+ * Extend here (or add sibling `*Type.module.scss`) for type-specific chrome.
+ */
+
+@layer widget.variant {
+  .root {
+    min-width: 0;
+  }
+}

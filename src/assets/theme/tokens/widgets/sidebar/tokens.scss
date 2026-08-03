@@ -1,0 +1,139 @@
+/**
+ * Sidebar (aside) widget tokens — SoT for `[data-widget='sidebar']`.
+ * Flat CSS vars only (edit here / prod theme.css — no Sass mixins).
+ *
+ * CMF Button / ActionIcon — change look HERE:
+ *   --cmf-button-sidebar-{key?}-{prop}       e.g. --cmf-button-sidebar-account-height
+ *   --cmf-action-icon-sidebar-{key?}-{prop}  e.g. --cmf-action-icon-sidebar-logo-trigger-size
+ * Winner: key → role → component → data-variant → shared → base
+ * Logo cascade keys: `logo` / `logo-trigger` (not API aside_header_logo*)
+ * Cascade engine: mantine/styles/_cmf-control-cascade.scss
+ * Guide: mantine/cmf/CASCADE.md
+ * Tooltip tokens live on :root in tokens/theme.scss (portal).
+ */
+
+@mixin sidebar-root-tokens {
+  /* Mantine size key (useAsideMenuButtonSizeFromElement) */
+  --aside-size-button: sm;
+  --aside-size-button-logo: md;
+
+  /* Header strip */
+  --aside-header-gap: var(--spacing-xs, 0.375rem);
+  --aside-header-color: inherit;
+  --aside-header-border-color: var(--mantine-color-dark-4);
+  --cmf-button-sidebar-account-height: 2.5rem;
+  --aside-header-avatar-size: 1.5rem;
+  --cmf-button-sidebar-account-padding-x: 10px;
+  --cmf-button-sidebar-account-hover: light-dark(
+    var(--mantine-color-gray-2),
+    var(--mantine-color-dark-4)
+  );
+
+  /* Footer strip */
+  --aside-footer-gap: var(--spacing-xs, 0.5rem);
+  --aside-footer-border-color: var(--mantine-color-dark-4);
+
+  /* Menu */
+  --aside-menu-gap: var(--spacing-xs, 0.375rem);
+  --aside-menu-radius: var(--radius-sm, 0.5rem);
+  --aside-menu-fz: var(--mantine-font-size-sm, 0.875rem);
+  --aside-menu-dropdown-indent: var(--spacing-sm, 0.5rem);
+
+  /* Chevron */
+  --aside-menu-chevron-size: var(--mantine-font-size-md);
+  --aside-menu-chevron-transition: 200ms ease;
+
+  /*
+   * Scrollbar — set concrete colors here (do NOT wrap `--cmf-scrollbar-*`:
+   * globals are always defined on :root, so aliases never reach these fallbacks).
+   * Mixin reads: --aside-scrollbar-* → --cmf-scrollbar-* → brand.
+   */
+  --aside-scrollbar-track: var(--brand-color-9);
+  --aside-scrollbar-thumb: var(--brand-color-6);
+  --aside-scrollbar-thumb-hover: var(--brand-color-6);
+  --aside-scrollbar-size: 4px;
+  --aside-scrollbar-radius: 999px;
+
+  /* Button / ActionIcon CMF — see file header + mantine/cmf/CASCADE.md */
+  --cmf-button-sidebar-radius: var(--cmf-button-radius, var(--mantine-radius-md));
+  --cmf-button-sidebar-justify: flex-start;
+
+  /* ActionIcon CMF (component scope) */
+  --cmf-action-icon-sidebar-radius: var(--cmf-action-icon-radius, var(--mantine-radius-md));
+
+  /*
+   * Dropdown: data-cmf-role (trigger→parent, nested→child). Token layers:
+   *   --cmf-*-sidebar-dropdown-{key|role|}-{prop} then variant / shared
+   */
+
+  /*
+   * Icons: --cmf-button|action-icon-sidebar-{key?}-icon-{scale|aspect|width|height}
+   * Avoid bare % on Button icons. Full order in CASCADE.md.
+   */
+  --cmf-icon-shape: rect;
+  --cmf-button-sidebar-icon-scale: 0.7;
+  --cmf-button-sidebar-icon-aspect: 1.5;
+  --cmf-action-icon-sidebar-icon-scale: 0.7;
+  --cmf-action-icon-sidebar-icon-aspect: 1.5;
+
+  /*
+   * Active bar — flat vars only (prod theme may replace this file without Sass).
+   * Cascade: key → component → data-variant → fallback
+   */
+  --cmf-button-sidebar-active-position: left;
+  --cmf-button-sidebar-active-size: 2px;
+  --cmf-button-sidebar-active-color: var(--brand-color-5);
+  --cmf-button-sidebar-active-inset: 0 auto 0 0;
+  --cmf-button-sidebar-active-width: var(--cmf-button-sidebar-active-size);
+  --cmf-button-sidebar-active-height: 100%;
+
+  --cmf-button-sidebar-active-radius-tl: 0px;
+  --cmf-button-sidebar-active-radius-bl: 0px;
+
+  --cmf-action-icon-sidebar-active-position: left;
+  --cmf-action-icon-sidebar-active-size: 2px;
+  --cmf-action-icon-sidebar-active-color: var(--brand-color-5);
+  --cmf-action-icon-sidebar-active-inset: 0 auto 0 0;
+  --cmf-action-icon-sidebar-active-width: var(--cmf-action-icon-sidebar-active-size);
+  --cmf-action-icon-sidebar-active-height: 100%;
+
+  // --cmf-action-icon-sidebar-active-radius-tl: 0px;
+  // --cmf-action-icon-sidebar-active-radius-bl: 0px;
+
+  --cmf-action-icon-sidebar-logo-trigger-size: calc(2.25rem * var(--mantine-scale));
+  --cmf-button-sidebar-logo-padding-x: 0;
+  --cmf-button-sidebar-logo-height: calc(2.25rem * var(--mantine-scale));
+  --cmf-action-icon-sidebar-logo-trigger-icon-scale: 1.25;
+  --header-logo-width: 120px;
+
+  --tooltip-sidebar-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-7));
+  --tooltip-sidebar-color: var(--mantine-color-white);
+  --tooltip-sidebar-radius: var(--mantine-radius-default);
+  --tooltip-sidebar-max-width: 10rem;
+
+  /*
+   * `type: compact` — ActionIcon-only rail (edit here).
+   * Applied when `[data-widget='sidebar'][data-type='compact']`.
+   */
+  &[data-type='compact'] {
+    --aside-size-button: md;
+    --aside-shell-padding: var(--mantine-spacing-xs);
+    --aside-menu-gap: var(--spacing-xs, 0.25rem);
+
+    /* Square md ActionIcon (same box as Mantine `size="md"`) */
+    --cmf-action-icon-sidebar-size: calc(2.625rem * var(--mantine-scale));
+    --cmf-action-icon-sidebar-dropdown-size: calc(2.625rem * var(--mantine-scale));
+    --cmf-action-icon-sidebar-icon-aspect: 0.75;
+    --cmf-action-icon-sidebar-icon-scale: 0.75;
+    --cmf-action-icon-sidebar-bg: var(--mantine-color-default);
+    --cmf-action-icon-sidebar-color: var(--mantine-color-default-color);
+    --cmf-action-icon-sidebar-hover: var(--mantine-color-default-hover);
+    --cmf-action-icon-sidebar-hover-color: var(--mantine-color-text);
+
+    /* Compact dropdown chevron — corner badge on ActionIcon */
+    --aside-menu-chevron-size: 0.75rem;
+    --aside-menu-compact-dropdown-trigger-margin-left: 6px; /* Compact logo block */
+    --cmf-action-icon-sidebar-logo-trigger-bg: transparent;
+    --cmf-action-icon-sidebar-logo-trigger-hover: transparent;
+  }
+}
