@@ -69,7 +69,7 @@ function LogoComponent({ item, className }: BlockProps) {
   const variant = resolveLogoControlVariant(item);
   const triggerItem = resolveTriggerItem(item);
   const triggerAttrs = { ...menuItemDataAttrs(triggerItem), disabled: false };
-  const logoAttrs = menuItemDataAttrs(item);
+  const logoAttrs = { ...menuItemDataAttrs(item), disabled: false };
 
   const trigger = (
     <AppActionIcon

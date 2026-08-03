@@ -13,21 +13,24 @@
     },
     header: {
       layout: 'container',
-      type: 'dropdown',
+      type: 'default',
       /** `true` → header menu from `src/widgets/header/mocks` */
       mockMenu: true,
       /**
        * Per-type tunables. Omit a type key → pack defaults.
        * Legacy top-level `blockVariants` still works (nested wins).
        */
-      types: {
-        dropdown: {
-          blockVariants: {
-            // search: 'icon',
-            // wallet: 'compact',
-          },
-        },
+      blockVariants: {
+        search: 'compact',
+        wallet: 'compact',
       },
+
+      tooltip: {
+        enabled: true,
+        position: 'bottom',
+        delay: 200,
+      },
+
       customBlocks: [
         // Into existing API section row (no new section):
         //   { section: 'block3', at: 'start' | 'end' | 0 | 1 | … }
@@ -38,7 +41,7 @@
         {
           key: 'block3-tools',
           placement: { section: 'block3', at: 'end' },
-          items: [{ key: 'color_scheme' }],
+          items: [{ key: 'color_scheme', label: 'Color scheme' }],
         },
       ],
     },
@@ -59,6 +62,7 @@
         enabled: true,
         position: 'right',
         delay: 200,
+        multiline: true,
       },
       /** Global for aside (all types). Omit → pack defaults. */
       scrollArea: {
@@ -66,6 +70,8 @@
         scrollHideDelay: 3000,
         type: 'auto',
         overscrollBehavior: 'contain',
+        offsetScrollbars: true,
+        verticalScrollbarPosition: 'left',
       },
       // Special blocks for header and footer, key: ['logo', 'search_leftmenu', 'wheel_mdl', 'timer']
       customBlocks: [
@@ -97,8 +103,8 @@
               img: 'https://999ggg.net/uploads/logo.png',
               key: 'logo',
               name: 'Logo',
-              label: 'Get Home',
-              url: '/',
+              label:
+                'Tooltip content can be hovered, for example to follow  <a href="https://mantine.dev" target="_blank">this link</a>',
               type: 'link',
               variant: 'transparent',
             },

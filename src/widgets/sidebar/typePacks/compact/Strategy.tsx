@@ -46,7 +46,7 @@ function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) 
         <ScrollArea
           className={styles.scroll}
           classNames={{
-            content: styles.scrollContent,
+            root: styles.scrollContent,
             scrollbar: scrollAreaStyles.scrollbar,
             thumb: scrollAreaStyles.thumb,
           }}
@@ -56,6 +56,7 @@ function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) 
           type={scrollArea.type}
           overscrollBehavior={scrollArea.overscrollBehavior}
           scrollHideDelay={scrollArea.scrollHideDelay}
+          {...scrollArea}
         >
           <Shell>
             {mainSections.map((section) => {
