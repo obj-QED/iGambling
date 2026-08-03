@@ -11,7 +11,7 @@ import { AppActionIcon } from '@/elements';
 import { AppLogo, AppTooltip } from '@/shared/ui';
 
 import { useSidebarConfig } from '../../../context';
-import { useAsideMenuButtonSize } from '../../../hooks';
+import { useAsideMenuButtonSize, useMenuItemRenderable } from '../../../hooks';
 import {
   itemKey,
   menuItemDataAttrs,
@@ -22,25 +22,40 @@ import { useSidebarTypePack } from '../../../typePacks';
 
 import styles from './styles.module.scss';
 
-/** Fallback for AppLogo / aria when item has neither `label` nor `name`. */
+/** Fallback aria when item has neither `label` nor `name` but still shows an image. */
 const LOGO_FALLBACK_LABEL = 'Logo';
 const LOGO_TRIGGER_KEY_SUFFIX = '-trigger';
 /** Cascade SoT keys — match `--cmf-*-sidebar-logo*` / `--cmf-*-sidebar-logo-trigger-*` tokens. */
 const LOGO_CMF_KEY = 'logo';
 const LOGO_TRIGGER_CMF_KEY = 'logo-trigger';
 
-/** Visible / aria title — `name` only. `label` is tooltip HTML (AppTooltip). */
-function resolveLogoLabel(item: { label?: string; name?: string }): string {
-  const fromName = item.name?.trim() ?? '';
-  if (fromName.length > 0) return fromName;
-  return LOGO_FALLBACK_LABEL;
+/** Visible / aria title — `name` only (empty allowed; AppLogo hides when no name + no img). */
+function resolveLogoName(item: { name?: string }): string {
+  return item.name?.trim() ?? '';
 }
 
-function LogoMark({ label, img, className }: { label: string; img?: string; className?: string }) {
+function LogoMark({
+  label,
+  img,
+  className,
+  onError,
+}: {
+  label: string;
+  img?: string;
+  className?: string;
+  onError?: () => void;
+}) {
   const hasImg = (img?.length ?? 0) > 0;
   if (hasImg) {
     return (
-      <img className={clsx(styles.mark, className)} src={img} alt="" aria-hidden decoding="async" />
+      <img
+        className={clsx(styles.mark, className)}
+        src={img}
+        alt=""
+        aria-hidden
+        decoding="async"
+        onError={onError}
+      />
     );
   }
   return <span className={clsx(styles.markText, className)}>{label}</span>;
@@ -57,17 +72,23 @@ function resolveTriggerItem(item: HeaderMenuItem): HeaderMenuItem {
 
 /**
  * Two controls:
- * - `data-key` = item key / `{item.key}-trigger` (identity)
- * - `data-cmf-key` = `logo` / `logo-trigger` (token cascade — not the API key)
+ * - trigger when `menuIcon: true` — `data-cmf-key="logo-trigger"`
+ * - mark when name and/or working img — `data-cmf-key="logo"`
+ * Hide mark when no img (or onError) and no name.
  */
 function LogoComponent({ item, className }: BlockProps) {
   const { tooltip } = useSidebarConfig();
   const { itemKind } = useSidebarTypePack();
   const size = useAsideMenuButtonSize();
+  const { visible, onImgError, showItemImg } = useMenuItemRenderable(item);
   const isCompact = itemKind === 'actionIcon';
+  const showTrigger = item.menuIcon === true;
+
+  if (!showTrigger && !visible) return null;
 
   const href = resolveItemHref(item.url);
-  const label = resolveLogoLabel(item);
+  const name = resolveLogoName(item);
+  const ariaLabel = name.length > 0 ? name : LOGO_FALLBACK_LABEL;
   const variant = resolveLogoControlVariant(item);
   const triggerItem = resolveTriggerItem(item);
   const triggerAttrs = {
@@ -81,7 +102,7 @@ function LogoComponent({ item, className }: BlockProps) {
     disabled: false,
   };
 
-  const trigger = (
+  const trigger = showTrigger ? (
     <AppActionIcon
       name={triggerItem.name}
       className={className}
@@ -92,40 +113,50 @@ function LogoComponent({ item, className }: BlockProps) {
     >
       <IconArticle stroke={1} aria-hidden className="cmf-ActionIcon-icon-svg" />
     </AppActionIcon>
-  );
+  ) : null;
 
-  const logo = isCompact ? (
+  const logo = !visible ? null : isCompact ? (
     <AppActionIcon
       name={item.name}
-      img={item.img}
+      img={showItemImg ? item.img : undefined}
       href={href}
       variant={variant}
       size={size}
-      aria-label={label}
+      aria-label={ariaLabel}
       {...logoAttrs}
     >
-      <LogoMark label={label} img={item.img} className="cmf-ActionIcon-icon-svg" />
+      <LogoMark
+        label={ariaLabel}
+        img={showItemImg ? item.img : undefined}
+        className="cmf-ActionIcon-icon-svg"
+        onError={onImgError}
+      />
     </AppActionIcon>
   ) : (
-    <AppLogo href={href} label={label} img={item.img} variant={variant} {...logoAttrs} />
+    <AppLogo href={href} label={name} img={item.img} variant={variant} {...logoAttrs} />
   );
+
+  const logoNode =
+    logo !== null && isCompact ? (
+      <AppTooltip
+        label={item.label}
+        name={item.name}
+        config={tooltip}
+        cmfComponent="sidebar"
+        cmfKey={LOGO_CMF_KEY}
+      >
+        {logo}
+      </AppTooltip>
+    ) : (
+      logo
+    );
+
+  if (trigger === null && logoNode === null) return null;
 
   return (
     <Group gap="sm" className={className} justify={isCompact ? 'center' : 'flex-start'}>
       {trigger}
-      {isCompact ? (
-        <AppTooltip
-          label={item.label}
-          name={item.name}
-          config={tooltip}
-          cmfComponent="sidebar"
-          cmfKey={LOGO_CMF_KEY}
-        >
-          {logo}
-        </AppTooltip>
-      ) : (
-        logo
-      )}
+      {logoNode}
     </Group>
   );
 }

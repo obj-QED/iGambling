@@ -1,6 +1,2 @@
 // Unlayered — beats `@layer mantine` ScrollArea defaults (see Root `classNames`).
 @include cmf-mantine-scrollbar('aside-scrollbar');
-
-:global(.cmf-ScrollArea-viewport) {
-  padding-left: var(--scrollarea-scrollbar-size, var(--cmf-scrollbar-size, 6px));
-}

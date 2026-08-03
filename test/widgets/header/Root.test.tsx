@@ -57,7 +57,14 @@ function renderHeader() {
             layout: 'container',
             type: 'default',
             blockVariants: {},
-            tooltip: { enabled: false, position: 'top', delay: 0, withArrow: true, offset: 5 },
+            tooltip: {
+              enabled: false,
+              position: 'top',
+              delay: 0,
+              closeDelay: 300,
+              withArrow: true,
+              offset: 5,
+            },
           }}
         />
       </MemoryRouter>
@@ -84,7 +91,14 @@ describe('AppHeader', () => {
               layout: 'container',
               type: 'default',
               blockVariants: {},
-              tooltip: { enabled: false, position: 'top', delay: 0, withArrow: true, offset: 5 },
+              tooltip: {
+                enabled: false,
+                position: 'top',
+                delay: 0,
+                closeDelay: 300,
+                withArrow: true,
+                offset: 5,
+              },
             }}
           />
         </MemoryRouter>

@@ -6,6 +6,13 @@
   "engines": {
     "node": ">=22"
   },
+  "browserslist": [
+    "Chrome >= 90",
+    "Firefox >= 90",
+    "Safari >= 13",
+    "iOS >= 13",
+    "Edge >= 90"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -75,6 +82,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/browser-playwright": "4.1.2",
     "@vitest/coverage-v8": "^4.1.2",
+    "autoprefixer": "^10.5.4",
     "chromatic": "^11.27.0",
     "eslint": "^9.15.0",
     "eslint-plugin-react-hooks": "^5.0.0",

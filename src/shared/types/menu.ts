@@ -13,6 +13,8 @@ export type MenuItemDto = {
   variant?: string;
   /** Optional tooltip / a11y copy. Tooltip content may include HTML. */
   label?: string;
+  /** Sidebar logo rail — show burger/menu trigger next to the mark. */
+  menuIcon?: boolean;
   badge?: string | number;
   subtitle?: string;
   items?: MenuItemDto[];

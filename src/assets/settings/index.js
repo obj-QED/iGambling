@@ -51,7 +51,7 @@
 
     aside: {
       width: 'calc(2.625rem * var(--mantine-scale) + 1.25rem)',
-      type: 'compact', // 'default' | 'compact'
+      type: 'default', // 'default' | 'compact'
       layout: 'container',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: true,
@@ -104,11 +104,12 @@
           placement: { section: 'header', at: 'start' },
           items: [
             {
+              menuIcon: true,
               img: 'https://999ggg.net/uploads/logo.png',
               key: 'aside_header_logo',
               name: 'Logo',
               label:
-                'Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  <a href="/" target="_blank">this link</a>',
+                'Tooltip content can be hovered, for example to follow <a href="/" target="_blank">this link</a>',
               type: 'link',
               variant: 'transparent',
             },

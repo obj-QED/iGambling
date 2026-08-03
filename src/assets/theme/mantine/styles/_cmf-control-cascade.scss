@@ -164,6 +164,7 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
 /* Button — applied from components.module.scss `.button`                     */
 /* ========================================================================== */
 @mixin cmf-button-cascade {
+
   /* --- bases (size table + paint + shared defaults) --- */
   @include cmf-layer-base('btn-height', var(--button-height-md));
   @include cmf-layer-base('btn-padding-x', var(--button-padding-x-md));

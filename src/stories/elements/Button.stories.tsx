@@ -20,6 +20,7 @@ import {
   mantineSizeArgType,
   mantineTextArgType,
   mantineVariantArgType,
+  omitStorybookNone,
 } from '@/storybook/helpers/mantineArgTypes';
 import {
   BUTTON_DOCS_PLAYGROUND_FIELDS,
@@ -96,6 +97,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   parameters: elementDocsPreviewParameters,
+  render: (args) => {
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, children, ...buttonArgs } = cleaned as ButtonStoryArgs;
+    void iconScale;
+    void iconAspect;
+    return <Button {...buttonArgs}>{children}</Button>;
+  },
 };
 
 export const WithIcon: Story = {
@@ -108,7 +116,8 @@ export const WithIcon: Story = {
     },
   },
   render: (args) => {
-    const { iconScale, iconAspect, children, ...buttonArgs } = args as ButtonStoryArgs;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, children, ...buttonArgs } = cleaned as ButtonStoryArgs;
     return (
       <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
         <Button {...buttonArgs} leftSection={<DemoButtonIcon alt={String(children ?? 'Button')} />}>
@@ -199,7 +208,8 @@ export const Playground: Story = {
   },
   render: function ButtonPlayground() {
     const [args, updateArgs] = useArgs<ButtonStoryArgs>();
-    const { iconScale, iconAspect, children, ...buttonArgs } = args;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, children, ...buttonArgs } = cleaned as ButtonStoryArgs;
 
     return (
       <MantineDocsPlayground

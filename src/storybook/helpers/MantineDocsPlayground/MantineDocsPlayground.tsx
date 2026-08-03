@@ -1,13 +1,19 @@
 import type { DocsPlaygroundField, MantineDocsPlaygroundProps } from './types';
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-import { Button, Group, SegmentedControl, Switch, TextInput, UnstyledButton } from '@mantine/core';
+import { Group, NativeSelect, Switch, TextInput } from '@mantine/core';
 import clsx from 'clsx';
+
+import { STORYBOOK_NONE, STORYBOOK_NONE_LABEL } from '../mantineArgTypes';
 
 import styles from './MantineDocsPlayground.module.scss';
 
 function readArgValue(args: Record<string, unknown>, name: string): unknown {
   return args[name];
+}
+
+function noneOption() {
+  return { value: STORYBOOK_NONE, label: STORYBOOK_NONE_LABEL };
 }
 
 function renderField<T extends Record<string, unknown>>(
@@ -17,74 +23,67 @@ function renderField<T extends Record<string, unknown>>(
 ): ReactNode {
   const value = readArgValue(args, field.name);
 
-  if (field.type === 'variant') {
+  if (field.type === 'variant' || field.type === 'segmented' || field.type === 'select') {
     const groups =
-      field.groups ??
-      (field.options !== undefined ? [{ label: field.label, options: field.options }] : []);
+      field.type === 'variant'
+        ? (field.groups ??
+          (field.options !== undefined ? [{ label: field.label, options: field.options }] : []))
+        : null;
+
+    const flatOptions =
+      field.type === 'variant'
+        ? (groups ?? []).flatMap((group) => [...group.options])
+        : [...field.options];
+
+    const allowNone = field.allowNone !== false;
+    const data = [
+      ...(allowNone ? [noneOption()] : []),
+      ...flatOptions.map((option) => ({
+        value: option.value,
+        label:
+          field.type === 'variant' && (groups?.length ?? 0) > 1
+            ? `${groups?.find((g) => g.options.some((o) => o.value === option.value))?.label ?? ''}: ${option.label}`
+            : option.label,
+      })),
+    ];
+
+    const current = value == null || value === STORYBOOK_NONE ? STORYBOOK_NONE : String(value);
 
     return (
-      <div className={styles.variantSections}>
-        {groups.map((group) => (
-          <div key={group.label} className={styles.variantSection}>
-            {groups.length > 1 ? (
-              <div className={styles.variantSectionLabel}>{group.label}</div>
-            ) : null}
-            <div className={styles.variantGroup}>
-              {group.options.map((option) => (
-                <Button
-                  key={option.value}
-                  size="compact-sm"
-                  variant={value === option.value ? 'filled' : 'default'}
-                  onClick={() => {
-                    onChange({ [field.name]: option.value } as Partial<T>);
-                  }}
-                >
-                  {option.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  if (field.type === 'segmented') {
-    return (
-      <SegmentedControl
-        fullWidth
-        size="xs"
-        value={String(value == null ? (field.options[0]?.value ?? '') : value)}
-        onChange={(next) => {
-          onChange({ [field.name]: next } as Partial<T>);
+      <NativeSelect
+        size="sm"
+        data={data}
+        value={current}
+        onChange={(event) => {
+          const next = event.currentTarget.value;
+          onChange({
+            [field.name]: next === STORYBOOK_NONE ? STORYBOOK_NONE : next,
+          } as Partial<T>);
         }}
-        data={field.options.map((option) => ({
-          value: option.value,
-          label: option.label,
-        }))}
       />
     );
   }
 
   if (field.type === 'color') {
-    const selected = String(value ?? 'brand');
+    const allowNone = field.allowNone !== false;
+    const data = [
+      ...(allowNone ? [noneOption()] : []),
+      ...field.options.map((color) => ({ value: color, label: color })),
+    ];
+    const current = value == null || value === STORYBOOK_NONE ? STORYBOOK_NONE : String(value);
 
     return (
-      <div className={styles.colorGroup}>
-        {field.options.map((color) => (
-          <UnstyledButton
-            key={color}
-            type="button"
-            aria-label={color}
-            aria-pressed={selected === color}
-            className={clsx(styles.colorSwatch, selected === color && styles.colorSwatchSelected)}
-            style={{ '--swatch-color': `var(--mantine-color-${color}-6)` } as CSSProperties}
-            onClick={() => {
-              onChange({ [field.name]: color } as Partial<T>);
-            }}
-          />
-        ))}
-      </div>
+      <NativeSelect
+        size="sm"
+        data={data}
+        value={current}
+        onChange={(event) => {
+          const next = event.currentTarget.value;
+          onChange({
+            [field.name]: next === STORYBOOK_NONE ? STORYBOOK_NONE : next,
+          } as Partial<T>);
+        }}
+      />
     );
   }
 
@@ -104,6 +103,7 @@ function renderField<T extends Record<string, unknown>>(
     <TextInput
       size="sm"
       value={String(value ?? '')}
+      placeholder={STORYBOOK_NONE_LABEL}
       onChange={(event) => {
         onChange({ [field.name]: event.currentTarget.value } as Partial<T>);
       }}

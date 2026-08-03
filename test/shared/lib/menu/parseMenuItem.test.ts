@@ -48,6 +48,27 @@ describe('parseMenuItemDto (Zod boundary)', () => {
     });
   });
 
+  it('parses menuIcon true only', () => {
+    expect(
+      parseMenuItemDto({
+        key: 'aside_header_logo',
+        url: '',
+        name: 'Logo',
+        img: '/logo.png',
+        menuIcon: true,
+      }),
+    ).toMatchObject({ menuIcon: true });
+
+    expect(
+      parseMenuItemDto({
+        key: 'aside_header_logo',
+        url: '',
+        name: 'Logo',
+        menuIcon: false,
+      }),
+    ).not.toHaveProperty('menuIcon');
+  });
+
   it('passes through unknown menu item type', () => {
     expect(parseMenuItemDto({ key: 'bad', url: '/', name: 'Bad', type: 'modal' })?.type).toBe(
       'modal',

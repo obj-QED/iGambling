@@ -25,6 +25,7 @@ import {
   mantineSizeArgType,
   mantineTextArgType,
   mantineVariantArgType,
+  omitStorybookNone,
 } from '@/storybook/helpers/mantineArgTypes';
 import {
   ACTION_ICON_DOCS_PLAYGROUND_FIELDS,
@@ -103,7 +104,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   parameters: elementDocsPreviewParameters,
   render: (args) => {
-    const { iconScale, iconAspect, ...iconArgs } = args as ActionIconStoryArgs;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, ...iconArgs } = cleaned as ActionIconStoryArgs;
     void iconScale;
     void iconAspect;
     return (
@@ -125,7 +127,8 @@ export const WithCmfIcon: Story = {
     },
   },
   render: (args) => {
-    const { iconScale, iconAspect, ...iconArgs } = args as ActionIconStoryArgs;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, ...iconArgs } = cleaned as ActionIconStoryArgs;
     return (
       <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
         <ActionIcon {...iconArgs}>
@@ -215,7 +218,8 @@ export const Playground: Story = {
   },
   render: function ActionIconPlayground() {
     const [args, updateArgs] = useArgs<ActionIconStoryArgs>();
-    const { iconScale, iconAspect, ...iconArgs } = args;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, ...iconArgs } = cleaned as ActionIconStoryArgs;
 
     return (
       <MantineDocsPlayground

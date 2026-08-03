@@ -1,6 +1,7 @@
 import type { SidebarRegionsConfig, SidebarScrollAreaConfig } from '../types';
 import type { AsideTypeStrategyKey } from '@/shared/config';
-import type { TooltipConfig } from '@/shared/config/tooltipSettings';
+
+import { DEFAULT_TOOLTIP_CONFIG, type TooltipConfig } from '@/shared/config/tooltipSettings';
 
 export type SidebarTypeTunables = {
   scrollArea: SidebarScrollAreaConfig;
@@ -25,22 +26,20 @@ export const SIDEBAR_TYPE_TUNABLE_DEFAULTS: Record<AsideTypeStrategyKey, Sidebar
   default: {
     scrollArea: DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG,
     tooltip: {
+      ...DEFAULT_TOOLTIP_CONFIG,
       enabled: false,
       position: 'top',
       delay: 0,
-      withArrow: true,
-      offset: 5,
     },
     regions: DEFAULT_SIDEBAR_REGIONS,
   },
   compact: {
     scrollArea: DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG,
     tooltip: {
+      ...DEFAULT_TOOLTIP_CONFIG,
       enabled: true,
       position: 'right',
       delay: 200,
-      withArrow: true,
-      offset: 5,
     },
     regions: DEFAULT_SIDEBAR_REGIONS,
   },

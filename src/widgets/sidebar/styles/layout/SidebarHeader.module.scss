@@ -27,6 +27,7 @@
     :global(.cmf-Button-inner) {
       flex: 1 1 auto;
       min-width: 0;
+      gap: var(--aside-header-account-gap, var(--spacing-sm, 0.625rem));
     }
 
     :global(.cmf-Button-label) {

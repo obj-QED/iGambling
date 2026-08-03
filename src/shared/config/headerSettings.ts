@@ -46,6 +46,7 @@ export type HeaderCustomBlockInput = {
   type?: unknown;
   variant?: unknown;
   label?: unknown;
+  menuIcon?: unknown;
   badge?: unknown;
   subtitle?: unknown;
   imgShape?: unknown;

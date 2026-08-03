@@ -73,8 +73,8 @@
     --cmf-icon-scale: 0.7;
     --cmf-icon-radius-mode: sm;
 
-    /* Scrollbar — override per scope via `--{prefix}-scrollbar-*` or these globals */
-    --cmf-scrollbar-track: transparent;
+    /* Scrollbar — opaque track forces classic (non-overlay) bars; transparent → fat on hover */
+    --cmf-scrollbar-track: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
     --cmf-scrollbar-thumb: var(--brand-color-6);
     --cmf-scrollbar-thumb-hover: var(--brand-color-4);
     --cmf-scrollbar-size: 6px;

@@ -17,18 +17,22 @@ export type DocsPlaygroundField =
       label: string;
       options?: readonly DocsPlaygroundOption[];
       groups?: readonly DocsPlaygroundVariantGroup[];
+      /** Default true — first option «— none —». */
+      allowNone?: boolean;
     }
   | {
-      type: 'segmented';
+      type: 'segmented' | 'select';
       name: string;
       label: string;
       options: readonly DocsPlaygroundOption[];
+      allowNone?: boolean;
     }
   | {
       type: 'color';
       name: string;
       label: string;
       options: readonly string[];
+      allowNone?: boolean;
     }
   | {
       type: 'switch';

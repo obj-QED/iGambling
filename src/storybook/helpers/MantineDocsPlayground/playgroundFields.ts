@@ -30,6 +30,7 @@ export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     type: 'variant',
     name: 'variant',
     label: 'Variant',
+    allowNone: true,
     groups: [
       { label: 'Mantine', options: toOptions(MANTINE_BUTTON_VARIANTS) },
       { label: 'CMF', options: toOptions(CMF_BUTTON_DOCS_VARIANTS) },
@@ -40,24 +41,28 @@ export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     name: 'color',
     label: 'Color',
     options: MANTINE_THEME_COLORS,
+    allowNone: true,
   },
   {
-    type: 'segmented',
+    type: 'select',
     name: 'size',
     label: 'Size',
     options: toOptions(CMF_BUTTON_SIZES),
+    allowNone: true,
   },
   {
-    type: 'segmented',
+    type: 'select',
     name: 'radius',
     label: 'Radius',
     options: toOptions(MANTINE_RADIUS_OPTIONS),
+    allowNone: true,
   },
   { type: 'text', name: 'children', label: 'Text' },
   {
-    type: 'segmented',
+    type: 'select',
     name: 'iconScale',
     label: 'Icon scale',
+    allowNone: true,
     options: [
       { value: '0.5', label: '0.5' },
       { value: '0.7', label: '0.7' },
@@ -65,9 +70,10 @@ export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     ],
   },
   {
-    type: 'segmented',
+    type: 'select',
     name: 'iconAspect',
     label: 'Icon aspect',
+    allowNone: true,
     options: [
       { value: '1', label: '1' },
       { value: '1.5', label: '1.5' },
@@ -84,6 +90,7 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     type: 'variant',
     name: 'variant',
     label: 'Variant',
+    allowNone: true,
     groups: [
       { label: 'Mantine', options: toOptions(MANTINE_ACTION_ICON_VARIANTS) },
       { label: 'CMF', options: toOptions(CMF_ACTION_ICON_VARIANTS) },
@@ -94,24 +101,28 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     name: 'color',
     label: 'Color',
     options: MANTINE_THEME_COLORS,
+    allowNone: true,
   },
   {
-    type: 'segmented',
+    type: 'select',
     name: 'size',
     label: 'Size',
     options: toOptions(CMF_ACTION_ICON_SIZES),
+    allowNone: true,
   },
   {
-    type: 'segmented',
+    type: 'select',
     name: 'radius',
     label: 'Radius',
     options: toOptions(MANTINE_RADIUS_OPTIONS),
+    allowNone: true,
   },
   { type: 'text', name: 'aria-label', label: 'Aria label' },
   {
-    type: 'segmented',
+    type: 'select',
     name: 'iconScale',
     label: 'Icon scale',
+    allowNone: true,
     options: [
       { value: '0.5', label: '0.5' },
       { value: '0.7', label: '0.7' },
@@ -119,9 +130,10 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     ],
   },
   {
-    type: 'segmented',
+    type: 'select',
     name: 'iconAspect',
     label: 'Icon aspect',
+    allowNone: true,
     options: [
       { value: '1', label: '1' },
       { value: '1.5', label: '1.5' },
