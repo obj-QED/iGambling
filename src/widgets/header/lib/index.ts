@@ -22,8 +22,13 @@ export {
   resolveItemLabel,
 } from './itemUtils';
 export { mapFlat, mapItem, mapRoot } from './mapMenu';
-export { resolveMenuItemActionIconVariant, resolveMenuItemButtonVariant } from './menuItemVariant';
+export {
+  resolveMenuItemActionIconVariant,
+  resolveMenuItemButtonVariant,
+  resolveMenuItemExplicitVariant,
+} from './menuItemVariant';
 export { mergeCustomBlock, mergeCustomBlocks } from './mergeBlocks';
+export { resolveBlockVariantComponent } from './resolveBlockVariantComponent';
 export type { HeaderDeepPanelGroup, HeaderDropdownMenuSplit } from './splitHeaderDropdownMenu';
 export {
   collectHeaderDropdownOutsideItems,

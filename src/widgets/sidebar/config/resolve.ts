@@ -5,6 +5,7 @@ import {
   ASIDE_SCROLL_AREA_OVERSCROLL,
   ASIDE_SCROLL_AREA_TYPES,
   type AsideRegionsSettings,
+  type AsideScrollAreaOverscrollBehavior,
   type AsideScrollAreaSettings,
   type AsideSettings,
   getSettings,
@@ -95,6 +96,8 @@ function resolveScrollArea(
   const scrollHideDelay = resolveFiniteNumber(raw?.scrollHideDelay, defaults.scrollHideDelay);
 
   return {
+    ...defaults,
+    ...raw,
     scrollbarSize: Math.max(1, Math.round(scrollbarSize)),
     scrollHideDelay: Math.max(0, Math.round(scrollHideDelay)),
     type: pickUnionValue(ASIDE_SCROLL_AREA_TYPES, raw?.type, defaults.type),
@@ -102,7 +105,7 @@ function resolveScrollArea(
       ASIDE_SCROLL_AREA_OVERSCROLL,
       raw?.overscrollBehavior,
       defaults.overscrollBehavior,
-    ),
+    ) as AsideScrollAreaOverscrollBehavior,
   };
 }
 

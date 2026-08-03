@@ -11,13 +11,11 @@
       --header-bonus-box-radius,
       var(--cmf-action-icon-radius, var(--mantine-radius-sm, 0.25rem))
     );
-    border: var(
-      --header-bonus-box-bd,
+    border: var(--header-bonus-box-bd-width, calc(0.0625rem * var(--mantine-scale))) solid
       var(
-        --cmf-action-icon-default-bd,
-        calc(0.0625rem * var(--mantine-scale)) solid var(--mantine-color-default-border)
-      )
-    );
+        --header-bonus-box-bd,
+        var(--cmf-action-icon-default-bd, var(--mantine-color-default-border))
+      );
 
     &:disabled {
       cursor: not-allowed;

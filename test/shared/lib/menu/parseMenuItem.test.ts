@@ -54,12 +54,17 @@ describe('parseMenuItemDto (Zod boundary)', () => {
     );
   });
 
-  it('drops type for special block keys', () => {
+  it('keeps type for special block keys (control variant: link → transparent)', () => {
     expect(parseMenuItemDto({ key: 'search', url: '/search', name: '', type: 'link' })).toEqual({
       key: 'search',
       url: '/search',
       name: '',
+      type: 'link',
     });
+
+    expect(parseMenuItemDto({ key: 'logo', url: '/', name: 'Home', type: 'link' })?.type).toBe(
+      'link',
+    );
   });
 
   it('cleans empty api fields before coerce', () => {

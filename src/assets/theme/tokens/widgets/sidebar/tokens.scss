@@ -4,6 +4,7 @@
  */
 
 @mixin sidebar-root-tokens {
+
   /* Mantine size key (useAsideMenuButtonSizeFromElement) */
   --aside-size-button: sm;
   --aside-size-button-logo: md;
@@ -58,10 +59,10 @@
   --cmf-action-icon-sidebar-radius: var(--cmf-action-icon-radius, var(--mantine-radius-md));
 
   /*
-   * Dropdown cascade (ActionIcon / Button):
+   * Dropdown cascade (ActionIcon / Button) — `data-cmf-role` is an open string.
+   * Defaults: trigger → parent, nested row → child. Any role key works:
    *   --cmf-action-icon-sidebar-dropdown-{key}-{prop}
-   *   --cmf-action-icon-sidebar-dropdown-parent-{prop}   (trigger)
-   *   --cmf-action-icon-sidebar-dropdown-child-{prop}    (nested row)
+   *   --cmf-action-icon-sidebar-dropdown-{role}-{prop}   (e.g. parent | child | …)
    *   --cmf-action-icon-sidebar-dropdown-{prop}
    *   --cmf-action-icon-{data-variant}-{prop}
    */
@@ -92,8 +93,8 @@
   --cmf-button-sidebar-active-width: var(--cmf-button-sidebar-active-size);
   --cmf-button-sidebar-active-height: 100%;
 
-  // --cmf-button-sidebar-active-radius-tl: 0px;
-  // --cmf-button-sidebar-active-radius-bl: 0px;
+  --cmf-button-sidebar-active-radius-tl: 0px;
+  --cmf-button-sidebar-active-radius-bl: 0px;
 
   --cmf-action-icon-sidebar-active-position: left;
   --cmf-action-icon-sidebar-active-size: 2px;
@@ -118,10 +119,9 @@
   &[data-type='compact'] {
     --aside-size-button: md;
     --aside-shell-padding: var(--mantine-spacing-xs);
-    --aside-menu-gap: var(
-      --spacing-xs,
-      0.25rem
-    ); /* Square md ActionIcon (same box as Mantine `size="md"`) */
+    --aside-menu-gap: var(--spacing-xs, 0.25rem);
+
+    /* Square md ActionIcon (same box as Mantine `size="md"`) */
     --cmf-action-icon-sidebar-size: calc(2.625rem * var(--mantine-scale));
     --cmf-action-icon-sidebar-dropdown-size: calc(2.625rem * var(--mantine-scale));
     --cmf-action-icon-sidebar-icon-aspect: 0.75;

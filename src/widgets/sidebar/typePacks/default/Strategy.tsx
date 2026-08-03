@@ -2,7 +2,7 @@ import type { SidebarTypeStrategyProps } from '../../types';
 
 import { memo } from 'react';
 
-import { ScrollArea, Text } from '@mantine/core';
+import { ScrollArea } from '@mantine/core';
 
 import { filterRenderableItems, isSpecialBlockKey } from '../../lib';
 import { Block } from '../../ui/Block';
@@ -50,10 +50,7 @@ function DefaultStrategyComponent({ layout, config }: SidebarTypeStrategyProps) 
           }}
           h="100%"
           scrollbars="y"
-          offsetScrollbars
-          type={scrollArea.type}
-          overscrollBehavior={scrollArea.overscrollBehavior}
-          scrollHideDelay={scrollArea.scrollHideDelay}
+          {...scrollArea}
         >
           <Shell>
             {mainSections.map((section) => {

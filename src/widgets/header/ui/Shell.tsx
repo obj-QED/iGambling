@@ -17,7 +17,7 @@ function ShellComponent({ menu, config }: ShellProps) {
 
   return (
     <Layout>
-      <Group className={styles.sections} justify="space-between" wrap="nowrap" gap="md">
+      <Group className={styles.sections} data-header-sections unstyled>
         {sections.map((section) => (
           <Section key={section.key} section={section} />
         ))}

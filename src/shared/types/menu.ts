@@ -11,7 +11,7 @@ export type MenuItemDto = {
   type?: MenuItemApiType | string;
   /** Control visual variant override (`filled`, `light`, …); wins over `type` in UI resolvers. */
   variant?: string;
-  /** Optional tooltip / a11y copy (e.g. sidebar logo). */
+  /** Optional tooltip / a11y copy. Tooltip content may include HTML. */
   label?: string;
   badge?: string | number;
   subtitle?: string;

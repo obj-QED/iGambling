@@ -1,2 +1,6 @@
-export { hasTooltipLabel, resolveAppTooltipLabel } from './resolveAppTooltipLabel';
+export {
+  hasTooltipLabel,
+  resolveAppTooltipLabel,
+  toTooltipHtmlLabel,
+} from './resolveAppTooltipLabel';
 export { resolveTooltipConfig } from './resolveTooltipConfig';

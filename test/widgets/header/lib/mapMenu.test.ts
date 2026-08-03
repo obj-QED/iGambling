@@ -3,17 +3,28 @@ import { describe, expect, it } from 'vitest';
 import { mapItem } from '@/widgets/header/lib/mapMenu';
 
 describe('mapItem', () => {
-  it('drops type for special block keys', () => {
+  it('keeps type for special block keys (control variant: link/button)', () => {
     expect(mapItem({ key: 'search', name: '', url: '', type: 'link' })).toEqual({
       key: 'search',
       name: '',
       url: '',
+      type: 'link',
     });
 
-    expect(mapItem({ key: 'wallet', name: '', url: '', type: 'button' })).toEqual({
+    expect(
+      mapItem({
+        key: 'wallet',
+        name: 'wallet',
+        url: '/',
+        type: 'link',
+        variant: 'transparent',
+      }),
+    ).toEqual({
       key: 'wallet',
-      name: '',
-      url: '',
+      name: 'wallet',
+      url: '/',
+      type: 'link',
+      variant: 'transparent',
     });
   });
 

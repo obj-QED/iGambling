@@ -1,7 +1,9 @@
 @layer widget.base {
   .root {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: var(--header-block-wrap, wrap);
     align-items: center;
     gap: var(--header-block-gap, var(--spacing-xs, 0.25rem));
+    flex-shrink: var(--header-block-shrink, 1);
   }
 }

@@ -53,7 +53,12 @@ function renderHeader() {
       <MemoryRouter>
         <AppHeader
           menu={SAMPLE_MENU}
-          config={{ layout: 'container', type: 'default', blockVariants: {} }}
+          config={{
+            layout: 'container',
+            type: 'default',
+            blockVariants: {},
+            tooltip: { enabled: false, position: 'top', delay: 0, withArrow: true, offset: 5 },
+          }}
         />
       </MemoryRouter>
     </MantineProvider>,
@@ -75,7 +80,12 @@ describe('AppHeader', () => {
         <MemoryRouter>
           <AppHeader
             menu={{ sections: [{ key: 'empty', items: [{ key: 'x', name: '', url: '' }] }] }}
-            config={{ layout: 'container', type: 'default', blockVariants: {} }}
+            config={{
+              layout: 'container',
+              type: 'default',
+              blockVariants: {},
+              tooltip: { enabled: false, position: 'top', delay: 0, withArrow: true, offset: 5 },
+            }}
           />
         </MemoryRouter>
       </MantineProvider>,

@@ -5,4 +5,5 @@ export type SpecialIconBlockProps = {
   item: HeaderMenuItem;
   fallbackIcon: ReactNode;
   className?: string;
+  disabled?: boolean;
 };

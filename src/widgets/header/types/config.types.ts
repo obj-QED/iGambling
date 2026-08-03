@@ -4,6 +4,7 @@ import type {
   HeaderLayoutKey,
   HeaderTypeKey,
 } from '@/shared/config/headerSettings';
+import type { TooltipConfig } from '@/shared/config/tooltipSettings';
 
 export type { HeaderCustomBlockConfig, HeaderLayoutKey, HeaderTypeKey };
 
@@ -12,4 +13,5 @@ export type HeaderConfig = {
   type: HeaderTypeKey;
   blockVariants: HeaderBlockVariants;
   customBlocks?: HeaderCustomBlockConfig[];
+  tooltip: TooltipConfig;
 };

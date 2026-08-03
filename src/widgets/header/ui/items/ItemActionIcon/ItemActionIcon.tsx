@@ -14,6 +14,7 @@ import {
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
 } from '../../../lib';
+import { HeaderActionIconTooltip } from '../../shared/HeaderActionIconTooltip';
 import { ItemImage } from '../ItemImage/ItemImage';
 
 function ItemActionIconComponent({ item }: ItemActionIconProps) {
@@ -34,20 +35,22 @@ function ItemActionIconComponent({ item }: ItemActionIconProps) {
   );
 
   return (
-    <AppActionIcon
-      name={item.name}
-      img={item.img}
-      href={href}
-      hidden={hideImageControl}
-      variant={resolveMenuItemActionIconVariant(item)}
-      size={resolveHeaderMenuActionIconSize(menuSizes)}
-      aria-label={label}
-      {...menuItemDataAttrs(item)}
-      {...activeAttrs}
-      {...iconControlAttrs}
-    >
-      {content}
-    </AppActionIcon>
+    <HeaderActionIconTooltip item={item}>
+      <AppActionIcon
+        name={item.name}
+        img={item.img}
+        href={href}
+        hidden={hideImageControl}
+        variant={resolveMenuItemActionIconVariant(item)}
+        size={resolveHeaderMenuActionIconSize(menuSizes)}
+        aria-label={label}
+        {...menuItemDataAttrs(item)}
+        {...activeAttrs}
+        {...iconControlAttrs}
+      >
+        {content}
+      </AppActionIcon>
+    </HeaderActionIconTooltip>
   );
 }
 

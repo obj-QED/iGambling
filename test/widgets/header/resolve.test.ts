@@ -24,6 +24,7 @@ describe('resolveHeaderConfig', () => {
       layout: 'container-fluid',
       type: 'custom',
       blockVariants: {},
+      tooltip: DEFAULT_HEADER_CONFIG.tooltip,
       customBlocks: [
         {
           key: 'settings-block',

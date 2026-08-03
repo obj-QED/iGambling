@@ -11,6 +11,7 @@ import {
 } from '@/shared/config';
 import { readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
+import { resolveTooltipConfig } from '@/shared/lib/tooltip';
 
 import { resolveHeaderTypeTunableDefaults } from '../typePacks/tunableDefaults';
 import { DEFAULT_HEADER_CONFIG } from './defaults';
@@ -93,5 +94,6 @@ export function resolveHeaderConfig(
     type,
     blockVariants: resolveActiveBlockVariants(header, type, packDefaults.blockVariants),
     customBlocks: resolveCustomBlocks(header),
+    tooltip: resolveTooltipConfig(DEFAULT_HEADER_CONFIG.tooltip, header.tooltip),
   };
 }

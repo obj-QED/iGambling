@@ -1,6 +1,7 @@
 import type {
   AsideLayoutKey,
   AsideScrollAreaOverscrollBehavior,
+  AsideScrollAreaSettings,
   AsideScrollAreaType,
   AsideTypeKey,
 } from '@/shared/config/asideSettings';
@@ -9,7 +10,8 @@ import type { TooltipConfig } from '@/shared/config/tooltipSettings';
 
 export type { AsideLayoutKey, AsideTypeKey };
 
-export type SidebarScrollAreaConfig = {
+/** Resolved ScrollArea props: pack defaults → `aside.scrollArea` (typed Mantine passthrough). */
+export type SidebarScrollAreaConfig = AsideScrollAreaSettings & {
   scrollbarSize: number;
   scrollHideDelay: number;
   type: AsideScrollAreaType;

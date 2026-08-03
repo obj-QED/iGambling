@@ -2,5 +2,8 @@
   .target {
     display: inline-flex;
     max-width: 100%;
+
+    /* Do not clip ActionIcon/Button `[data-active]::after` edge bar. */
+    overflow: visible;
   }
 }

@@ -52,13 +52,24 @@ function AppTooltipComponent({
     return children;
   }
 
+  const {
+    enabled: _enabled,
+    delay,
+    position,
+    withArrow,
+    offset,
+    openDelay: _openDelay,
+    ...mantineRest
+  } = resolved;
+
   return (
     <Tooltip
+      {...mantineRest}
       label={tooltipLabel}
-      position={resolved.position}
-      openDelay={resolved.delay}
-      withArrow={resolved.withArrow}
-      offset={resolved.offset}
+      position={position}
+      openDelay={delay}
+      withArrow={withArrow}
+      offset={offset}
       className={className}
       classNames={{ tooltip: styles.tooltip }}
       styles={{ tooltip: buildTooltipCascadeStyle(cmfComponent, cmfKey) }}

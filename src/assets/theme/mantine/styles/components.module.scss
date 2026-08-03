@@ -64,10 +64,17 @@
   .button {
     @include gradient.gradient-variant-hover('button');
     @include cmfControl.cmf-control-shadow('button');
-    @include cmfControl.cmf-control-active-after('button');
+    @include cmfControl.cmf-control-disabled-radius('button');
 
     /* Keep control height stable when section media is present */
     min-height: var(--button-height);
+
+    /*
+     * `--button-bd` = color, `--button-bd-width` = width (CMF cascade).
+     * Style stays `solid` here.
+     */
+    border: var(--button-bd-width, calc(0.0625rem * var(--mantine-scale))) solid
+      var(--button-bd, transparent);
 
     :where([data-cmf-icon-src]) {
       --_cmf-icon-box: var(--button-height, 1.25rem);
@@ -92,7 +99,11 @@
   .actionIcon {
     @include gradient.gradient-variant-hover('ai');
     @include cmfControl.cmf-control-shadow('ai');
-    @include cmfControl.cmf-control-active-after('ai');
+    @include cmfControl.cmf-control-disabled-radius('ai');
+
+    /* `--ai-bd` = color, `--ai-bd-width` = width — same contract as Button. */
+    border: var(--ai-bd-width, calc(0.0625rem * var(--mantine-scale))) solid
+      var(--ai-bd, transparent);
 
     :where(svg, [data-cmf-icon-src]):not([data-menu-chevron]) {
       box-sizing: border-box;
@@ -114,4 +125,16 @@
       object-fit: var(--cmf-icon-object-fit, contain);
     }
   }
+}
+
+/*
+ * Active edge bar — UNLAYERED compound selectors (no empty `.button`/`.actionIcon` shell).
+ * Mantine roots set `overflow: hidden` in `@layer mantine`; unlayered wins so ::after shows.
+ */
+.button[data-active='true']:where(:not(:disabled, [data-disabled], [aria-disabled='true'])) {
+  @include cmfControl.cmf-control-active-after-body('button');
+}
+
+.actionIcon[data-active='true']:where(:not(:disabled, [data-disabled], [aria-disabled='true'])) {
+  @include cmfControl.cmf-control-active-after-body('ai');
 }

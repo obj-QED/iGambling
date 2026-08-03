@@ -53,6 +53,10 @@
 
   --cmf-action-icon-header-size: calc(2.625rem * var(--mantine-scale));
 
+  /* Home icon radius */
+  --cmf-action-icon-header-home-radius: 0;
+  --cmf-action-icon-header-radius-disabled: var(--mantine-radius-md);
+
   /*
    * Icons — size vs --ai-size / --button-height (not Button row width).
    * Cascade: key → component → data-variant → control → --cmf-icon-*
@@ -72,8 +76,6 @@
   --cmf-button-header-active-inset: auto 0 0 0;
   --cmf-button-header-active-width: 100%;
   --cmf-button-header-active-height: var(--cmf-button-header-active-size);
-  --cmf-button-header-active-radius-bl: 0px;
-  --cmf-button-header-active-radius-br: 0px;
 
   --cmf-action-icon-header-active-position: bottom;
   --cmf-action-icon-header-active-size: 2px;
@@ -81,8 +83,17 @@
   --cmf-action-icon-header-active-inset: auto 0 0 0;
   --cmf-action-icon-header-active-width: 100%;
   --cmf-action-icon-header-active-height: var(--cmf-action-icon-header-active-size);
-  --cmf-action-icon-header-active-radius-bl: 0px;
-  --cmf-action-icon-header-active-radius-br: 0px;
+
+  --cmf-action-icon-header-wallet-radius: 0;
+  --cmf-action-icon-header-color_scheme-bd: light-dark(
+    var(--mantine-color-gray-3),
+    var(--mantine-color-dark-4)
+  );
+
+  /* Button and ActionIcon border width */
+  --cmf-button-header-bd-width: calc(0.0625rem * var(--mantine-scale));
+  --cmf-action-icon-header-bd-width: calc(0.0625rem * var(--mantine-scale));
+  --cmf-button-header-sign_in-bd-width: calc(0.0625rem * var(--mantine-scale));
 
   /*
    * `type: dropdown` — deep menu chrome.
@@ -116,7 +127,7 @@
     /* Logo keeps its own transparent shell */
     --cmf-button-header-logo-bg: transparent;
     --cmf-button-header-logo-hover: transparent;
-    --cmf-button-header-logo-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
+    --cmf-button-header-logo-bd: transparent;
     --cmf-button-header-logo-padding-x: 0;
 
     /* Deep menu rows — component scope `header-dropdown` */
@@ -136,8 +147,10 @@
       var(--mantine-color-black),
       var(--mantine-color-white)
     );
-    --cmf-button-header-dropdown-bd: 1px solid
-      light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+    --cmf-button-header-dropdown-bd: light-dark(
+      var(--mantine-color-gray-2),
+      var(--mantine-color-dark-4)
+    );
     --cmf-button-header-dropdown-justify: flex-start;
 
     /* Trigger / icons inside deep menu */

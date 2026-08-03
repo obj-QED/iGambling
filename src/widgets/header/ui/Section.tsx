@@ -14,7 +14,7 @@ function SectionComponent({ section }: SectionProps) {
   if (items.length === 0) return null;
 
   return (
-    <Group className={styles.root} gap="sm" wrap="nowrap" data-section-key={section.key}>
+    <Group className={styles.root} data-section-key={section.key} unstyled>
       {items.map((item) => (
         <Block key={item.key} item={item} />
       ))}

@@ -1,6 +1,5 @@
 import type { MenuItemDto, MenuRootDto } from '@/shared/types/menu';
 
-import { isHeaderSpecialBlockKey } from '@/shared/config/headerSpecialBlockKeys';
 import { menuItemDtoSchema, menuRootDtoSchema } from '@/shared/schemas/menu.schema';
 
 import { cleanApiPayload, isRecord, readString } from '../coercion';
@@ -23,11 +22,7 @@ function coerceMenuItem(raw: unknown): MenuItemDto | null {
   const imgShape = readRecordField(cleaned, 'imgShape') ?? readRecordField(cleaned, 'img_shape');
   const imgRadius = readRecordField(cleaned, 'imgRadius') ?? readRecordField(cleaned, 'img_radius');
   const typeRaw = readRecordField(cleaned, 'type');
-  const type = isHeaderSpecialBlockKey(key)
-    ? undefined
-    : typeRaw !== undefined && typeRaw.length > 0
-      ? typeRaw
-      : undefined;
+  const type = typeRaw !== undefined && typeRaw.length > 0 ? typeRaw : undefined;
 
   const variantRaw = readRecordField(cleaned, 'variant');
   const variant = variantRaw !== undefined && variantRaw.length > 0 ? variantRaw : undefined;

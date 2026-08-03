@@ -19,6 +19,11 @@ describe('resolveButtonRootVars', () => {
     );
     expect(vars['--button-bd']).toContain('var(--cmf-button-default-bd');
     expect(vars['--button-bd']).not.toContain('var(--cmf-button-sm-bd');
+    expect(vars['--button-bd']).toMatch(/var\(--color-border\)\)$/);
+    expect(vars['--button-bd']).not.toContain(' solid ');
+    expect(vars['--button-bd-width']).toBe(
+      'var(--cmf-button-default-bd-width, calc(0.0625rem * var(--mantine-scale)))',
+    );
     expect(vars['--button-hover']).toContain('var(--cmf-button-default-hover');
     expect(vars['--button-hover-color']).toContain('var(--cmf-button-default-hover-color');
     expect(vars['--button-shadow']).toBe('var(--cmf-button-default-shadow, none)');
@@ -38,6 +43,9 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-active-radius-bl']).toContain('--cmf-button-default-active-radius');
     expect(vars['--button-radius']).toContain('var(--cmf-button-default-radius');
     expect(vars['--button-radius']).not.toContain('var(--cmf-button-sm-radius');
+    expect(vars['--button-radius-disabled']).toBe(
+      'var(--cmf-button-default-radius-disabled, var(--cmf-button-radius-disabled, var(--button-radius)))',
+    );
     expect(vars['--button-fz']).toBe('var(--cmf-button-default-fz, var(--mantine-font-size-sm))');
   });
 
@@ -87,6 +95,9 @@ describe('resolveButtonRootVars', () => {
     );
     expect(vars['--button-padding-x']).toBe(
       'var(--cmf-button-header-sign_in-padding-x, var(--cmf-button-header-padding-x, var(--cmf-button-filled-padding-x, var(--button-padding-x-xs))))',
+    );
+    expect(vars['--button-bd-width']).toBe(
+      'var(--cmf-button-header-sign_in-bd-width, var(--cmf-button-header-bd-width, var(--cmf-button-filled-bd-width, calc(0.0625rem * var(--mantine-scale)))))',
     );
   });
 

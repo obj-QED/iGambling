@@ -10,7 +10,16 @@ export const SIDEBAR_CMF_COMPONENT = 'sidebar';
 /** Independent cascade for nested menu (`--cmf-*-sidebar-dropdown-*`). */
 export const SIDEBAR_DROPDOWN_CMF_COMPONENT = 'sidebar-dropdown';
 
-export type SidebarDropdownCmfRole = 'parent' | 'child';
+/**
+ * CMF role segment for dropdown cascade (`data-cmf-role`).
+ * Defaults in UI: trigger → `parent`, nested row → `child`.
+ * Any non-empty string is valid for tokens, e.g. `--cmf-*-sidebar-dropdown-{role}-*`.
+ */
+export type SidebarDropdownCmfRole = string;
+
+/** Default roles when callers only pass trigger/item flags. */
+export const SIDEBAR_DROPDOWN_ROLE_TRIGGER = 'parent';
+export const SIDEBAR_DROPDOWN_ROLE_ITEM = 'child';
 
 function itemName(item: HeaderMenuItem): string {
   return item.name ?? '';
@@ -111,13 +120,27 @@ export function menuItemDropdownDataAttrs(
 /**
  * Bar item → `sidebar`; dropdown trigger/row → `sidebar-dropdown` + role.
  * Cascade: `{component}-{key}` → `{component}-{role}` → `{component}` → `{variant}`.
+ * Pass `role` to override defaults (`parent` / `child`).
  */
 export function resolveMenuItemCmfAttrs(
   item: HeaderMenuItem,
-  options: { dropdownTrigger?: boolean; dropdownItem?: boolean } = {},
+  options: {
+    dropdownTrigger?: boolean;
+    dropdownItem?: boolean;
+    /** Overrides default parent/child when set. */
+    role?: SidebarDropdownCmfRole;
+  } = {},
 ): ReturnType<typeof menuItemDataAttrs> | ReturnType<typeof menuItemDropdownDataAttrs> {
-  if (options.dropdownTrigger === true) return menuItemDropdownDataAttrs(item, 'parent');
-  if (options.dropdownItem === true) return menuItemDropdownDataAttrs(item, 'child');
+  const role = options.role?.trim();
+  if (role && role.length > 0) {
+    return menuItemDropdownDataAttrs(item, role);
+  }
+  if (options.dropdownTrigger === true) {
+    return menuItemDropdownDataAttrs(item, SIDEBAR_DROPDOWN_ROLE_TRIGGER);
+  }
+  if (options.dropdownItem === true) {
+    return menuItemDropdownDataAttrs(item, SIDEBAR_DROPDOWN_ROLE_ITEM);
+  }
   return menuItemDataAttrs(item);
 }
 

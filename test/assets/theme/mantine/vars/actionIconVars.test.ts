@@ -11,6 +11,11 @@ describe('resolveActionIconRootVars', () => {
     expect(vars['--ai-color']).toContain('var(--cmf-action-icon-default-color');
     expect(vars['--ai-color']).not.toContain('var(--cmf-action-icon-sm-color');
     expect(vars['--ai-bd']).toContain('var(--cmf-action-icon-default-bd');
+    expect(vars['--ai-bd']).toMatch(/var\(--color-border\)\)$/);
+    expect(vars['--ai-bd']).not.toContain(' solid ');
+    expect(vars['--ai-bd-width']).toBe(
+      'var(--cmf-action-icon-default-bd-width, calc(0.0625rem * var(--mantine-scale)))',
+    );
     expect(vars['--ai-hover']).toContain('var(--cmf-action-icon-default-hover');
     expect(vars['--ai-hover-color']).toContain('var(--cmf-action-icon-default-hover-color');
     expect(vars['--ai-shadow']).toBe('var(--cmf-action-icon-default-shadow, none)');
@@ -19,6 +24,9 @@ describe('resolveActionIconRootVars', () => {
     );
     expect(vars['--ai-radius']).toContain('var(--cmf-action-icon-default-radius');
     expect(vars['--ai-radius']).not.toContain('var(--cmf-action-icon-sm-radius');
+    expect(vars['--ai-radius-disabled']).toBe(
+      'var(--cmf-action-icon-default-radius-disabled, var(--cmf-action-icon-radius-disabled, var(--ai-radius)))',
+    );
   });
 
   it('applies component + key → component → data-variant cascade', () => {
@@ -41,6 +49,12 @@ describe('resolveActionIconRootVars', () => {
     );
     expect(vars['--ai-size']).toBe(
       'var(--cmf-action-icon-header-search-size, var(--cmf-action-icon-header-size, var(--cmf-action-icon-filled-size, var(--ai-size-xs))))',
+    );
+    expect(vars['--ai-bd-width']).toBe(
+      'var(--cmf-action-icon-header-search-bd-width, var(--cmf-action-icon-header-bd-width, var(--cmf-action-icon-filled-bd-width, calc(0.0625rem * var(--mantine-scale)))))',
+    );
+    expect(vars['--ai-radius-disabled']).toBe(
+      'var(--cmf-action-icon-header-search-radius-disabled, var(--cmf-action-icon-header-radius-disabled, var(--cmf-action-icon-radius-disabled, var(--ai-radius))))',
     );
   });
 

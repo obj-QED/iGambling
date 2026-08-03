@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
+import { DEFAULT_HEADER_CONFIG } from '@/widgets/header/config/defaults';
+import { ConfigProvider } from '@/widgets/header/context/provider';
 import { ColorSchemeBlock } from '@/widgets/header/ui/blocks/ColorSchemeBlock/ColorSchemeBlock';
 
 beforeAll(() => {
@@ -28,7 +30,9 @@ describe('ColorSchemeBlock', () => {
 
     const { container } = render(
       <MantineProvider theme={mantineTheme} defaultColorScheme="light">
-        <ColorSchemeBlock item={{ key: 'color_scheme', url: '', name: '' }} />
+        <ConfigProvider config={DEFAULT_HEADER_CONFIG}>
+          <ColorSchemeBlock item={{ key: 'color_scheme', url: '', name: '' }} />
+        </ConfigProvider>
       </MantineProvider>,
     );
 

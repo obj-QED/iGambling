@@ -3,6 +3,7 @@ import type { RootProps } from '../../types';
 import { memo, useMemo } from 'react';
 
 import { Group } from '@mantine/core';
+
 import { splitHeaderDropdownMenu } from '../../lib';
 import { resolveHeaderLayout } from '../../registry';
 import { DeepPanel } from '../items/DeepPanel/DeepPanel';
@@ -30,14 +31,8 @@ function DropdownTypeStrategyComponent({ menu, config }: RootProps) {
 
       <div className={dropdownStyles.mobile} data-header-dropdown-mode="mobile">
         <Layout>
-          <Group
-            className={styles.sections}
-            justify="space-between"
-            wrap="nowrap"
-            gap="md"
-            data-header-type="dropdown"
-          >
-            <Group className={dropdownStyles.outside} gap="sm" wrap="nowrap">
+          <Group className={styles.sections} data-header-type="dropdown" unstyled>
+            <Group className={dropdownStyles.outside} gap="sm" wrap="wrap" unstyled>
               {outsideSections.map((section) => (
                 <Section key={section.key} section={section} />
               ))}

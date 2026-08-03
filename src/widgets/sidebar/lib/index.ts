@@ -21,6 +21,8 @@ export {
   shouldRenderMenuItem,
   SIDEBAR_CMF_COMPONENT,
   SIDEBAR_DROPDOWN_CMF_COMPONENT,
+  SIDEBAR_DROPDOWN_ROLE_ITEM,
+  SIDEBAR_DROPDOWN_ROLE_TRIGGER,
   type SidebarDropdownCmfRole,
 } from './itemUtils';
 export {

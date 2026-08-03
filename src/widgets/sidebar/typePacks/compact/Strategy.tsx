@@ -52,10 +52,6 @@ function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) 
           }}
           h="100%"
           scrollbars="y"
-          offsetScrollbars
-          type={scrollArea.type}
-          overscrollBehavior={scrollArea.overscrollBehavior}
-          scrollHideDelay={scrollArea.scrollHideDelay}
           {...scrollArea}
         >
           <Shell>

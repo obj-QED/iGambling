@@ -24,6 +24,10 @@ describe('resolveTooltipConfig', () => {
     });
   });
 
+  it('passthroughs typed Mantine tooltip props', () => {
+    expect(resolveTooltipConfig({ enabled: true, multiline: true }).multiline).toBe(true);
+  });
+
   it('ignores invalid position and keeps previous', () => {
     expect(
       resolveTooltipConfig({ position: 'right' }, { position: 'not-a-position' as 'top' }).position,

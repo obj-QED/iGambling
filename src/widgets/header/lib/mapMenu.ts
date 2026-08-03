@@ -1,8 +1,6 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
 import type { MenuItemDto, MenuRootDto } from '@/shared/types/menu';
 
-import { isSpecialBlockKey } from './itemUtils';
-
 function resolveSectionKey(item: MenuItemDto): string {
   if (item.key.length > 0) return item.key;
   return item.name;
@@ -37,7 +35,7 @@ export function mapItem(item: MenuItemDto): HeaderMenuItem {
     mapped.variant = item.variant;
   }
 
-  if (!isSpecialBlockKey(item.key) && item.type !== undefined) {
+  if (item.type !== undefined) {
     mapped.type = item.type;
   }
 

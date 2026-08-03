@@ -8,6 +8,6 @@ import customTypeStyles from '../../styles/type/CustomType.module.scss';
 export const customTypePack: HeaderTypePack = {
   key: 'custom',
   Strategy: ClassicTypeStrategy,
-  styles: customTypeStyles,
+  styles: { root: customTypeStyles.root },
   defaults: HEADER_TYPE_TUNABLE_DEFAULTS.custom,
 };

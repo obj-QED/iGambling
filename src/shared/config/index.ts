@@ -2,6 +2,7 @@ export type {
   AsideLayoutKey,
   AsideLayoutStrategyKey,
   AsideRegionsSettings,
+  AsideScrollAreaOverscrollBehavior,
   AsideScrollAreaSettings,
   AsideScrollAreaType,
   AsideSettings,

@@ -11,7 +11,7 @@ export const cmfButtonScopeOverrideStyle = {
   '--cmf-button-filled-hover-color': '#fff',
   '--cmf-button-outline-bg': 'transparent',
   '--cmf-button-outline-color': 'var(--mantine-color-brand-2)',
-  '--cmf-button-outline-bd': '1px solid var(--mantine-color-brand-3)',
+  '--cmf-button-outline-bd': 'var(--mantine-color-brand-3)',
   '--cmf-button-outline-hover': 'color-mix(in srgb, var(--mantine-color-brand-4) 12%, transparent)',
   '--cmf-button-outline-hover-color': 'var(--mantine-color-brand-1)',
 } as CSSProperties;
@@ -23,7 +23,7 @@ export const cmfActionIconScopeOverrideStyle = {
   '--cmf-action-icon-filled-hover-color': '#fff',
   '--cmf-action-icon-outline-bg': 'transparent',
   '--cmf-action-icon-outline-color': 'var(--mantine-color-brand-2)',
-  '--cmf-action-icon-outline-bd': '1px solid var(--mantine-color-brand-3)',
+  '--cmf-action-icon-outline-bd': 'var(--mantine-color-brand-3)',
   '--cmf-action-icon-outline-hover':
     'color-mix(in srgb, var(--mantine-color-brand-4) 12%, transparent)',
   '--cmf-action-icon-outline-hover-color': 'var(--mantine-color-brand-1)',

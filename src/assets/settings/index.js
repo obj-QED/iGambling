@@ -13,12 +13,15 @@
     },
     header: {
       layout: 'container',
-      type: 'default',
+      type: 'dropdown', // omit / empty → 'dropdown'; 'default' | 'custom' | 'dropdown' | …
       /** `true` → header menu from `src/widgets/header/mocks` */
       mockMenu: true,
       /**
-       * Per-type tunables. Omit a type key → pack defaults.
-       * Legacy top-level `blockVariants` still works (nested wins).
+       * Global adapter variants for special blocks — apply wherever they render
+       * (default bar, dropdown outside row, …). Per-type override: `types.<type>.blockVariants`.
+       * Values are open strings: use a key registered on that block’s variant registry
+       * (e.g. search: compact|icon|input|modal, wallet: compact|full|drawer).
+       * Unknown / omitted → `compact`.
        */
       blockVariants: {
         search: 'compact',
@@ -48,7 +51,7 @@
 
     aside: {
       width: 'calc(2.625rem * var(--mantine-scale) + 1.25rem)',
-      type: 'default', // 'compact' | 'compact'
+      type: 'default', // 'default' | 'compact'
       layout: 'container',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: true,
@@ -64,14 +67,13 @@
         delay: 200,
         multiline: true,
       },
-      /** Global for aside (all types). Omit → pack defaults. */
+      /** Global for aside (all types). Omit → pack defaults. Any Mantine ScrollArea prop allowed. */
       scrollArea: {
         scrollbarSize: 4,
         scrollHideDelay: 3000,
         type: 'auto',
         overscrollBehavior: 'contain',
         offsetScrollbars: true,
-        verticalScrollbarPosition: 'left',
       },
       // Special blocks for header and footer, key: ['logo', 'search_leftmenu', 'wheel_mdl', 'timer']
       customBlocks: [

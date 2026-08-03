@@ -1,3 +1,5 @@
+import type { TooltipProps } from '@mantine/core';
+
 /** Floating positions accepted by Mantine Tooltip. */
 export const TOOLTIP_POSITIONS = [
   'top',
@@ -17,20 +19,37 @@ export const TOOLTIP_POSITIONS = [
 export type TooltipPosition = (typeof TOOLTIP_POSITIONS)[number];
 
 /**
- * Raw tooltip tunables from settings (widget / place).
- * Cascade: pack defaults → widget (`aside.tooltip`) → place override.
+ * Mantine Tooltip props allowed from settings (excludes render/slot chrome).
+ * Any key present on `TooltipProps` (e.g. `multiline`) can be set in settings.
  */
-export type TooltipSettings = {
+export type TooltipMantineSettings = Partial<
+  Omit<
+    TooltipProps,
+    | 'children'
+    | 'label'
+    | 'className'
+    | 'classNames'
+    | 'style'
+    | 'styles'
+    | 'vars'
+    | 'mod'
+    | 'variant'
+  >
+>;
+
+/**
+ * Raw tooltip tunables from settings (widget / place).
+ * Cascade: pack defaults → widget (`aside.tooltip` / `header.tooltip`) → place override.
+ * `delay` is a settings alias for Mantine `openDelay`.
+ */
+export type TooltipSettings = TooltipMantineSettings & {
   enabled?: boolean;
-  position?: TooltipPosition;
   /** Open delay (ms) → Mantine `openDelay`. */
   delay?: number;
-  withArrow?: boolean;
-  offset?: number;
 };
 
 /** Fully resolved tooltip config for UI. */
-export type TooltipConfig = {
+export type TooltipConfig = TooltipMantineSettings & {
   enabled: boolean;
   position: TooltipPosition;
   delay: number;

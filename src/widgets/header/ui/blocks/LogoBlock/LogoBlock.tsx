@@ -9,6 +9,7 @@ import {
   menuItemDataAttrs,
   resolveItemHref,
   resolveItemLabel,
+  resolveMenuItemButtonVariant,
 } from '../../../lib';
 
 function LogoBlockComponent({ item }: BlockProps) {
@@ -19,6 +20,7 @@ function LogoBlockComponent({ item }: BlockProps) {
       href={resolveItemHref(item.url)}
       label={resolveItemLabel(item)}
       img={item.img}
+      variant={resolveMenuItemButtonVariant(item)}
       {...menuItemDataAttrs(item)}
     />
   );

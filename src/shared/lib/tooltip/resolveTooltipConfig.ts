@@ -13,6 +13,7 @@ function resolveFiniteNumber(raw: unknown, fallback: number): number {
 /**
  * Merge tooltip settings layers (later wins).
  * Example: pack → `aside.tooltip` → place override (`items`, `search`, …).
+ * Unknown Mantine Tooltip keys from settings are shallow-merged when present.
  */
 export function resolveTooltipConfig(...layers: Array<TooltipSettings | undefined>): TooltipConfig {
   let current: TooltipConfig = { ...DEFAULT_TOOLTIP_CONFIG };
@@ -20,12 +21,16 @@ export function resolveTooltipConfig(...layers: Array<TooltipSettings | undefine
   for (const layer of layers) {
     if (!layer) continue;
 
+    const { enabled, delay, openDelay, position, withArrow, offset, ...rest } = layer;
+
     current = {
-      enabled: layer.enabled ?? current.enabled,
-      position: pickUnionValue(TOOLTIP_POSITIONS, layer.position, current.position),
-      delay: resolveFiniteNumber(layer.delay, current.delay),
-      withArrow: layer.withArrow ?? current.withArrow,
-      offset: resolveFiniteNumber(layer.offset, current.offset),
+      ...current,
+      ...rest,
+      enabled: enabled ?? current.enabled,
+      position: pickUnionValue(TOOLTIP_POSITIONS, position, current.position),
+      delay: resolveFiniteNumber(delay ?? openDelay, current.delay),
+      withArrow: withArrow ?? current.withArrow,
+      offset: resolveFiniteNumber(offset, current.offset),
     };
   }
 

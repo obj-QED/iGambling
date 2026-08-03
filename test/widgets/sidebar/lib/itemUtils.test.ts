@@ -64,7 +64,14 @@ describe('sidebar dropdown CMF attrs', () => {
     });
   });
 
-  it('resolveMenuItemCmfAttrs maps trigger/item to parent/child', () => {
+  it('accepts arbitrary dropdown role keys', () => {
+    expect(menuItemDropdownDataAttrs(casino, 'section-header')['data-cmf-role']).toBe(
+      'section-header',
+    );
+    expect(resolveMenuItemCmfAttrs(casino, { role: 'leaf' })['data-cmf-role']).toBe('leaf');
+  });
+
+  it('resolveMenuItemCmfAttrs maps trigger/item to parent/child by default', () => {
     expect(resolveMenuItemCmfAttrs(casino, { dropdownTrigger: true })['data-cmf-role']).toBe(
       'parent',
     );

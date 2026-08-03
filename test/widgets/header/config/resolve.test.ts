@@ -15,19 +15,34 @@ describe('resolveHeaderConfig', () => {
           blockVariants: { search: 'input', wallet: 'full' },
           types: {
             dropdown: {
-              blockVariants: { search: 'icon' },
+              blockVariants: { search: 'compact' },
             },
           },
         },
       }).blockVariants,
     ).toEqual({
-      search: 'icon',
+      search: 'compact',
       wallet: 'full',
+    });
+  });
+
+  it('keeps arbitrary blockVariant strings for registry resolve', () => {
+    expect(
+      resolveHeaderConfig({
+        header: {
+          blockVariants: { search: 'mega', wallet: 'drawer', promo: 'card' },
+        },
+      }).blockVariants,
+    ).toEqual({
+      search: 'mega',
+      wallet: 'drawer',
+      promo: 'card',
     });
   });
 
   it('keeps arbitrary type strings; empty falls back', () => {
     expect(resolveHeaderConfig({ header: { type: 'mega' } }).type).toBe('mega');
-    expect(resolveHeaderConfig({ header: { type: '   ' } }).type).toBe('default');
+    expect(resolveHeaderConfig({ header: { type: '   ' } }).type).toBe('dropdown');
+    expect(resolveHeaderConfig({ header: {} }).type).toBe('dropdown');
   });
 });

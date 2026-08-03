@@ -11,7 +11,7 @@ export type HeaderMenuItem = {
   key?: string;
   url?: string;
   name?: string;
-  /** Optional a11y / tooltip copy; wins over `name` where consumers resolve it. */
+  /** Optional a11y / tooltip copy; wins over `name` where consumers resolve it. Tooltip may be HTML. */
   label?: string;
   img?: string;
   imgShape?: string;
@@ -40,10 +40,9 @@ export const HEADER_CONFIG_ONLY_BLOCK_KEYS = ['color_scheme'] as const;
 
 export type HeaderConfigOnlyBlockKey = (typeof HEADER_CONFIG_ONLY_BLOCK_KEYS)[number];
 
-export type HeaderBlockVariants = {
-  search?: 'input' | 'icon' | 'modal';
-  wallet?: 'compact' | 'full' | 'drawer';
-  notification?: 'icon';
-  logo?: 'default';
-  bonus_box?: 'default';
-};
+/**
+ * Special-block adapter keys from settings (`blockVariants`).
+ * Values are open strings — must match a block registry entry to render;
+ * unknown / missing → `compact` at the block resolver.
+ */
+export type HeaderBlockVariants = Partial<Record<string, string>>;

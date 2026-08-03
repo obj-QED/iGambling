@@ -1,3 +1,4 @@
+import type { TooltipSettings } from './tooltipSettings';
 import type { MenuItemDto } from '@/shared/types/menu';
 
 import { HEADER_SPECIAL_BLOCK_KEYS } from './headerSpecialBlockKeys';
@@ -5,7 +6,7 @@ import { HEADER_SPECIAL_BLOCK_KEYS } from './headerSpecialBlockKeys';
 /** Open string from settings; empty → `container`. Known shells: `HEADER_LAYOUT_KEYS`. */
 export type HeaderLayoutKey = string;
 
-/** Open string from settings; empty → `default`. Known strategies: `HEADER_TYPE_KEYS`. */
+/** Open string from settings; empty → `dropdown`. Known strategies: `HEADER_TYPE_KEYS`. */
 export type HeaderTypeKey = string;
 
 export const HEADER_LAYOUT_KEYS = ['container', 'container-fluid'] as const;
@@ -65,13 +66,12 @@ export type HeaderCustomBlockSettings = {
   items: HeaderCustomBlockInput[];
 };
 
-export type HeaderBlockVariantSettings = {
-  search?: 'input' | 'icon' | 'modal';
-  wallet?: 'compact' | 'full' | 'drawer';
-  notification?: 'icon';
-  logo?: 'default';
-  bonus_box?: 'default';
-};
+/**
+ * Adapter variant per special block key (`search`, `wallet`, …).
+ * Open strings — resolved against each block’s variant registry;
+ * unknown / omitted → `compact` at render.
+ */
+export type HeaderBlockVariantSettings = Partial<Record<string, string>>;
 
 export type HeaderMockAuthKey = 'authenticated' | 'guest';
 
@@ -91,10 +91,16 @@ export type HeaderSettings = {
   customBlock?: HeaderCustomBlockSettings;
   customBlocks?: HeaderCustomBlockSettings[];
   /**
-   * @deprecated Prefer `types.<activeType>.blockVariants`.
-   * Legacy flat alias — merged before nested type tunables (nested wins).
+   * Global adapter variants for special blocks (`search` / `wallet` / …).
+   * Open strings resolved against each block registry; unknown → `compact`.
+   * Nested `types.<type>.blockVariants` still overrides when present.
    */
   blockVariants?: HeaderBlockVariantSettings;
+  /**
+   * Tooltip for header menu rows.
+   * Cascade: defaults → `header.tooltip` → place override in AppTooltip.
+   */
+  tooltip?: TooltipSettings;
   /** Per-type tunables keyed by `header.type`. */
   types?: Partial<Record<string, HeaderTypeTunablesSettings>>;
 };

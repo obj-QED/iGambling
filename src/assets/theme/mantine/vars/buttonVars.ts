@@ -5,13 +5,16 @@ import { buildCmfButtonPropToken, type CmfScope, resolveCmfScope } from '../cmf/
 import { resolveCmfIconControlVars } from '../cmf/cmfIconControlVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from '../theme/gradientTokens';
 
-const MANTINE_BUTTON_BORDER = 'calc(0.0625rem * var(--mantine-scale)) solid var(--color-border)';
-const MANTINE_BUTTON_BORDER_TRANSPARENT =
-  'calc(0.0625rem * var(--mantine-scale)) solid transparent';
+/** `--button-bd` / CMF `*-bd` are border-color only (width+style in CSS). */
+const MANTINE_BUTTON_BD_TRANSPARENT = 'transparent';
+const MANTINE_BUTTON_BD_DEFAULT = 'var(--color-border)';
+const MANTINE_BUTTON_BD_OUTLINE =
+  'color-mix(in srgb, var(--mantine-color-brand-4) 42%, var(--mantine-color-default-border))';
 
 type VariantPaint = {
   bg: string;
   color: string;
+  /** Border color only — not a full `border` shorthand. */
   bd: string;
   hover: string;
   'hover-color': string;
@@ -25,63 +28,63 @@ const MANTINE_VARIANT_FALLBACKS = {
   filled: {
     bg: 'var(--mantine-color-brand-4)',
     color: 'var(--mantine-primary-color-contrast)',
-    bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'var(--mantine-color-brand-3)',
     'hover-color': 'var(--mantine-primary-color-contrast)',
   },
   outline: {
     bg: 'transparent',
     color: 'var(--mantine-color-brand-4)',
-    bd: 'calc(0.0625rem * var(--mantine-scale)) solid color-mix(in srgb, var(--mantine-color-brand-4) 42%, var(--mantine-color-default-border))',
+    bd: MANTINE_BUTTON_BD_OUTLINE,
     hover: 'var(--mantine-color-brand-light-hover)',
     'hover-color': 'var(--mantine-color-text)',
   },
   light: {
     bg: 'var(--mantine-color-brand-light)',
     color: 'var(--mantine-color-brand-light-color)',
-    bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'var(--mantine-color-brand-light-hover)',
     'hover-color': 'var(--mantine-color-brand-light-color)',
   },
   subtle: {
     bg: 'transparent',
     color: 'var(--mantine-color-text)',
-    bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'var(--mantine-color-brand-light-hover)',
     'hover-color': 'var(--mantine-color-text)',
   },
   default: {
     bg: 'var(--mantine-color-default)',
     color: 'var(--mantine-color-default-color)',
-    bd: MANTINE_BUTTON_BORDER,
+    bd: MANTINE_BUTTON_BD_DEFAULT,
     hover: 'var(--mantine-color-default-hover)',
     'hover-color': 'var(--mantine-color-text)',
   },
   transparent: {
     bg: 'transparent',
     color: 'var(--mantine-color-text)',
-    bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'transparent',
     'hover-color': 'var(--mantine-color-text)',
   },
   white: {
     bg: 'var(--mantine-color-white)',
     color: 'var(--mantine-color-black)',
-    bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'var(--mantine-color-white)',
     'hover-color': 'var(--mantine-color-black)',
   },
   gradient: {
     bg: `var(--app-gradient-default, ${APP_GRADIENT_DEFAULT})`,
     color: 'var(--mantine-primary-color-contrast)',
-    bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: `var(--app-gradient-default-hover, ${APP_GRADIENT_DEFAULT_HOVER})`,
     'hover-color': 'var(--mantine-primary-color-contrast)',
   },
   exception: {
     bg: '#d97706',
     color: 'var(--mantine-color-white)',
-    bd: MANTINE_BUTTON_BORDER_TRANSPARENT,
+    bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: '#b45309',
     'hover-color': 'var(--mantine-color-white)',
   },
@@ -200,6 +203,11 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
         tail: 'shared',
       }),
     ),
+    '--button-radius-disabled': buildCmfButtonPropToken('radius-disabled', 'var(--button-radius)', {
+      scope,
+      variant,
+      tail: 'shared',
+    }),
     '--button-height': buildCmfButtonPropToken('height', `var(--button-height-${size})`, {
       scope,
       variant,
@@ -235,6 +243,15 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       variant,
       tail: 'variant',
     }),
+    '--button-bd-width': buildCmfButtonPropToken(
+      'bd-width',
+      'calc(0.0625rem * var(--mantine-scale))',
+      {
+        scope,
+        variant,
+        tail: 'variant',
+      },
+    ),
     '--button-hover': buildCmfButtonPropToken('hover', paint.hover, {
       scope,
       variant,

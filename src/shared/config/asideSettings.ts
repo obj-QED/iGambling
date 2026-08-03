@@ -4,6 +4,7 @@ import type {
   HeaderCustomBlockSettings,
 } from './headerSettings';
 import type { TooltipSettings } from './tooltipSettings';
+import type { ScrollAreaProps } from '@mantine/core';
 
 /** Open string from settings; empty → `container`. Known shells: `ASIDE_LAYOUT_KEYS`. */
 export type AsideLayoutKey = string;
@@ -26,14 +27,16 @@ export const ASIDE_SCROLL_AREA_OVERSCROLL = ['auto', 'contain', 'none'] as const
 
 export type AsideScrollAreaOverscrollBehavior = (typeof ASIDE_SCROLL_AREA_OVERSCROLL)[number];
 
-export type AsideScrollAreaSettings = {
-  /** Mantine ScrollArea thumb track width (px). From `settings.aside.scrollArea.scrollbarSize`. */
-  scrollbarSize?: number;
-  /** Hide delay (ms) for `hover` / `scroll` types. */
-  scrollHideDelay?: number;
-  type?: AsideScrollAreaType;
-  overscrollBehavior?: AsideScrollAreaOverscrollBehavior;
-};
+/**
+ * Any Mantine `ScrollArea` prop from settings (excludes render/slot chrome).
+ * Keys not on `ScrollAreaProps` are not typed and must not be relied on.
+ */
+export type AsideScrollAreaSettings = Partial<
+  Omit<
+    ScrollAreaProps,
+    'children' | 'className' | 'classNames' | 'style' | 'styles' | 'vars' | 'mod' | 'variant'
+  >
+>;
 
 /** Which chrome regions the active type Strategy may render. */
 export type AsideRegionsSettings = {
