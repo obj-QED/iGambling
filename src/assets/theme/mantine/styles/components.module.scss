@@ -1,8 +1,9 @@
 // Shared Mantine theme classNames — Title, Container, Button/ActionIcon gradient hover.
-// Button size table + visual cascade live in `Button.extend` vars (`buttonVars.ts` → element.style).
+// CMF cascade lives in CSS (`_cmf-control-cascade.scss`) — no inline `vars()` on controls.
 
 @use './gradient-variant-states' as gradient;
 @use './cmf-control-active' as cmfControl;
+@use './cmf-control-cascade' as cmfCascade;
 
 @layer mantine-rebase {
   .heading {
@@ -62,6 +63,7 @@
   }
 
   .button {
+    @include cmfCascade.cmf-button-cascade;
     @include gradient.gradient-variant-hover('button');
     @include cmfControl.cmf-control-shadow('button');
     @include cmfControl.cmf-control-disabled-radius('button');
@@ -97,6 +99,7 @@
   }
 
   .actionIcon {
+    @include cmfCascade.cmf-action-icon-cascade;
     @include gradient.gradient-variant-hover('ai');
     @include cmfControl.cmf-control-shadow('ai');
     @include cmfControl.cmf-control-disabled-radius('ai');
