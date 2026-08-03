@@ -2,7 +2,7 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { Dropdown } from '../../menu/Dropdown/Dropdown';
+import { Dropdown } from '../../items/Dropdown/Dropdown';
 
 function DropdownBlockComponent({ item }: BlockProps) {
   return <Dropdown item={item} />;

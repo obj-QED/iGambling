@@ -25,4 +25,24 @@ describe('mapItem', () => {
       type: 'link',
     });
   });
+
+  it('keeps variant and label through mapping', () => {
+    expect(
+      mapItem({
+        key: 'logout',
+        name: 'Logout',
+        url: '/logout',
+        type: 'link',
+        variant: 'filled',
+        label: 'Sign out',
+      }),
+    ).toEqual({
+      key: 'logout',
+      name: 'Logout',
+      url: '/logout',
+      type: 'link',
+      variant: 'filled',
+      label: 'Sign out',
+    });
+  });
 });

@@ -11,8 +11,11 @@
   --header-size-action-icon: md;
 
   /* Surface */
-  --header-surface-bg: transparent;
-  --header-surface-border-color: transparent;
+  --header-surface-bg: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8));
+  --header-surface-border-color: light-dark(
+    var(--mantine-color-gray-3),
+    var(--mantine-color-dark-4)
+  );
   --header-surface-border-width: 0;
   --header-surface-shadow: none;
   --header-surface-backdrop-filter: none;
@@ -80,4 +83,71 @@
   --cmf-action-icon-header-active-height: var(--cmf-action-icon-header-active-size);
   --cmf-action-icon-header-active-radius-bl: 0px;
   --cmf-action-icon-header-active-radius-br: 0px;
+
+  /*
+   * `type: dropdown` — deep menu chrome.
+   * Row / trigger paint: `--cmf-*-header-dropdown-*` (independent from bar `--cmf-*-header-*`).
+   * Surfaces via `light-dark(light, dark)` — readable contrast in both schemes.
+   */
+  &[data-type='dropdown'] {
+    --cmf-action-icon-header-dropdown-size: calc(2.625rem * var(--mantine-scale));
+
+    --header-deep-menu-min-width: 14rem;
+    --header-deep-menu-padding: var(--mantine-spacing-xs);
+    --header-deep-menu-gap: var(--mantine-spacing-xs);
+    --header-deep-menu-visible-rows: 7;
+    --header-deep-menu-row-height: var(--button-height-md, 2.625rem);
+    --header-deep-menu-radius: var(--mantine-radius-md);
+
+    /* Panel chrome */
+    --header-deep-menu-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-6));
+    --header-deep-menu-color: light-dark(var(--mantine-color-dark-9), var(--mantine-color-gray-0));
+    --header-deep-menu-bd: 1px solid
+      light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    --header-deep-menu-label-color: light-dark(
+      var(--mantine-color-gray-6),
+      var(--mantine-color-dark-1)
+    );
+    --header-deep-menu-shadow: light-dark(
+      var(--shadow-md, 0 4px 12px rgb(15 23 42 / 12%)),
+      var(--shadow-md, 0 4px 12px rgb(0 0 0 / 35%))
+    );
+
+    /* Logo keeps its own transparent shell */
+    --cmf-button-header-logo-bg: transparent;
+    --cmf-button-header-logo-hover: transparent;
+    --cmf-button-header-logo-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
+    --cmf-button-header-logo-padding-x: 0;
+
+    /* Deep menu rows — component scope `header-dropdown` */
+    --cmf-button-header-dropdown-bg: light-dark(
+      var(--mantine-color-gray-0),
+      var(--mantine-color-dark-5)
+    );
+    --cmf-button-header-dropdown-color: light-dark(
+      var(--mantine-color-dark-9),
+      var(--mantine-color-gray-0)
+    );
+    --cmf-button-header-dropdown-hover: light-dark(
+      var(--mantine-color-gray-2),
+      var(--mantine-color-dark-4)
+    );
+    --cmf-button-header-dropdown-hover-color: light-dark(
+      var(--mantine-color-black),
+      var(--mantine-color-white)
+    );
+    --cmf-button-header-dropdown-bd: 1px solid
+      light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+    --cmf-button-header-dropdown-justify: flex-start;
+
+    /* Trigger / icons inside deep menu */
+    --cmf-action-icon-header-dropdown-trigger-color: light-dark(
+      var(--mantine-color-gray-0),
+      var(--mantine-color-gray-2)
+    );
+    --cmf-action-icon-header-dropdown-trigger-hover-color: light-dark(
+      var(--mantine-color-gray-1),
+      var(--mantine-color-white)
+    );
+  }
 }

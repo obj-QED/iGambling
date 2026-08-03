@@ -1,11 +1,12 @@
 /**
  * CMF control token cascade (JS) — Button / ActionIcon.
  *
- * With `data-cmf-component` / key:
+ * With `data-cmf-component` / key / role:
  *   1. `--cmf-{control}-{component}-{key}-{prop}`
- *   2. `--cmf-{control}-{component}-{prop}`
- *   3. `--cmf-{control}-{variant}-{prop}` when `tail: 'variant'` (or variant-in-shared)
- *   4. `--cmf-{control}-{prop}` when `tail: 'shared'`
+ *   2. `--cmf-{control}-{component}-{role}-{prop}` (e.g. dropdown parent|child)
+ *   3. `--cmf-{control}-{component}-{prop}`
+ *   4. `--cmf-{control}-{variant}-{prop}` when `tail: 'variant'` (or variant-in-shared)
+ *   5. `--cmf-{control}-{prop}` when `tail: 'shared'`
  *
  * Without component scope (plain `<Button data-variant>`):
  *   1. `--cmf-{control}-{variant}-{prop}`
@@ -20,6 +21,8 @@
 export type CmfScope = {
   component?: string;
   key?: string;
+  /** Structural role inside a component (e.g. dropdown `parent` | `child`). */
+  role?: string;
 };
 
 export type CmfControlCascadeTail = 'variant' | 'shared';
@@ -46,6 +49,7 @@ export function resolveCmfScope(props: Record<string, unknown>): CmfScope {
   return {
     component: readStringProp(props, ['data-cmf-component', 'cmfComponent']),
     key: readStringProp(props, ['data-cmf-key', 'cmfKey']),
+    role: readStringProp(props, ['data-cmf-role', 'cmfRole']),
   };
 }
 
@@ -100,6 +104,9 @@ function buildCmfControlPropToken(
   if (hasComponent && scope.key !== undefined) {
     names.push(cmfControlName(control, scope.component!, scope.key, prop));
   }
+  if (hasComponent && scope.role !== undefined) {
+    names.push(cmfControlName(control, scope.component!, scope.role, prop));
+  }
   if (hasComponent) {
     names.push(cmfControlName(control, scope.component!, prop));
   }
@@ -127,7 +134,7 @@ function buildCmfControlPropToken(
 type BuildCmfPropTokenOptions = Omit<BuildCmfControlPropTokenOptions, 'exceptionKeyLayer'>;
 
 /**
- * With scope: component+key → component → variant|shared → fallback
+ * With scope: component+key → component+role → component → variant|shared → fallback
  * Without scope: variant → (shared) → fallback
  *
  * Exception + key also tries `--cmf-button-exception-{key}-{prop}` first.

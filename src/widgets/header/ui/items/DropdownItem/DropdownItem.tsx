@@ -1,27 +1,23 @@
-import type { DropdownMenuItemProps } from '../../../types';
+import type { DropdownItemProps } from '../../../types';
 
 import { memo } from 'react';
 
 import { Menu } from '@mantine/core';
 
-import { AppButton } from '@/elements/AppButton';
-import { useMediaState } from '@/shared/hooks/useMediaState';
-import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { AppButton } from '@/elements';
+import { useMediaState, useNavActive } from '@/shared/hooks';
+import { useHeaderMenuSizes } from '../../../context';
+import { resolveHeaderMenuButtonSize, menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib';
+import { ItemImage } from '../ItemImage/ItemImage';
 
-import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
-import { resolveHeaderMenuButtonSize } from '../../../lib/headerMenuSize';
-import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
-import { resolveMenuItemButtonVariant } from '../../../lib/menuItemVariant';
-import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
-
-function DropdownMenuItemComponent({ item }: DropdownMenuItemProps) {
+function DropdownItemComponent({ item }: DropdownItemProps) {
   const menuSizes = useHeaderMenuSizes();
-  const { menuActiveAttrs } = useMenuActive(item);
+  const { activeAttrs } = useNavActive(item);
   const { onImgError, showItemImg, iconControlAttrs } = useMediaState(item);
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
   const leftSection = showItemImg ? (
-    <MenuItemImage item={item} alt={label} onImgFailed={onImgError} />
+    <ItemImage item={item} alt={label} onImgFailed={onImgError} />
   ) : undefined;
   const content = item.name ?? label;
 
@@ -31,16 +27,16 @@ function DropdownMenuItemComponent({ item }: DropdownMenuItemProps) {
       href={href}
       label={content}
       leftSection={leftSection}
-      variant={resolveMenuItemButtonVariant(item)}
+      variant="outline"
       size={resolveHeaderMenuButtonSize(item, menuSizes)}
       fullWidth
       justify="flex-start"
       {...menuItemDataAttrs(item)}
-      {...menuActiveAttrs}
+      {...activeAttrs}
       {...iconControlAttrs}
     />
   );
 }
 
-export const DropdownMenuItem = memo(DropdownMenuItemComponent);
-DropdownMenuItem.displayName = 'DropdownMenuItem';
+export const DropdownItem = memo(DropdownItemComponent);
+DropdownItem.displayName = 'DropdownItem';

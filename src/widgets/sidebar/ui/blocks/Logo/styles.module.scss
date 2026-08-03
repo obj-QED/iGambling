@@ -1,0 +1,19 @@
+@layer widget.component {
+  .mark {
+    display: block;
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .markText {
+    font-size: 0.625rem;
+    font-weight: 600;
+    line-height: 1;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

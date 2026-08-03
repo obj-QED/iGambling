@@ -94,7 +94,7 @@
     @include cmfControl.cmf-control-shadow('ai');
     @include cmfControl.cmf-control-active-after('ai');
 
-    :where(svg, [data-cmf-icon-src]) {
+    :where(svg, [data-cmf-icon-src]):not([data-menu-chevron]) {
       box-sizing: border-box;
       flex-shrink: 0;
       overflow: hidden;

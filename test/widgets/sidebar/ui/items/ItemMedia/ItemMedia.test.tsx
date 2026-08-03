@@ -1,18 +1,18 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-import { MenuItemMedia } from '@/widgets/sidebar/ui/menu/MenuItemMedia/MenuItemMedia';
+import { ItemMedia } from '@/widgets/sidebar/ui/items/ItemMedia/ItemMedia';
 
 vi.mock('react-inlinesvg', () => ({
   default: ({ src }: { src: string }) => <svg data-testid="inline-svg" data-src={src} />,
 }));
 
-describe('MenuItemMedia', () => {
+describe('ItemMedia', () => {
   it('calls onImgError and hides image when load fails', () => {
     const onImgError = vi.fn();
 
     render(
-      <MenuItemMedia
+      <ItemMedia
         item={{ key: 'home', name: 'Home', url: '/', img: '/missing.png' }}
         alt="Home"
         onImgError={onImgError}
@@ -27,7 +27,7 @@ describe('MenuItemMedia', () => {
 
   it('hides image on error even without onImgError callback', () => {
     render(
-      <MenuItemMedia
+      <ItemMedia
         item={{ key: 'home', name: 'Home', url: '/', img: '/missing.png' }}
         alt="Home"
       />,
@@ -40,7 +40,7 @@ describe('MenuItemMedia', () => {
 
   it('renders inline SVG for .svg menu images', () => {
     render(
-      <MenuItemMedia
+      <ItemMedia
         item={{ key: 'home', name: 'Home', url: '/', img: '/uploads/web.svg' }}
         alt="Home"
       />,

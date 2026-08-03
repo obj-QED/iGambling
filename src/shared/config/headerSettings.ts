@@ -1,15 +1,27 @@
 import type { MenuItemDto } from '@/shared/types/menu';
 
-export type HeaderLayoutKey = 'container' | 'container-fluid';
+import { HEADER_SPECIAL_BLOCK_KEYS } from './headerSpecialBlockKeys';
 
-export type HeaderTypeKey = 'default' | 'custom';
+/** Open string from settings; empty → `container`. Known shells: `HEADER_LAYOUT_KEYS`. */
+export type HeaderLayoutKey = string;
 
-export const HEADER_LAYOUT_KEYS = [
-  'container',
-  'container-fluid',
-] as const satisfies readonly HeaderLayoutKey[];
+/** Open string from settings; empty → `default`. Known strategies: `HEADER_TYPE_KEYS`. */
+export type HeaderTypeKey = string;
 
-export const HEADER_TYPE_KEYS = ['default', 'custom'] as const satisfies readonly HeaderTypeKey[];
+export const HEADER_LAYOUT_KEYS = ['container', 'container-fluid'] as const;
+
+export const HEADER_TYPE_KEYS = ['default', 'custom', 'dropdown'] as const;
+
+export type HeaderLayoutStrategyKey = (typeof HEADER_LAYOUT_KEYS)[number];
+export type HeaderTypeStrategyKey = (typeof HEADER_TYPE_KEYS)[number];
+
+/**
+ * Stay outside the deep menu when `type: 'dropdown'` (bar on mobile / never in DeepMenu).
+ * All header special blocks — including `color_scheme`, `bonus_box`.
+ */
+export const HEADER_DROPDOWN_OUTSIDE_KEYS = HEADER_SPECIAL_BLOCK_KEYS;
+
+export type HeaderDropdownOutsideKey = (typeof HEADER_DROPDOWN_OUTSIDE_KEYS)[number];
 
 export type HeaderCustomBlockPlacement =
   | 'prepend'
@@ -31,6 +43,12 @@ export type HeaderCustomBlockInput = {
   key?: unknown;
   img?: unknown;
   type?: unknown;
+  variant?: unknown;
+  label?: unknown;
+  badge?: unknown;
+  subtitle?: unknown;
+  imgShape?: unknown;
+  imgRadius?: unknown;
   items?: unknown;
 };
 
@@ -72,5 +90,15 @@ export type HeaderSettings = {
   /** @deprecated Prefer `customBlocks` */
   customBlock?: HeaderCustomBlockSettings;
   customBlocks?: HeaderCustomBlockSettings[];
+  /**
+   * @deprecated Prefer `types.<activeType>.blockVariants`.
+   * Legacy flat alias — merged before nested type tunables (nested wins).
+   */
+  blockVariants?: HeaderBlockVariantSettings;
+  /** Per-type tunables keyed by `header.type`. */
+  types?: Partial<Record<string, HeaderTypeTunablesSettings>>;
+};
+
+export type HeaderTypeTunablesSettings = {
   blockVariants?: HeaderBlockVariantSettings;
 };

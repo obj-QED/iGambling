@@ -1,18 +1,18 @@
-import type { MenuActiveSource } from '@/shared/lib/menu';
+import type { NavActiveSource } from '@/shared/lib/menu';
 
 import { useLocation } from 'react-router-dom';
 
-import { menuActiveAttrs, resolveMenuActive } from '@/shared/lib/menu';
+import { activeAttrs as buildActiveAttrs, resolveNavActive } from '@/shared/lib/menu';
 
-export function useMenuActive(item: MenuActiveSource): {
+export function useNavActive(item: NavActiveSource): {
   isActive: boolean;
-  menuActiveAttrs: ReturnType<typeof menuActiveAttrs>;
+  activeAttrs: ReturnType<typeof buildActiveAttrs>;
 } {
   const { pathname } = useLocation();
-  const isActive = resolveMenuActive(item, pathname);
+  const isActive = resolveNavActive(item, pathname);
 
   return {
     isActive,
-    menuActiveAttrs: menuActiveAttrs(isActive),
+    activeAttrs: buildActiveAttrs(isActive),
   };
 }

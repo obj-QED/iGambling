@@ -1,15 +1,19 @@
-import type { SidebarConfig, SidebarScrollAreaConfig } from '../types';
+import type { SidebarConfig } from '../types';
 
-export const DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG: SidebarScrollAreaConfig = {
-  scrollbarSize: 2,
-  scrollHideDelay: 3000,
-  type: 'auto',
-  overscrollBehavior: 'contain',
-};
+import { SIDEBAR_TYPE_TUNABLE_DEFAULTS } from '../typePacks/tunableDefaults';
+
+export {
+  DEFAULT_SIDEBAR_REGIONS,
+  DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG,
+  resolveSidebarTypeTunableDefaults,
+  SIDEBAR_TYPE_TUNABLE_DEFAULTS,
+} from '../typePacks/tunableDefaults';
 
 export const DEFAULT_SIDEBAR_CONFIG: SidebarConfig = {
-  width: 400,
+  layout: 'container',
   type: 'default',
   openedDropdowns: [],
-  scrollArea: DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG,
+  regions: SIDEBAR_TYPE_TUNABLE_DEFAULTS.default.regions,
+  scrollArea: SIDEBAR_TYPE_TUNABLE_DEFAULTS.default.scrollArea,
+  tooltip: SIDEBAR_TYPE_TUNABLE_DEFAULTS.default.tooltip,
 };

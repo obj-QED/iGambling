@@ -1,24 +1,25 @@
-import type { DropdownMenuItemProps } from '../../../types';
+import type { DropdownItemProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { useMenuItemRenderable } from '../../../hooks/useMenuItemRenderable';
-import { isRenderableItem } from '../../../lib/itemUtils';
-import { ItemButton } from '../ItemButton/ItemButton';
+import { useMenuItemRenderable } from '../../../hooks';
+import { isRenderableItem } from '../../../lib';
+import { useSidebarTypePack } from '../../../typePacks';
 
-import styles from '../../../styles/menu/DropdownMenuItem.module.scss';
+import styles from '../../../styles/items/DropdownItem.module.scss';
 
-function DropdownMenuItemComponent({ item }: DropdownMenuItemProps) {
+function DropdownItemComponent({ item }: DropdownItemProps) {
+  const { Item } = useSidebarTypePack();
   const { visible } = useMenuItemRenderable(item);
 
-  if (isRenderableItem(item) === false || visible === false) return null;
+  if (!isRenderableItem(item) || !visible) return null;
 
   return (
     <li className={styles.item} role="none">
-      <ItemButton item={item} dropdownItem />
+      <Item item={item} dropdownItem />
     </li>
   );
 }
 
-export const DropdownMenuItem = memo(DropdownMenuItemComponent);
-DropdownMenuItem.displayName = 'DropdownMenuItem';
+export const DropdownItem = memo(DropdownItemComponent);
+DropdownItem.displayName = 'DropdownItem';

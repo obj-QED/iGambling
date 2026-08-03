@@ -64,8 +64,8 @@ describe('AppHeader', () => {
   it('renders special blocks, logo and dropdown trigger', () => {
     renderHeader();
 
-    expect(screen.getByRole('link', { name: /logo/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'search' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /logo/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'search' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Profile' })).toBeInTheDocument();
   });
 

@@ -1,15 +1,20 @@
-export type { AsideTypeKey, SidebarConfig, SidebarScrollAreaConfig } from './config.types';
+export type {
+  AsideTypeKey,
+  SidebarConfig,
+  SidebarRegionsConfig,
+  SidebarScrollAreaConfig,
+} from './config.types';
 export type { SidebarConfigProviderProps, SidebarDropdownProviderProps } from './context.types';
 export type {
   ChevronProps,
-  DropdownMenuItemProps,
+  DropdownItemProps,
   DropdownProps,
   DropdownTriggerProps,
   ItemActionIconProps,
   ItemButtonProps,
-  MenuItemMediaProps,
+  ItemMediaProps,
   PromoBlockProps,
-} from './menu.types';
-export type { BlockProps, RootProps, SectionProps } from './props.types';
+} from './itemUi.types';
+export type { BlockProps, RootProps, SectionProps, SidebarTypeStrategyProps } from './props.types';
 export type { ShellProps } from './shell.types';
 export type { AppSidebarProps } from './sidebar.types';

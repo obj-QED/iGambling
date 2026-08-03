@@ -132,8 +132,10 @@ type ActionIconVarsProps = {
   variant?: string;
   cmfComponent?: string;
   cmfKey?: string;
+  cmfRole?: string;
   'data-cmf-component'?: string;
   'data-cmf-key'?: string;
+  'data-cmf-role'?: string;
 };
 
 /**

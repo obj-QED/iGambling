@@ -1,14 +1,14 @@
-import type { MenuItemMediaProps } from '../../../types';
+import type { ItemMediaProps } from '../../../types';
 
 import { memo, useCallback, useRef, useState } from 'react';
 
-import { useCmfIconStyle } from '@/shared/hooks/useCmfIconStyle';
-import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib/cmfIcon';
+import { useCmfIconStyle } from '@/shared/hooks';
+import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib';
 import { CmfIcon } from '@/shared/ui/CmfIcon';
 
-import { hasItemImg } from '../../../lib/itemUtils';
+import { hasItemImg } from '../../../lib';
 
-function MenuItemMediaComponent({ item, alt, className, onImgError }: MenuItemMediaProps) {
+function ItemMediaComponent({ item, alt, className, onImgError }: ItemMediaProps) {
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
   const cmfStyle = useCmfIconStyle(iconRef);
   const [imgFailed, setImgFailed] = useState(false);
@@ -18,7 +18,7 @@ function MenuItemMediaComponent({ item, alt, className, onImgError }: MenuItemMe
     onImgError?.();
   }, [onImgError]);
 
-  if (hasItemImg(item) === false || imgFailed === true) return null;
+  if (!hasItemImg(item) || imgFailed) return null;
 
   return (
     <CmfIcon
@@ -33,5 +33,5 @@ function MenuItemMediaComponent({ item, alt, className, onImgError }: MenuItemMe
   );
 }
 
-export const MenuItemMedia = memo(MenuItemMediaComponent);
-MenuItemMedia.displayName = 'MenuItemMedia';
+export const ItemMedia = memo(ItemMediaComponent);
+ItemMedia.displayName = 'ItemMedia';

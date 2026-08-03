@@ -93,7 +93,7 @@ export async function initV2(
       cmd: 'initV2',
       language: params.language,
       page: params.page,
-      ...(token !== undefined ? { token } : {}),
+      ...(token && { token }),
     },
     { signal },
   );
@@ -112,7 +112,7 @@ export async function getPage(
       cmd: 'getPage',
       language: params.language,
       page: params.page,
-      ...(token !== undefined ? { token } : {}),
+      ...(token && { token }),
     },
     { signal },
   );

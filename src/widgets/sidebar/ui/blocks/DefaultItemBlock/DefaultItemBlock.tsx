@@ -2,13 +2,15 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { isRenderableItem } from '../../../lib/itemUtils';
-import { ItemButton } from '../../menu/ItemButton/ItemButton';
+import { isRenderableItem } from '../../../lib';
+import { useSidebarTypePack } from '../../../typePacks';
 
 function DefaultItemBlockComponent({ item, className }: BlockProps) {
-  if (isRenderableItem(item) === false) return null;
+  const { Item } = useSidebarTypePack();
 
-  return <ItemButton item={item} className={className} />;
+  if (!isRenderableItem(item)) return null;
+
+  return <Item item={item} className={className} />;
 }
 
 export const DefaultItemBlock = memo(DefaultItemBlockComponent);

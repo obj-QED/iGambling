@@ -14,13 +14,13 @@ export { HEADER_CONFIG_ONLY_BLOCK_KEYS, HEADER_SPECIAL_BLOCK_KEYS } from './item
 export type { ContainerFluidLayoutProps, ContainerLayoutProps } from './layout.types';
 export type {
   ChevronProps,
-  DropdownMenuItemProps,
+  DropdownItemProps,
   DropdownProps,
   ItemActionIconProps,
   ItemButtonProps,
-  ItemMenuTriggerProps,
-  MenuItemImageProps,
-} from './menu.types';
+  ItemDropdownTriggerProps,
+  ItemImageProps,
+} from './itemUi.types';
 export type { BlockProps, RootProps, SectionProps } from './props.types';
 export type { ShellProps } from './shell.types';
 export type {

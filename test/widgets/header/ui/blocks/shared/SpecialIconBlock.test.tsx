@@ -10,7 +10,7 @@ import { mantineTheme } from '@/assets/theme';
 import { DEFAULT_HEADER_CONFIG } from '@/widgets/header/config/defaults';
 import { ConfigProvider } from '@/widgets/header/context/provider';
 import { SpecialIconBlock } from '@/widgets/header/ui/blocks/shared/SpecialIconBlock';
-import { HEADER_TABLER_ICON_PROPS } from '@/widgets/header/ui/menu/icons/iconProps';
+import { HEADER_TABLER_ICON_PROPS } from '@/widgets/header/ui/items/icons/iconProps';
 
 function renderSpecialIconBlock(props: ComponentProps<typeof SpecialIconBlock>) {
   return render(

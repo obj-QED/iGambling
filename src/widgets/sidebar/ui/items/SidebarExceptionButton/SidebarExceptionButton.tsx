@@ -5,14 +5,12 @@ import { memo } from 'react';
 
 import clsx from 'clsx';
 
-import { AppButton } from '@/elements/AppButton';
-import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { AppButton } from '@/elements';
+import { useNavActive } from '@/shared/hooks';
+import { useAsideMenuButtonSize } from '../../../hooks';
+import { menuItemDataAttrs, resolveItemHref, resolveMenuItemButtonVariant } from '../../../lib';
 
-import { useAsideMenuButtonSize } from '../../../hooks/useAsideMenuButtonSize';
-import { menuItemDataAttrs, resolveItemHref } from '../../../lib/itemUtils';
-import { resolveMenuItemButtonVariant } from '../../../lib/menuItemVariant';
-
-import styles from '../../../styles/menu/SidebarExceptionButton.module.scss';
+import styles from '../../../styles/items/SidebarExceptionButton.module.scss';
 
 export type SidebarExceptionButtonProps = {
   item: HeaderMenuItem;
@@ -28,7 +26,7 @@ function SidebarExceptionButtonComponent({
   className,
 }: SidebarExceptionButtonProps) {
   const href = resolveItemHref(item.url);
-  const { menuActiveAttrs } = useMenuActive(item);
+  const { activeAttrs } = useNavActive(item);
   const size = useAsideMenuButtonSize();
 
   return (
@@ -42,7 +40,7 @@ function SidebarExceptionButtonComponent({
       className={clsx(styles.root, className)}
       leftSection={leftSection}
       {...menuItemDataAttrs(item)}
-      {...menuActiveAttrs}
+      {...activeAttrs}
     />
   );
 }

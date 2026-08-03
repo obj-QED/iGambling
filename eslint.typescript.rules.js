@@ -9,15 +9,9 @@ export const typescriptStrictRules = {
   ],
   '@typescript-eslint/no-unnecessary-condition': 'warn',
   '@typescript-eslint/no-confusing-void-expression': 'warn',
-  '@typescript-eslint/strict-boolean-expressions': [
-    'warn',
-    {
-      allowNullableBoolean: false,
-      allowNullableNumber: false,
-      allowNullableObject: false,
-      allowNullableString: false,
-      allowNumber: false,
-      allowString: false,
-    },
-  ],
+  /**
+   * Optional data spreads use truthy guards: `...(value && { prop: value })`.
+   * Kept off so `string | number | object | undefined` can short-circuit in JSX/objects.
+   */
+  '@typescript-eslint/strict-boolean-expressions': 'off',
 };

@@ -3,16 +3,16 @@ import type { MenuItemDto } from '@/shared/types/menu';
 
 import {
   getSettings,
-  HEADER_LAYOUT_KEYS,
-  HEADER_TYPE_KEYS,
+  type HeaderBlockVariantSettings,
   type HeaderCustomBlockConfig,
   type HeaderCustomBlockInput,
   type HeaderCustomBlockSettings,
   type HeaderSettings,
 } from '@/shared/config';
-import { pickUnionValue, readString } from '@/shared/lib/coercion';
+import { readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
 
+import { resolveHeaderTypeTunableDefaults } from '../typePacks/tunableDefaults';
 import { DEFAULT_HEADER_CONFIG } from './defaults';
 
 function parseCustomBlockItems(items: HeaderCustomBlockInput[]): MenuItemDto[] {
@@ -60,16 +60,38 @@ function resolveCustomBlocks(header: HeaderSettings): HeaderConfig['customBlocks
   return resolved.length > 0 ? resolved : undefined;
 }
 
+function mergeBlockVariants(
+  base: HeaderConfig['blockVariants'],
+  layer: HeaderBlockVariantSettings | undefined,
+): HeaderConfig['blockVariants'] {
+  if (!layer) return base;
+  return { ...base, ...layer };
+}
+
+/**
+ * pack defaults → legacy `header.blockVariants` → `header.types[type].blockVariants` (nested wins).
+ */
+function resolveActiveBlockVariants(
+  header: HeaderSettings,
+  type: string,
+  packVariants: HeaderConfig['blockVariants'],
+): HeaderConfig['blockVariants'] {
+  const withLegacy = mergeBlockVariants(packVariants, header.blockVariants);
+  return mergeBlockVariants(withLegacy, header.types?.[type]?.blockVariants);
+}
+
 export function resolveHeaderConfig(
   settings = getSettings(),
   overrides?: Partial<HeaderSettings>,
 ): HeaderConfig {
   const header = { ...settings.header, ...overrides };
+  const type = readSettingsKey(header.type, DEFAULT_HEADER_CONFIG.type);
+  const packDefaults = resolveHeaderTypeTunableDefaults(type);
 
   return {
-    layout: pickUnionValue(HEADER_LAYOUT_KEYS, header.layout, DEFAULT_HEADER_CONFIG.layout),
-    type: pickUnionValue(HEADER_TYPE_KEYS, header.type, DEFAULT_HEADER_CONFIG.type),
-    blockVariants: header.blockVariants ?? DEFAULT_HEADER_CONFIG.blockVariants,
+    layout: readSettingsKey(header.layout, DEFAULT_HEADER_CONFIG.layout),
+    type,
+    blockVariants: resolveActiveBlockVariants(header, type, packDefaults.blockVariants),
     customBlocks: resolveCustomBlocks(header),
   };
 }

@@ -1,0 +1,12 @@
+/**
+ * Default sidebar type — full-width item rows.
+ * Extend here (or add sibling `*Type.module.scss`) for type-specific chrome.
+ */
+
+@layer widget.variant {
+  .root {
+
+    /* Base chrome: `styles/base/Root.module.scss`. Hook for future default-only overrides. */
+    min-width: 0;
+  }
+}

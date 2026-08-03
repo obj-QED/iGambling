@@ -57,7 +57,7 @@ export function resolveHeaderMenuButtonSize(
   item: Pick<HeaderMenuItem, 'key' | 'type'>,
   sizes: HeaderMenuSizes,
 ): CmfButtonSize {
-  if (isSpecialBlockKey(item.key) === false && item.type === 'link') return sizes.link;
+  if (!isSpecialBlockKey(item.key) && item.type === 'link') return sizes.link;
   return sizes.button;
 }
 

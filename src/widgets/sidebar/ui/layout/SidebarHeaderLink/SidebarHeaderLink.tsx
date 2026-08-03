@@ -5,13 +5,17 @@ import { memo } from 'react';
 import { Badge } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 
-import { AppButton } from '@/elements/AppButton';
-import { useMediaState } from '@/shared/hooks/useMediaState';
-import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { AppButton } from '@/elements';
+import { useMediaState, useNavActive } from '@/shared/hooks';
 
-import { useAsideMenuButtonSize } from '../../../hooks/useAsideMenuButtonSize';
-import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
-import { MenuItemMedia } from '../../menu/MenuItemMedia/MenuItemMedia';
+import { useAsideMenuButtonSize } from '../../../hooks';
+import {
+  menuItemDataAttrs,
+  resolveItemHref,
+  resolveItemLabel,
+  resolveMenuItemButtonVariant,
+} from '../../../lib';
+import { ItemMedia } from '../../items/ItemMedia/ItemMedia';
 
 import styles from '../../../styles/layout/SidebarHeader.module.scss';
 
@@ -19,48 +23,48 @@ function hasAccountSubtitle(subtitle: string | undefined): subtitle is string {
   return subtitle !== undefined && subtitle.length > 0;
 }
 
+/** Default-type header row (rich account). Compact uses typePack.HeaderLink. */
 function SidebarHeaderLinkComponent({ item }: BlockProps) {
   const { onImgError, showItemImg } = useMediaState(item);
-  const { menuActiveAttrs } = useMenuActive(item);
+  const { activeAttrs } = useNavActive(item);
   const size = useAsideMenuButtonSize();
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
+
   const subtitle = item.subtitle;
   const badge = item.badge;
   const isAccountProfile = hasAccountSubtitle(subtitle);
   const avatar = showItemImg ? (
-    <MenuItemMedia
+    <ItemMedia
       item={item}
       alt={label}
       onImgError={onImgError}
-      className={isAccountProfile === true ? styles.mainLinkAvatar : styles.mainLinkIcon}
+      className={isAccountProfile ? styles.mainLinkAvatar : styles.mainLinkIcon}
     />
   ) : undefined;
 
-  const labelContent =
-    isAccountProfile === true ? (
-      <div className={styles.mainLinkText}>
-        <span className={styles.mainLinkTitle}>{label}</span>
-        <span className={styles.mainLinkSubtitle}>{subtitle}</span>
-      </div>
-    ) : (
-      label
-    );
+  const labelContent = isAccountProfile ? (
+    <div className={styles.mainLinkText}>
+      <span className={styles.mainLinkTitle}>{label}</span>
+      <span className={styles.mainLinkSubtitle}>{subtitle}</span>
+    </div>
+  ) : (
+    label
+  );
 
-  const rightSection =
-    isAccountProfile === true ? (
-      <IconChevronRight className={styles.mainLinkChevron} size={16} stroke={1.5} aria-hidden />
-    ) : badge !== undefined && String(badge).length > 0 ? (
-      <Badge size="sm" variant="filled" className={styles.mainLinkBadge}>
-        {badge}
-      </Badge>
-    ) : undefined;
+  const rightSection = isAccountProfile ? (
+    <IconChevronRight className={styles.mainLinkChevron} size={16} stroke={1.5} aria-hidden />
+  ) : badge !== undefined && String(badge).length > 0 ? (
+    <Badge size="sm" variant="filled" className={styles.mainLinkBadge}>
+      {badge}
+    </Badge>
+  ) : undefined;
 
   return (
     <AppButton
       href={href}
       label={labelContent}
-      variant="transparent"
+      variant={resolveMenuItemButtonVariant(item)}
       size={size}
       fullWidth
       justify="space-between"
@@ -68,7 +72,7 @@ function SidebarHeaderLinkComponent({ item }: BlockProps) {
       leftSection={avatar}
       rightSection={rightSection}
       {...menuItemDataAttrs(item)}
-      {...menuActiveAttrs}
+      {...activeAttrs}
     />
   );
 }

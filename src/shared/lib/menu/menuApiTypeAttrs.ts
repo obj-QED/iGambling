@@ -10,6 +10,6 @@ export function isMenuItemApiType(value: unknown): value is MenuItemApiType {
 
 /** DOM attr from API menu `type` (`button` | `link`). Omits when unset/unknown. */
 export function menuApiTypeAttrs(type: unknown): MenuApiTypeAttrs | Record<string, never> {
-  if (isMenuItemApiType(type) === false) return {};
+  if (!isMenuItemApiType(type)) return {};
   return { 'api-type': type };
 }

@@ -5,13 +5,13 @@ import { memo, useCallback } from 'react';
 import { Collapse } from '@mantine/core';
 import clsx from 'clsx';
 
-import { useSidebarDropdown } from '../../../context/useSidebarDropdown';
-import { useMenuItemRenderable } from '../../../hooks/useMenuItemRenderable';
-import { isRenderableItem, itemKey } from '../../../lib/itemUtils';
-import { DropdownMenuItem } from '../DropdownMenuItem/DropdownMenuItem';
+import { useSidebarDropdown } from '../../../context';
+import { useMenuItemRenderable } from '../../../hooks';
+import { isRenderableItem, itemKey } from '../../../lib';
+import { DropdownItem } from '../DropdownItem/DropdownItem';
 import { DropdownTrigger } from '../DropdownTrigger/DropdownTrigger';
 
-import styles from '../../../styles/menu/Dropdown.module.scss';
+import styles from '../../../styles/items/Dropdown.module.scss';
 
 function DropdownComponent({ item, className }: DropdownProps) {
   const menuKey = itemKey(item);
@@ -24,7 +24,7 @@ function DropdownComponent({ item, className }: DropdownProps) {
     toggle(menuKey);
   }, [menuKey, toggle]);
 
-  if (isRenderableItem(item) === false || visible === false) return null;
+  if (!isRenderableItem(item) || !visible) return null;
 
   const children = item.items ?? [];
   if (children.length === 0) return null;
@@ -35,7 +35,7 @@ function DropdownComponent({ item, className }: DropdownProps) {
       <Collapse expanded={opened}>
         <ul className={styles.list} role="menu">
           {children.map((child) => (
-            <DropdownMenuItem key={child.key} item={child} />
+            <DropdownItem key={child.key} item={child} />
           ))}
         </ul>
       </Collapse>

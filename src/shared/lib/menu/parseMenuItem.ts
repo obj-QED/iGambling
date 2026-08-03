@@ -23,12 +23,23 @@ function coerceMenuItem(raw: unknown): MenuItemDto | null {
   const imgShape = readRecordField(cleaned, 'imgShape') ?? readRecordField(cleaned, 'img_shape');
   const imgRadius = readRecordField(cleaned, 'imgRadius') ?? readRecordField(cleaned, 'img_radius');
   const typeRaw = readRecordField(cleaned, 'type');
-  const type =
-    isHeaderSpecialBlockKey(key) === true
-      ? undefined
-      : typeRaw !== undefined && typeRaw.length > 0
-        ? typeRaw
-        : undefined;
+  const type = isHeaderSpecialBlockKey(key)
+    ? undefined
+    : typeRaw !== undefined && typeRaw.length > 0
+      ? typeRaw
+      : undefined;
+
+  const variantRaw = readRecordField(cleaned, 'variant');
+  const variant = variantRaw !== undefined && variantRaw.length > 0 ? variantRaw : undefined;
+
+  const labelRaw = readRecordField(cleaned, 'label');
+  const label = labelRaw !== undefined && labelRaw.length > 0 ? labelRaw : undefined;
+
+  const subtitleRaw = readRecordField(cleaned, 'subtitle');
+  const subtitle = subtitleRaw !== undefined && subtitleRaw.length > 0 ? subtitleRaw : undefined;
+
+  const badgeRaw = cleaned.badge;
+  const badge = typeof badgeRaw === 'string' || typeof badgeRaw === 'number' ? badgeRaw : undefined;
 
   const nestedRaw = cleaned.items;
   let items: MenuItemDto[] | undefined;
@@ -42,7 +53,20 @@ function coerceMenuItem(raw: unknown): MenuItemDto | null {
     if (nested.length > 0) items = nested;
   }
 
-  const coerced: MenuItemDto = { key, name, url, img, imgShape, imgRadius, type, items };
+  const coerced: MenuItemDto = {
+    key,
+    name,
+    url,
+    img,
+    imgShape,
+    imgRadius,
+    type,
+    variant,
+    label,
+    subtitle,
+    badge,
+    items,
+  };
   const result = menuItemDtoSchema.safeParse(coerced);
   return result.success ? result.data : null;
 }

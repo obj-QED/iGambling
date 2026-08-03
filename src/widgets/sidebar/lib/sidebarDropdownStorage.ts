@@ -11,7 +11,7 @@ export function readSidebarDropdownOpenKeys(
     if (raw === null) return new Set(defaultOpenKeys);
 
     const parsed: unknown = JSON.parse(raw);
-    if (Array.isArray(parsed) === false) return new Set(defaultOpenKeys);
+    if (!Array.isArray(parsed)) return new Set(defaultOpenKeys);
 
     return new Set(
       parsed.filter((key): key is string => typeof key === 'string' && key.length > 0),

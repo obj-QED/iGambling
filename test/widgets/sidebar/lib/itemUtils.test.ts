@@ -5,7 +5,9 @@ import { describe, expect, it } from 'vitest';
 import {
   isIconOnlyItem,
   isRenderableItem,
+  menuItemDropdownDataAttrs,
   resolveItemHref,
+  resolveMenuItemCmfAttrs,
   shouldRenderMenuItem,
 } from '@/widgets/sidebar/lib/itemUtils';
 
@@ -43,5 +45,30 @@ describe('sidebar itemUtils visibility', () => {
 
   it('resolveItemHref does not rewrite relative paths', () => {
     expect(resolveItemHref('profile')).toBe('profile');
+  });
+});
+
+describe('sidebar dropdown CMF attrs', () => {
+  const casino: HeaderMenuItem = {
+    key: 'casino',
+    name: 'Casino',
+    url: '/casino',
+    type: 'link',
+  };
+
+  it('parent trigger uses sidebar-dropdown + role parent', () => {
+    expect(menuItemDropdownDataAttrs(casino, 'parent')).toMatchObject({
+      'data-cmf-component': 'sidebar-dropdown',
+      'data-cmf-key': 'casino',
+      'data-cmf-role': 'parent',
+    });
+  });
+
+  it('resolveMenuItemCmfAttrs maps trigger/item to parent/child', () => {
+    expect(resolveMenuItemCmfAttrs(casino, { dropdownTrigger: true })['data-cmf-role']).toBe(
+      'parent',
+    );
+    expect(resolveMenuItemCmfAttrs(casino, { dropdownItem: true })['data-cmf-role']).toBe('child');
+    expect(resolveMenuItemCmfAttrs(casino)['data-cmf-component']).toBe('sidebar');
   });
 });

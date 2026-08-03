@@ -1,46 +1,40 @@
-import type { ItemMenuTriggerProps } from '../../../types';
+import type { ItemDropdownTriggerProps } from '../../../types';
 
 import { forwardRef } from 'react';
 
-import { AppActionIcon } from '@/elements/AppActionIcon';
-import { AppButton } from '@/elements/AppButton';
-import { useMediaState } from '@/shared/hooks/useMediaState';
-import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { AppActionIcon, AppButton } from '@/elements';
+import { useMediaState, useNavActive } from '@/shared/hooks';
 
-import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
-import {
-  resolveHeaderMenuActionIconSize,
-  resolveHeaderMenuButtonSize,
-} from '../../../lib/headerMenuSize';
+import { useHeaderMenuSizes } from '../../../context';
 import {
   hasItemImg,
   isIconOnlyItem,
   isRenderableItem,
   menuItemDataAttrs,
+  resolveHeaderMenuActionIconSize,
+  resolveHeaderMenuButtonSize,
   resolveItemLabel,
-} from '../../../lib/itemUtils';
-import {
   resolveMenuItemActionIconVariant,
   resolveMenuItemButtonVariant,
-} from '../../../lib/menuItemVariant';
-import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
+} from '../../../lib';
+import { ItemImage } from '../ItemImage/ItemImage';
 
-const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerProps>(
-  function ItemMenuTriggerComponent({ item, rightSection, ...rest }, ref) {
+const ItemDropdownTriggerComponent = forwardRef<HTMLButtonElement, ItemDropdownTriggerProps>(
+  function ItemDropdownTriggerComponent({ item, rightSection, ...rest }, ref) {
     const menuSizes = useHeaderMenuSizes();
-    const { menuActiveAttrs } = useMenuActive(item);
+    const { activeAttrs } = useNavActive(item);
     const { onImgError, showItemImg, hideImageControl, iconControlAttrs } = useMediaState(item);
 
-    if (isRenderableItem(item) === false) return null;
+    if (!isRenderableItem(item)) return null;
 
     const label = resolveItemLabel(item);
     const actionIconSize = resolveHeaderMenuActionIconSize(menuSizes);
     const buttonSize = resolveHeaderMenuButtonSize(item, menuSizes);
     const leftSection = showItemImg ? (
-      <MenuItemImage item={item} alt={label} onImgFailed={onImgError} />
+      <ItemImage item={item} alt={label} onImgFailed={onImgError} />
     ) : undefined;
 
-    if (isIconOnlyItem(item) === true && hasItemImg(item) === true) {
+    if (isIconOnlyItem(item) && hasItemImg(item) && rightSection === undefined) {
       return (
         <AppActionIcon
           {...rest}
@@ -54,10 +48,15 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
           aria-label={label}
           aria-haspopup="menu"
           {...menuItemDataAttrs(item)}
-          {...menuActiveAttrs}
+          {...activeAttrs}
           {...iconControlAttrs}
         >
-          <MenuItemImage item={item} alt={label} onImgFailed={onImgError} />
+          <ItemImage
+            className="cmf-ActionIcon-icon-svg"
+            item={item}
+            alt={label}
+            onImgFailed={onImgError}
+          />
         </AppActionIcon>
       );
     }
@@ -75,12 +74,12 @@ const ItemMenuTriggerComponent = forwardRef<HTMLButtonElement, ItemMenuTriggerPr
         aria-label={label}
         aria-haspopup="menu"
         {...menuItemDataAttrs(item)}
-        {...menuActiveAttrs}
+        {...activeAttrs}
         {...iconControlAttrs}
       />
     );
   },
 );
 
-export const ItemMenuTrigger = ItemMenuTriggerComponent;
-ItemMenuTrigger.displayName = 'ItemMenuTrigger';
+export const ItemDropdownTrigger = ItemDropdownTriggerComponent;
+ItemDropdownTrigger.displayName = 'ItemDropdownTrigger';

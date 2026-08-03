@@ -2,15 +2,30 @@ import type { DropdownTriggerProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { isRenderableItem } from '../../../lib/itemUtils';
+import { isRenderableItem } from '../../../lib';
+import { useSidebarTypePack } from '../../../typePacks';
 import { Chevron } from '../Chevron/Chevron';
-import { ItemButton } from '../ItemButton/ItemButton';
 
 function DropdownTriggerComponent({ item, opened, onToggle }: DropdownTriggerProps) {
-  if (isRenderableItem(item) === false) return null;
+  const { Item, itemKind } = useSidebarTypePack();
+
+  if (!isRenderableItem(item)) return null;
+
+  if (itemKind === 'actionIcon') {
+    return (
+      <Item
+        item={item}
+        dropdownTrigger
+        indicator={<Chevron opened={opened} />}
+        onClick={onToggle}
+        aria-expanded={opened}
+        aria-haspopup="menu"
+      />
+    );
+  }
 
   return (
-    <ItemButton
+    <Item
       item={item}
       dropdownTrigger
       onClick={onToggle}

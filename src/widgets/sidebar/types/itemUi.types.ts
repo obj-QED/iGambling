@@ -16,9 +16,19 @@ export type ItemButtonProps = {
 
 export type ItemActionIconProps = {
   item: HeaderMenuItem;
+  className?: string;
+  /** Nested row inside `[data-sidebar-dropdown]`. */
+  dropdownItem?: boolean;
+  /** Dropdown parent — always native button, never navigates via `url`. */
+  dropdownTrigger?: boolean;
+  /** Extra node inside the control (e.g. chevron for compact dropdown). */
+  indicator?: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  'aria-expanded'?: boolean;
+  'aria-haspopup'?: boolean | 'menu';
 };
 
-export type MenuItemMediaProps = {
+export type ItemMediaProps = {
   item: HeaderMenuItem;
   alt: string;
   className?: string;
@@ -41,7 +51,7 @@ export type DropdownTriggerProps = {
   onToggle: () => void;
 };
 
-export type DropdownMenuItemProps = {
+export type DropdownItemProps = {
   item: HeaderMenuItem;
 };
 

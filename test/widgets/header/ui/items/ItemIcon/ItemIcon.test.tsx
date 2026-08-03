@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { DEFAULT_HEADER_CONFIG } from '@/widgets/header/config/defaults';
 import { ConfigProvider } from '@/widgets/header/context/provider';
-import { ItemIcon } from '@/widgets/header/ui/menu/ItemIcon/ItemIcon';
+import { ItemIcon } from '@/widgets/header/ui/items/ItemIcon/ItemIcon';
 
 vi.mock('react-inlinesvg', () => ({
   default: ({ src, onError }: { src: string; onError?: () => void }) => (

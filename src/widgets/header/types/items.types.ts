@@ -11,10 +11,17 @@ export type HeaderMenuItem = {
   key?: string;
   url?: string;
   name?: string;
+  /** Optional a11y / tooltip copy; wins over `name` where consumers resolve it. */
+  label?: string;
   img?: string;
   imgShape?: string;
   imgRadius?: string;
   type?: string;
+  /**
+   * Mantine/CMF control variant override (`light`, `outline`, …).
+   * When omitted, consumers default to `transparent` (or type-based rules where applicable).
+   */
+  variant?: string;
   badge?: string | number;
   subtitle?: string;
   items?: HeaderMenuItem[];

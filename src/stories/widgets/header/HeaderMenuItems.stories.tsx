@@ -6,9 +6,9 @@ import { getHeaderMenuItemFixture } from '@/storybook/fixtures/headerMenuItems';
 import { cmfComponentIconCascadeStyle } from '@/storybook/helpers/cmfScopeOverrides';
 import { elementDocsPreviewParameters } from '@/storybook/helpers/elementStoryParameters';
 import { HeaderMenuControlsShell } from '@/storybook/helpers/headerMenuControls';
-import { Dropdown } from '@/widgets/header/ui/menu/Dropdown/Dropdown';
-import { ItemActionIcon } from '@/widgets/header/ui/menu/ItemActionIcon/ItemActionIcon';
-import { ItemButton } from '@/widgets/header/ui/menu/ItemButton/ItemButton';
+import { Dropdown } from '@/widgets/header/ui/items/Dropdown/Dropdown';
+import { ItemActionIcon } from '@/widgets/header/ui/items/ItemActionIcon/ItemActionIcon';
+import { ItemButton } from '@/widgets/header/ui/items/ItemButton/ItemButton';
 
 const meta = {
   title: 'Widgets/Header/Menu Items',

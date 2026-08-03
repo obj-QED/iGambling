@@ -1,7 +1,7 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
 
 import { isHeaderSpecialBlockKey } from '@/shared/config/headerSpecialBlockKeys';
-import { cmfScopeAttrs } from '@/shared/lib/cmf/cmfScopeAttrs';
+import { cmfScopeAttrs } from '@/shared/lib/cmf';
 import { menuApiTypeAttrs } from '@/shared/lib/menu';
 
 import { HEADER_CONFIG_ONLY_BLOCK_KEYS } from '../types/items.types';
@@ -38,6 +38,11 @@ export function isIconOnlyItem(item: HeaderMenuItem): boolean {
   return itemName(item).length === 0 && itemImg(item).length > 0;
 }
 
+/** Deep-menu eligibility: name and/or img — no config-only / special-block bypass. */
+export function isDeepPanelItemEligible(item: HeaderMenuItem): boolean {
+  return itemName(item).length > 0 || itemImg(item).length > 0;
+}
+
 export function hasItemName(item: HeaderMenuItem): boolean {
   return itemName(item).length > 0;
 }
@@ -47,6 +52,8 @@ export function hasItemImg(item: HeaderMenuItem): boolean {
 }
 
 export function resolveItemLabel(item: HeaderMenuItem): string {
+  const fromLabel = item.label?.trim() ?? '';
+  if (fromLabel.length > 0) return fromLabel;
   const name = itemName(item);
   if (name.length > 0) return name;
   return itemKey(item);
@@ -55,6 +62,9 @@ export function resolveItemLabel(item: HeaderMenuItem): string {
 export { resolveItemHref } from '@/shared/lib';
 
 export const HEADER_CMF_COMPONENT = 'header';
+
+/** Independent cascade for deep-menu rows (`--cmf-button-header-dropdown-*`). */
+export const HEADER_DROPDOWN_CMF_COMPONENT = 'header-dropdown';
 
 export function menuItemDataAttrs(item: HeaderMenuItem): {
   'data-cmf-component': typeof HEADER_CMF_COMPONENT;
@@ -70,6 +80,21 @@ export function menuItemDataAttrs(item: HeaderMenuItem): {
   };
 }
 
+/** Deep menu / IconMenuDeep panel — separate from bar `header` tokens. */
+export function menuItemDropdownDataAttrs(item: HeaderMenuItem): {
+  'data-cmf-component': typeof HEADER_DROPDOWN_CMF_COMPONENT;
+  'data-cmf-key': string;
+  'api-type'?: 'button' | 'link';
+} {
+  return {
+    ...(cmfScopeAttrs(HEADER_DROPDOWN_CMF_COMPONENT, itemKey(item)) as {
+      'data-cmf-component': typeof HEADER_DROPDOWN_CMF_COMPONENT;
+      'data-cmf-key': string;
+    }),
+    ...menuApiTypeAttrs(item.type),
+  };
+}
+
 export function filterRenderableItems(items: HeaderMenuItem[]): HeaderMenuItem[] {
   const result: HeaderMenuItem[] = [];
 
@@ -77,7 +102,7 @@ export function filterRenderableItems(items: HeaderMenuItem[]): HeaderMenuItem[]
     const nested = item.items;
     if (nested !== undefined && nested.length > 0) {
       const children = filterRenderableItems(nested);
-      if (children.length === 0 || isRenderableItem(item) === false) continue;
+      if (children.length === 0 || !isRenderableItem(item)) continue;
       result.push({ ...item, items: children });
       continue;
     }

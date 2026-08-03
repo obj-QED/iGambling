@@ -1,20 +1,24 @@
-import type { SidebarConfig } from '../types';
+import type { SidebarConfig, SidebarRegionsConfig, SidebarScrollAreaConfig } from '../types';
 import type { MenuItemDto } from '@/shared/types/menu';
 
 import {
   ASIDE_SCROLL_AREA_OVERSCROLL,
   ASIDE_SCROLL_AREA_TYPES,
-  ASIDE_TYPE_KEYS,
+  type AsideRegionsSettings,
+  type AsideScrollAreaSettings,
   type AsideSettings,
   getSettings,
   type HeaderCustomBlockConfig,
   type HeaderCustomBlockInput,
   type HeaderCustomBlockSettings,
 } from '@/shared/config';
-import { pickUnionValue, readString } from '@/shared/lib/coercion';
+import { pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
+import { resolveTooltipConfig } from '@/shared/lib/tooltip';
 
-import { DEFAULT_SIDEBAR_CONFIG, DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG } from './defaults';
+import { resolveSidebarWidth } from '../lib';
+import { resolveSidebarTypeTunableDefaults } from '../typePacks/tunableDefaults';
+import { DEFAULT_SIDEBAR_CONFIG } from './defaults';
 
 function parseCustomBlockItems(items: HeaderCustomBlockInput[]): MenuItemDto[] {
   const parsed: MenuItemDto[] = [];
@@ -25,14 +29,6 @@ function parseCustomBlockItems(items: HeaderCustomBlockInput[]): MenuItemDto[] {
   }
 
   return parsed;
-}
-
-function readCustomBlockSources(aside: AsideSettings): HeaderCustomBlockSettings[] {
-  if (aside.customBlocks !== undefined && aside.customBlocks.length > 0) {
-    return aside.customBlocks;
-  }
-
-  return [];
 }
 
 function resolveOneCustomBlock(raw: HeaderCustomBlockSettings): HeaderCustomBlockConfig | null {
@@ -49,37 +45,52 @@ function resolveOneCustomBlock(raw: HeaderCustomBlockSettings): HeaderCustomBloc
   };
 }
 
-function resolveCustomBlocks(aside: AsideSettings): SidebarConfig['customBlocks'] {
-  const resolved = readCustomBlockSources(aside)
+function resolveCustomBlockList(
+  sources: HeaderCustomBlockSettings[] | undefined,
+): HeaderCustomBlockConfig[] {
+  if (!sources || sources.length === 0) return [];
+
+  return sources
     .map((raw) => resolveOneCustomBlock(raw))
     .filter((block): block is HeaderCustomBlockConfig => block !== null);
-
-  return resolved.length > 0 ? resolved : undefined;
 }
 
-function resolveWidth(raw: unknown): number {
-  const value =
-    typeof raw === 'number' && Number.isFinite(raw) ? raw : DEFAULT_SIDEBAR_CONFIG.width;
-  return Math.max(0, Math.round(value));
+/** Global `aside.customBlocks` then `aside.types[type].customBlocks`. */
+function resolveCustomBlocks(aside: AsideSettings, type: string): SidebarConfig['customBlocks'] {
+  const globalBlocks = resolveCustomBlockList(aside.customBlocks);
+  const typeBlocks = resolveCustomBlockList(aside.types?.[type]?.customBlocks);
+  const merged = [...globalBlocks, ...typeBlocks];
+  return merged.length > 0 ? merged : undefined;
+}
+
+function resolveRegions(
+  pack: SidebarRegionsConfig,
+  raw: AsideRegionsSettings | undefined,
+): SidebarRegionsConfig {
+  return {
+    header: raw?.header ?? pack.header,
+    main: raw?.main ?? pack.main,
+    footer: raw?.footer ?? pack.footer,
+  };
 }
 
 function resolveFiniteNumber(raw: unknown, fallback: number): number {
-  return typeof raw === 'number' && Number.isFinite(raw) ? raw : fallback;
+  return Number.isFinite(raw) ? (raw as number) : fallback;
 }
 
 function resolveOpenedDropdowns(aside: AsideSettings): readonly string[] {
   const raw = aside.openedDropdowns;
-  if (raw === undefined || Array.isArray(raw) === false) {
+  if (!raw || !Array.isArray(raw)) {
     return DEFAULT_SIDEBAR_CONFIG.openedDropdowns;
   }
 
   return raw.filter((key): key is string => typeof key === 'string' && key.trim().length > 0);
 }
 
-function resolveScrollArea(aside: AsideSettings): SidebarConfig['scrollArea'] {
-  const raw = aside.scrollArea;
-  const defaults = DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG;
-
+function resolveScrollArea(
+  raw: AsideScrollAreaSettings | undefined,
+  defaults: SidebarScrollAreaConfig,
+): SidebarScrollAreaConfig {
   const scrollbarSize = resolveFiniteNumber(raw?.scrollbarSize, defaults.scrollbarSize);
   const scrollHideDelay = resolveFiniteNumber(raw?.scrollHideDelay, defaults.scrollHideDelay);
 
@@ -100,12 +111,19 @@ export function resolveSidebarConfig(
   overrides?: Partial<AsideSettings>,
 ): SidebarConfig {
   const aside = { ...settings.aside, ...overrides };
+  const width = resolveSidebarWidth(aside.width);
+  const type = readSettingsKey(aside.type, DEFAULT_SIDEBAR_CONFIG.type);
+  const packDefaults = resolveSidebarTypeTunableDefaults(type);
+  const typeTunables = aside.types?.[type];
 
   return {
-    width: resolveWidth(aside.width),
-    type: pickUnionValue(ASIDE_TYPE_KEYS, aside.type, DEFAULT_SIDEBAR_CONFIG.type),
+    ...(width && { width }),
+    layout: readSettingsKey(aside.layout, DEFAULT_SIDEBAR_CONFIG.layout),
+    type,
     openedDropdowns: resolveOpenedDropdowns(aside),
-    customBlocks: resolveCustomBlocks(aside),
-    scrollArea: resolveScrollArea(aside),
+    customBlocks: resolveCustomBlocks(aside, type),
+    regions: resolveRegions(packDefaults.regions, typeTunables?.regions),
+    scrollArea: resolveScrollArea(aside.scrollArea, packDefaults.scrollArea),
+    tooltip: resolveTooltipConfig(packDefaults.tooltip, aside.tooltip),
   };
 }

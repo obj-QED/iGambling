@@ -2,9 +2,8 @@
 // Order (weakest → strongest): see `assets/styles/layer-order.css`
 // Tokens SoT: `assets/theme/tokens/widgets/header/tokens.scss` → `[data-widget='header']`
 // widget.base      — shell, surface tokens, sections
-// widget.layout    — container / container-fluid wrappers
-// widget.variant   — type/shape/theme overrides via CSS vars on .root[data-type]
-// widget.component — domain blocks (logo, wallet, …)
-// widget.element   — menu primitives (button, dropdown, icon)
-// Type skin: styles/variant/type-<name>.scss
-//   .root[data-type='classic'] { --header-surface-bg: …; }
+// widget.element   — item primitives (button, dropdown, icon)
+// widget.component — domain blocks (logo, wallet, …) override element
+// widget.layout    — container / regions override component chrome
+// widget.variant   — type skins (last): styles/type/<Name>Type.module.scss
+// Type chrome: compose `.root` from type module onto `<header>` via `resolveHeaderTypeStyles`.

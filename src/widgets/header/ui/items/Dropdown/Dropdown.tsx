@@ -4,15 +4,15 @@ import { memo } from 'react';
 
 import { Menu } from '@mantine/core';
 
-import { isRenderableItem } from '../../../lib/itemUtils';
+import { isRenderableItem } from '../../../lib';
 import { Chevron } from '../Chevron/Chevron';
-import { DropdownMenuItem } from '../DropdownMenuItem/DropdownMenuItem';
-import { ItemMenuTrigger } from '../ItemMenuTrigger/ItemMenuTrigger';
+import { DropdownItem } from '../DropdownItem/DropdownItem';
+import { ItemDropdownTrigger } from '../ItemDropdownTrigger/ItemDropdownTrigger';
 
-import styles from '../../../styles/menu/Dropdown.module.scss';
+import styles from '../../../styles/items/Dropdown.module.scss';
 
 function DropdownComponent({ item }: DropdownProps) {
-  if (isRenderableItem(item) === false) return null;
+  if (!isRenderableItem(item)) return null;
 
   const children = item.items ?? [];
   if (children.length === 0) return null;
@@ -20,11 +20,11 @@ function DropdownComponent({ item }: DropdownProps) {
   return (
     <Menu withinPortal position="bottom-start" offset={4} loop={false} trapFocus={false}>
       <Menu.Target>
-        <ItemMenuTrigger item={item} rightSection={<Chevron />} />
+        <ItemDropdownTrigger item={item} rightSection={<Chevron />} />
       </Menu.Target>
       <Menu.Dropdown className={styles.dropdown}>
         {children.map((child) => (
-          <DropdownMenuItem key={child.key} item={child} />
+          <DropdownItem key={child.key} item={child} />
         ))}
       </Menu.Dropdown>
     </Menu>

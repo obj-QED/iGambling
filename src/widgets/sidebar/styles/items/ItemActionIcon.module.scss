@@ -1,6 +1,22 @@
 @layer components {
-  .root[data-cmf-control='action-icon'] {
-    width: 100%;
-    min-width: 0;
+  .root {
+    flex-shrink: 0;
+  }
+
+  .dropdownTrigger {
+    position: relative;
+    margin-left: var(--aside-menu-compact-dropdown-trigger-margin-left, 6px);
+  }
+
+  .indicator {
+    position: var(--aside-menu-dropdown-indicator-position, absolute);
+    right: 0;
+    bottom: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    pointer-events: none;
+    color: inherit;
   }
 }

@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
-import { Dropdown } from '@/widgets/header/ui/menu/Dropdown/Dropdown';
+import { Dropdown } from '@/widgets/header/ui/items/Dropdown/Dropdown';
 
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {

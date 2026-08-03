@@ -1,15 +1,15 @@
 import { getAppHrefKind, resolveItemHref } from '../href/resolveAppHref';
 
-export type MenuActiveMatch = 'exact' | 'prefix';
+export type NavActiveMatch = 'exact' | 'prefix';
 
-export type MenuActiveSource = {
+export type NavActiveSource = {
   url?: string;
   /** Explicit active from API/schema — overrides URL matching. */
   active?: boolean;
   /** When `false`, URL matching is skipped. Default: `true`. */
   matchRoute?: boolean;
   /** Internal route match mode. Default: `exact`. */
-  activeMatch?: MenuActiveMatch;
+  activeMatch?: NavActiveMatch;
 };
 
 export function normalizeAppPathname(pathname: string): string {
@@ -24,7 +24,7 @@ export function normalizeAppPathname(pathname: string): string {
 export function matchInternalAppPath(
   pathname: string,
   href: string,
-  mode: MenuActiveMatch = 'exact',
+  mode: NavActiveMatch = 'exact',
 ): boolean {
   const current = normalizeAppPathname(pathname);
   const target = normalizeAppPathname(href);
@@ -38,7 +38,7 @@ export function matchInternalAppPath(
 }
 
 /** Resolves nav active state: `active` prop → URL match (internal routes only). */
-export function resolveMenuActive(item: MenuActiveSource, pathname: string): boolean {
+export function resolveNavActive(item: NavActiveSource, pathname: string): boolean {
   if (item.active !== undefined) return item.active;
   if (item.matchRoute === false) return false;
 

@@ -3,4 +3,7 @@
    - `mantine-rebase` — theme classNames (components.module.scss)
    Loaded from `index.html` / `preview-head.html` before any JS CSS modules. */
 @layer reset, base, env, mantine, mantine-rebase, components, page, widget, theme;
-@layer widget.base, widget.layout, widget.variant, widget.component, widget.element;
+
+/* Weakest → strongest:
+   base → element → component → layout → variant (type skins win). */
+@layer widget.base, widget.element, widget.component, widget.layout, widget.variant;

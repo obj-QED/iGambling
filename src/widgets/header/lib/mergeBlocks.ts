@@ -37,7 +37,14 @@ function mergeInSectionItems(
   items: HeaderSection['items'],
 ): HeaderMenuModel {
   const sectionIndex = menu.sections.findIndex((existing) => existing.key === sectionKey);
-  if (sectionIndex === -1) return menu;
+
+  if (sectionIndex === -1) {
+    const section: HeaderSection = {
+      key: sectionKey,
+      items: insertItemsAt([], items, at),
+    };
+    return { sections: [...menu.sections, section] };
+  }
 
   const sections = menu.sections.map((existing, index) => {
     if (index !== sectionIndex) return existing;

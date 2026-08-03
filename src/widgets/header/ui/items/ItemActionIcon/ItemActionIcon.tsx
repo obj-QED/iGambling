@@ -2,33 +2,36 @@ import type { ItemActionIconProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { AppActionIcon } from '@/elements/AppActionIcon';
-import { useMediaState } from '@/shared/hooks/useMediaState';
-import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { AppActionIcon } from '@/elements';
+import { useMediaState, useNavActive } from '@/shared/hooks';
 
-import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
-import { resolveHeaderMenuActionIconSize } from '../../../lib/headerMenuSize';
+import { useHeaderMenuSizes } from '../../../context';
 import {
   hasItemImg,
   menuItemDataAttrs,
+  resolveHeaderMenuActionIconSize,
   resolveItemHref,
   resolveItemLabel,
-} from '../../../lib/itemUtils';
-import { resolveMenuItemActionIconVariant } from '../../../lib/menuItemVariant';
-import { MenuItemImage } from '../MenuItemImage/MenuItemImage';
+  resolveMenuItemActionIconVariant,
+} from '../../../lib';
+import { ItemImage } from '../ItemImage/ItemImage';
 
 function ItemActionIconComponent({ item }: ItemActionIconProps) {
   const menuSizes = useHeaderMenuSizes();
-  const { menuActiveAttrs } = useMenuActive(item);
+  const { activeAttrs } = useNavActive(item);
   const { onImgError, hideImageControl, iconControlAttrs } = useMediaState(item);
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
-  const content =
-    hasItemImg(item) === true ? (
-      <MenuItemImage item={item} alt={label} onImgFailed={onImgError} />
-    ) : (
-      label.slice(0, 1).toUpperCase()
-    );
+  const content = hasItemImg(item) ? (
+    <ItemImage
+      className="cmf-ActionIcon-icon-svg"
+      item={item}
+      alt={label}
+      onImgFailed={onImgError}
+    />
+  ) : (
+    label.slice(0, 1).toUpperCase()
+  );
 
   return (
     <AppActionIcon
@@ -40,7 +43,7 @@ function ItemActionIconComponent({ item }: ItemActionIconProps) {
       size={resolveHeaderMenuActionIconSize(menuSizes)}
       aria-label={label}
       {...menuItemDataAttrs(item)}
-      {...menuActiveAttrs}
+      {...activeAttrs}
       {...iconControlAttrs}
     >
       {content}

@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import { IconSearch } from '@tabler/icons-react';
 
-import { HEADER_TABLER_ICON_PROPS } from '../../menu/icons/iconProps';
+import { HEADER_TABLER_ICON_PROPS } from '../../items/icons/iconProps';
 import { SpecialIconBlock } from '../shared/SpecialIconBlock';
 
 function SearchBlockComponent({ item }: BlockProps) {

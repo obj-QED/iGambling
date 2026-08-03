@@ -4,23 +4,22 @@ import { memo } from 'react';
 
 import clsx from 'clsx';
 
-import { AppButton } from '@/elements/AppButton';
-import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import { AppButton } from '@/elements';
+import { useNavActive } from '@/shared/hooks';
 
-import { useAsideMenuButtonSize } from '../../../hooks/useAsideMenuButtonSize';
-import { useMenuItemRenderable } from '../../../hooks/useMenuItemRenderable';
+import { useAsideMenuButtonSize, useMenuItemRenderable } from '../../../hooks';
 import {
   hasItemName,
   isIconOnlyItem,
   isRenderableItem,
-  menuItemDataAttrs,
   resolveItemHref,
   resolveItemLabel,
-} from '../../../lib/itemUtils';
-import { resolveMenuItemButtonVariant } from '../../../lib/menuItemVariant';
-import { MenuItemMedia } from '../MenuItemMedia/MenuItemMedia';
+  resolveMenuItemButtonVariant,
+  resolveMenuItemCmfAttrs,
+} from '../../../lib';
+import { ItemMedia } from '../ItemMedia/ItemMedia';
 
-import styles from '../../../styles/menu/ItemButton.module.scss';
+import styles from '../../../styles/items/ItemButton.module.scss';
 
 function ItemButtonComponent({
   item,
@@ -33,40 +32,39 @@ function ItemButtonComponent({
   'aria-haspopup': ariaHaspopup,
 }: ItemButtonProps) {
   const { visible, onImgError, showItemImg, iconControlAttrs } = useMenuItemRenderable(item);
-  const { menuActiveAttrs } = useMenuActive(item);
+  const { activeAttrs } = useNavActive(item);
   const size = useAsideMenuButtonSize();
 
-  if (isRenderableItem(item) === false || visible === false) return null;
+  if (!isRenderableItem(item) || !visible) return null;
 
   const iconOnly = isIconOnlyItem(item);
   const href = resolveItemHref(item.url);
   const displayLabel = hasItemName(item) ? item.name : undefined;
   const ariaLabel = resolveItemLabel(item);
   const leftSection = showItemImg ? (
-    <MenuItemMedia item={item} alt={ariaLabel} onImgError={onImgError} />
+    <ItemMedia item={item} alt={ariaLabel} onImgError={onImgError} />
   ) : undefined;
-  const justify: 'flex-start' | 'space-between' =
-    dropdownTrigger === true ? 'space-between' : 'flex-start';
+  const justify: 'flex-start' | 'space-between' = dropdownTrigger ? 'space-between' : 'flex-start';
 
   return (
     <AppButton
       label={displayLabel}
-      aria-label={iconOnly === true ? ariaLabel : undefined}
-      href={dropdownTrigger === true ? undefined : href}
-      native={dropdownTrigger === true}
-      className={clsx(dropdownTrigger === true && styles.dropdownTrigger, className)}
+      aria-label={iconOnly ? ariaLabel : undefined}
+      href={dropdownTrigger ? undefined : href}
+      native={dropdownTrigger}
+      className={clsx(dropdownTrigger && styles.dropdownTrigger, className)}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
       fullWidth
       justify={justify}
       leftSection={leftSection}
       rightSection={rightSection}
-      {...(dropdownItem === true ? { 'data-sidebar-dropdown-item': true } : {})}
-      {...(dropdownTrigger === true ? { 'data-sidebar-dropdown-trigger': true } : {})}
-      {...menuItemDataAttrs(item)}
-      {...menuActiveAttrs}
+      {...(dropdownItem && { 'data-sidebar-dropdown-item': true })}
+      {...(dropdownTrigger && { 'data-sidebar-dropdown-trigger': true })}
+      {...resolveMenuItemCmfAttrs(item, { dropdownTrigger, dropdownItem })}
+      {...activeAttrs}
       {...iconControlAttrs}
-      {...(dropdownTrigger === true
+      {...(dropdownTrigger
         ? {
             type: 'button' as const,
             onClick,

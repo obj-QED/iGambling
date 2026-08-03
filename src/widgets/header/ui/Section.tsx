@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import { Group } from '@mantine/core';
 
-import { filterRenderableItems } from '../lib/itemUtils';
+import { filterRenderableItems } from '../lib';
 import { Block } from './Block';
 
 import styles from '../styles/base/Section.module.scss';

@@ -157,6 +157,25 @@ describe('mergeCustomBlocks', () => {
     expect(menu.sections[3]?.items.map((item) => item.key)).toEqual(['color_scheme', 'logo']);
   });
 
+  it('creates missing section when placing into section key', () => {
+    const menu = mergeCustomBlocks(BASE_MENU, [
+      {
+        key: 'aside-account',
+        placement: { section: 'header', at: 'start' },
+        items: [
+          {
+            key: 'account',
+            url: '/profile',
+            name: 'Account',
+          },
+        ],
+      },
+    ]);
+
+    expect(menu.sections.map((section) => section.key)).toEqual(['block3', 'block1', 'header']);
+    expect(menu.sections[2]?.items.map((item) => item.key)).toEqual(['account']);
+  });
+
   it('keeps color_scheme after merge and visibility filter', () => {
     const menu = filterRenderableMenu(
       mergeCustomBlocks(BASE_MENU, [

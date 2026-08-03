@@ -12,6 +12,10 @@ export const menuItemDtoSchema: z.ZodType<MenuItemDto> = z.lazy(() =>
     imgShape: z.string().optional(),
     imgRadius: z.string().optional(),
     type: z.string().optional(),
+    variant: z.string().optional(),
+    label: z.string().optional(),
+    badge: z.union([z.string(), z.number()]).optional(),
+    subtitle: z.string().optional(),
     items: z.array(menuItemDtoSchema).min(1).optional(),
   }),
 );

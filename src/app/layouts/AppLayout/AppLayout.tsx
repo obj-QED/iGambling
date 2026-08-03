@@ -25,16 +25,16 @@ function AppLayoutComponent() {
 
   return (
     <div className={styles.root}>
-      {!isMobile ? (
+      {!isMobile && (
         <AppSidebar menu={sidebarMenu} config={sidebarConfig} className={styles.aside} />
-      ) : null}
+      )}
 
       <div className={styles.content}>
-        {headerMenu !== null ? (
+        {headerMenu && (
           <AppHeader menu={headerMenu} config={headerConfig} className={styles.header} />
-        ) : null}
+        )}
 
-        {banner !== null ? <AppBanner banner={banner} className={styles.banner} /> : null}
+        {banner && <AppBanner banner={banner} className={styles.banner} />}
 
         <Container
           className={styles.page}
@@ -50,7 +50,7 @@ function AppLayoutComponent() {
           )}
         </Container>
 
-        {footerMenu !== null ? <AppFooter menu={footerMenu} className={styles.footer} /> : null}
+        {footerMenu && <AppFooter menu={footerMenu} className={styles.footer} />}
       </div>
     </div>
   );

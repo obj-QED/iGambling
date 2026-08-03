@@ -1,6 +1,6 @@
 import type { HeaderMenuItem } from '@/widgets/header';
 
-import { useMediaState } from '@/shared/hooks/useMediaState';
+import { useMediaState } from '@/shared/hooks';
 
 import { resolveItemLabel, shouldRenderMenuItem } from '../lib/itemUtils';
 

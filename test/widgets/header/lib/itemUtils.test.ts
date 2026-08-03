@@ -6,9 +6,11 @@ import {
   filterRenderableItems,
   filterRenderableMenu,
   hasItemImg,
+  isDeepPanelItemEligible,
   isIconOnlyItem,
   isRenderableItem,
   menuItemDataAttrs,
+  menuItemDropdownDataAttrs,
   resolveItemLabel,
 } from '@/widgets/header/lib/itemUtils';
 
@@ -26,6 +28,15 @@ describe('isRenderableItem', () => {
 
   it('allows config-only special blocks without name and img', () => {
     expect(isRenderableItem({ key: 'color_scheme', name: '', url: '' })).toBe(true);
+  });
+});
+
+describe('isDeepPanelItemEligible', () => {
+  it('requires name or img — no config-only bypass', () => {
+    expect(isDeepPanelItemEligible({ key: 'a', name: 'A', url: '' })).toBe(true);
+    expect(isDeepPanelItemEligible({ key: 'b', name: '', url: '', img: '/i.png' })).toBe(true);
+    expect(isDeepPanelItemEligible({ key: 'color_scheme', name: '', url: '' })).toBe(false);
+    expect(isDeepPanelItemEligible({ key: 'x', name: '', url: '' })).toBe(false);
   });
 });
 
@@ -71,6 +82,18 @@ describe('menuItemDataAttrs', () => {
     expect(menuItemDataAttrs({ key: 'search', name: '', url: '' })).toEqual({
       'data-cmf-component': 'header',
       'data-cmf-key': 'search',
+    });
+  });
+});
+
+describe('menuItemDropdownDataAttrs', () => {
+  it('uses header-dropdown component scope (independent from bar header)', () => {
+    expect(
+      menuItemDropdownDataAttrs({ key: 'casino', name: 'Casino', url: '/casino', type: 'link' }),
+    ).toEqual({
+      'data-cmf-component': 'header-dropdown',
+      'data-cmf-key': 'casino',
+      'api-type': 'link',
     });
   });
 });

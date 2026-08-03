@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
-import { AppActionIcon } from '@/elements/AppActionIcon';
+import { AppActionIcon } from '@/elements';
 
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -42,15 +42,21 @@ describe('AppActionIcon', () => {
     expect(screen.queryByRole('link')).toBeNull();
   });
 
-  it('returns null when there is no img and no name', () => {
+  it('returns null when there is no img, name, or children', () => {
+    renderActionIcon(<AppActionIcon href="/home">{null}</AppActionIcon>);
+
+    expect(screen.queryByRole('button')).toBeNull();
+    expect(screen.queryByRole('link')).toBeNull();
+  });
+
+  it('renders when children are present without name/img (native trigger)', () => {
     renderActionIcon(
-      <AppActionIcon href="/home">
+      <AppActionIcon native aria-label="Open menu">
         <span>icon</span>
       </AppActionIcon>,
     );
 
-    expect(screen.queryByRole('button')).toBeNull();
-    expect(screen.queryByRole('link')).toBeNull();
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument();
   });
 
   it('renders button action icon when href is valid', () => {

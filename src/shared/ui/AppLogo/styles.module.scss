@@ -1,0 +1,34 @@
+@layer fdd-base {
+  .root {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: var(--logo-height, var(--header-logo-height, var(--button-height, 2.25rem)));
+    min-width: var(
+      --logo-width,
+      var(--header-logo-width, var(--logo-height, var(--header-logo-height, 2.25rem)))
+    );
+  }
+
+  .image {
+    display: block;
+    width: var(
+      --logo-width,
+      var(
+        --header-logo-width,
+        var(--logo-height, var(--header-logo-height, var(--button-height, 2.25rem)))
+      )
+    );
+    height: var(--logo-height, var(--header-logo-height, var(--button-height, 2.25rem)));
+    object-fit: contain;
+    object-position: center;
+    flex-shrink: 0;
+  }
+
+  .textLogo {
+    font-weight: 600;
+    line-height: var(--logo-height, var(--header-logo-height, var(--button-height, 2.25rem)));
+    color: var(--logo-text-color, var(--header-text-color, var(--color-text, inherit)));
+  }
+}

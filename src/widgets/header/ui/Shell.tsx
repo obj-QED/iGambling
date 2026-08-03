@@ -4,13 +4,13 @@ import { memo } from 'react';
 
 import { Group } from '@mantine/core';
 
-import { LAYOUT_REGISTRY } from '../registry/layouts';
+import { resolveHeaderLayout } from '../registry';
 import { Section } from './Section';
 
 import styles from '../styles/base/Shell.module.scss';
 
 function ShellComponent({ menu, config }: ShellProps) {
-  const Layout = LAYOUT_REGISTRY[config.layout];
+  const Layout = resolveHeaderLayout(config.layout);
   const sections = menu.sections.filter((section) => section.items.length > 0);
 
   if (sections.length === 0) return null;

@@ -112,6 +112,64 @@ export default tseslint.config(
         },
       ],
       'simple-import-sort/exports': 'error',
+
+      /**
+       * Public barrels only — no deep sibling imports from the same package.
+       * e.g. `from '@/shared/hooks'`, not `from '@/shared/hooks/useNavActive'`.
+       */
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/shared/hooks/*', '@shared/hooks/*'],
+              message: "Import hooks from '@/shared/hooks' (barrel).",
+            },
+            {
+              group: ['@/elements/*', '@elements/*'],
+              message: "Import from '@/elements' or '@elements' (barrel).",
+            },
+            {
+              group: [
+                '@/shared/lib/cmf/*',
+                '@/shared/lib/cmfIcon/*',
+                '@/shared/lib/menu/*',
+                '@/shared/lib/href/*',
+                '@/shared/lib/coercion/*',
+                '@/shared/lib/device/*',
+                '@/shared/lib/routing/*',
+                '@/shared/lib/mantine/*',
+              ],
+              message: "Import from the package barrel (e.g. '@/shared/lib/cmf'), not a deep file.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // Widget UI: folder barrels only (../context, ../hooks, ../lib, ../registry).
+    files: ['src/widgets/*/ui/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/context/*', '**/hooks/*', '**/lib/*', '**/registry/!(registerBlocks)'],
+              message:
+                'Import from folder barrel (e.g. ../context, ../hooks, ../lib, ../registry), not a deep file.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // Unit tests may deep-import the file under test.
+    files: ['test/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': 'off',
     },
   },
   {

@@ -1,14 +1,14 @@
-import type { MenuItemImageProps } from '../../../types';
+import type { ItemImageProps } from '../../../types';
 
 import { memo, useCallback, useRef, useState } from 'react';
 
-import { useCmfIconStyle } from '@/shared/hooks/useCmfIconStyle';
-import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib/cmfIcon';
+import { useCmfIconStyle } from '@/shared/hooks';
+import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib';
 
-import { hasItemImg } from '../../../lib/itemUtils';
+import { hasItemImg } from '../../../lib';
 import { ItemIcon } from '../ItemIcon/ItemIcon';
 
-function MenuItemImageComponent({ item, alt, className, onImgFailed }: MenuItemImageProps) {
+function ItemImageComponent({ item, alt, className, onImgFailed }: ItemImageProps) {
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
   const cmfStyle = useCmfIconStyle(iconRef);
   const [imgFailed, setImgFailed] = useState(false);
@@ -18,9 +18,9 @@ function MenuItemImageComponent({ item, alt, className, onImgFailed }: MenuItemI
     onImgFailed?.();
   }, [onImgFailed]);
 
-  if (hasItemImg(item) === false) return null;
+  if (!hasItemImg(item)) return null;
 
-  if (imgFailed === true) return null;
+  if (imgFailed) return null;
 
   return (
     <ItemIcon
@@ -35,5 +35,5 @@ function MenuItemImageComponent({ item, alt, className, onImgFailed }: MenuItemI
   );
 }
 
-export const MenuItemImage = memo(MenuItemImageComponent);
-MenuItemImage.displayName = 'MenuItemImage';
+export const ItemImage = memo(ItemImageComponent);
+ItemImage.displayName = 'ItemImage';

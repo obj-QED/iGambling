@@ -9,8 +9,8 @@ export type BuilderPayload = {
 /** Маппинг данных страницы в payload builder без перезаписи отсутствующих полей. */
 export function toBuilderPayload(pageData: PageData): BuilderPayload {
   return {
-    ...(pageData.blocks !== undefined ? { content: pageData.blocks } : {}),
-    ...(pageData.menu !== undefined ? { menu: pageData.menu } : {}),
-    ...(pageData.slider !== undefined ? { slider: pageData.slider } : {}),
+    ...(pageData.blocks && { content: pageData.blocks }),
+    ...(pageData.menu && { menu: pageData.menu }),
+    ...(pageData.slider && { slider: pageData.slider }),
   };
 }

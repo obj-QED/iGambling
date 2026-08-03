@@ -52,7 +52,7 @@ flowchart TD
 | Type strategy     | `widgets/header/ui/type/*`                                  | default vs custom block merge   |
 | Layout            | `registry/layouts.ts`                                       | container / container-fluid     |
 | Block routing     | `registry/blocks.ts`, `registry/keys.ts`                    | strict registry keys            |
-| Menu UI           | `ui/menu/*`, `ui/blocks/*`                                  | presentation only               |
+| Item UI           | `ui/items/*`, `ui/blocks/*`                                 | presentation only               |
 
 ## Data types
 

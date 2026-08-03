@@ -29,7 +29,15 @@ export function mapItem(item: MenuItemDto): HeaderMenuItem {
     mapped.subtitle = item.subtitle;
   }
 
-  if (isSpecialBlockKey(item.key) === false && item.type !== undefined) {
+  if (item.label !== undefined) {
+    mapped.label = item.label;
+  }
+
+  if (item.variant !== undefined) {
+    mapped.variant = item.variant;
+  }
+
+  if (!isSpecialBlockKey(item.key) && item.type !== undefined) {
     mapped.type = item.type;
   }
 

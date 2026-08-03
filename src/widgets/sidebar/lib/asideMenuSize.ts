@@ -4,7 +4,7 @@ import { CMF_BUTTON_SIZES } from '@/assets/theme';
 
 export const ASIDE_SIZE_BUTTON_VAR = '--aside-size-button';
 
-export const DEFAULT_ASIDE_MENU_BUTTON_SIZE: CmfButtonSize = 'sm';
+export const DEFAULT_ASIDE_MENU_BUTTON_SIZE: CmfButtonSize = 'md';
 
 function parseButtonSize(value: string): CmfButtonSize | undefined {
   if ((CMF_BUTTON_SIZES as readonly string[]).includes(value)) {

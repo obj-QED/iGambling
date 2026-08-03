@@ -139,8 +139,10 @@ type ButtonVarsProps = {
   justify?: CSSProperties['justifyContent'];
   cmfComponent?: string;
   cmfKey?: string;
+  cmfRole?: string;
   'data-cmf-component'?: string;
   'data-cmf-key'?: string;
+  'data-cmf-role'?: string;
 };
 
 /** Prefer data-cmf-key; if missing, peel key from `exception-{key}`. */

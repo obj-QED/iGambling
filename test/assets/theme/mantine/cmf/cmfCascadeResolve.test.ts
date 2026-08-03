@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  buildCmfActionIconPropToken,
   buildCmfButtonPropToken,
   resolveCmfScope,
 } from '@/assets/theme/mantine/cmf/cmfCascadeResolve';
@@ -15,6 +16,30 @@ describe('cmfCascadeResolve', () => {
 
     expect(token).toBe(
       'var(--cmf-button-header-sign_in-bg, var(--cmf-button-header-bg, var(--cmf-button-filled-bg, mantine-bg)))',
+    );
+  });
+
+  it('builds component+key → component+role → component → variant', () => {
+    const token = buildCmfActionIconPropToken('bd', 'transparent', {
+      scope: { component: 'sidebar-dropdown', key: 'casino', role: 'parent' },
+      variant: 'transparent',
+      tail: 'variant',
+    });
+
+    expect(token).toBe(
+      'var(--cmf-action-icon-sidebar-dropdown-casino-bd, var(--cmf-action-icon-sidebar-dropdown-parent-bd, var(--cmf-action-icon-sidebar-dropdown-bd, var(--cmf-action-icon-transparent-bd, transparent))))',
+    );
+  });
+
+  it('builds child role layer for nested dropdown rows', () => {
+    const token = buildCmfActionIconPropToken('bd', 'transparent', {
+      scope: { component: 'sidebar-dropdown', key: 'slots', role: 'child' },
+      variant: 'transparent',
+      tail: 'variant',
+    });
+
+    expect(token).toBe(
+      'var(--cmf-action-icon-sidebar-dropdown-slots-bd, var(--cmf-action-icon-sidebar-dropdown-child-bd, var(--cmf-action-icon-sidebar-dropdown-bd, var(--cmf-action-icon-transparent-bd, transparent))))',
     );
   });
 
@@ -103,13 +128,21 @@ describe('cmfCascadeResolve', () => {
         'data-cmf-component': 'header',
         'data-cmf-key': 'link',
       }),
-    ).toEqual({ component: 'header', key: 'link' });
+    ).toEqual({ component: 'header', key: 'link', role: undefined });
 
     expect(
       resolveCmfScope({
         cmfComponent: 'banner',
         cmfKey: 'cta',
       }),
-    ).toEqual({ component: 'banner', key: 'cta' });
+    ).toEqual({ component: 'banner', key: 'cta', role: undefined });
+
+    expect(
+      resolveCmfScope({
+        'data-cmf-component': 'sidebar-dropdown',
+        'data-cmf-key': 'casino',
+        'data-cmf-role': 'parent',
+      }),
+    ).toEqual({ component: 'sidebar-dropdown', key: 'casino', role: 'parent' });
   });
 });

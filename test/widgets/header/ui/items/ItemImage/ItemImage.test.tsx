@@ -3,13 +3,13 @@ import { describe, expect, it } from 'vitest';
 
 import { DEFAULT_HEADER_CONFIG } from '@/widgets/header/config/defaults';
 import { ConfigProvider } from '@/widgets/header/context/provider';
-import { MenuItemImage } from '@/widgets/header/ui/menu/MenuItemImage/MenuItemImage';
+import { ItemImage } from '@/widgets/header/ui/items/ItemImage/ItemImage';
 
-describe('MenuItemImage', () => {
+describe('ItemImage', () => {
   it('removes image from DOM when load fails', () => {
     render(
       <ConfigProvider config={DEFAULT_HEADER_CONFIG}>
-        <MenuItemImage
+        <ItemImage
           item={{ key: 'profile', name: '', url: '/profile', img: '/missing.png' }}
           alt="profile"
         />

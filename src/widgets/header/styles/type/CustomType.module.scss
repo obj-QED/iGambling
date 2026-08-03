@@ -1,0 +1,10 @@
+/**
+ * Custom header type — classic / customBlocks-oriented shell.
+ * Extend here for type-specific chrome.
+ */
+
+@layer widget.variant {
+  .root {
+    min-width: 0;
+  }
+}

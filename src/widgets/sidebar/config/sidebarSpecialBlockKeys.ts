@@ -1,5 +1,10 @@
 /** Sidebar blocks with dedicated UI — menu `type` does not apply. */
-export const SIDEBAR_SPECIAL_BLOCK_KEYS = ['search_leftmenu', 'timer', 'wheel_mdl'] as const;
+export const SIDEBAR_SPECIAL_BLOCK_KEYS = [
+  'search_leftmenu',
+  'timer',
+  'wheel_mdl',
+  'logo',
+] as const;
 
 export type SidebarSpecialBlockKey = (typeof SIDEBAR_SPECIAL_BLOCK_KEYS)[number];
 

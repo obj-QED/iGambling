@@ -10,14 +10,14 @@ export type ItemActionIconProps = {
   item: HeaderMenuItem;
 };
 
-export type MenuItemImageProps = {
+export type ItemImageProps = {
   item: HeaderMenuItem;
   alt: string;
   className?: string;
   onImgFailed?: () => void;
 };
 
-export type ItemMenuTriggerProps = {
+export type ItemDropdownTriggerProps = {
   item: HeaderMenuItem;
   rightSection?: ReactNode;
 };
@@ -26,7 +26,7 @@ export type DropdownProps = {
   item: HeaderMenuItem;
 };
 
-export type DropdownMenuItemProps = {
+export type DropdownItemProps = {
   item: HeaderMenuItem;
 };
 

@@ -4,11 +4,9 @@ import { memo, useCallback } from 'react';
 
 import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { IconMoon, IconSunHigh } from '@tabler/icons-react';
-
-import { useHeaderMenuSizes } from '../../../context/useHeaderMenuSizes';
-import { resolveHeaderMenuActionIconSize } from '../../../lib/headerMenuSize';
-import { menuItemDataAttrs } from '../../../lib/itemUtils';
-import { HEADER_TABLER_ICON_PROPS } from '../../menu/icons/iconProps';
+import { useHeaderMenuSizes } from '../../../context';
+import { resolveHeaderMenuActionIconSize, menuItemDataAttrs } from '../../../lib';
+import { HEADER_TABLER_ICON_PROPS } from '../../items/icons/iconProps';
 
 function ColorSchemeBlockComponent({ item }: BlockProps) {
   const menuSizes = useHeaderMenuSizes();

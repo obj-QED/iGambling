@@ -12,11 +12,11 @@ export function resolveAppButtonHrefState(
   href: string | undefined,
   native: boolean,
 ): AppButtonHrefState {
-  if (native === true) {
+  if (native) {
     return { href: undefined, disabledForHref: false };
   }
 
-  if (href === undefined || href.length === 0 || isValidAppHref(href) === false) {
+  if (href === undefined || href.length === 0 || !isValidAppHref(href)) {
     return { href: undefined, disabledForHref: true };
   }
 

@@ -2,32 +2,38 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { AppButton } from '@/elements/AppButton';
-import { useMediaState } from '@/shared/hooks/useMediaState';
+import { AppButton } from '@/elements';
+import { useMediaState } from '@/shared/hooks';
 
-import { useAsideMenuButtonSize } from '../../../hooks/useAsideMenuButtonSize';
-import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
-import { resolveSidebarFooterIcon } from '../../../lib/resolveSidebarFooterIcon';
-import { MenuItemMedia } from '../../menu/MenuItemMedia/MenuItemMedia';
+import { useAsideMenuButtonSize } from '../../../hooks';
+import {
+  menuItemDataAttrs,
+  resolveItemHref,
+  resolveItemLabel,
+  resolveMenuItemButtonVariant,
+  resolveSidebarFooterIcon,
+} from '../../../lib';
+import { ItemMedia } from '../../items/ItemMedia/ItemMedia';
 
+/** Default-type footer row. Compact uses typePack.FooterLink. */
 function SidebarFooterLinkComponent({ item }: BlockProps) {
   const { onImgError, showItemImg } = useMediaState(item);
   const size = useAsideMenuButtonSize();
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
   const FallbackIcon = resolveSidebarFooterIcon(item);
-  const leftSection =
-    showItemImg === true ? (
-      <MenuItemMedia item={item} alt={label} onImgError={onImgError} />
-    ) : FallbackIcon !== null ? (
-      <FallbackIcon size={20} stroke={1.5} />
-    ) : undefined;
+
+  const leftSection = showItemImg ? (
+    <ItemMedia item={item} alt={label} onImgError={onImgError} />
+  ) : FallbackIcon ? (
+    <FallbackIcon size={20} stroke={1.5} />
+  ) : undefined;
 
   return (
     <AppButton
       label={label}
       href={href}
-      variant="subtle"
+      variant={resolveMenuItemButtonVariant(item)}
       size={size}
       fullWidth
       justify="flex-start"

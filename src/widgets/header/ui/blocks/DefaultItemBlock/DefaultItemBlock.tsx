@@ -2,14 +2,14 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { isIconOnlyItem, isRenderableItem } from '../../../lib/itemUtils';
-import { ItemActionIcon } from '../../menu/ItemActionIcon/ItemActionIcon';
-import { ItemButton } from '../../menu/ItemButton/ItemButton';
+import { isIconOnlyItem, isRenderableItem } from '../../../lib';
+import { ItemActionIcon } from '../../items/ItemActionIcon/ItemActionIcon';
+import { ItemButton } from '../../items/ItemButton/ItemButton';
 
 function DefaultItemBlockComponent({ item }: BlockProps) {
-  if (isRenderableItem(item) === false) return null;
+  if (!isRenderableItem(item)) return null;
 
-  if (isIconOnlyItem(item) === true) {
+  if (isIconOnlyItem(item)) {
     return <ItemActionIcon item={item} />;
   }
 

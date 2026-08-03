@@ -1,11 +1,16 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '@/widgets/header';
 
-import { cmfScopeAttrs } from '@/shared/lib/cmf/cmfScopeAttrs';
+import { cmfScopeAttrs } from '@/shared/lib/cmf';
 import { menuApiTypeAttrs } from '@/shared/lib/menu';
 
 import { isSidebarSpecialBlockKey } from '../config/sidebarSpecialBlockKeys';
 
 export const SIDEBAR_CMF_COMPONENT = 'sidebar';
+
+/** Independent cascade for nested menu (`--cmf-*-sidebar-dropdown-*`). */
+export const SIDEBAR_DROPDOWN_CMF_COMPONENT = 'sidebar-dropdown';
+
+export type SidebarDropdownCmfRole = 'parent' | 'child';
 
 function itemName(item: HeaderMenuItem): string {
   return item.name ?? '';
@@ -31,15 +36,15 @@ export function isRenderableItem(item: HeaderMenuItem): boolean {
 
 /** Icon-only item — visible while `img` loads; hidden after `onError` when `name` is empty. */
 export function isIconOnlyItem(item: HeaderMenuItem): boolean {
-  return hasItemName(item) === false && hasItemImg(item) === true;
+  return !hasItemName(item) && hasItemImg(item);
 }
 
 /**
  * Runtime visibility: no `name` + no `img`, or icon-only with failed `img` → do not render.
  */
 export function shouldRenderMenuItem(item: HeaderMenuItem, imgFailed: boolean): boolean {
-  if (isRenderableItem(item) === false) return false;
-  if (hasItemName(item) === false && imgFailed === true) return false;
+  if (!isRenderableItem(item)) return false;
+  if (!hasItemName(item) && imgFailed) return false;
   return true;
 }
 
@@ -52,6 +57,8 @@ export function hasItemImg(item: HeaderMenuItem): boolean {
 }
 
 export function resolveItemLabel(item: HeaderMenuItem): string {
+  const fromLabel = item.label?.trim() ?? '';
+  if (fromLabel.length > 0) return fromLabel;
   const name = itemName(item);
   if (name.length > 0) return name;
   return itemKey(item);
@@ -77,6 +84,41 @@ export function menuItemDataAttrs(item: HeaderMenuItem): {
     }),
     ...menuApiTypeAttrs(item.type),
   };
+}
+
+/** Dropdown trigger / nested row — separate from bar `sidebar` tokens. */
+export function menuItemDropdownDataAttrs(
+  item: HeaderMenuItem,
+  role: SidebarDropdownCmfRole,
+): {
+  'data-cmf-component': typeof SIDEBAR_DROPDOWN_CMF_COMPONENT;
+  'data-cmf-key': string;
+  'data-cmf-role': SidebarDropdownCmfRole;
+  'data-key': string;
+  'api-type'?: 'button' | 'link';
+} {
+  return {
+    ...menuItemKeyAttr(item),
+    ...(cmfScopeAttrs(SIDEBAR_DROPDOWN_CMF_COMPONENT, itemKey(item), role) as {
+      'data-cmf-component': typeof SIDEBAR_DROPDOWN_CMF_COMPONENT;
+      'data-cmf-key': string;
+      'data-cmf-role': SidebarDropdownCmfRole;
+    }),
+    ...menuApiTypeAttrs(item.type),
+  };
+}
+
+/**
+ * Bar item → `sidebar`; dropdown trigger/row → `sidebar-dropdown` + role.
+ * Cascade: `{component}-{key}` → `{component}-{role}` → `{component}` → `{variant}`.
+ */
+export function resolveMenuItemCmfAttrs(
+  item: HeaderMenuItem,
+  options: { dropdownTrigger?: boolean; dropdownItem?: boolean } = {},
+): ReturnType<typeof menuItemDataAttrs> | ReturnType<typeof menuItemDropdownDataAttrs> {
+  if (options.dropdownTrigger === true) return menuItemDropdownDataAttrs(item, 'parent');
+  if (options.dropdownItem === true) return menuItemDropdownDataAttrs(item, 'child');
+  return menuItemDataAttrs(item);
 }
 
 export function filterRenderableItems(items: HeaderMenuItem[]): HeaderMenuItem[] {

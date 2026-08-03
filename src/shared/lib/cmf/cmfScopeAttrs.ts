@@ -1,16 +1,19 @@
-import type { CmfScopeAttrs, CmfScopeAttrsKey } from './types';
+import type { CmfScopeAttrs, CmfScopeAttrsKey, CmfScopeAttrsRole } from './types';
 
-/** CMF location + optional item key for Mantine Button / ActionIcon cascade. */
+/** CMF location + optional item key / role for Mantine Button / ActionIcon cascade. */
 export function cmfScopeAttrs<TComponent extends string>(
   component: TComponent,
   key?: CmfScopeAttrsKey,
+  role?: CmfScopeAttrsRole,
 ): CmfScopeAttrs<TComponent> {
+  const attrs: CmfScopeAttrs<TComponent> = { 'data-cmf-component': component };
+
   if (key !== undefined && key.length > 0) {
-    return {
-      'data-cmf-component': component,
-      'data-cmf-key': key,
-    };
+    attrs['data-cmf-key'] = key;
+  }
+  if (role !== undefined && role.length > 0) {
+    attrs['data-cmf-role'] = role;
   }
 
-  return { 'data-cmf-component': component };
+  return attrs;
 }

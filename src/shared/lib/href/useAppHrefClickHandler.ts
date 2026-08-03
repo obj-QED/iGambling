@@ -10,7 +10,7 @@ export function useAppHrefClickHandler(href: string | undefined, enabled = true)
 
   return useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
-      if (enabled === false || href === undefined || isValidAppHref(href) === false) return;
+      if (!enabled || href === undefined || !isValidAppHref(href)) return;
 
       const kind = getAppHrefKind(href);
 

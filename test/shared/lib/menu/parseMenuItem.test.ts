@@ -13,9 +13,7 @@ describe('parseMenuItemDto (Zod boundary)', () => {
   });
 
   it('parses menu item type', () => {
-    expect(
-      parseMenuItemDto({ key: 'promo', url: '/promo', name: 'Promo', type: 'link' }),
-    ).toEqual({
+    expect(parseMenuItemDto({ key: 'promo', url: '/promo', name: 'Promo', type: 'link' })).toEqual({
       key: 'promo',
       url: '/promo',
       name: 'Promo',
@@ -30,6 +28,26 @@ describe('parseMenuItemDto (Zod boundary)', () => {
     });
   });
 
+  it('parses variant and label', () => {
+    expect(
+      parseMenuItemDto({
+        key: 'logout',
+        url: '/logout',
+        name: 'Logout',
+        type: 'link',
+        variant: 'filled',
+        label: 'Sign out',
+      }),
+    ).toEqual({
+      key: 'logout',
+      url: '/logout',
+      name: 'Logout',
+      type: 'link',
+      variant: 'filled',
+      label: 'Sign out',
+    });
+  });
+
   it('passes through unknown menu item type', () => {
     expect(parseMenuItemDto({ key: 'bad', url: '/', name: 'Bad', type: 'modal' })?.type).toBe(
       'modal',
@@ -37,13 +55,11 @@ describe('parseMenuItemDto (Zod boundary)', () => {
   });
 
   it('drops type for special block keys', () => {
-    expect(parseMenuItemDto({ key: 'search', url: '/search', name: '', type: 'link' })).toEqual(
-      {
-        key: 'search',
-        url: '/search',
-        name: '',
-      },
-    );
+    expect(parseMenuItemDto({ key: 'search', url: '/search', name: '', type: 'link' })).toEqual({
+      key: 'search',
+      url: '/search',
+      name: '',
+    });
   });
 
   it('cleans empty api fields before coerce', () => {

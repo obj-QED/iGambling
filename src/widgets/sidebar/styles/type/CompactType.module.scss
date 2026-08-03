@@ -1,0 +1,58 @@
+/**
+ * Sidebar type skins — CSS Modules composed onto `<aside>` via `resolveSidebarTypeStyles`.
+ * Add `styles/type/<Name>Type.module.scss` + registry entry when introducing a type.
+ */
+
+@layer widget.variant {
+
+  /*
+   * Compact rail — ActionIcon column.
+   * Applied as second class on `[data-widget='sidebar'][data-type='compact']`.
+   */
+
+  :global([data-cmf-component='sidebar-dropdown']) {
+    margin-left: 0;
+  }
+
+  .root {
+
+    /* Type-owned spacing — ItemActionIcon `.dropdownTrigger` / `.indicator` read these. */
+    align-items: center;
+    width: var(--app-layout-sidebar-width, 4.5rem);
+
+    :global([data-sidebar-region='header']),
+    :global([data-sidebar-region='footer']) {
+      align-items: center;
+    }
+
+    :global(nav[data-section-key] ul) {
+      align-items: center;
+    }
+
+    :global(nav[data-section-key] li),
+    :global(nav[data-section-key] li > *) {
+      display: flex;
+      justify-content: center;
+      width: auto;
+    }
+
+    :global([data-sidebar-dropdown]) {
+      align-items: center;
+    }
+
+    :global([data-sidebar-dropdown] ul[role='menu']) {
+      padding-left: 0;
+      align-items: center;
+    }
+
+    /* Indicator is a *child* of `.cmf-ActionIcon-icon`, not its parent. */
+    :global([data-sidebar-dropdown-trigger] .cmf-ActionIcon-icon) {
+      gap: var(--cmf-action-icon-sidebar-dropdown-trigger-gap, var(--mantine-spacing-sm));
+    }
+
+    :global([data-sidebar-dropdown-indicator]) {
+      position: relative;
+      inset: unset;
+    }
+  }
+}

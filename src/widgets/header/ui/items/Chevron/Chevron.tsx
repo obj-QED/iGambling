@@ -6,14 +6,15 @@ import { IconChevronDown } from '@tabler/icons-react';
 
 import { HEADER_TABLER_ICON_PROPS } from '../icons/iconProps';
 
-import styles from '../../../styles/menu/Chevron.module.scss';
+import styles from '../../../styles/items/Chevron.module.scss';
 
 function ChevronComponent({ open = false }: ChevronProps) {
   return (
     <IconChevronDown
       {...HEADER_TABLER_ICON_PROPS}
       className={styles.root}
-      data-open={open === true ? true : undefined}
+      data-menu-chevron
+      data-open={open || undefined}
     />
   );
 }

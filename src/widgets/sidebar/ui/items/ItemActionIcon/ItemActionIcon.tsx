@@ -2,40 +2,85 @@ import type { ItemActionIconProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { AppActionIcon } from '@/elements/AppActionIcon';
-import { useMediaState } from '@/shared/hooks/useMediaState';
-import { useMenuActive } from '@/shared/hooks/useMenuActive';
+import clsx from 'clsx';
 
-import { useAsideMenuButtonSize } from '../../../hooks/useAsideMenuButtonSize';
-import { menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib/itemUtils';
-import { resolveMenuItemActionIconVariant } from '../../../lib/menuItemVariant';
-import { MenuItemMedia } from '../MenuItemMedia/MenuItemMedia';
+import { AppActionIcon } from '@/elements';
+import { useMediaState, useNavActive } from '@/shared/hooks';
 
-import styles from '../../../styles/menu/ItemActionIcon.module.scss';
+import { useAsideMenuButtonSize } from '../../../hooks';
+import {
+  hasItemImg,
+  hasItemName,
+  resolveItemHref,
+  resolveItemLabel,
+  resolveMenuItemActionIconVariant,
+  resolveMenuItemCmfAttrs,
+} from '../../../lib';
+import { SidebarPhotoFallback } from '../icons/SidebarPhotoFallback';
+import { ItemMedia } from '../ItemMedia/ItemMedia';
 
-function ItemActionIconComponent({ item }: ItemActionIconProps) {
-  const { menuActiveAttrs } = useMenuActive(item);
-  const { onImgError, hideImageControl, iconControlAttrs, showItemImg } =
-    useMediaState(item);
+import styles from '../../../styles/items/ItemActionIcon.module.scss';
+
+function resolveActionIconContent(
+  item: ItemActionIconProps['item'],
+  label: string,
+  showItemImg: boolean,
+  onImgError: (() => void) | undefined,
+) {
+  if (showItemImg && hasItemImg(item)) {
+    return <ItemMedia item={item} alt={label} onImgError={onImgError} />;
+  }
+
+  if (hasItemName(item)) {
+    return label.slice(0, 1).toUpperCase();
+  }
+
+  return <SidebarPhotoFallback />;
+}
+
+function ItemActionIconComponent({
+  item,
+  className,
+  dropdownItem = false,
+  dropdownTrigger = false,
+  indicator,
+  onClick,
+  'aria-expanded': ariaExpanded,
+  'aria-haspopup': ariaHaspopup,
+}: ItemActionIconProps) {
+  const { activeAttrs } = useNavActive(item);
+  const { onImgError, iconControlAttrs, showItemImg } = useMediaState(item);
   const size = useAsideMenuButtonSize();
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
+  const content = resolveActionIconContent(item, label, showItemImg, onImgError);
 
   return (
     <AppActionIcon
       name={item.name}
       img={item.img}
-      href={href}
-      hidden={hideImageControl}
-      className={styles.root}
+      href={dropdownTrigger ? undefined : href}
+      native={dropdownTrigger}
+      hidden={false}
+      className={clsx(styles.root, dropdownTrigger && styles.dropdownTrigger, className)}
       variant={resolveMenuItemActionIconVariant(item)}
       size={size}
       aria-label={label}
-      {...menuItemDataAttrs(item)}
-      {...menuActiveAttrs}
+      aria-expanded={ariaExpanded}
+      aria-haspopup={ariaHaspopup}
+      onClick={onClick}
+      {...(dropdownTrigger && { 'data-sidebar-dropdown-trigger': true })}
+      {...(dropdownItem && { 'data-sidebar-dropdown-item': true })}
+      {...resolveMenuItemCmfAttrs(item, { dropdownTrigger, dropdownItem })}
+      {...activeAttrs}
       {...iconControlAttrs}
     >
-      {showItemImg ? <MenuItemMedia item={item} alt={label} onImgError={onImgError} /> : null}
+      {content}
+      {indicator && (
+        <span className={styles.indicator} data-sidebar-dropdown-indicator>
+          {indicator}
+        </span>
+      )}
     </AppActionIcon>
   );
 }
