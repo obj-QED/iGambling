@@ -37,7 +37,8 @@ export function resolveSidebarExceptionButtonVariant(
 }
 
 /**
- * Aside buttons: explicit `variant` → special `exception-{key}` → `type: button` outline → transparent.
+ * Aside buttons: explicit `variant` → special `exception-{key}` → `type: button` default → transparent.
+ * (Not `outline` — brand outline paint flashes cyan on Vite CSS HMR when theme tokens unload.)
  */
 export function resolveMenuItemButtonVariant(
   item: MenuItemVariantSource,
@@ -48,12 +49,12 @@ export function resolveMenuItemButtonVariant(
   if (isSidebarExceptionBlockItem(item) && item.key !== undefined) {
     return resolveSidebarExceptionButtonVariant(item.key as SidebarSpecialBlockKey);
   }
-  if (item.type === 'button') return 'outline';
+  if (item.type === 'button') return 'default';
   return DEFAULT_CONTROL_VARIANT;
 }
 
 /**
- * ActionIcon: explicit `variant` → `type: button` outline → transparent.
+ * ActionIcon: explicit `variant` → `type: button` default → transparent.
  * Never uses `exception-{key}`.
  */
 export function resolveMenuItemActionIconVariant(
@@ -62,7 +63,7 @@ export function resolveMenuItemActionIconVariant(
   const explicit = resolveMenuItemExplicitVariant(item);
   if (explicit) return explicit as CmfActionIconVariant;
 
-  if (item.type === 'button') return 'outline';
+  if (item.type === 'button') return 'default';
   return DEFAULT_CONTROL_VARIANT;
 }
 

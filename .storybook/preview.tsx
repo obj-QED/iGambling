@@ -6,16 +6,20 @@ import { MemoryRouter } from 'react-router-dom';
 import { defaultColorScheme } from '@/assets/theme';
 import { withAppSettings } from '@/storybook/decorators/withAppSettings';
 import { withMantineColorScheme } from '@/storybook/decorators/withMantineColorScheme';
-import { STORYBOOK_APP_SETTINGS_GLOBAL_TYPES } from '@/storybook/settings';
+import {
+  STORYBOOK_APP_SETTINGS_GLOBAL_TYPES,
+  STORYBOOK_THEME_GLOBAL_TYPES,
+} from '@/storybook/settings';
 
 import '@/assets/styles-bootstrap';
 
 const preview: Preview = {
   globalTypes: {
+    ...STORYBOOK_THEME_GLOBAL_TYPES,
     ...STORYBOOK_APP_SETTINGS_GLOBAL_TYPES,
     colorScheme: {
       name: 'Color scheme',
-      description: 'Mantine color scheme',
+      description: 'Mantine color scheme (also switches brand CSS palette light/dark)',
       defaultValue: defaultColorScheme,
       toolbar: {
         icon: 'circlehollow',
@@ -39,6 +43,7 @@ const preview: Preview = {
   parameters: {
     layout: 'fullscreen',
     controls: {
+      expanded: true,
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
@@ -50,6 +55,10 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
+          'Guide',
+          ['How to use'],
+          'Theme',
+          ['Palette'],
           'Settings',
           ['App', ['Overview', 'HeaderPreview', 'SidebarPreview']],
           'Elements',
@@ -59,8 +68,29 @@ const preview: Preview = {
             ['Default', 'With Cmf Icon', 'Icon Cascade', 'All Variants', 'Playground'],
           ],
           'Widgets',
-          ['Header', ['AppHeader', 'Special Blocks', ['Menu Items', ['Overview', 'Icon Cascade']]]],
-          ['Sidebar', ['AppSidebar']],
+          [
+            'Header',
+            [
+              'AppHeader',
+              ['Menu Items', ['Overview', 'Icon Cascade', 'Playground']],
+              [
+                'Special Blocks',
+                [
+                  'Overview',
+                  'Search',
+                  'Wallet',
+                  'Logo',
+                  'Notification',
+                  'Color Scheme',
+                  'Bonus Box',
+                ],
+              ],
+            ],
+          ],
+          [
+            'Sidebar',
+            ['AppSidebar', ['Special Blocks', ['Overview', 'Logo', 'Search', 'Timer', 'Wheel']]],
+          ],
           '*',
         ],
       },

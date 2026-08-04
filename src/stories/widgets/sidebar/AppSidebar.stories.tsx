@@ -91,7 +91,10 @@ const meta = {
   argTypes: {
     layout: mantineSelectArgType(ASIDE_LAYOUT_KEYS, { category: 'Config', allowNone: true }),
     type: mantineSelectArgType(ASIDE_TYPE_KEYS, { category: 'Config', allowNone: true }),
-    width: { control: 'text', table: { category: 'Config' }, name: 'width (px or CSS)' },
+    width: mantineSelectArgType(['72', '320', '400', '480'], {
+      category: 'Config',
+      allowNone: true,
+    }),
     regionHeader: mantineBooleanArgType('Regions'),
     regionMain: mantineBooleanArgType('Regions'),
     regionFooter: mantineBooleanArgType('Regions'),

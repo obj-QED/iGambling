@@ -3,12 +3,27 @@ import type { HeaderMenuItem } from '@/widgets/header';
 import type { ComponentType } from 'react';
 
 import { DefaultItemBlock } from '../ui/blocks/DefaultItemBlock/DefaultItemBlock';
+import { DropdownBlock } from '../ui/blocks/DropdownBlock/DropdownBlock';
+import { Logo } from '../ui/blocks/Logo/Logo';
+import { Search } from '../ui/blocks/Search/Search';
+import { TimerBlock } from '../ui/blocks/TimerBlock/TimerBlock';
+import { WheelMdlBlock } from '../ui/blocks/WheelMdlBlock/WheelMdlBlock';
 import { resolveBlockRegistryKey, type SidebarBlockRegistryKey } from './keys';
 
+/**
+ * Sync block map — defined in one module so Vite HMR cannot wipe entries
+ * while leaving a stale empty `{ default }` registry (side-effect `registerBlocks` race).
+ */
 export const BLOCK_REGISTRY: Partial<Record<SidebarBlockRegistryKey, ComponentType<BlockProps>>> = {
   default: DefaultItemBlock,
+  menuDropdown: DropdownBlock,
+  search_leftmenu: Search,
+  timer: TimerBlock,
+  wheel_mdl: WheelMdlBlock,
+  aside_header_logo: Logo,
 };
 
+/** Runtime overlay (tests / type-packs). Prefer static `BLOCK_REGISTRY` entries for app blocks. */
 export function registerBlocks(
   entries: Partial<Record<SidebarBlockRegistryKey, ComponentType<BlockProps>>>,
 ): void {
