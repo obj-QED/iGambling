@@ -44,16 +44,6 @@ coverage/
 # Optional
 *.pem
 .cursor/*
-!.cursor/agents/
-!.cursor/agents/**
-!.cursor/rules/
-!.cursor/rules/**
-!.cursor/hooks.json
-!.cursor/hooks/
-!.cursor/hooks/**
-!.cursor/GLOBAL_SETUP.md
-!.cursor/skills/
-!.cursor/skills/**/SKILL.md
 
 ai-rules/
 !ai-rules/
@@ -68,3 +58,5 @@ scripts/*
 *storybook.log
 storybook-static
 reports/
+
+*.zip
