@@ -35,7 +35,7 @@ function SidebarFooterLinkComponent({ item }: BlockProps) {
       href={href}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
-      fullWidth
+      fullscreen
       justify="flex-start"
       leftSection={leftSection}
       {...menuItemDataAttrs(item)}

@@ -9,7 +9,7 @@ export type AppParams = {
    * Mobile/tablet: request document fullscreen on first scroll.
    * Set `false` to disable.
    */
-  fullWidth?: boolean;
+  fullscreen?: boolean;
 };
 
 export type AppSettings = {
@@ -37,5 +37,5 @@ export function getSettings(): AppSettings {
 }
 
 export function isScrollFullscreenEnabled(settings = getSettings()): boolean {
-  return settings.params?.fullWidth === true;
+  return settings.params?.fullscreen === true;
 }

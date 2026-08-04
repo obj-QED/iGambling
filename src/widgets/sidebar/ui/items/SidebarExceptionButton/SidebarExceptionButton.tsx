@@ -7,6 +7,7 @@ import clsx from 'clsx';
 
 import { AppButton } from '@/elements';
 import { useNavActive } from '@/shared/hooks';
+
 import { useAsideMenuButtonSize } from '../../../hooks';
 import { menuItemDataAttrs, resolveItemHref, resolveMenuItemButtonVariant } from '../../../lib';
 
@@ -35,7 +36,7 @@ function SidebarExceptionButtonComponent({
       href={href}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
-      fullWidth
+      fullscreen
       justify="flex-start"
       className={clsx(styles.root, className)}
       leftSection={leftSection}

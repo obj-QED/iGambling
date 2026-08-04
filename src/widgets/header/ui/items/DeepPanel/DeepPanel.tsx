@@ -1,5 +1,4 @@
 import type { HeaderDeepPanelGroup } from '../../../lib';
-import { HEADER_DROPDOWN_CMF_COMPONENT } from '../../../lib';
 
 import { Fragment, memo } from 'react';
 
@@ -7,6 +6,8 @@ import { Menu } from '@mantine/core';
 import { IconMenuDeep } from '@tabler/icons-react';
 
 import { AppActionIcon } from '@/elements';
+
+import { HEADER_DROPDOWN_CMF_COMPONENT } from '../../../lib';
 import { HEADER_TABLER_ICON_PROPS } from '../icons/iconProps';
 import { DeepPanelItem } from './DeepPanelItem';
 

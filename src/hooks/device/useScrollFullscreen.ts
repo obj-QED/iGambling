@@ -8,7 +8,7 @@ import {
 } from '@/shared/lib/device';
 
 /**
- * When `window.__SETTINGS__.params.fullWidth === true`, requests document
+ * When `window.__SETTINGS__.params.fullscreen === true`, requests document
  * fullscreen on first scroll (mobile/tablet only).
  */
 export function useScrollFullscreen(): void {

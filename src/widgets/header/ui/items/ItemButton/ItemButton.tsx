@@ -4,8 +4,9 @@ import { memo } from 'react';
 
 import { AppButton } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
+
 import { useHeaderMenuSizes } from '../../../context';
-import { resolveHeaderMenuButtonSize, menuItemDataAttrs, resolveItemHref, resolveItemLabel, resolveMenuItemButtonVariant } from '../../../lib';
+import { menuItemDataAttrs, resolveHeaderMenuButtonSize, resolveItemHref, resolveItemLabel, resolveMenuItemButtonVariant } from '../../../lib';
 import { ItemImage } from '../ItemImage/ItemImage';
 
 import styles from '../../../styles/items/ItemButton.module.scss';

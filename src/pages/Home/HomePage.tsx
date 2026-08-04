@@ -191,7 +191,7 @@ function HomePageComponent() {
         </Stack>
 
         <Stack gap="sm">
-          <Title order={5}>Состояния (default / disabled / loading / fullWidth)</Title>
+          <Title order={5}>Состояния (default / disabled / loading / fullscreen)</Title>
           {BUTTON_STATE_VARIANTS.map((variant) => (
             <Stack key={variant} gap="xs">
               <Text size="sm" fw={600}>
@@ -209,8 +209,8 @@ function HomePageComponent() {
                   disabled+loading
                 </Button>
               </Group>
-              <Button variant={variant} fullWidth>
-                fullWidth
+              <Button variant={variant} fullscreen>
+                fullscreen
               </Button>
             </Stack>
           ))}

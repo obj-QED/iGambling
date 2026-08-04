@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_APP_URL ?? '';
 // Для lobby используем относительный URL:
-// - в dev: /apiLobby.php → Vite server.proxy → https://999ggg.net/apiLobby.php (обход CORS)
+// - в dev: /apiLobby.php → Vite server.proxy → {VITE_APP_URL}/apiLobby.php (обход CORS)
 // - в prod: /apiLobby.php на том же домене, что и фронт
 const lobbyBaseURL = '';
 

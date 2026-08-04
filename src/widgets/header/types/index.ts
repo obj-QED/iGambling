@@ -11,7 +11,6 @@ export type {
   HeaderSpecialBlockKey,
 } from './items.types';
 export { HEADER_CONFIG_ONLY_BLOCK_KEYS, HEADER_SPECIAL_BLOCK_KEYS } from './items.types';
-export type { ContainerFluidLayoutProps, ContainerLayoutProps } from './layout.types';
 export type {
   ChevronProps,
   DropdownItemProps,
@@ -21,6 +20,7 @@ export type {
   ItemDropdownTriggerProps,
   ItemImageProps,
 } from './itemUi.types';
+export type { ContainerFluidLayoutProps, ContainerLayoutProps } from './layout.types';
 export type { BlockProps, RootProps, SectionProps } from './props.types';
 export type { ShellProps } from './shell.types';
 export type {

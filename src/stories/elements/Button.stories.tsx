@@ -44,7 +44,7 @@ type ButtonStoryArgs = {
   radius?: string;
   disabled?: boolean;
   loading?: boolean;
-  fullWidth?: boolean;
+  fullscreen?: boolean;
   iconScale?: string;
   iconAspect?: string;
 };
@@ -73,7 +73,7 @@ const meta = {
     radius: mantineRadiusArgType(),
     disabled: mantineBooleanArgType(),
     loading: mantineBooleanArgType(),
-    fullWidth: mantineBooleanArgType('Layout'),
+    fullscreen: mantineBooleanArgType('Layout'),
     children: mantineTextArgType('children'),
     iconScale: mantineVariantArgType(['0.5', '0.7', '1'] as const, 'Icon'),
     iconAspect: mantineVariantArgType(['1', '1.5', '2'] as const, 'Icon'),
@@ -86,7 +86,7 @@ const meta = {
     radius: 'md',
     disabled: false,
     loading: false,
-    fullWidth: false,
+    fullscreen: false,
     iconScale: '0.7',
     iconAspect: '1',
   },

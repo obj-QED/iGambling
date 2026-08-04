@@ -6,7 +6,13 @@ import { Menu } from '@mantine/core';
 
 import { AppButton, type AppButtonProps } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
-import { hasItemName, menuItemDropdownDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib';
+
+import {
+  hasItemName,
+  menuItemDropdownDataAttrs,
+  resolveItemHref,
+  resolveItemLabel,
+} from '../../../lib';
 import { ItemImage } from '../ItemImage/ItemImage';
 
 type DeepPanelItemProps = {
@@ -70,7 +76,7 @@ function DeepPanelItemComponent({ item }: DeepPanelItemProps) {
       href={href}
       variant="outline"
       size="md"
-      fullWidth
+      fullscreen
       justify="flex-start"
       {...menuItemDropdownDataAttrs(item)}
       {...activeAttrs}

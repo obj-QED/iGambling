@@ -9,7 +9,7 @@
     version: '1.0.0',
     params: {
       /** Mobile/tablet: enter browser fullscreen on first scroll. Set `false` to disable. */
-      fullWidth: true, // * TODO: rename to fullscreen
+      fullscreen: true,
     },
     header: {
       layout: 'container',
@@ -32,6 +32,7 @@
         enabled: true,
         position: 'bottom',
         delay: 200,
+        closeDelay: 100,
       },
 
       customBlocks: [
@@ -65,8 +66,8 @@
       tooltip: {
         enabled: true,
         position: 'right',
-        delay: 100,
-        closeDelay: 50,
+        delay: 200,
+        closeDelay: 100,
         multiline: true,
       },
       /** Global for aside (all types). Omit → pack defaults. Any Mantine ScrollArea prop allowed. */
@@ -105,7 +106,7 @@
           items: [
             {
               menuIcon: true,
-              img: 'https://999ggg.net/uploads/logo.png',
+              img: import.meta.env.VITE_APP_URL + '/uploads/logo.png',
               key: 'aside_header_logo',
               name: 'Logo',
               label:

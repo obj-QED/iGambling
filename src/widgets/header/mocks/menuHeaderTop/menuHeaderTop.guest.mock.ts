@@ -16,7 +16,7 @@ export const MENU_HEADER_TOP_GUEST_MOCK: MenuHeaderTopBlockMock = {
           url: '/',
           name: '',
           key: 'logo',
-          img: 'https://999ggg.net/uploads/logo.png',
+          img: import.meta.env.VITE_APP_URL + '/uploads/logo.png',
           type: 'link',
         },
         {
