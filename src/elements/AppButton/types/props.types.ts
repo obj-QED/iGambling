@@ -10,12 +10,6 @@ export type AppButtonProps = Omit<ButtonProps, 'children' | 'fullWidth'> & {
   native?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: 'button' | 'submit' | 'reset';
-  /**
-   * CMF layout: stretch control to container width (menu rows, sidebar).
-   * Declared here so it flows through `forwardRef` / `Menu.Item component={AppButton}`
-   * (module-augmented `ButtonProps.fullscreen` alone is not always visible on the wrapper).
-   */
-  fullscreen?: boolean;
 };
 
 export function hasAppButtonContent(
