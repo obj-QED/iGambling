@@ -24,14 +24,11 @@ beforeAll(() => {
   });
 });
 
-function renderSearch(
-  blockVariants: typeof DEFAULT_HEADER_CONFIG.blockVariants = {},
-  initialPath = '/',
-) {
+function renderSearch(config: Partial<typeof DEFAULT_HEADER_CONFIG> = {}, initialPath = '/') {
   return render(
     <MantineProvider theme={mantineTheme} defaultColorScheme="light">
       <MemoryRouter initialEntries={[initialPath]}>
-        <ConfigProvider config={{ ...DEFAULT_HEADER_CONFIG, blockVariants }}>
+        <ConfigProvider config={{ ...DEFAULT_HEADER_CONFIG, ...config }}>
           <SearchBlock item={{ key: 'search', url: '/', name: 'search' }} />
         </ConfigProvider>
       </MemoryRouter>
@@ -40,43 +37,49 @@ function renderSearch(
 }
 
 describe('SearchBlock', () => {
-  it('renders icon control by default (compact)', () => {
+  it('renders icon control by default (compact)', async () => {
     renderSearch();
 
-    expect(screen.getByRole('button', { name: 'search' })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'search' })).toBeInTheDocument();
     expect(screen.queryByRole('textbox', { name: 'search' })).not.toBeInTheDocument();
   });
 
-  it('does not set data-active for compact search', () => {
-    renderSearch({ search: 'compact' }, '/');
+  it('does not set data-active for compact search', async () => {
+    renderSearch({ blockVariants: { search: 'compact' } }, '/');
 
-    expect(screen.getByRole('button', { name: 'search' })).not.toHaveAttribute('data-active');
+    expect(await screen.findByRole('button', { name: 'search' })).not.toHaveAttribute(
+      'data-active',
+    );
   });
 
-  it('disables compact search only on /404', () => {
-    const { unmount } = renderSearch({ search: 'compact' }, '/404');
-    expect(screen.getByRole('button', { name: 'search' })).toBeDisabled();
+  it('disables compact search on /profile', async () => {
+    const { unmount } = renderSearch({ blockVariants: { search: 'compact' } }, '/profile');
+    expect(await screen.findByRole('button', { name: 'search' })).toBeDisabled();
     unmount();
 
-    renderSearch({ search: 'compact' }, '/');
-    expect(screen.getByRole('button', { name: 'search' })).not.toBeDisabled();
+    renderSearch({ blockVariants: { search: 'compact' } }, '/');
+    expect(await screen.findByRole('button', { name: 'search' })).not.toBeDisabled();
   });
 
-  it('renders icon control for compact / icon', () => {
-    renderSearch({ search: 'compact' });
+  it('renders text input for input variant', async () => {
+    renderSearch({ blockVariants: { search: 'input' } });
 
-    expect(screen.getByRole('button', { name: 'search' })).toBeInTheDocument();
+    expect(await screen.findByRole('textbox', { name: 'search' })).toBeInTheDocument();
   });
 
-  it('renders text input for input variant', () => {
-    renderSearch({ search: 'input' });
+  it('renders modal wrapper trigger when wrappers.search is modal', async () => {
+    renderSearch({
+      blockVariants: { search: 'compact' },
+      wrappers: { search: 'modal' },
+    });
 
-    expect(screen.getByRole('textbox', { name: 'search' })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'search' })).toBeInTheDocument();
   });
 
-  it('renders modal trigger for modal variant', () => {
-    renderSearch({ search: 'modal' });
-
-    expect(screen.getByRole('button', { name: 'search' })).toBeInTheDocument();
+  it('hides when capability search is false', () => {
+    renderSearch({
+      capabilities: { ...DEFAULT_HEADER_CONFIG.capabilities, search: false },
+    });
+    expect(screen.queryByRole('button', { name: 'search' })).not.toBeInTheDocument();
   });
 });

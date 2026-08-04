@@ -90,13 +90,12 @@
           items: [
             {
               url: '/profile',
-              name: 'Developer',
+              name: 'Harriette Spoonlicker',
               key: 'account',
-              img: 'public/icons/tabler/user.svg',
+              img: '/images/misc/default/header/icon_user.webp',
               imgRadius: 'round',
-              subtitle: 'developer@example.com',
+              subtitle: 'hspoonlicker@outlook.com',
               type: 'link',
-              variant: 'transparent',
             },
           ],
         },

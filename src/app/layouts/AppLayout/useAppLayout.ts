@@ -1,5 +1,4 @@
 import type { HeaderMenuModel } from '@/widgets/header/types';
-import type { SidebarConfig } from '@/widgets/sidebar';
 
 import { useMemo } from 'react';
 
@@ -10,9 +9,15 @@ import { useInitData } from '@api/lobby/queries/useInitData';
 import { getSettings } from '@/shared/config';
 import { getInitialPath } from '@/shared/lib/routing';
 import { selectIsAuthenticated } from '@/store/slices/authSlice';
-import { type AppBannerModel, extractBannerFromInit } from '@/widgets/banner';
-import { type HeaderConfig, resolveHeaderConfig } from '@/widgets/header';
-import { resolveSidebarConfig } from '@/widgets/sidebar';
+import {
+  type AppBannerModel,
+  type BannerSchema,
+  extractBannerFromInit,
+  resolveBannerSchema,
+} from '@/widgets/banner';
+import { type FooterSchema, resolveFooterSchema } from '@/widgets/footer';
+import { type HeaderSchema, resolveHeaderSchema } from '@/widgets/header';
+import { resolveSidebarSchema, type SidebarSchema } from '@/widgets/sidebar';
 
 import { extractMenuFromInit } from '../lib/extractPageMenuFromInit';
 import { resolveHeaderMenu } from '../lib/resolveHeaderMenu';
@@ -20,11 +25,13 @@ import { resolveSidebarMenu } from '../lib/resolveSidebarMenu';
 
 export type UseAppLayoutResult = {
   headerMenu: HeaderMenuModel | null;
-  headerConfig: HeaderConfig;
+  headerConfig: HeaderSchema;
   footerMenu: HeaderMenuModel | null;
+  footerSchema: FooterSchema;
   sidebarMenu: HeaderMenuModel | null;
-  sidebarConfig: SidebarConfig;
+  sidebarConfig: SidebarSchema;
   banner: AppBannerModel | null;
+  bannerSchema: BannerSchema;
   isReady: boolean;
 };
 
@@ -50,16 +57,36 @@ export function useAppLayout(language: string, page = getInitialPath()): UseAppL
     return extractBannerFromInit(init.content);
   }, [init.content]);
 
-  const headerConfig = useMemo(() => resolveHeaderConfig(getSettings()), []);
-  const sidebarConfig = useMemo(() => resolveSidebarConfig(getSettings()), []);
+  const headerConfig = useMemo(
+    () =>
+      resolveHeaderSchema({ global: getSettings().header as Partial<HeaderSchema> | undefined }),
+    [],
+  );
+  const sidebarConfig = useMemo(
+    () =>
+      resolveSidebarSchema({ global: getSettings().aside as Partial<SidebarSchema> | undefined }),
+    [],
+  );
+  const bannerSchema = useMemo(
+    () =>
+      resolveBannerSchema({ global: getSettings().banner as Partial<BannerSchema> | undefined }),
+    [],
+  );
+  const footerSchema = useMemo(
+    () =>
+      resolveFooterSchema({ global: getSettings().footer as Partial<FooterSchema> | undefined }),
+    [],
+  );
 
   return {
     headerMenu,
     headerConfig,
     footerMenu,
+    footerSchema,
     sidebarMenu,
     sidebarConfig,
     banner,
+    bannerSchema,
     isReady: init.query.status === 'success',
   };
 }

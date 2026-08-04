@@ -1,35 +1,34 @@
+import type { BlockProps } from '@/widgets/header/types';
+import type { ComponentType } from 'react';
+
 import { describe, expect, it } from 'vitest';
 
 import { resolveBlockVariantComponent } from '@/widgets/header/lib/resolveBlockVariantComponent';
-import {
-  resolveSearchVariantComponent,
-  SEARCH_VARIANT_REGISTRY,
-} from '@/widgets/header/ui/blocks/SearchBlock/registry';
-import {
-  resolveWalletVariantComponent,
-  WALLET_VARIANT_REGISTRY,
-} from '@/widgets/header/ui/blocks/WalletBlock/registry';
+
+const Compact = (() => null) as ComponentType<BlockProps>;
+const Full = (() => null) as ComponentType<BlockProps>;
+const Input = (() => null) as ComponentType<BlockProps>;
+
+const registry: Record<string, ComponentType<BlockProps>> = {
+  compact: Compact,
+  full: Full,
+  input: Input,
+};
 
 describe('resolveBlockVariantComponent', () => {
   it('uses registered variant when present', () => {
-    expect(resolveSearchVariantComponent('modal')).toBe(SEARCH_VARIANT_REGISTRY.modal);
-    expect(resolveWalletVariantComponent('drawer')).toBe(WALLET_VARIANT_REGISTRY.drawer);
+    expect(resolveBlockVariantComponent(registry, 'full')).toBe(Full);
+    expect(resolveBlockVariantComponent(registry, 'input')).toBe(Input);
   });
 
   it('falls back to compact for unknown or empty', () => {
-    expect(resolveSearchVariantComponent(undefined)).toBe(SEARCH_VARIANT_REGISTRY.compact);
-    expect(resolveSearchVariantComponent('')).toBe(SEARCH_VARIANT_REGISTRY.compact);
-    expect(resolveSearchVariantComponent('not-a-variant')).toBe(SEARCH_VARIANT_REGISTRY.compact);
-    expect(resolveWalletVariantComponent('modal')).toBe(WALLET_VARIANT_REGISTRY.compact);
-  });
-
-  it('maps search compact/icon to the same adapter', () => {
-    expect(resolveSearchVariantComponent('compact')).toBe(SEARCH_VARIANT_REGISTRY.icon);
-    expect(resolveSearchVariantComponent('icon')).toBe(SEARCH_VARIANT_REGISTRY.compact);
+    expect(resolveBlockVariantComponent(registry, undefined)).toBe(Compact);
+    expect(resolveBlockVariantComponent(registry, '')).toBe(Compact);
+    expect(resolveBlockVariantComponent(registry, 'drawer')).toBe(Compact);
   });
 
   it('falls back to first entry when compact missing', () => {
-    const only = { full: WALLET_VARIANT_REGISTRY.full };
-    expect(resolveBlockVariantComponent(only, 'nope')).toBe(only.full);
+    const only: Record<string, ComponentType<BlockProps>> = { full: Full };
+    expect(resolveBlockVariantComponent(only, 'nope')).toBe(Full);
   });
 });

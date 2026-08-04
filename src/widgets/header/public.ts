@@ -1,4 +1,9 @@
-export { DEFAULT_HEADER_CONFIG, resolveHeaderConfig } from './config';
+export {
+  DEFAULT_HEADER_CONFIG,
+  type HeaderSchemaLayer,
+  resolveHeaderConfig,
+  resolveHeaderSchema,
+} from './config';
 export { mapRoot, mergeCustomBlock } from './lib';
 export type {
   BlockProps,
@@ -7,6 +12,7 @@ export type {
   HeaderLayoutKey,
   HeaderMenuItem,
   HeaderMenuModel,
+  HeaderSchema,
   HeaderSection,
   HeaderTypeKey,
   RootProps,

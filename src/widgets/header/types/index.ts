@@ -1,5 +1,11 @@
 export type { SpecialIconBlockProps } from './block.types';
-export type { HeaderConfig } from './config.types';
+export type {
+  HeaderBehaviorConfig,
+  HeaderCapabilitiesConfig,
+  HeaderConfig,
+  HeaderSchema,
+  HeaderWrappersConfig,
+} from './config.types';
 export type { ConfigProviderProps } from './context.types';
 export type {
   HeaderBlockVariants,

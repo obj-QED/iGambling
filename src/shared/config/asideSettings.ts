@@ -4,6 +4,7 @@ import type {
   HeaderCustomBlockSettings,
 } from './headerSettings';
 import type { TooltipSettings } from './tooltipSettings';
+import type { BehaviorFlags, SchemaVersion, WrapperMode } from '@/shared/schema';
 import type { ScrollAreaProps } from '@mantine/core';
 
 /** Open string from settings; empty → `container`. Known shells: `ASIDE_LAYOUT_KEYS`. */
@@ -51,7 +52,15 @@ export type AsideTypeTunablesSettings = {
   customBlocks?: HeaderCustomBlockSettings[];
 };
 
+export type AsideCapabilitiesSettings = Partial<Record<string, boolean>>;
+
+export type AsideWrappersSettings = Partial<Record<string, WrapperMode>>;
+
+export type AsideBehaviorSettings = BehaviorFlags;
+
 export type AsideSettings = {
+  /** Schema major; omit → 1. */
+  version?: SchemaVersion | number | string;
   /** Desktop width: px number or CSS length (`30%`, `4.5rem`). Omit → token. Mobile: 100% via CSS. */
   width?: number | string;
   layout?: AsideLayoutKey;
@@ -69,6 +78,9 @@ export type AsideSettings = {
    * Cascade: pack defaults → `aside.tooltip` → place override in UI.
    */
   tooltip?: TooltipSettings;
+  wrappers?: AsideWrappersSettings;
+  behavior?: AsideBehaviorSettings;
+  capabilities?: AsideCapabilitiesSettings;
   /** Per-type regions + extra customBlocks (appended after global). */
   types?: Partial<Record<string, AsideTypeTunablesSettings>>;
 };

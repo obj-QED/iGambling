@@ -1,3 +1,5 @@
+import type { BannerSchema } from './schema.types';
+
 export type AppBannerSlide = {
   background?: string;
   text?: string;
@@ -10,5 +12,6 @@ export type AppBannerModel = {
 
 export type AppBannerProps = {
   banner: AppBannerModel;
+  schema: BannerSchema;
   className?: string;
 };

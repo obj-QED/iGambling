@@ -1,4 +1,5 @@
 import type { TooltipSettings } from './tooltipSettings';
+import type { BehaviorFlags, SchemaVersion, WrapperMode } from '@/shared/schema';
 import type { MenuItemDto } from '@/shared/types/menu';
 
 import { HEADER_SPECIAL_BLOCK_KEYS } from './headerSpecialBlockKeys';
@@ -81,7 +82,19 @@ export const HEADER_MOCK_AUTH_KEYS = [
   'guest',
 ] as const satisfies readonly HeaderMockAuthKey[];
 
+/** Capability flags for special header blocks (settings → schema). */
+export type HeaderCapabilitiesSettings = Partial<
+  Record<(typeof HEADER_SPECIAL_BLOCK_KEYS)[number] | string, boolean>
+>;
+
+/** Overlay mode per special block key. */
+export type HeaderWrappersSettings = Partial<Record<string, WrapperMode>>;
+
+export type HeaderBehaviorSettings = BehaviorFlags;
+
 export type HeaderSettings = {
+  /** Schema major; omit → 1. */
+  version?: SchemaVersion | number | string;
   layout?: HeaderLayoutKey;
   type?: HeaderTypeKey;
   /** Use `widgets/header/mocks` instead of init API menu. */
@@ -95,8 +108,15 @@ export type HeaderSettings = {
    * Global adapter variants for special blocks (`search` / `wallet` / …).
    * Open strings resolved against each block registry; unknown → `compact`.
    * Nested `types.<type>.blockVariants` still overrides when present.
+   * Legacy `drawer` / `modal` values are remapped onto `wrappers` at resolve time.
    */
   blockVariants?: HeaderBlockVariantSettings;
+  /** Overlay mode per block (`drawer` / `popover` / `modal` / …). */
+  wrappers?: HeaderWrappersSettings;
+  /** Shell behavior (sticky / transparent / hideOnScroll). */
+  behavior?: HeaderBehaviorSettings;
+  /** Enable/disable special blocks without JSX conditions. */
+  capabilities?: HeaderCapabilitiesSettings;
   /**
    * Tooltip for header menu rows.
    * Cascade: defaults → `header.tooltip` → place override in AppTooltip.

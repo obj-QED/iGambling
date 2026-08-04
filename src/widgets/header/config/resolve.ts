@@ -1,4 +1,4 @@
-import type { HeaderConfig } from '../types';
+import type { HeaderSchema } from '../types';
 import type { MenuItemDto } from '@/shared/types/menu';
 
 import {
@@ -9,12 +9,25 @@ import {
   type HeaderCustomBlockSettings,
   type HeaderSettings,
 } from '@/shared/config';
-import { readSettingsKey, readString } from '@/shared/lib/coercion';
+import { pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
 import { resolveTooltipConfig } from '@/shared/lib/tooltip';
+import {
+  resolveWidgetSchema,
+  type SchemaLayers,
+  type SchemaVersion,
+  WRAPPER_MODES,
+  type WrapperMode,
+} from '@/shared/schema';
 
 import { resolveHeaderTypeTunableDefaults } from '../typePacks/tunableDefaults';
 import { DEFAULT_HEADER_CONFIG } from './defaults';
+
+/** Settings-shaped layer; version stays open until coerce. */
+export type HeaderSchemaLayer = Omit<Partial<HeaderSettings>, 'version'> &
+  Partial<Omit<HeaderSchema, 'version'>> & {
+    version?: SchemaVersion | number | string;
+  };
 
 function parseCustomBlockItems(items: HeaderCustomBlockInput[]): MenuItemDto[] {
   const parsed: MenuItemDto[] = [];
@@ -27,7 +40,7 @@ function parseCustomBlockItems(items: HeaderCustomBlockInput[]): MenuItemDto[] {
   return parsed;
 }
 
-function readCustomBlockSources(header: HeaderSettings): HeaderCustomBlockSettings[] {
+function readCustomBlockSources(header: HeaderSchemaLayer): HeaderCustomBlockSettings[] {
   if (header.customBlocks !== undefined && header.customBlocks.length > 0) {
     return header.customBlocks;
   }
@@ -53,7 +66,7 @@ function resolveOneCustomBlock(raw: HeaderCustomBlockSettings): HeaderCustomBloc
   };
 }
 
-function resolveCustomBlocks(header: HeaderSettings): HeaderConfig['customBlocks'] {
+function resolveCustomBlocks(header: HeaderSchemaLayer): HeaderSchema['customBlocks'] {
   const resolved = readCustomBlockSources(header)
     .map((raw) => resolveOneCustomBlock(raw))
     .filter((block): block is HeaderCustomBlockConfig => block !== null);
@@ -62,9 +75,9 @@ function resolveCustomBlocks(header: HeaderSettings): HeaderConfig['customBlocks
 }
 
 function mergeBlockVariants(
-  base: HeaderConfig['blockVariants'],
+  base: HeaderSchema['blockVariants'],
   layer: HeaderBlockVariantSettings | undefined,
-): HeaderConfig['blockVariants'] {
+): HeaderSchema['blockVariants'] {
   if (!layer) return base;
   return { ...base, ...layer };
 }
@@ -73,27 +86,112 @@ function mergeBlockVariants(
  * pack defaults → legacy `header.blockVariants` → `header.types[type].blockVariants` (nested wins).
  */
 function resolveActiveBlockVariants(
-  header: HeaderSettings,
+  header: HeaderSchemaLayer,
   type: string,
-  packVariants: HeaderConfig['blockVariants'],
-): HeaderConfig['blockVariants'] {
+  packVariants: HeaderSchema['blockVariants'],
+): HeaderSchema['blockVariants'] {
   const withLegacy = mergeBlockVariants(packVariants, header.blockVariants);
   return mergeBlockVariants(withLegacy, header.types?.[type]?.blockVariants);
 }
 
+function resolveWrapperMode(raw: unknown, fallback: WrapperMode = 'none'): WrapperMode {
+  return pickUnionValue(
+    WRAPPER_MODES,
+    typeof raw === 'string' ? (raw as WrapperMode) : undefined,
+    fallback,
+  );
+}
+
+/**
+ * Legacy blockVariants `drawer` / `modal` → wrappers + compact content variant.
+ */
+function remapLegacyOverlayVariants(
+  blockVariants: HeaderSchema['blockVariants'],
+  wrappers: HeaderSchema['wrappers'],
+): { blockVariants: HeaderSchema['blockVariants']; wrappers: HeaderSchema['wrappers'] } {
+  const nextVariants = { ...blockVariants };
+  const nextWrappers = { ...wrappers };
+
+  if (nextVariants.wallet === 'drawer') {
+    nextWrappers.wallet = nextWrappers.wallet ?? 'drawer';
+    nextVariants.wallet = 'compact';
+  }
+
+  if (nextVariants.search === 'modal') {
+    nextWrappers.search = nextWrappers.search ?? 'modal';
+    nextVariants.search = 'compact';
+  }
+
+  return { blockVariants: nextVariants, wrappers: nextWrappers };
+}
+
+function resolveWrappers(raw: HeaderSchemaLayer['wrappers'] | undefined): HeaderSchema['wrappers'] {
+  if (!raw) return { ...DEFAULT_HEADER_CONFIG.wrappers };
+
+  const resolved: HeaderSchema['wrappers'] = {};
+  for (const [key, value] of Object.entries(raw)) {
+    resolved[key] = resolveWrapperMode(value, 'none');
+  }
+  return resolved;
+}
+
+function resolveBehavior(raw: HeaderSchemaLayer['behavior'] | undefined): HeaderSchema['behavior'] {
+  return {
+    sticky: raw?.sticky ?? DEFAULT_HEADER_CONFIG.behavior.sticky,
+    transparent: raw?.transparent ?? DEFAULT_HEADER_CONFIG.behavior.transparent,
+    hideOnScroll: raw?.hideOnScroll ?? DEFAULT_HEADER_CONFIG.behavior.hideOnScroll,
+  };
+}
+
+function resolveCapabilities(
+  raw: HeaderSchemaLayer['capabilities'] | undefined,
+): HeaderSchema['capabilities'] {
+  return {
+    ...DEFAULT_HEADER_CONFIG.capabilities,
+    ...raw,
+  };
+}
+
+function coerceHeaderSchema(merged: HeaderSchema & HeaderSchemaLayer): HeaderSchema {
+  const type = readSettingsKey(merged.type, DEFAULT_HEADER_CONFIG.type);
+  const packDefaults = resolveHeaderTypeTunableDefaults(type);
+  const activeVariants = resolveActiveBlockVariants(merged, type, packDefaults.blockVariants);
+  const wrappers = resolveWrappers(merged.wrappers);
+  const remapped = remapLegacyOverlayVariants(activeVariants, wrappers);
+
+  return {
+    version: merged.version === 2 ? 2 : 1,
+    layout: readSettingsKey(merged.layout, DEFAULT_HEADER_CONFIG.layout),
+    type,
+    blockVariants: remapped.blockVariants,
+    wrappers: remapped.wrappers,
+    behavior: resolveBehavior(merged.behavior),
+    capabilities: resolveCapabilities(merged.capabilities),
+    customBlocks: resolveCustomBlocks(merged),
+    tooltip: resolveTooltipConfig(DEFAULT_HEADER_CONFIG.tooltip, merged.tooltip),
+  };
+}
+
+/**
+ * Resolve header schema: defaults → global → brand → page → props.
+ * Brand/page optional until sources exist.
+ */
+export function resolveHeaderSchema(layers: SchemaLayers<HeaderSchema> = {}): HeaderSchema {
+  return resolveWidgetSchema(DEFAULT_HEADER_CONFIG, layers, {
+    supportedVersions: [1, 2],
+    coerce: (merged) => coerceHeaderSchema(merged as HeaderSchema & HeaderSchemaLayer),
+  });
+}
+
+/**
+ * @deprecated Prefer `resolveHeaderSchema({ global: settings.header, props: overrides })`.
+ */
 export function resolveHeaderConfig(
   settings = getSettings(),
   overrides?: Partial<HeaderSettings>,
-): HeaderConfig {
-  const header = { ...settings.header, ...overrides };
-  const type = readSettingsKey(header.type, DEFAULT_HEADER_CONFIG.type);
-  const packDefaults = resolveHeaderTypeTunableDefaults(type);
-
-  return {
-    layout: readSettingsKey(header.layout, DEFAULT_HEADER_CONFIG.layout),
-    type,
-    blockVariants: resolveActiveBlockVariants(header, type, packDefaults.blockVariants),
-    customBlocks: resolveCustomBlocks(header),
-    tooltip: resolveTooltipConfig(DEFAULT_HEADER_CONFIG.tooltip, header.tooltip),
-  };
+): HeaderSchema {
+  return resolveHeaderSchema({
+    global: settings.header as Partial<HeaderSchema> | undefined,
+    props: overrides as Partial<HeaderSchema> | undefined,
+  });
 }

@@ -1,6 +1,6 @@
 import type { SectionProps } from '../../../types';
 
-import { memo } from 'react';
+import { Children, memo } from 'react';
 
 import { filterRenderableItems } from '../../../lib';
 import { useSidebarTypePack } from '../../../typePacks';
@@ -11,7 +11,7 @@ import styles from '../../../styles/layout/SidebarFooter.module.scss';
 function SidebarFooterComponent({ section, children }: SectionProps) {
   const { FooterLink } = useSidebarTypePack();
 
-  if (children) {
+  if (Children.count(children) > 0) {
     return (
       <div className={styles.root} data-sidebar-region="footer">
         {children}

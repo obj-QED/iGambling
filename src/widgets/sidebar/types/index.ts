@@ -1,7 +1,9 @@
 export type {
   AsideTypeKey,
+  SidebarCapabilitiesConfig,
   SidebarConfig,
   SidebarRegionsConfig,
+  SidebarSchema,
   SidebarScrollAreaConfig,
 } from './config.types';
 export type { SidebarConfigProviderProps, SidebarDropdownProviderProps } from './context.types';
