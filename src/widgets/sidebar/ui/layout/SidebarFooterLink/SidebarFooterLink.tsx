@@ -8,10 +8,10 @@ import { useMediaState } from '@/shared/hooks';
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {
   menuItemDataAttrs,
+  renderSidebarFooterIcon,
   resolveItemHref,
   resolveItemLabel,
   resolveMenuItemButtonVariant,
-  resolveSidebarFooterIcon,
 } from '../../../lib';
 import { ItemMedia } from '../../items/ItemMedia/ItemMedia';
 
@@ -21,13 +21,12 @@ function SidebarFooterLinkComponent({ item }: BlockProps) {
   const size = useAsideMenuButtonSize();
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
-  const FallbackIcon = resolveSidebarFooterIcon(item);
 
   const leftSection = showItemImg ? (
     <ItemMedia item={item} alt={label} onImgError={onImgError} />
-  ) : FallbackIcon ? (
-    <FallbackIcon size={20} stroke={1.5} />
-  ) : undefined;
+  ) : (
+    (renderSidebarFooterIcon(item, { size: 20, stroke: 1.5 }) ?? undefined)
+  );
 
   return (
     <AppButton

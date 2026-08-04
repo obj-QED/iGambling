@@ -23,7 +23,7 @@ export const compactTypePack: SidebarTypePack = {
     search_leftmenu: Search,
     timer: CompactPromoBlock,
     wheel_mdl: CompactPromoBlock,
-    logo: Logo,
+    aside_header_logo: Logo,
   },
   defaults: SIDEBAR_TYPE_TUNABLE_DEFAULTS.compact,
 };

@@ -44,6 +44,7 @@ type ButtonStoryArgs = {
   radius?: string;
   disabled?: boolean;
   loading?: boolean;
+  /** Project alias — maps to Mantine `fullWidth`. */
   fullscreen?: boolean;
   iconScale?: string;
   iconAspect?: string;
@@ -99,10 +100,15 @@ export const Default: Story = {
   parameters: elementDocsPreviewParameters,
   render: (args) => {
     const cleaned = omitStorybookNone(args as Record<string, unknown>);
-    const { iconScale, iconAspect, children, ...buttonArgs } = cleaned as ButtonStoryArgs;
+    const { iconScale, iconAspect, children, fullscreen, ...buttonArgs } =
+      cleaned as ButtonStoryArgs;
     void iconScale;
     void iconAspect;
-    return <Button {...buttonArgs}>{children}</Button>;
+    return (
+      <Button {...buttonArgs} fullWidth={fullscreen}>
+        {children}
+      </Button>
+    );
   },
 };
 
@@ -117,10 +123,15 @@ export const WithIcon: Story = {
   },
   render: (args) => {
     const cleaned = omitStorybookNone(args as Record<string, unknown>);
-    const { iconScale, iconAspect, children, ...buttonArgs } = cleaned as ButtonStoryArgs;
+    const { iconScale, iconAspect, children, fullscreen, ...buttonArgs } =
+      cleaned as ButtonStoryArgs;
     return (
       <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
-        <Button {...buttonArgs} leftSection={<DemoButtonIcon alt={String(children ?? 'Button')} />}>
+        <Button
+          {...buttonArgs}
+          fullWidth={fullscreen}
+          leftSection={<DemoButtonIcon alt={String(children ?? 'Button')} />}
+        >
           {children}
         </Button>
       </div>
@@ -209,7 +220,8 @@ export const Playground: Story = {
   render: function ButtonPlayground() {
     const [args, updateArgs] = useArgs<ButtonStoryArgs>();
     const cleaned = omitStorybookNone(args as Record<string, unknown>);
-    const { iconScale, iconAspect, children, ...buttonArgs } = cleaned as ButtonStoryArgs;
+    const { iconScale, iconAspect, children, fullscreen, ...buttonArgs } =
+      cleaned as ButtonStoryArgs;
 
     return (
       <MantineDocsPlayground
@@ -220,6 +232,7 @@ export const Playground: Story = {
         <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
           <Button
             {...buttonArgs}
+            fullWidth={fullscreen}
             leftSection={<DemoButtonIcon alt={String(children ?? 'Button')} />}
           >
             {children}

@@ -8,10 +8,10 @@ import { useAsideMenuButtonSize } from '../../hooks';
 import {
   hasItemImg,
   menuItemDataAttrs,
+  renderSidebarFooterIcon,
   resolveItemHref,
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
-  resolveSidebarFooterIcon,
 } from '../../lib';
 import { useSidebarTypePack } from '../useSidebarTypePack';
 
@@ -20,9 +20,13 @@ function CompactFooterLinkComponent({ item }: BlockProps) {
   const size = useAsideMenuButtonSize();
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
-  const FallbackIcon = resolveSidebarFooterIcon(item);
+  const fallbackIcon = renderSidebarFooterIcon(item, {
+    className: 'cmf-ActionIcon-icon-svg',
+    stroke: 1.5,
+    'aria-hidden': true,
+  });
 
-  if (!hasItemImg(item) && FallbackIcon) {
+  if (!hasItemImg(item) && fallbackIcon) {
     return (
       <AppActionIcon
         name={item.name}
@@ -33,7 +37,7 @@ function CompactFooterLinkComponent({ item }: BlockProps) {
         aria-label={label}
         {...menuItemDataAttrs(item)}
       >
-        <FallbackIcon className="cmf-ActionIcon-icon-svg" stroke={1.5} aria-hidden />
+        {fallbackIcon}
       </AppActionIcon>
     );
   }

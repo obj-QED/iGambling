@@ -82,7 +82,7 @@ export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
   },
   { type: 'switch', name: 'disabled', label: 'Disabled' },
   { type: 'switch', name: 'loading', label: 'Loading' },
-  { type: 'switch', name: 'fullWidth', label: 'Full width' },
+  { type: 'switch', name: 'fullscreen', label: 'Fullscreen width' },
 ];
 
 export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
@@ -156,7 +156,7 @@ export const mantineDocsPlaygroundParameters = {
       'radius',
       'disabled',
       'loading',
-      'fullWidth',
+      'fullscreen',
       'children',
       'aria-label',
       'iconScale',

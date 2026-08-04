@@ -34,7 +34,7 @@ function attachSecurityInterceptors(
 
     config.headers['X-Request-Id'] = getRequestId();
     // Mitigate casual CSRF from foreign sites: browser sends Origin; backend must verify.
-    if (typeof window !== 'undefined' && window.location?.origin) {
+    if (typeof window !== 'undefined' && window.location.origin) {
       config.headers['X-Requested-With'] = 'XMLHttpRequest';
     }
     return config;

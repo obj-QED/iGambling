@@ -1,6 +1,6 @@
 import type { BlockProps } from '../../../types';
 
-import { memo, useMemo } from 'react';
+import { createElement, memo, useMemo } from 'react';
 
 import { Text } from '@mantine/core';
 
@@ -22,7 +22,7 @@ function WalletBlockComponent({ item }: BlockProps) {
 
   if (!enabled || !Adapter) return null;
 
-  const adapterNode = <Adapter item={item} />;
+  const adapterNode = createElement(Adapter, { item });
 
   if (!wrapperMode || wrapperMode === 'none') {
     return (
@@ -40,9 +40,11 @@ function WalletBlockComponent({ item }: BlockProps) {
 
   return (
     <HeaderAdapterBoundary>
-      <Wrapper target={adapterNode} title={label}>
-        <Text size="sm">{label}</Text>
-      </Wrapper>
+      {createElement(Wrapper, {
+        target: adapterNode,
+        title: label,
+        children: <Text size="sm">{label}</Text>,
+      })}
     </HeaderAdapterBoundary>
   );
 }

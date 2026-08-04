@@ -14,8 +14,6 @@ import { DeviceBodySync } from './DeviceBodySync';
 import { ScrollFullscreenSync } from './ScrollFullscreenSync';
 
 export function Providers({ children }: ProvidersProps) {
-  const isDev = false; // import.meta.env.DEV;
-
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
@@ -29,7 +27,9 @@ export function Providers({ children }: ProvidersProps) {
           <ScrollFullscreenSync />
           {children}
         </MantineProvider>
-        {isDev && <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />}
+        {import.meta.env.DEV ? (
+          <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+        ) : null}
       </QueryClientProvider>
     </Provider>
   );

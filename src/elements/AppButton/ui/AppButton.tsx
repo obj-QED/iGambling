@@ -19,6 +19,7 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
     onClick,
     type = 'button',
     justify,
+    fullscreen = false,
     ...buttonProps
   },
   ref,
@@ -31,10 +32,10 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
 
   const handleClick = hrefNavigationEnabled
     ? (event: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(event);
-      if (event.defaultPrevented) return;
-      navigateHref(event);
-    }
+        onClick?.(event);
+        if (event.defaultPrevented) return;
+        navigateHref(event);
+      }
     : onClick;
 
   return (
@@ -47,6 +48,7 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
       rightSection={rightSection}
       onClick={handleClick}
       justify={justify}
+      fullWidth={fullscreen}
     >
       {label ?? null}
     </Button>

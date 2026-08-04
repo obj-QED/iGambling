@@ -21,9 +21,9 @@ export function resolveBlockVariantComponent<
   if (Object.hasOwn(registry, fallbackKey)) {
     return registry[fallbackKey];
   }
-  const first = Object.values(registry)[0];
-  if (first === undefined) {
+  const entries = Object.values(registry);
+  if (entries.length === 0) {
     throw new Error('Block variant registry is empty');
   }
-  return first;
+  return entries[0]!;
 }

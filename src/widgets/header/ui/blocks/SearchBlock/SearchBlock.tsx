@@ -1,6 +1,6 @@
 import type { BlockProps } from '../../../types';
 
-import { memo, useMemo } from 'react';
+import { createElement, memo, useMemo } from 'react';
 
 import { TextInput } from '@mantine/core';
 
@@ -22,7 +22,7 @@ function SearchBlockComponent({ item }: BlockProps) {
 
   if (!enabled || !Adapter) return null;
 
-  const adapterNode = <Adapter item={item} />;
+  const adapterNode = createElement(Adapter, { item });
 
   if (!wrapperMode || wrapperMode === 'none') {
     return (
@@ -40,9 +40,11 @@ function SearchBlockComponent({ item }: BlockProps) {
 
   return (
     <HeaderAdapterBoundary>
-      <Wrapper target={adapterNode} title={label}>
-        <TextInput placeholder={label} aria-label={label} />
-      </Wrapper>
+      {createElement(Wrapper, {
+        target: adapterNode,
+        title: label,
+        children: <TextInput placeholder={label} aria-label={label} />,
+      })}
     </HeaderAdapterBoundary>
   );
 }

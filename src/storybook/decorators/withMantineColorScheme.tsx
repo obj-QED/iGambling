@@ -1,6 +1,7 @@
 import type {
   MantineColorScheme,
   MantineColorSchemeManager,
+  MantineColorShade,
   MantineThemeOverride,
 } from '@mantine/core';
 import type { Decorator } from '@storybook/react-vite';
@@ -30,7 +31,7 @@ function readColorScheme(globals: Record<string, unknown>): ColorScheme {
 export const withMantineColorScheme: Decorator = (Story, context) => {
   const scheme = readColorScheme(context.globals);
   const primaryColor = readStorybookPrimaryColor(context.globals);
-  const primaryShade = readStorybookPrimaryShade(context.globals);
+  const primaryShade = readStorybookPrimaryShade(context.globals) as MantineColorShade;
 
   const themeOverride: MantineThemeOverride = {
     primaryColor,

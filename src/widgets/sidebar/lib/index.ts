@@ -36,7 +36,7 @@ export {
   type SidebarExceptionButtonVariant,
   type SidebarMenuButtonVariant,
 } from './menuItemVariant';
-export { resolveSidebarFooterIcon } from './resolveSidebarFooterIcon';
+export { renderSidebarFooterIcon } from './resolveSidebarFooterIcon';
 export {
   readSidebarDropdownOpenKeys,
   toggleSidebarDropdownOpenKey,

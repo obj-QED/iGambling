@@ -1,6 +1,6 @@
 function readAllowedOrigins(): Set<string> {
   const origins = new Set<string>();
-  if (typeof window !== 'undefined' && window.location?.origin) {
+  if (typeof window !== 'undefined' && window.location.origin) {
     origins.add(window.location.origin);
   }
   for (const raw of [import.meta.env.VITE_APP_URL, import.meta.env.VITE_LOBBY_API_URL]) {

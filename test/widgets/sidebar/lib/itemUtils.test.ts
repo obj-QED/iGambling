@@ -68,14 +68,16 @@ describe('sidebar dropdown CMF attrs', () => {
     expect(menuItemDropdownDataAttrs(casino, 'section-header')['data-cmf-role']).toBe(
       'section-header',
     );
-    expect(resolveMenuItemCmfAttrs(casino, { role: 'leaf' })['data-cmf-role']).toBe('leaf');
+    expect(resolveMenuItemCmfAttrs(casino, { role: 'leaf' })['data-cmf-role' as never]).toBe(
+      'leaf',
+    );
   });
 
   it('resolveMenuItemCmfAttrs maps trigger/item to parent/child by default', () => {
-    expect(resolveMenuItemCmfAttrs(casino, { dropdownTrigger: true })['data-cmf-role']).toBe(
-      'parent',
-    );
-    expect(resolveMenuItemCmfAttrs(casino, { dropdownItem: true })['data-cmf-role']).toBe('child');
+    const trigger = resolveMenuItemCmfAttrs(casino, { dropdownTrigger: true });
+    const item = resolveMenuItemCmfAttrs(casino, { dropdownItem: true });
+    expect('data-cmf-role' in trigger && trigger['data-cmf-role']).toBe('parent');
+    expect('data-cmf-role' in item && item['data-cmf-role']).toBe('child');
     expect(resolveMenuItemCmfAttrs(casino)['data-cmf-component']).toBe('sidebar');
   });
 });

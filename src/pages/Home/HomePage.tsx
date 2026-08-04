@@ -13,6 +13,7 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 
+import { AppButton } from '@/elements';
 import { getAppHrefKind } from '@/shared/lib';
 import { AppLink } from '@/shared/ui';
 
@@ -209,9 +210,7 @@ function HomePageComponent() {
                   disabled+loading
                 </Button>
               </Group>
-              <Button variant={variant} fullscreen>
-                fullscreen
-              </Button>
+              <AppButton variant={variant} fullscreen label="fullscreen" />
             </Stack>
           ))}
         </Stack>

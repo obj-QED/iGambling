@@ -17,39 +17,35 @@ describe('resolveMenuItemExplicitVariant', () => {
 
 describe('resolveMenuItemButtonVariant', () => {
   it('prefers explicit variant (including specials)', () => {
-    expect(
-      resolveMenuItemButtonVariant({ key: 'wallet', type: 'link', variant: 'transparent' }),
-    ).toBe('transparent');
-    expect(resolveMenuItemButtonVariant({ key: 'promo', type: 'button', variant: 'light' })).toBe(
-      'light',
+    expect(resolveMenuItemButtonVariant({ type: 'link', variant: 'transparent' })).toBe(
+      'transparent',
     );
+    expect(resolveMenuItemButtonVariant({ type: 'button', variant: 'light' })).toBe('light');
   });
 
   it('uses transparent for link when no variant', () => {
-    expect(resolveMenuItemButtonVariant({ key: 'wallet', type: 'link' })).toBe('transparent');
-    expect(resolveMenuItemButtonVariant({ key: 'promo', type: 'link' })).toBe('transparent');
+    expect(resolveMenuItemButtonVariant({ type: 'link' })).toBe('transparent');
   });
 
   it('uses default for button / missing type when no variant', () => {
-    expect(resolveMenuItemButtonVariant({ key: 'wallet', type: 'button' })).toBe('default');
-    expect(resolveMenuItemButtonVariant({ key: 'promo' })).toBe('default');
+    expect(resolveMenuItemButtonVariant({ type: 'button' })).toBe('default');
+    expect(resolveMenuItemButtonVariant({})).toBe('default');
   });
 });
 
 describe('resolveMenuItemActionIconVariant', () => {
   it('prefers explicit variant (including specials)', () => {
-    expect(
-      resolveMenuItemActionIconVariant({ key: 'wallet', type: 'link', variant: 'transparent' }),
-    ).toBe('transparent');
+    expect(resolveMenuItemActionIconVariant({ type: 'link', variant: 'transparent' })).toBe(
+      'transparent',
+    );
   });
 
   it('uses transparent for link when no variant', () => {
-    expect(resolveMenuItemActionIconVariant({ key: 'wallet', type: 'link' })).toBe('transparent');
-    expect(resolveMenuItemActionIconVariant({ key: 'home', type: 'link' })).toBe('transparent');
+    expect(resolveMenuItemActionIconVariant({ type: 'link' })).toBe('transparent');
   });
 
   it('uses default for button / missing type when no variant', () => {
-    expect(resolveMenuItemActionIconVariant({ key: 'search', type: 'button' })).toBe('default');
-    expect(resolveMenuItemActionIconVariant({ key: 'promo' })).toBe('default');
+    expect(resolveMenuItemActionIconVariant({ type: 'button' })).toBe('default');
+    expect(resolveMenuItemActionIconVariant({})).toBe('default');
   });
 });
