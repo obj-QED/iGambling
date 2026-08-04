@@ -21,11 +21,6 @@ import {
   ServerErrorPage,
 } from '@pages';
 
-export const ROUTER_FUTURE = {
-  v7_startTransition: true,
-  v7_relativeSplatPath: true,
-} as const;
-
 const appRouteObjects: RouteObject[] = [
   {
     element: createElement(AppLayout),
@@ -56,6 +51,4 @@ const appRouteObjects: RouteObject[] = [
   { path: '*', element: createElement(Navigate, { to: '/404', replace: true }) },
 ];
 
-export const appRouter = createBrowserRouter(appRouteObjects, {
-  future: ROUTER_FUTURE,
-});
+export const appRouter = createBrowserRouter(appRouteObjects);

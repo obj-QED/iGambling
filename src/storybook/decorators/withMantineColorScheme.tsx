@@ -28,10 +28,15 @@ function readColorScheme(globals: Record<string, unknown>): ColorScheme {
   return globals.colorScheme === 'light' ? 'light' : 'dark';
 }
 
+function toMantineColorShade(value: number): MantineColorShade {
+  const shade = Math.min(9, Math.max(0, Math.trunc(value))) as MantineColorShade;
+  return shade;
+}
+
 export const withMantineColorScheme: Decorator = (Story, context) => {
   const scheme = readColorScheme(context.globals);
   const primaryColor = readStorybookPrimaryColor(context.globals);
-  const primaryShade = readStorybookPrimaryShade(context.globals) as MantineColorShade;
+  const primaryShade = toMantineColorShade(readStorybookPrimaryShade(context.globals));
 
   const themeOverride: MantineThemeOverride = {
     primaryColor,

@@ -14,6 +14,8 @@ declare module '@mantine/core' {
   export interface ButtonProps {
     cmfComponent?: string;
     cmfKey?: string;
+    /** CMF layout: stretch control to container width (menu rows, sidebar). */
+    fullscreen?: boolean;
   }
   export interface CodeProps {
     cmfComponent?: string;
