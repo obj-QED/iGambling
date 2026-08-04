@@ -3550,22 +3550,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromatic@npm:^11.27.0":
-  version: 11.29.0
-  resolution: "chromatic@npm:11.29.0"
+"chromatic@npm:^18.1.0":
+  version: 18.1.0
+  resolution: "chromatic@npm:18.1.0"
+  dependencies:
+    semver: "npm:^7.3.5"
   peerDependencies:
     "@chromatic-com/cypress": ^0.*.* || ^1.0.0
     "@chromatic-com/playwright": ^0.*.* || ^1.0.0
+    "@chromatic-com/vitest": ^0.*.* || ^1.0.0
   peerDependenciesMeta:
     "@chromatic-com/cypress":
       optional: true
     "@chromatic-com/playwright":
       optional: true
+    "@chromatic-com/vitest":
+      optional: true
   bin:
-    chroma: dist/bin.js
-    chromatic: dist/bin.js
-    chromatic-cli: dist/bin.js
-  checksum: 10c0/4c26e00a170cb40b38f837358fbcab51ab0bdf3644a396b166074cd167696be6a34eeb5583e65425f4392845c8a3052f6d538ea9fb0d09a903100c52d858b4f9
+    chroma: dist/bin.cjs
+    chromatic: dist/bin.cjs
+    chromatic-cli: dist/bin.cjs
+  checksum: 10c0/cf64a6b14d6d3a3c2cc51fd024d651b4f7c90c4647fe3d5d5dee7033108f0188157b32bb98432568bc3b0fafd42966f9c527d12f171d76f4e7cd9ea50cbb1606
   languageName: node
   linkType: hard
 
@@ -4937,7 +4942,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^4.1.8"
     autoprefixer: "npm:^10.5.4"
     axios: "npm:^1.13.5"
-    chromatic: "npm:^11.27.0"
+    chromatic: "npm:^18.1.0"
     clsx: "npm:^2.1.1"
     eslint: "npm:^9.15.0"
     eslint-plugin-react-hooks: "npm:^5.0.0"
