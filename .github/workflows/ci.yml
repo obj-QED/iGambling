@@ -13,7 +13,8 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: ci-${{ github.ref }}
+  # One run per branch; cancel older pushes/PR syncs on the same ref.
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
