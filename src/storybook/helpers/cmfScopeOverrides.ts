@@ -5,28 +5,29 @@ import type { CSSProperties } from 'react';
  * Prefer widget tokens (`[data-widget]`) in app; these are for isolated element stories.
  */
 export const cmfButtonScopeOverrideStyle = {
-  '--cmf-button-filled-bg': 'var(--mantine-color-brand-5)',
+  '--cmf-button-filled-bg': 'light-dark(var(--brand-color-7), var(--brand-color-8))',
   '--cmf-button-filled-color': '#fff',
-  '--cmf-button-filled-hover': 'var(--mantine-color-brand-4)',
+  '--cmf-button-filled-hover': 'light-dark(var(--brand-color-6), var(--brand-color-7))',
   '--cmf-button-filled-hover-color': '#fff',
   '--cmf-button-outline-bg': 'transparent',
-  '--cmf-button-outline-color': 'var(--mantine-color-brand-2)',
-  '--cmf-button-outline-bd': 'var(--mantine-color-brand-3)',
-  '--cmf-button-outline-hover': 'color-mix(in srgb, var(--mantine-color-brand-4) 12%, transparent)',
-  '--cmf-button-outline-hover-color': 'var(--mantine-color-brand-1)',
+  '--cmf-button-outline-color': 'light-dark(var(--brand-color-7), var(--brand-color-3))',
+  '--cmf-button-outline-bd':
+    'color-mix(in srgb, light-dark(var(--brand-color-7), var(--brand-color-4)) 55%, var(--mantine-color-default-border))',
+  '--cmf-button-outline-hover': 'color-mix(in srgb, var(--brand-color-4) 12%, transparent)',
+  '--cmf-button-outline-hover-color': 'var(--color-text)',
 } as CSSProperties;
 
 export const cmfActionIconScopeOverrideStyle = {
-  '--cmf-action-icon-filled-bg': 'var(--mantine-color-brand-5)',
+  '--cmf-action-icon-filled-bg': 'light-dark(var(--brand-color-7), var(--brand-color-8))',
   '--cmf-action-icon-filled-color': '#fff',
-  '--cmf-action-icon-filled-hover': 'var(--mantine-color-brand-4)',
+  '--cmf-action-icon-filled-hover': 'light-dark(var(--brand-color-6), var(--brand-color-7))',
   '--cmf-action-icon-filled-hover-color': '#fff',
   '--cmf-action-icon-outline-bg': 'transparent',
-  '--cmf-action-icon-outline-color': 'var(--mantine-color-brand-2)',
-  '--cmf-action-icon-outline-bd': 'var(--mantine-color-brand-3)',
-  '--cmf-action-icon-outline-hover':
-    'color-mix(in srgb, var(--mantine-color-brand-4) 12%, transparent)',
-  '--cmf-action-icon-outline-hover-color': 'var(--mantine-color-brand-1)',
+  '--cmf-action-icon-outline-color': 'light-dark(var(--brand-color-7), var(--brand-color-3))',
+  '--cmf-action-icon-outline-bd':
+    'color-mix(in srgb, light-dark(var(--brand-color-7), var(--brand-color-4)) 55%, var(--mantine-color-default-border))',
+  '--cmf-action-icon-outline-hover': 'color-mix(in srgb, var(--brand-color-4) 12%, transparent)',
+  '--cmf-action-icon-outline-hover-color': 'var(--color-text)',
 } as CSSProperties;
 
 export type CmfIconCascadeDemoOptions = {

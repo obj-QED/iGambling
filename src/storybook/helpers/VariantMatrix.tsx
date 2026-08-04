@@ -25,7 +25,7 @@ export function VariantMatrix<T extends string>({
           style={{ minWidth: `calc(${100 / columns}% - var(--spacing-md, 1rem))` }}
         >
           {renderItem(item)}
-          <Text size="xs" c="dimmed" ta="center">
+          <Text size="xs" c="var(--color-text-muted)" ta="center">
             {label(item)}
           </Text>
         </Stack>

@@ -35,7 +35,7 @@ const FAIL_IMPACTS = new Set(['critical', 'serious']);
 const STORY_IDS = [
   'elements-button--playground',
   'elements-actionicon--playground',
-  'settings-app--header-preview',
+  'lab-app-settings--header',
   'widgets-header-appheader--default',
   'widgets-header-menu-items--overview',
 ];

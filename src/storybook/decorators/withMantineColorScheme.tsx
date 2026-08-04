@@ -19,6 +19,16 @@ import {
 
 type ColorScheme = 'light' | 'dark';
 
+const SHELL_BG: Record<ColorScheme, string> = {
+  light: 'var(--color-bg-body, #ffffff)',
+  dark: 'var(--color-bg-body, #0b1220)',
+};
+
+const SHELL_FG: Record<ColorScheme, string> = {
+  light: 'var(--color-text, #0f172a)',
+  dark: 'var(--color-text, #f8fafc)',
+};
+
 const storybookColorSchemeManager: MantineColorSchemeManager = {
   get: (defaultValue) => defaultValue,
   set: () => undefined,
@@ -36,25 +46,29 @@ function toMantineColorShade(value: number): MantineColorShade {
   return shade;
 }
 
-/** Keep `light-dark()` + brand palettes in sync with Storybook toolbar. */
+/** Keep brand palettes + iframe chrome in sync with Storybook toolbar. */
 function useDocumentColorScheme(scheme: ColorScheme) {
-  useEffect(() => {
+  // Sync before paint — useEffect alone leaves a white flash / light text on white.
+  if (typeof document !== 'undefined') {
     const root = document.documentElement;
-    const prevScheme = root.getAttribute('data-mantine-color-scheme');
-    const prevTheme = root.getAttribute('data-theme');
-    const prevColorScheme = root.style.colorScheme;
-
+    const body = document.body;
     root.setAttribute('data-mantine-color-scheme', scheme);
     root.setAttribute('data-theme', scheme);
     root.style.colorScheme = scheme;
+    root.style.backgroundColor = scheme === 'dark' ? '#0b1220' : '#ffffff';
+    body.style.backgroundColor = scheme === 'dark' ? '#0b1220' : '#ffffff';
+    body.style.color = scheme === 'dark' ? '#f8fafc' : '#0f172a';
+  }
 
-    return () => {
-      if (prevScheme) root.setAttribute('data-mantine-color-scheme', prevScheme);
-      else root.removeAttribute('data-mantine-color-scheme');
-      if (prevTheme) root.setAttribute('data-theme', prevTheme);
-      else root.removeAttribute('data-theme');
-      root.style.colorScheme = prevColorScheme;
-    };
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    root.setAttribute('data-mantine-color-scheme', scheme);
+    root.setAttribute('data-theme', scheme);
+    root.style.colorScheme = scheme;
+    root.style.backgroundColor = scheme === 'dark' ? '#0b1220' : '#ffffff';
+    body.style.backgroundColor = scheme === 'dark' ? '#0b1220' : '#ffffff';
+    body.style.color = scheme === 'dark' ? '#f8fafc' : '#0f172a';
   }, [scheme]);
 }
 
@@ -77,12 +91,14 @@ function StorybookThemeShell({
       data-mantine-color-scheme={scheme}
       data-primary-color={primaryColor}
       data-primary-shade={primaryShade}
+      data-storybook-shell=""
       style={{
         colorScheme: scheme,
+        boxSizing: 'border-box',
         padding: 'var(--spacing-md, 1rem)',
-        background: 'var(--color-bg-body)',
-        color: 'var(--color-text)',
-        minHeight: '100%',
+        background: SHELL_BG[scheme],
+        color: SHELL_FG[scheme],
+        minHeight: '100vh',
       }}
     >
       {children}
@@ -101,11 +117,23 @@ export const withMantineColorScheme: Decorator = (Story, context) => {
   };
 
   const theme = mergeThemeOverrides(mantineTheme, themeOverride);
-  const providerKey = `${scheme}-${primaryColor}-${primaryShade}`;
+  const settingsKey = [
+    scheme,
+    primaryColor,
+    primaryShade,
+    context.globals.headerLayout,
+    context.globals.headerType,
+    context.globals.headerAuth,
+    context.globals.headerColorSchemeSlot,
+    context.globals.asideLayout,
+    context.globals.asideType,
+    context.globals.asideMockMenu,
+    context.globals.asideWidth,
+  ].join('|');
 
   return (
     <MantineProvider
-      key={providerKey}
+      key={settingsKey}
       theme={theme}
       classNamesPrefix={classNamesPrefix}
       defaultColorScheme={scheme satisfies MantineColorScheme}
@@ -113,7 +141,7 @@ export const withMantineColorScheme: Decorator = (Story, context) => {
       colorSchemeManager={storybookColorSchemeManager}
     >
       <StorybookThemeShell scheme={scheme} primaryColor={primaryColor} primaryShade={primaryShade}>
-        <Story />
+        <Story key={settingsKey} />
       </StorybookThemeShell>
     </MantineProvider>
   );

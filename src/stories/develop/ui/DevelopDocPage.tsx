@@ -1,6 +1,17 @@
 import type { ReactNode } from 'react';
 
-import { Badge, Code, Divider, Group, List, Stack, Table, Text, Title } from '@mantine/core';
+import {
+  Anchor,
+  Badge,
+  Code,
+  Divider,
+  Group,
+  List,
+  Stack,
+  Table,
+  Text,
+  Title,
+} from '@mantine/core';
 
 export type DevelopSection = {
   id: string;
@@ -25,13 +36,21 @@ export function DevelopDocPage({
   sections,
 }: DevelopDocPageProps) {
   return (
-    <Stack gap="xl" maw={920} p="md" data-storybook-develop="doc">
+    <Stack
+      gap="xl"
+      maw={920}
+      p="md"
+      data-storybook-develop="doc"
+      style={{ color: 'var(--color-text)' }}
+    >
       <Stack gap={6}>
-        <Text size="xs" tt="uppercase" fw={700} c="dimmed" lts={0.6}>
+        <Text size="xs" tt="uppercase" fw={700} c="var(--color-text-muted)" lts={0.6}>
           {eyebrow}
         </Text>
-        <Title order={2}>{title}</Title>
-        <Text size="sm" c="dimmed">
+        <Title order={2} c="var(--color-text)">
+          {title}
+        </Title>
+        <Text size="sm" c="var(--color-text-muted)">
           {subtitle}
         </Text>
         {badges.length > 0 ? (
@@ -48,7 +67,9 @@ export function DevelopDocPage({
       {sections.map((section, index) => (
         <Stack key={section.id} gap="sm" id={section.id}>
           {index > 0 ? <Divider /> : null}
-          <Title order={3}>{section.title}</Title>
+          <Title order={3} c="var(--color-text)">
+            {section.title}
+          </Title>
           {section.body}
         </Stack>
       ))}
@@ -64,13 +85,21 @@ export function DevelopCode({ children }: { children: string }) {
   );
 }
 
-export function DevelopBulletList({ items }: { items: readonly string[] }) {
+export function DevelopBulletList({ items }: { items: readonly (string | ReactNode)[] }) {
   return (
-    <List size="sm" spacing={6}>
-      {items.map((item) => (
-        <List.Item key={item}>{item}</List.Item>
+    <List size="sm" spacing={6} c="var(--color-text)">
+      {items.map((item, index) => (
+        <List.Item key={typeof item === 'string' ? item : `item-${index}`}>{item}</List.Item>
       ))}
     </List>
+  );
+}
+
+export function DevelopExternalLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Anchor href={href} target="_blank" rel="noopener noreferrer" size="sm" underline="hover">
+      {children}
+    </Anchor>
   );
 }
 

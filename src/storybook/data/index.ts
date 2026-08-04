@@ -3,6 +3,7 @@
  * Do not import from app runtime — use fixtures here and pass props in stories.
  */
 import { createHeaderMenuFixture } from '@/storybook/fixtures/headerMenu';
+import { sanitizeStorybookMenu } from '@/storybook/lib/sanitizeMenuMedia';
 import { getHeaderMenuMock } from '@/widgets/header/mocks/getHeaderMenuMock';
 import { getSidebarMenuMock } from '@/widgets/sidebar/mocks/getSidebarMenuMock';
 import { SIDEBAR_MENU_MOCK } from '@/widgets/sidebar/mocks/sidebarMenu.mock';
@@ -12,19 +13,21 @@ import { SIDEBAR_MENU_MOCK } from '@/widgets/sidebar/mocks/sidebarMenu.mock';
  * session variant via toolbar **Header session** → `header.mockAuth`.
  */
 export function createStorybookHeaderMenu() {
-  return getHeaderMenuMock() ?? createHeaderMenuFixture();
+  const menu = getHeaderMenuMock() ?? createHeaderMenuFixture();
+  return sanitizeStorybookMenu(menu);
 }
 
 /** Explicit full mock fixture (toolbar-independent), e.g. isolated menu control demos. */
 export function createStorybookHeaderMenuFixture() {
-  return createHeaderMenuFixture();
+  return sanitizeStorybookMenu(createHeaderMenuFixture());
 }
 
 /**
  * Sidebar menu for Storybook — from `widgets/sidebar/mocks` when toolbar **Aside mock menu** is on.
  */
 export function createStorybookSidebarMenu() {
-  return getSidebarMenuMock() ?? SIDEBAR_MENU_MOCK;
+  const menu = getSidebarMenuMock() ?? SIDEBAR_MENU_MOCK;
+  return sanitizeStorybookMenu(menu);
 }
 
 export {

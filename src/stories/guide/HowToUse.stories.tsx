@@ -25,7 +25,7 @@ export const Overview: Story = {
     <Stack gap="lg" maw={720}>
       <Stack gap={4}>
         <Title order={2}>Storybook lab</Title>
-        <Text size="sm" c="dimmed">
+        <Text size="sm" c="var(--color-text-muted)">
           Change appearance with toolbar dropdowns and the Controls panel. Start at{' '}
           <Code>Develop / Theme and Styles</Code> for a live brand preview.
         </Text>
@@ -75,7 +75,13 @@ export const Overview: Story = {
         <Title order={4}>3. Where to go</Title>
         <List size="sm" spacing={4}>
           <List.Item>
-            <Code>Develop / Theme and Styles</Code> — live Button / ActionIcon + how-to test visuals
+            <Code>Guide / How to use</Code> — start here
+          </List.Item>
+          <List.Item>
+            <Code>Lab / App Settings</Code> — Header / Sidebar live previews (toolbar globals)
+          </List.Item>
+          <List.Item>
+            <Code>Develop / Theme and Styles</Code> — brand tokens + contrast check
           </List.Item>
           <List.Item>
             <Code>Develop / Architecture</Code> — pipeline + honest Header migration status
@@ -89,9 +95,6 @@ export const Overview: Story = {
           </List.Item>
           <List.Item>
             <Code>Widgets / Header|Sidebar / Special Blocks</Code> — adapter / item knobs
-          </List.Item>
-          <List.Item>
-            <Code>Settings / App</Code> — dump of active toolbar → <Code>__SETTINGS__</Code>
           </List.Item>
         </List>
       </Stack>

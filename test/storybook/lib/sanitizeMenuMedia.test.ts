@@ -1,0 +1,54 @@
+import { describe, expect, it } from 'vitest';
+
+import {
+  resolveStorybookItemUrl,
+  resolveStorybookMediaSrc,
+  sanitizeStorybookMenu,
+} from '@/storybook/lib/sanitizeMenuMedia';
+
+describe('sanitizeMenuMedia', () => {
+  it('coerces query-only and relative urls to valid app hrefs', () => {
+    expect(resolveStorybookItemUrl('?search=ice')).toBe('/search?search=ice');
+    expect(resolveStorybookItemUrl('category/slots')).toBe('/category/slots');
+    expect(resolveStorybookItemUrl('/ok')).toBe('/ok');
+    expect(resolveStorybookItemUrl('#')).toBe('/');
+  });
+
+  it('maps missing media to local svg under public/', () => {
+    expect(resolveStorybookMediaSrc('/images/tags/white/keno.webp')).toContain('uploads/web.svg');
+    expect(resolveStorybookMediaSrc('')).toBe('');
+  });
+
+  it('sanitizes nested menu urls and imgs', () => {
+    const menu = sanitizeStorybookMenu({
+      sections: [
+        {
+          key: 'left',
+          items: [
+            { key: 'search_leftmenu', name: 'Search', url: '?search=ice', type: 'link' },
+            {
+              key: 'casino',
+              name: 'Casino',
+              url: '#',
+              type: 'link',
+              items: [
+                {
+                  key: 'slots',
+                  name: 'Slots',
+                  url: 'category/slots',
+                  img: '/images/menu/left/white/slots.svg',
+                  type: 'link',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(menu.sections[0]?.items[0]?.url).toBe('/search?search=ice');
+    expect(menu.sections[0]?.items[1]?.url).toBe('/');
+    expect(menu.sections[0]?.items[1]?.items?.[0]?.url).toBe('/category/slots');
+    expect(menu.sections[0]?.items[1]?.items?.[0]?.img).toContain('uploads/web.svg');
+  });
+});

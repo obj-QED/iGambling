@@ -1,2 +1,17 @@
-/* Layer order before Storybook preview imports `@/assets/theme`. */
-<link rel="stylesheet" href="/src/assets/styles/layer-order.css" />
+<!-- Layer order before Storybook preview imports `@/assets/theme`. -->
+<link rel="stylesheet" href="./src/assets/styles/layer-order.css" />
+<style>
+  /* Readable iframe chrome before React hydrates (default app scheme = dark). */
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: #0b1220;
+    color: #f8fafc;
+  }
+  html[data-mantine-color-scheme='light'],
+  html[data-theme='light'] {
+    background: #ffffff;
+    color: #0f172a;
+  }
+</style>

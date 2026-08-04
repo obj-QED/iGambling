@@ -38,10 +38,10 @@ describe('resolveActionIconRootVars', () => {
     });
 
     expect(vars['--ai-bg']).toBe(
-      'var(--cmf-action-icon-header-search-bg, var(--cmf-action-icon-header-bg, var(--cmf-action-icon-filled-bg, var(--mantine-color-brand-4))))',
+      'var(--cmf-action-icon-header-search-bg, var(--cmf-action-icon-header-bg, var(--cmf-action-icon-filled-bg, light-dark(var(--brand-color-7), var(--brand-color-8)))))',
     );
     expect(vars['--ai-color']).toBe(
-      'var(--cmf-action-icon-header-search-color, var(--cmf-action-icon-header-color, var(--cmf-action-icon-filled-color, var(--mantine-primary-color-contrast))))',
+      'var(--cmf-action-icon-header-search-color, var(--cmf-action-icon-header-color, var(--cmf-action-icon-filled-color, #fff)))',
     );
     expect(vars['--ai-hover']).toContain('--cmf-action-icon-header-search-hover');
     expect(vars['--ai-shadow']).toBe(

@@ -55,9 +55,15 @@
   --aside-scrollbar-size: 4px;
   --aside-scrollbar-radius: 999px;
 
-  /* Button / ActionIcon CMF — see file header + mantine/cmf/CASCADE.md */
-  --cmf-button-sidebar-radius: var(--cmf-button-radius, var(--mantine-radius-md));
-  --cmf-button-sidebar-justify: flex-start;
+  /* Readable default/transparent labels — do NOT set bare `--cmf-button-sidebar-color`
+   * (comp layer wins over exception/filled and kills white-on-amber CTAs). */
+  --cmf-button-exception-bg: #b45309;
+  --cmf-button-exception-color: #fff;
+  --cmf-button-exception-hover: #92400e;
+  --cmf-button-exception-hover-color: #fff;
+  --cmf-button-sidebar-search_leftmenu-color: #fff;
+  --cmf-button-sidebar-timer-color: #fff;
+  --cmf-button-sidebar-wheel_mdl-color: #fff;
 
   /* ActionIcon CMF (component scope) */
   --cmf-action-icon-sidebar-radius: var(--cmf-action-icon-radius, var(--mantine-radius-md));

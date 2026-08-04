@@ -110,9 +110,14 @@ export const Default: Story = {
     void iconScale;
     void iconAspect;
     return (
-      <ActionIcon {...iconArgs}>
-        <DemoGlyph />
-      </ActionIcon>
+      <Stack gap="sm" align="flex-start">
+        <Text size="sm" fw={600}>
+          ActionIcon — default (Tabler glyph)
+        </Text>
+        <ActionIcon {...iconArgs}>
+          <DemoGlyph />
+        </ActionIcon>
+      </Stack>
     );
   },
 };
@@ -131,11 +136,16 @@ export const WithCmfIcon: Story = {
     const cleaned = omitStorybookNone(args as Record<string, unknown>);
     const { iconScale, iconAspect, ...iconArgs } = cleaned as ActionIconStoryArgs;
     return (
-      <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
-        <ActionIcon {...iconArgs}>
-          <DemoCmfIcon alt={String(iconArgs['aria-label'] ?? 'action')} />
-        </ActionIcon>
-      </div>
+      <Stack gap="sm" align="flex-start">
+        <Text size="sm" fw={600}>
+          ActionIcon — CmfIcon media
+        </Text>
+        <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
+          <ActionIcon {...iconArgs}>
+            <DemoCmfIcon alt={String(iconArgs['aria-label'] ?? 'action')} />
+          </ActionIcon>
+        </div>
+      </Stack>
     );
   },
 };
@@ -164,7 +174,7 @@ export const IconCascade: Story = {
                   <DemoCmfIcon alt={`scale ${scale}`} />
                 </ActionIcon>
               </div>
-              <Text size="xs" c="dimmed">
+              <Text size="xs" c="var(--color-text-muted)">
                 {scale}
               </Text>
             </Stack>
@@ -183,7 +193,7 @@ export const IconCascade: Story = {
                   <DemoCmfIcon alt={`aspect ${aspect}`} />
                 </ActionIcon>
               </div>
-              <Text size="xs" c="dimmed">
+              <Text size="xs" c="var(--color-text-muted)">
                 {aspect}
               </Text>
             </Stack>

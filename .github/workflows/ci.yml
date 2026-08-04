@@ -53,6 +53,8 @@ jobs:
       - uses: ./.github/actions/setup-yarn
 
       - name: Build Storybook
+        env:
+          STORYBOOK_BASE: /iGambling/
         run: yarn build-storybook
 
       - name: Story index report

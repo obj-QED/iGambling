@@ -75,13 +75,13 @@ describe('resolveButtonRootVars', () => {
     });
 
     expect(vars['--button-bg']).toBe(
-      'var(--cmf-button-header-sign_in-bg, var(--cmf-button-header-bg, var(--cmf-button-filled-bg, var(--mantine-color-brand-4))))',
+      'var(--cmf-button-header-sign_in-bg, var(--cmf-button-header-bg, var(--cmf-button-filled-bg, light-dark(var(--brand-color-7), var(--brand-color-8)))))',
     );
     expect(vars['--button-color']).toBe(
-      'var(--cmf-button-header-sign_in-color, var(--cmf-button-header-color, var(--cmf-button-filled-color, var(--mantine-primary-color-contrast))))',
+      'var(--cmf-button-header-sign_in-color, var(--cmf-button-header-color, var(--cmf-button-filled-color, #fff)))',
     );
     expect(vars['--button-hover']).toBe(
-      'var(--cmf-button-header-sign_in-hover, var(--cmf-button-header-hover, var(--cmf-button-filled-hover, var(--mantine-color-brand-3))))',
+      'var(--cmf-button-header-sign_in-hover, var(--cmf-button-header-hover, var(--cmf-button-filled-hover, light-dark(var(--brand-color-6), var(--brand-color-7)))))',
     );
     expect(vars['--button-hover-color']).toContain('--cmf-button-header-sign_in-hover-color');
     expect(vars['--button-shadow']).toBe(
@@ -146,8 +146,8 @@ describe('resolveButtonRootVars', () => {
     expect(hero['--button-color']).toBe(
       'var(--cmf-button-hero-color, var(--mantine-color-default-color))',
     );
-    expect(exception['--button-bg']).toBe('var(--cmf-button-exception-bg, #d97706)');
-    expect(exception['--button-hover']).toBe('var(--cmf-button-exception-hover, #b45309)');
+    expect(exception['--button-bg']).toBe('var(--cmf-button-exception-bg, #b45309)');
+    expect(exception['--button-hover']).toBe('var(--cmf-button-exception-hover, #92400e)');
   });
 
   it('emits icon cascade with data-variant (not size)', () => {

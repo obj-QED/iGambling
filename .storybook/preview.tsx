@@ -20,7 +20,7 @@ const preview: Preview = {
     colorScheme: {
       name: 'Color scheme',
       description:
-        'Light / Dark — sets data-theme + color-scheme on document (brand palette + light-dark tokens)',
+        'Light / Dark — sets data-theme + color-scheme on document (brand palette + readable shell)',
       defaultValue: defaultColorScheme,
       toolbar: {
         icon: 'circlehollow',
@@ -43,6 +43,9 @@ const preview: Preview = {
   ],
   parameters: {
     layout: 'fullscreen',
+    backgrounds: {
+      disable: true,
+    },
     controls: {
       expanded: true,
       matchers: {
@@ -56,22 +59,12 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          'Develop',
-          [
-            'AI Review Brief',
-            'Project Map',
-            'Architecture',
-            'Widgets',
-            'State and API',
-            'Theme and Styles',
-            'Security',
-          ],
           'Guide',
           ['How to use'],
+          'Lab',
+          ['App Settings', ['Overview', 'Header', 'Sidebar']],
           'Theme',
           ['Palette'],
-          'Settings',
-          ['App', ['Overview', 'HeaderPreview', 'SidebarPreview']],
           'Elements',
           ['Button', ['Default', 'With Icon', 'Icon Cascade', 'All Variants', 'Playground']],
           [
@@ -101,6 +94,16 @@ const preview: Preview = {
           [
             'Sidebar',
             ['AppSidebar', ['Special Blocks', ['Overview', 'Logo', 'Search', 'Timer', 'Wheel']]],
+          ],
+          'Develop',
+          [
+            'Theme and Styles',
+            'Architecture',
+            'Project Map',
+            'Widgets',
+            'State and API',
+            'Security',
+            'AI Review Brief',
           ],
           '*',
         ],

@@ -34,7 +34,8 @@ export const mantineTheme = createTheme({
   },
 
   primaryColor: 'brand',
-  primaryShade: { light: 5, dark: 5 },
+  /* Deeper shade so filled/primary labels stay ≥ AA with white (brand-4/5 fail). */
+  primaryShade: { light: 7, dark: 8 },
   colors: { brand },
 
   fontFamily: 'var(--font-family-base, "IBM Plex Sans", sans-serif)',

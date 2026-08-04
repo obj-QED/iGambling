@@ -26,13 +26,24 @@ export function StoryLabFrame({
 }: StoryLabFrameProps) {
   return (
     <Stack gap="md" maw={960}>
-      <Stack gap={4}>
-        <Title order={3}>{title}</Title>
-        <Text size="sm" c="dimmed">
+      <Stack gap={6}>
+        <Title order={3} c="var(--color-text)">
+          {title}
+        </Title>
+        <Text size="sm" c="var(--color-text-muted)">
           {summary}
         </Text>
         {howTo ? (
-          <Text size="xs" c="dimmed">
+          <Text
+            size="xs"
+            style={{
+              color: 'var(--color-text)',
+              background: 'var(--color-bg-body)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 8,
+              padding: '8px 10px',
+            }}
+          >
             {howTo}
           </Text>
         ) : null}

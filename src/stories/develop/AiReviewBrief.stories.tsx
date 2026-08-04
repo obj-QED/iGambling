@@ -12,6 +12,7 @@ import {
   DevelopBulletList,
   DevelopCode,
   DevelopDocPage,
+  DevelopExternalLink,
   DevelopKvTable,
 } from './ui/DevelopDocPage';
 
@@ -45,7 +46,7 @@ export const Overview: Story = {
           title: 'What this project is',
           body: (
             <>
-              <Text size="sm" mb="sm">
+              <Text size="sm" mb="sm" c="var(--color-text)">
                 Casino frontend SPA on a PHP API. Shell widgets (header, sidebar, banner, footer)
                 are schema-driven: settings + API menu → resolved schema → registries → UI.
                 Long-term goal: OSS-scale maintainability without architecture rewrites.
@@ -64,7 +65,12 @@ export const Overview: Story = {
                 'Judge against FSD import direction, public.ts boundaries, and registry-over-switch rules.',
                 'Flag violations from the Forbidden list — not stylistic preferences.',
                 'Cite concrete paths (e.g. src/widgets/sidebar/typePacks/default/Strategy.tsx).',
-                'Published Storybook: https://obj-qed.github.io/iGambling/',
+                <>
+                  Published Storybook:{' '}
+                  <DevelopExternalLink href="https://obj-qed.github.io/iGambling/">
+                    https://obj-qed.github.io/iGambling/
+                  </DevelopExternalLink>
+                </>,
               ]}
             />
           ),

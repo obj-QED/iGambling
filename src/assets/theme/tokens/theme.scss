@@ -102,6 +102,32 @@
     --tooltip-sidebar-radius: var(--mantine-radius-default);
     --tooltip-sidebar-max-width: 16rem;
 
+    /* CMF variant SoT — readable paints even when Mantine shade vars lag */
+    --cmf-button-filled-bg: light-dark(var(--brand-color-7), var(--brand-color-8));
+    --cmf-button-filled-color: #fff;
+    --cmf-button-filled-hover: light-dark(var(--brand-color-6), var(--brand-color-7));
+    --cmf-button-filled-hover-color: #fff;
+    --cmf-button-outline-color: light-dark(var(--brand-color-7), var(--brand-color-3));
+    --cmf-button-outline-bd: color-mix(
+      in srgb,
+      light-dark(var(--brand-color-7), var(--brand-color-4)) 55%,
+      var(--mantine-color-default-border)
+    );
+    --cmf-button-gradient-color: #fff;
+    --cmf-button-gradient-hover-color: #fff;
+    --cmf-button-exception-bg: #b45309;
+    --cmf-button-exception-color: #fff;
+    --cmf-button-exception-hover: #92400e;
+    --cmf-button-exception-hover-color: #fff;
+    --cmf-action-icon-filled-bg: var(--cmf-button-filled-bg);
+    --cmf-action-icon-filled-color: #fff;
+    --cmf-action-icon-filled-hover: var(--cmf-button-filled-hover);
+    --cmf-action-icon-filled-hover-color: #fff;
+    --cmf-action-icon-outline-color: var(--cmf-button-outline-color);
+    --cmf-action-icon-outline-bd: var(--cmf-button-outline-bd);
+    --cmf-action-icon-gradient-color: #fff;
+    --cmf-action-icon-gradient-hover-color: #fff;
+
     --cmf-button-hero-bg: light-dark(
       color-mix(in srgb, #059669 100%, transparent),
       color-mix(in srgb, #059669 100%, transparent)
@@ -128,18 +154,21 @@
   [data-mantine-color-scheme='dark'] {
     @include brand.apply-palette(brand.$palette-dark);
 
+    /* Explicit paints — do not rely on light-dark() alone (Storybook iframe / late color-scheme). */
+    --color-bg-body: var(--mantine-color-dark-9, #0b1220);
     --color-text: #f8fafc;
-    --color-text-muted: #6b6b6b;
+    --color-text-muted: #94a3b8;
+    --color-border: var(--mantine-color-dark-4, #334155);
 
     --app-gradient-default: linear-gradient(
       45deg,
-      var(--mantine-color-brand-4) 0%,
-      color-mix(in srgb, var(--mantine-color-brand-4) 70%, black) 100%
+      var(--brand-color-6) 0%,
+      var(--brand-color-8) 100%
     );
     --app-gradient-default-hover: linear-gradient(
       45deg,
-      var(--mantine-color-brand-2) 0%,
-      var(--mantine-color-brand-4) 100%
+      var(--brand-color-7) 0%,
+      var(--brand-color-9) 100%
     );
   }
 
@@ -147,18 +176,20 @@
   [data-mantine-color-scheme='light'] {
     @include brand.apply-palette(brand.$palette-light);
 
+    --color-bg-body: var(--mantine-color-body, #fff);
     --color-text: #0f172a;
     --color-text-muted: #64748b;
+    --color-border: var(--mantine-color-gray-3, #e2e8f0);
 
     --app-gradient-default: linear-gradient(
       45deg,
-      var(--mantine-color-brand-4) 0%,
-      color-mix(in srgb, var(--mantine-color-brand-4) 70%, black) 100%
+      var(--brand-color-6) 0%,
+      var(--brand-color-8) 100%
     );
     --app-gradient-default-hover: linear-gradient(
       45deg,
-      var(--mantine-color-brand-5) 0%,
-      var(--mantine-color-brand-7) 100%
+      var(--brand-color-7) 0%,
+      var(--brand-color-9) 100%
     );
   }
 }

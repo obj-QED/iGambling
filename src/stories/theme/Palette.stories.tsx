@@ -22,7 +22,7 @@ function PalettePreview() {
           {primary.map((hex, index) => (
             <Stack key={hex} gap={2} align="center">
               <ColorSwatch color={hex} size={36} />
-              <Text size="xs" c="dimmed">
+              <Text size="xs" c="var(--color-text-muted)">
                 {index}
               </Text>
             </Stack>
@@ -63,7 +63,7 @@ function PalettePreview() {
                   <Text size="sm" fw={600}>
                     {name}
                   </Text>
-                  <Text size="xs" c="dimmed">
+                  <Text size="xs" c="var(--color-text-muted)">
                     {sample}
                   </Text>
                 </div>

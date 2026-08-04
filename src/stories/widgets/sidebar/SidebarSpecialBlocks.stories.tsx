@@ -20,6 +20,7 @@ import {
 import { SidebarBlockShell } from '@/storybook/helpers/sidebarBlockShell';
 import { StoryLabFrame } from '@/storybook/helpers/StoryLabFrame';
 import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
+import { resolveStorybookItemUrl } from '@/storybook/lib/sanitizeMenuMedia';
 import { Logo } from '@/widgets/sidebar/ui/blocks/Logo/Logo';
 import { Search } from '@/widgets/sidebar/ui/blocks/Search/Search';
 import { TimerBlock } from '@/widgets/sidebar/ui/blocks/TimerBlock/TimerBlock';
@@ -57,12 +58,13 @@ function mergeItem(base: HeaderMenuItem, args: BlockStoryArgs): HeaderMenuItem {
       : typeof cleaned.img === 'string'
         ? cleaned.img
         : (base.img ?? STORYBOOK_ICON);
+  const rawUrl = typeof cleaned.url === 'string' ? cleaned.url : (base.url ?? '/');
 
   return {
     ...base,
     name: typeof cleaned.name === 'string' ? cleaned.name : (base.name ?? ''),
     label: typeof cleaned.label === 'string' ? cleaned.label : base.label,
-    url: typeof cleaned.url === 'string' ? cleaned.url : (base.url ?? '/'),
+    url: resolveStorybookItemUrl(rawUrl),
     img,
     type: typeof cleaned.type === 'string' ? cleaned.type : base.type,
     variant: typeof cleaned.variant === 'string' ? cleaned.variant : base.variant,
@@ -195,7 +197,7 @@ export const SearchStory: Story = {
     asideType: 'default',
     name: 'Search',
     label: 'Search',
-    url: '?search=ice',
+    url: '/search?q=ice',
     img: '',
     type: 'link',
     variant: STORYBOOK_NONE,
@@ -207,7 +209,7 @@ export const SearchStory: Story = {
     return (
       <StoryLabFrame
         title="Search (left menu)"
-        summary="Registry key `search_leftmenu`."
+        summary="Registry key `search_leftmenu`. Controls url must be a valid absolute path."
         capabilities={['Dedicated Search block', 'asideType compact → type-pack Item']}
       >
         {shellForArgs(args, <Search item={item} />)}

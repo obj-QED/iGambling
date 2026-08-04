@@ -3,7 +3,7 @@ import type { StorybookConfig } from '@storybook/react-vite';
 import { fileURLToPath } from 'node:url';
 import { mergeConfig } from 'vite';
 
-import { scssAdditionalData } from '../build/scss-config';
+import { scssAdditionalData } from '../build/scss-config.ts';
 
 const srcDir = fileURLToPath(new URL('../src', import.meta.url));
 
@@ -13,7 +13,9 @@ const config: StorybookConfig = {
   addons: ['@storybook/addon-docs', '@storybook/addon-a11y', '@chromatic-com/storybook'],
   staticDirs: ['../public'],
   async viteFinal(viteConfig) {
-    viteConfig.base = '/iGambling/';
+    // GitHub Pages needs `/iGambling/`; local Storybook must stay at `/` or iframe assets 404.
+    const pagesBase = process.env.STORYBOOK_BASE ?? (process.env.CI ? '/iGambling/' : '/');
+    viteConfig.base = pagesBase;
 
     return mergeConfig(viteConfig, {
       define: {

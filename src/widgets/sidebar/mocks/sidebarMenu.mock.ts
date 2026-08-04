@@ -8,7 +8,7 @@ export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
       key: 'left',
       items: [
         {
-          url: '?search=ice',
+          url: '/search?search=ice',
           name: 'Search',
           key: 'search_leftmenu',
           img: '',
@@ -74,7 +74,7 @@ export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
           type: 'link',
           items: [
             {
-              url: 'category/slots',
+              url: '/category/slots',
               name: 'Slots',
               key: 'slots',
               img: '/images/menu/left/white/slots.svg',

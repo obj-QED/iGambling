@@ -52,7 +52,7 @@ export const Overview: Story = {
           body: (
             <>
               <DevelopCode>{DEVELOP_HEADER_PIPELINE}</DevelopCode>
-              <Text size="sm" mt="sm" c="dimmed">
+              <Text size="sm" mt="sm" c="var(--color-text-muted)">
                 Special blocks: search, logo, wallet, notification, color_scheme, bonus_box.
                 Migration: shared schema + overlays shipped; plugins/runtime seeded; full engine
                 singleton deferred.
@@ -66,7 +66,7 @@ export const Overview: Story = {
           body: (
             <>
               <DevelopCode>{DEVELOP_SIDEBAR_PIPELINE}</DevelopCode>
-              <Text size="sm" mt="sm" c="dimmed">
+              <Text size="sm" mt="sm" c="var(--color-text-muted)">
                 Account lives in aside.customBlocks (settings), not mock header section. Chrome
                 components accept children so Strategy fully owns the tree.
               </Text>

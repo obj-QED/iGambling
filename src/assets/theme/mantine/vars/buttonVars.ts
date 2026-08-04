@@ -9,7 +9,7 @@ import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from '../theme/gradi
 const MANTINE_BUTTON_BD_TRANSPARENT = 'transparent';
 const MANTINE_BUTTON_BD_DEFAULT = 'var(--color-border)';
 const MANTINE_BUTTON_BD_OUTLINE =
-  'color-mix(in srgb, var(--mantine-color-brand-4) 42%, var(--mantine-color-default-border))';
+  'color-mix(in srgb, var(--brand-color-7) 55%, var(--mantine-color-default-border))';
 
 type VariantPaint = {
   bg: string;
@@ -23,49 +23,50 @@ type VariantPaint = {
 /**
  * Last-resort paint when CMF tokens are unset.
  * Known keys only — custom variants (hero, …) cascade by name and reuse `default` paint.
+ * Keep in sync with `_cmf-control-cascade.scss` `$cmf-button-variants`.
  */
 const MANTINE_VARIANT_FALLBACKS = {
   filled: {
-    bg: 'var(--mantine-color-brand-4)',
-    color: 'var(--mantine-primary-color-contrast)',
+    bg: 'light-dark(var(--brand-color-7), var(--brand-color-8))',
+    color: '#fff',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
-    hover: 'var(--mantine-color-brand-3)',
-    'hover-color': 'var(--mantine-primary-color-contrast)',
+    hover: 'light-dark(var(--brand-color-6), var(--brand-color-7))',
+    'hover-color': '#fff',
   },
   outline: {
     bg: 'transparent',
-    color: 'var(--mantine-color-brand-4)',
+    color: 'light-dark(var(--brand-color-7), var(--brand-color-3))',
     bd: MANTINE_BUTTON_BD_OUTLINE,
     hover: 'var(--mantine-color-brand-light-hover)',
-    'hover-color': 'var(--mantine-color-text)',
+    'hover-color': 'var(--color-text)',
   },
   light: {
     bg: 'var(--mantine-color-brand-light)',
-    color: 'var(--mantine-color-brand-light-color)',
+    color: 'light-dark(var(--brand-color-8), var(--brand-color-2))',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'var(--mantine-color-brand-light-hover)',
-    'hover-color': 'var(--mantine-color-brand-light-color)',
+    'hover-color': 'light-dark(var(--brand-color-8), var(--brand-color-2))',
   },
   subtle: {
     bg: 'transparent',
-    color: 'var(--mantine-color-text)',
+    color: 'var(--color-text)',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'var(--mantine-color-brand-light-hover)',
-    'hover-color': 'var(--mantine-color-text)',
+    'hover-color': 'var(--color-text)',
   },
   default: {
     bg: 'var(--mantine-color-default)',
     color: 'var(--mantine-color-default-color)',
     bd: MANTINE_BUTTON_BD_DEFAULT,
     hover: 'var(--mantine-color-default-hover)',
-    'hover-color': 'var(--mantine-color-text)',
+    'hover-color': 'var(--color-text)',
   },
   transparent: {
     bg: 'transparent',
-    color: 'var(--mantine-color-text)',
+    color: 'var(--color-text)',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'transparent',
-    'hover-color': 'var(--mantine-color-text)',
+    'hover-color': 'var(--color-text)',
   },
   white: {
     bg: 'var(--mantine-color-white)',
@@ -76,17 +77,17 @@ const MANTINE_VARIANT_FALLBACKS = {
   },
   gradient: {
     bg: `var(--app-gradient-default, ${APP_GRADIENT_DEFAULT})`,
-    color: 'var(--mantine-primary-color-contrast)',
+    color: '#fff',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: `var(--app-gradient-default-hover, ${APP_GRADIENT_DEFAULT_HOVER})`,
-    'hover-color': 'var(--mantine-primary-color-contrast)',
+    'hover-color': '#fff',
   },
   exception: {
-    bg: '#d97706',
-    color: 'var(--mantine-color-white)',
+    bg: '#b45309',
+    color: '#fff',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
-    hover: '#b45309',
-    'hover-color': 'var(--mantine-color-white)',
+    hover: '#92400e',
+    'hover-color': '#fff',
   },
 } as const satisfies Record<string, VariantPaint>;
 

@@ -44,7 +44,7 @@ export const Overview: Story = {
           title: 'Live preview (use toolbar)',
           body: (
             <>
-              <Text size="sm" c="dimmed" mb="md">
+              <Text size="sm" c="var(--color-text-muted)" mb="md">
                 Switch <strong>Color scheme</strong> (and optionally Primary shade). Background and
                 brand paints should update. Icons use <code>publicAssetUrl</code> so they work with
                 Storybook <code>base</code>.
@@ -101,7 +101,7 @@ Inside widgets:
           body: (
             <>
               <DevelopCode>{DEVELOP_CMF_ORDER}</DevelopCode>
-              <Text size="sm" mt="sm" c="dimmed">
+              <Text size="sm" mt="sm" c="var(--color-text-muted)">
                 Controls <code>color</code> on Element stories can look “stuck”: cascade often pins{' '}
                 <code>--mantine-color-brand-*</code>. Prefer Color scheme + token edits for brand
                 QA.
