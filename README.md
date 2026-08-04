@@ -285,12 +285,13 @@ yarn storybook
 
 **Published (main):** [obj-qed.github.io/iGambling](https://obj-qed.github.io/iGambling/)
 
-| Area              | Contents                                         |
-| ----------------- | ------------------------------------------------ |
-| Elements          | Button, ActionIcon — variants, sizes, playground |
-| Widgets / Header  | AppHeader shell, special blocks, menu items      |
-| Widgets / Sidebar | Aside shell, special blocks                      |
-| Guide / Theme     | How-to, brand palette, settings dump             |
+| Area              | Contents                                                              |
+| ----------------- | --------------------------------------------------------------------- |
+| **Develop**       | Public architecture brief for AI/human review (map, pipelines, rules) |
+| Guide / Theme     | How-to, brand palette, settings dump                                  |
+| Elements          | Button, ActionIcon — variants, sizes, playground                      |
+| Widgets / Header  | AppHeader shell, special blocks, menu items                           |
+| Widgets / Sidebar | Aside shell, special blocks                                           |
 
 Toolbar: color scheme, primary brand, header session, app settings.
 

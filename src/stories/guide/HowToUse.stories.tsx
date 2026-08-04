@@ -67,6 +67,9 @@ export const Overview: Story = {
         <Title order={4}>3. Where to go</Title>
         <List size="sm" spacing={4}>
           <List.Item>
+            <Code>Develop / AI Review Brief</Code> — public architecture pack for external AI agents
+          </List.Item>
+          <List.Item>
             <Code>Theme / Palette</Code> — swatches + live Button / ActionIcon with current primary
           </List.Item>
           <List.Item>

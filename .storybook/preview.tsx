@@ -55,6 +55,15 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
+          'Develop',
+          [
+            'AI Review Brief',
+            'Project Map',
+            'Architecture',
+            'Widgets',
+            'State and API',
+            'Theme and Styles',
+          ],
           'Guide',
           ['How to use'],
           'Theme',
