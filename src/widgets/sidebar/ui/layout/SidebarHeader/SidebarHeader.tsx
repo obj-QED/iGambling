@@ -1,6 +1,6 @@
 import type { SectionProps } from '../../../types';
 
-import { memo } from 'react';
+import { Children, memo } from 'react';
 
 import { filterRenderableItems } from '../../../lib';
 import { useSidebarTypePack } from '../../../typePacks';
@@ -11,7 +11,7 @@ import styles from '../../../styles/layout/SidebarHeader.module.scss';
 function SidebarHeaderComponent({ section, children }: SectionProps) {
   const { HeaderLink } = useSidebarTypePack();
 
-  if (children) {
+  if (Children.count(children) > 0) {
     return (
       <div className={styles.root} data-sidebar-region="header">
         {children}

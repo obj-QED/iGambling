@@ -1,6 +1,6 @@
 import type { RootProps } from '../../types';
 
-import { memo, useMemo } from 'react';
+import { createElement, memo, useMemo } from 'react';
 
 import { Group } from '@mantine/core';
 
@@ -19,7 +19,6 @@ import dropdownStyles from '../../styles/type/DropdownType.module.scss';
  * remaining items go into DeepPanel grouped by section label.
  */
 function DropdownTypeStrategyComponent({ menu, config }: RootProps) {
-  const Layout = resolveHeaderLayout(config.layout);
   const { outsideMenu, dropdownGroups } = useMemo(() => splitHeaderDropdownMenu(menu), [menu]);
   const outsideSections = outsideMenu.sections.filter((section) => section.items.length > 0);
 
@@ -30,7 +29,9 @@ function DropdownTypeStrategyComponent({ menu, config }: RootProps) {
       </div>
 
       <div className={dropdownStyles.mobile} data-header-dropdown-mode="mobile">
-        <Layout>
+        {createElement(
+          resolveHeaderLayout(config.layout),
+          null,
           <Group className={styles.sections} data-header-type="dropdown" unstyled>
             <Group className={dropdownStyles.outside} gap="sm" wrap="wrap" unstyled>
               {outsideSections.map((section) => (
@@ -38,8 +39,8 @@ function DropdownTypeStrategyComponent({ menu, config }: RootProps) {
               ))}
             </Group>
             <DeepPanel groups={dropdownGroups} />
-          </Group>
-        </Layout>
+          </Group>,
+        )}
       </div>
     </>
   );

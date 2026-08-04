@@ -22,11 +22,13 @@
     color: inherit;
     min-height: var(--button-height, calc(2.25rem * var(--mantine-scale, 1)));
     height: auto;
-    padding: var(--button-padding-x);
+    padding-block: 0;
+    padding-inline: var(--button-padding-x, var(--mantine-spacing-sm));
 
     :global(.cmf-Button-inner) {
       flex: 1 1 auto;
       min-width: 0;
+      gap: var(--aside-header-account-gap, var(--spacing-sm, 0.625rem));
     }
 
     :global(.cmf-Button-label) {

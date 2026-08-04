@@ -62,6 +62,11 @@ function coerceMenuItem(raw: unknown): MenuItemDto | null {
     badge,
     items,
   };
+
+  if (cleaned.menuIcon === true) {
+    coerced.menuIcon = true;
+  }
+
   const result = menuItemDtoSchema.safeParse(coerced);
   return result.success ? result.data : null;
 }

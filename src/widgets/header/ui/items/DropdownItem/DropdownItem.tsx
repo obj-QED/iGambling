@@ -6,8 +6,14 @@ import { Menu } from '@mantine/core';
 
 import { AppButton } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
+
 import { useHeaderMenuSizes } from '../../../context';
-import { resolveHeaderMenuButtonSize, menuItemDataAttrs, resolveItemHref, resolveItemLabel } from '../../../lib';
+import {
+  menuItemDataAttrs,
+  resolveHeaderMenuButtonSize,
+  resolveItemHref,
+  resolveItemLabel,
+} from '../../../lib';
 import { ItemImage } from '../ItemImage/ItemImage';
 
 function DropdownItemComponent({ item }: DropdownItemProps) {
@@ -29,7 +35,7 @@ function DropdownItemComponent({ item }: DropdownItemProps) {
       leftSection={leftSection}
       variant="outline"
       size={resolveHeaderMenuButtonSize(item, menuSizes)}
-      fullWidth
+      fullscreen
       justify="flex-start"
       {...menuItemDataAttrs(item)}
       {...activeAttrs}

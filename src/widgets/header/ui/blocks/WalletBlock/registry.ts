@@ -1,21 +1,11 @@
-import type { BlockProps } from '../../../types';
-import type { ComponentType } from 'react';
+import { WALLET_ADAPTER_KEYS } from '../../../plugins/wallet';
 
-import { resolveBlockVariantComponent } from '../../../lib';
-import { WalletCompactVariant } from './variants/WalletCompactVariant';
-import { WalletDrawerVariant } from './variants/WalletDrawerVariant';
-import { WalletFullVariant } from './variants/WalletFullVariant';
+/** Storybook / docs — adapter keys only (overlays via schema.wrappers). */
+export const WALLET_VARIANT_REGISTRY = Object.fromEntries(
+  WALLET_ADAPTER_KEYS.map((key) => [key, key]),
+) as Record<(typeof WALLET_ADAPTER_KEYS)[number], string>;
 
-export const WALLET_VARIANT_REGISTRY = {
-  compact: WalletCompactVariant,
-  full: WalletFullVariant,
-  drawer: WalletDrawerVariant,
-} as const satisfies Record<string, ComponentType<BlockProps>>;
+export const WALLET_VARIANT_KEYS = WALLET_ADAPTER_KEYS;
+export type WalletBlockVariant = (typeof WALLET_ADAPTER_KEYS)[number];
 
-export type WalletBlockVariant = keyof typeof WALLET_VARIANT_REGISTRY;
-
-export function resolveWalletVariantComponent(
-  variant: string | undefined,
-): ComponentType<BlockProps> {
-  return resolveBlockVariantComponent(WALLET_VARIANT_REGISTRY, variant);
-}
+export { WALLET_ADAPTER_KEYS };

@@ -35,6 +35,9 @@ function RootComponent({ menu, config, className }: RootProps) {
           data-cmf-component="header"
           data-layout={config.layout}
           data-type={config.type}
+          data-sticky={config.behavior.sticky ? 'true' : undefined}
+          data-transparent={config.behavior.transparent ? 'true' : undefined}
+          data-hide-on-scroll={config.behavior.hideOnScroll ? 'true' : undefined}
         >
           <Strategy menu={menuModel} config={config} />
         </header>

@@ -44,7 +44,11 @@ function readSettingsLobbyToken(): string | null {
   return null;
 }
 
-/** In-memory lobby token from last initV2 (not persisted; not in Redux). */
+/**
+ * In-memory lobby token from last initV2.
+ * Never sessionStorage / localStorage / Redux / cookies written from JS.
+ * Auth session cookie must be httpOnly (backend). Bot tokens never live here.
+ */
 let memoryToken: string | null = null;
 
 /** Bumps on session changes so TanStack keys can invalidate without embedding secrets. */

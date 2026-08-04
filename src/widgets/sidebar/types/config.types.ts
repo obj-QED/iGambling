@@ -7,6 +7,7 @@ import type {
 } from '@/shared/config/asideSettings';
 import type { HeaderCustomBlockConfig } from '@/shared/config/headerSettings';
 import type { TooltipConfig } from '@/shared/config/tooltipSettings';
+import type { SchemaVersion, WrapperMode } from '@/shared/schema';
 
 export type { AsideLayoutKey, AsideTypeKey };
 
@@ -24,7 +25,22 @@ export type SidebarRegionsConfig = {
   footer: boolean;
 };
 
-export type SidebarConfig = {
+export type SidebarBehaviorConfig = {
+  sticky: boolean;
+  transparent: boolean;
+  hideOnScroll: boolean;
+};
+
+export type SidebarWrappersConfig = Partial<Record<string, WrapperMode>>;
+
+export type SidebarCapabilitiesConfig = Record<string, boolean>;
+
+/**
+ * Resolved sidebar schema — components receive this; they do not read settings.
+ * `SidebarConfig` is an alias for backward compatibility.
+ */
+export type SidebarSchema = {
+  version: SchemaVersion;
   /** Desktop width (px number or CSS length). Omit → token `--app-layout-sidebar-width`. */
   width?: number | string;
   layout: AsideLayoutKey;
@@ -38,4 +54,10 @@ export type SidebarConfig = {
   scrollArea: SidebarScrollAreaConfig;
   /** Resolved tooltip: pack defaults → `aside.tooltip`. */
   tooltip: TooltipConfig;
+  wrappers: SidebarWrappersConfig;
+  behavior: SidebarBehaviorConfig;
+  capabilities: SidebarCapabilitiesConfig;
 };
+
+/** @deprecated Prefer `SidebarSchema` */
+export type SidebarConfig = SidebarSchema;

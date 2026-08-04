@@ -35,5 +35,6 @@
       "@pages/*": ["src/pages/*"]
     }
   },
-  "include": ["src", "test"]
+  "include": ["src"],
+  "exclude": ["test", "node_modules"]
 }

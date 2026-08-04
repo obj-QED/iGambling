@@ -1,5 +1,5 @@
 import { MantineProvider } from '@mantine/core';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeAll, describe, expect, it } from 'vitest';
 
@@ -48,5 +48,27 @@ describe('AppLogo', () => {
     renderLogo(<AppLogo href="/" label="   " />);
 
     expect(screen.queryByRole('button')).toBeNull();
+  });
+
+  it('falls back to text logo when img errors and name is set', async () => {
+    renderLogo(<AppLogo href="/" label="Brand" img="/uploads/broken.png" />);
+
+    fireEvent.error(screen.getByRole('img', { name: 'Brand' }));
+
+    expect(await screen.findByRole('button', { name: 'Brand' })).toBeInTheDocument();
+    expect(screen.queryByRole('img')).toBeNull();
+  });
+
+  it('returns null when img errors and name is empty', async () => {
+    const { container } = renderLogo(<AppLogo href="/" label="" img="/uploads/broken.png" />);
+
+    const image = container.querySelector('img');
+    expect(image).not.toBeNull();
+    fireEvent.error(image!);
+
+    await waitFor(() => {
+      expect(screen.queryByRole('button')).toBeNull();
+      expect(container.querySelector('img')).toBeNull();
+    });
   });
 });

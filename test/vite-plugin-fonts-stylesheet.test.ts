@@ -11,14 +11,19 @@ import {
   fontsStylesheetPlugin,
 } from '../vite-plugin-fonts-stylesheet';
 
+/** Strip Vite/Rollup `this` typing so hooks can be invoked unbound in tests. */
+type UnboundHook<T> = T extends (this: infer _This, ...args: infer A) => infer R
+  ? (...args: A) => R
+  : T;
+
 function getHookHandler<T extends (...args: never[]) => unknown>(
   hook: T | { handler: T } | undefined,
-): T | undefined {
+): UnboundHook<T> | undefined {
   if (hook == null) {
     return undefined;
   }
 
-  return typeof hook === 'function' ? hook : hook.handler;
+  return (typeof hook === 'function' ? hook : hook.handler) as UnboundHook<T>;
 }
 
 describe('extractExternalStylesheetImports', () => {
@@ -102,8 +107,7 @@ describe('fontsStylesheetPlugin', () => {
 
     await configResolved?.({ root } as never);
 
-    const transformed = await transform?.call(
-      {} as never,
+    const transformed = await transform?.(
       "@import 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap';\n\nbody { color: red; }\n",
       fontsFile,
     );

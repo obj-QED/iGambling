@@ -1,22 +1,11 @@
-import type { BlockProps } from '../../../types';
-import type { ComponentType } from 'react';
+import { SEARCH_ADAPTER_KEYS } from '../../../plugins/search';
 
-import { resolveBlockVariantComponent } from '../../../lib';
-import { SearchIconVariant } from './variants/SearchIconVariant';
-import { SearchInputVariant } from './variants/SearchInputVariant';
-import { SearchModalVariant } from './variants/SearchModalVariant';
+/** Storybook / docs — adapter keys only (overlays via schema.wrappers). */
+export const SEARCH_VARIANT_REGISTRY = Object.fromEntries(
+  SEARCH_ADAPTER_KEYS.map((key) => [key, key]),
+) as Record<(typeof SEARCH_ADAPTER_KEYS)[number], string>;
 
-export const SEARCH_VARIANT_REGISTRY = {
-  /** Default special adapter (ActionIcon). */
-  compact: SearchIconVariant,
-  input: SearchInputVariant,
-  modal: SearchModalVariant,
-} as const satisfies Record<string, ComponentType<BlockProps>>;
+export const SEARCH_VARIANT_KEYS = SEARCH_ADAPTER_KEYS;
+export type SearchBlockVariant = (typeof SEARCH_ADAPTER_KEYS)[number];
 
-export type SearchBlockVariant = keyof typeof SEARCH_VARIANT_REGISTRY;
-
-export function resolveSearchVariantComponent(
-  variant: string | undefined,
-): ComponentType<BlockProps> {
-  return resolveBlockVariantComponent(SEARCH_VARIANT_REGISTRY, variant);
-}
+export { SEARCH_ADAPTER_KEYS };

@@ -18,6 +18,9 @@
 // Never write `--x: var(--token, var(--x))` on the same node (self-ref breaks).
 // =============================================================================
 
+@use "sass:map";
+@use "sass:list";
+
 $cmf-control-sizes: xs, sm, md, lg, xl;
 $cmf-control-components: header, sidebar;
 $cmf-control-roles: parent, child, trigger;
@@ -112,7 +115,7 @@ $cmf-button-variants: (
     hover-color: var(--mantine-color-text),
   ),
 );
-$cmf-ai-variants: map-remove(
+$cmf-ai-variants: map.remove(
   $cmf-button-variants,
   'exception',
   'hero',
@@ -164,6 +167,7 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
 /* Button — applied from components.module.scss `.button`                     */
 /* ========================================================================== */
 @mixin cmf-button-cascade {
+
   /* --- bases (size table + paint + shared defaults) --- */
   @include cmf-layer-base('btn-height', var(--button-height-md));
   @include cmf-layer-base('btn-padding-x', var(--button-padding-x-md));
@@ -189,13 +193,13 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
   @include cmf-layer-base('btn-icon-width', var(--cmf-icon-width));
   @include cmf-layer-base('btn-icon-height', var(--cmf-icon-height));
 
-  $default-paint: map-get($cmf-button-variants, 'default');
+  $default-paint: map.get($cmf-button-variants, 'default');
 
-  @include cmf-layer-base('btn-bg', map-get($default-paint, bg));
-  @include cmf-layer-base('btn-color', map-get($default-paint, color));
-  @include cmf-layer-base('btn-bd', map-get($default-paint, bd));
-  @include cmf-layer-base('btn-hover', map-get($default-paint, hover));
-  @include cmf-layer-base('btn-hover-color', map-get($default-paint, hover-color));
+  @include cmf-layer-base('btn-bg', map.get($default-paint, bg));
+  @include cmf-layer-base('btn-color', map.get($default-paint, color));
+  @include cmf-layer-base('btn-bd', map.get($default-paint, bd));
+  @include cmf-layer-base('btn-hover', map.get($default-paint, hover));
+  @include cmf-layer-base('btn-hover-color', map.get($default-paint, hover-color));
 
   /* Shared control tokens always available as soft layer */
   @include cmf-layer-token('btn-radius', shared, '--cmf-button-radius');
@@ -246,11 +250,11 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
 
   @each $variant, $paint in $cmf-button-variants {
     &:where([data-variant='#{$variant}']) {
-      @include cmf-layer-base('btn-bg', map-get($paint, bg));
-      @include cmf-layer-base('btn-color', map-get($paint, color));
-      @include cmf-layer-base('btn-bd', map-get($paint, bd));
-      @include cmf-layer-base('btn-hover', map-get($paint, hover));
-      @include cmf-layer-base('btn-hover-color', map-get($paint, hover-color));
+      @include cmf-layer-base('btn-bg', map.get($paint, bg));
+      @include cmf-layer-base('btn-color', map.get($paint, color));
+      @include cmf-layer-base('btn-bd', map.get($paint, bd));
+      @include cmf-layer-base('btn-hover', map.get($paint, hover));
+      @include cmf-layer-base('btn-hover-color', map.get($paint, hover-color));
 
       @each $prop in $cmf-button-paint-props {
         @include cmf-layer-token('btn-#{$prop}', var, '--cmf-button-#{$variant}-#{$prop}');
@@ -271,13 +275,13 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
   }
 
   &:where([data-variant^='exception-']) {
-    $paint: map-get($cmf-button-variants, 'exception');
+    $paint: map.get($cmf-button-variants, 'exception');
 
-    @include cmf-layer-base('btn-bg', map-get($paint, bg));
-    @include cmf-layer-base('btn-color', map-get($paint, color));
-    @include cmf-layer-base('btn-bd', map-get($paint, bd));
-    @include cmf-layer-base('btn-hover', map-get($paint, hover));
-    @include cmf-layer-base('btn-hover-color', map-get($paint, hover-color));
+    @include cmf-layer-base('btn-bg', map.get($paint, bg));
+    @include cmf-layer-base('btn-color', map.get($paint, color));
+    @include cmf-layer-base('btn-bd', map.get($paint, bd));
+    @include cmf-layer-base('btn-hover', map.get($paint, hover));
+    @include cmf-layer-base('btn-hover-color', map.get($paint, hover-color));
 
     @each $prop in $cmf-button-paint-props {
       @include cmf-layer-token('btn-#{$prop}', var, '--cmf-button-exception-#{$prop}');
@@ -287,9 +291,9 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
   @each $component in $cmf-control-components {
     &:where([data-cmf-component='#{$component}']) {
       @each $prop
-        in join(
-          join($cmf-button-paint-props, $cmf-button-variant-props),
-          join($cmf-button-shared-props, $cmf-button-icon-props)
+        in list.join(
+          list.join($cmf-button-paint-props, $cmf-button-variant-props),
+          list.join($cmf-button-shared-props, $cmf-button-icon-props)
         )
       {
         @include cmf-layer-token('btn-#{$prop}', comp, '--cmf-button-#{$component}-#{$prop}');
@@ -298,9 +302,9 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
       @each $role in $cmf-control-roles {
         &:where([data-cmf-role='#{$role}']) {
           @each $prop
-            in join(
-              join($cmf-button-paint-props, $cmf-button-variant-props),
-              join($cmf-button-shared-props, $cmf-button-icon-props)
+            in list.join(
+              list.join($cmf-button-paint-props, $cmf-button-variant-props),
+              list.join($cmf-button-shared-props, $cmf-button-icon-props)
             )
           {
             @include cmf-layer-token(
@@ -315,9 +319,9 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
       @each $key in $cmf-control-keys {
         &:where([data-cmf-key='#{$key}']) {
           @each $prop
-            in join(
-              join($cmf-button-paint-props, $cmf-button-variant-props),
-              join($cmf-button-shared-props, $cmf-button-icon-props)
+            in list.join(
+              list.join($cmf-button-paint-props, $cmf-button-variant-props),
+              list.join($cmf-button-shared-props, $cmf-button-icon-props)
             )
           {
             @include cmf-layer-token(
@@ -358,13 +362,13 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
   @include cmf-layer-base('ai-icon-width', var(--cmf-icon-width));
   @include cmf-layer-base('ai-icon-height', var(--cmf-icon-height));
 
-  $default-paint: map-get($cmf-button-variants, 'default');
+  $default-paint: map.get($cmf-button-variants, 'default');
 
-  @include cmf-layer-base('ai-bg', map-get($default-paint, bg));
-  @include cmf-layer-base('ai-color', map-get($default-paint, color));
-  @include cmf-layer-base('ai-bd', map-get($default-paint, bd));
-  @include cmf-layer-base('ai-hover', map-get($default-paint, hover));
-  @include cmf-layer-base('ai-hover-color', map-get($default-paint, hover-color));
+  @include cmf-layer-base('ai-bg', map.get($default-paint, bg));
+  @include cmf-layer-base('ai-color', map.get($default-paint, color));
+  @include cmf-layer-base('ai-bd', map.get($default-paint, bd));
+  @include cmf-layer-base('ai-hover', map.get($default-paint, hover));
+  @include cmf-layer-base('ai-hover-color', map.get($default-paint, hover-color));
   @include cmf-layer-token('ai-radius', shared, '--cmf-action-icon-radius');
   @include cmf-layer-token('ai-radius-disabled', shared, '--cmf-action-icon-radius-disabled');
   @include cmf-layer-token('ai-icon-scale', shared, '--cmf-action-icon-icon-scale');
@@ -405,11 +409,11 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
 
   @each $variant, $paint in $cmf-ai-variants {
     &:where([data-variant='#{$variant}']) {
-      @include cmf-layer-base('ai-bg', map-get($paint, bg));
-      @include cmf-layer-base('ai-color', map-get($paint, color));
-      @include cmf-layer-base('ai-bd', map-get($paint, bd));
-      @include cmf-layer-base('ai-hover', map-get($paint, hover));
-      @include cmf-layer-base('ai-hover-color', map-get($paint, hover-color));
+      @include cmf-layer-base('ai-bg', map.get($paint, bg));
+      @include cmf-layer-base('ai-color', map.get($paint, color));
+      @include cmf-layer-base('ai-bd', map.get($paint, bd));
+      @include cmf-layer-base('ai-hover', map.get($paint, hover));
+      @include cmf-layer-base('ai-hover-color', map.get($paint, hover-color));
 
       @each $prop in $cmf-ai-paint-props {
         @include cmf-layer-token('ai-#{$prop}', var, '--cmf-action-icon-#{$variant}-#{$prop}');
@@ -432,9 +436,9 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
   @each $component in $cmf-control-components {
     &:where([data-cmf-component='#{$component}']) {
       @each $prop
-        in join(
-          join($cmf-ai-paint-props, $cmf-ai-variant-props),
-          join($cmf-ai-shared-props, $cmf-ai-icon-props)
+        in list.join(
+          list.join($cmf-ai-paint-props, $cmf-ai-variant-props),
+          list.join($cmf-ai-shared-props, $cmf-ai-icon-props)
         )
       {
         @include cmf-layer-token('ai-#{$prop}', comp, '--cmf-action-icon-#{$component}-#{$prop}');
@@ -443,9 +447,9 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
       @each $role in $cmf-control-roles {
         &:where([data-cmf-role='#{$role}']) {
           @each $prop
-            in join(
-              join($cmf-ai-paint-props, $cmf-ai-variant-props),
-              join($cmf-ai-shared-props, $cmf-ai-icon-props)
+            in list.join(
+              list.join($cmf-ai-paint-props, $cmf-ai-variant-props),
+              list.join($cmf-ai-shared-props, $cmf-ai-icon-props)
             )
           {
             @include cmf-layer-token(
@@ -460,9 +464,9 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
       @each $key in $cmf-control-keys {
         &:where([data-cmf-key='#{$key}']) {
           @each $prop
-            in join(
-              join($cmf-ai-paint-props, $cmf-ai-variant-props),
-              join($cmf-ai-shared-props, $cmf-ai-icon-props)
+            in list.join(
+              list.join($cmf-ai-paint-props, $cmf-ai-variant-props),
+              list.join($cmf-ai-shared-props, $cmf-ai-icon-props)
             )
           {
             @include cmf-layer-token(

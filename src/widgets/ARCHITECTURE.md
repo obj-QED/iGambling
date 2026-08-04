@@ -1,81 +1,68 @@
-# Header widget — runtime architecture
+# Widgets — Schema Driven UI
 
-Phase 0–1 scaffold. Data boundary: **untrusted init/settings → DTO → domain → UI**.
+Data boundary: **untrusted init/settings → DTO → domain → schema → UI**.
 
-## Pipeline
+## Platform pipeline
 
 ```mermaid
 flowchart TD
-  init["init.content (InitV2Content)"]
-  settings["window.__SETTINGS__.header"]
-  parse["shared/lib/pageMenu + Zod"]
-  find["api/lobby/findPageMenuInInit"]
-  map["widgets/header/lib/mapMenu"]
-  extract["page.blocks → menuHeaderTop.menu"]
-  config["resolveHeaderConfig"]
-  app["app/layouts useAppLayout"]
-  header["AppHeader"]
-  typeReg["TYPE_STRATEGY_REGISTRY"]
-  shell["HeaderShell"]
-  layoutReg["LAYOUT_REGISTRY"]
-  section["HeaderSection"]
-  blockRes["resolveBlockComponent"]
-  blockReg["BLOCK_REGISTRY"]
-  menuUi["AppButton / AppActionIcon / Dropdown"]
-
-  init --> find
-  find --> parse
-  parse --> map
-  settings --> config
-  app --> find
-  app --> config
-  map --> app
-  config --> app
-  app --> header
-  header --> typeReg
-  typeReg --> shell
-  shell --> layoutReg
-  shell --> section
-  section --> blockRes
-  blockRes --> blockReg
-  blockReg --> menuUi
+  api[PHP_API] --> normalize[normalize_menu]
+  settings["window.__SETTINGS__"] --> resolve
+  brand[brand_optional] --> resolve
+  page[page_optional] --> resolve
+  props[props_overrides] --> resolve
+  defaults[widget_defaults] --> resolve[resolveWidgetSchema]
+  resolve --> schema[WidgetSchema]
+  schema --> layoutReg[layoutRegistry_sync]
+  layoutReg --> blockReg[blockRegistry_sync]
+  blockReg --> adapterReg[adapter_lazy]
+  adapterReg --> wrapperReg[wrapperRegistry_lazy]
+  wrapperReg --> entity[entity]
+  entity --> sharedUi[shared_ui]
+  theme[Theme_CSS_vars] -.-> sharedUi
 ```
 
-## Layer responsibilities
+## Separation
 
-| Layer             | Path                                                        | Role                            |
-| ----------------- | ----------------------------------------------------------- | ------------------------------- |
-| API boundary      | `shared/schemas/pageMenu.schema.ts`, `shared/lib/pageMenu/` | coerce `unknown` + Zod          |
-| Init lookup       | `api/lobby/findPageMenuInInit.ts`                           | `page.menu` by key              |
-| App orchestration | `app/layouts/lib/extract*FromInit.ts`                       | parse + map → `HeaderMenuModel` |
-| Config            | `widgets/header/config/resolve.ts`                          | settings → `HeaderConfig`       |
-| Type strategy     | `widgets/header/ui/type/*`                                  | default vs custom block merge   |
-| Layout            | `registry/layouts.ts`                                       | container / container-fluid     |
-| Block routing     | `registry/blocks.ts`, `registry/keys.ts`                    | strict registry keys            |
-| Item UI           | `ui/items/*`, `ui/blocks/*`                                 | presentation only               |
+| Source                                      | Owns                                               |
+| ------------------------------------------- | -------------------------------------------------- |
+| Theme (`src/assets/theme/**`)               | colors, spacing, radius, fonts, sizes              |
+| Settings (`window.__SETTINGS__`)            | behavior, layout, variants, wrappers, capabilities |
+| API                                         | menu / content data                                |
+| Schema (`shared/schema` + `resolve*Schema`) | merged contract passed as props                    |
 
-## Data types
+## Shared schema core
+
+- [`src/shared/schema/`](../shared/schema/) — `resolveWidgetSchema`, `mergeSchemaLayers`, capabilities helpers
+- Inheritance: `defaults → global → brand → page → props` (brand/page optional)
+- Wrappers: [`src/shared/ui/overlay/`](../shared/ui/overlay/) — `WRAPPER_REGISTRY` (lazy by mode)
+
+## Header (reference)
 
 ```txt
-unknown (PHP)
-  → PageMenuItemDto / PageMenuRootDto (validated)
-  → HeaderMenuItem / HeaderMenuModel (domain)
-  → HeaderBlockProps.item (UI)
+useAppLayout → resolveHeaderSchema → AppHeader(menu, config/schema)
+  → typePack Strategy (sync)
+  → layoutRegistry (sync)
+  → blockRegistry (sync)
+  → plugin adapters (lazy) + wrapperRegistry
 ```
 
-## Registry keys (strict)
+**Current migration state**
 
-```txt
-default | menuDropdown | search | logo | wallet | notification | bonus_box
-```
+| Layer                                       | Status               |
+| ------------------------------------------- | -------------------- |
+| `shared/schema` + overlay wrappers          | shipped              |
+| `resolveHeaderSchema` / HeaderSchema fields | shipped              |
+| typePacks (layout strategy)                 | active               |
+| `plugins/` + `runtime/` lazy adapters       | wallet/search seeded |
+| Full Header Engine v4 (`engine/` singleton) | deferred             |
 
-API menu keys like `profile` → `default` block.
+Blocks must not call `getSettings()` — only resolved schema via props/context.
+
+## Sidebar / banner / footer
+
+Same contract: `resolve*Schema` in app layout, widgets receive `menu`/`content` + `schema` only.
 
 ## SCSS
 
 See `.cursor/rules/header-scss-guard.mdc` — tokens and paint only; no layout logic in CSS.
-
-## Phase 2 (not implemented)
-
-- plugins + lazy adapters for special blocks
-- `engine/`, `runtime/`, `sdk/` per Header Engine v4

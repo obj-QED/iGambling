@@ -9,7 +9,7 @@
     version: '1.0.0',
     params: {
       /** Mobile/tablet: enter browser fullscreen on first scroll. Set `false` to disable. */
-      fullWidth: true, // * TODO: rename to fullscreen
+      fullscreen: true,
     },
     header: {
       layout: 'container',
@@ -32,6 +32,7 @@
         enabled: true,
         position: 'bottom',
         delay: 200,
+        closeDelay: 100,
       },
 
       customBlocks: [
@@ -51,7 +52,7 @@
 
     aside: {
       width: 'calc(2.625rem * var(--mantine-scale) + 1.25rem)',
-      type: 'compact', // 'default' | 'compact'
+      type: 'default', // 'default' | 'compact'
       layout: 'container',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: true,
@@ -65,8 +66,8 @@
       tooltip: {
         enabled: true,
         position: 'right',
-        delay: 100,
-        closeDelay: 50,
+        delay: 200,
+        closeDelay: 100,
         multiline: true,
       },
       /** Global for aside (all types). Omit → pack defaults. Any Mantine ScrollArea prop allowed. */
@@ -89,13 +90,12 @@
           items: [
             {
               url: '/profile',
-              name: 'Developer',
+              name: 'Harriette Spoonlicker',
               key: 'account',
-              img: 'public/icons/tabler/user.svg',
+              img: '/images/misc/default/header/icon_user.webp',
               imgRadius: 'round',
-              subtitle: 'developer@example.com',
+              subtitle: 'hspoonlicker@outlook.com',
               type: 'link',
-              variant: 'transparent',
             },
           ],
         },
@@ -104,11 +104,12 @@
           placement: { section: 'header', at: 'start' },
           items: [
             {
-              img: 'https://999ggg.net/uploads/logo.png',
+              menuIcon: true,
+              img: import.meta.env.VITE_APP_URL + '/uploads/logo.png',
               key: 'aside_header_logo',
               name: 'Logo',
               label:
-                'Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  Tooltip content can be hovered, for example to follow  <a href="/" target="_blank">this link</a>',
+                'Tooltip content can be hovered, for example to follow <a href="/" target="_blank">this link</a>',
               type: 'link',
               variant: 'transparent',
             },

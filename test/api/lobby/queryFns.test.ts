@@ -7,15 +7,13 @@ import { initQueryFn, pageQueryFn, translationQueryFn } from '@/api/lobby/queryF
 import { lobbyQueryKeys } from '@/api/lobby/queryKeys';
 import { fetchTranslation, getPage, initV2 } from '@/api/lobby/requests';
 
-vi.mock('./requests', () => ({
-  fetchTranslation: vi.fn(),
-  getPage: vi.fn(),
-  initV2: vi.fn(),
-}));
+vi.mock('@/api/lobby/requests');
+vi.mock('@/api/lobby/lobbySession');
 
-vi.mock('./lobbySession', () => ({
-  getLobbySessionTokenSnapshot: vi.fn(() => null),
-}));
+const mockedFetchTranslation = vi.mocked(fetchTranslation);
+const mockedGetPage = vi.mocked(getPage);
+const mockedInitV2 = vi.mocked(initV2);
+const mockedGetLobbySessionTokenSnapshot = vi.mocked(getLobbySessionTokenSnapshot);
 
 function queryContext<TQueryKey extends readonly unknown[]>(
   queryKey: TQueryKey,
@@ -26,10 +24,10 @@ function queryContext<TQueryKey extends readonly unknown[]>(
 
 describe('lobby query functions', () => {
   beforeEach(() => {
-    vi.mocked(fetchTranslation).mockResolvedValue({ content: {} });
-    vi.mocked(initV2).mockResolvedValue({ content: {} });
-    vi.mocked(getPage).mockResolvedValue({ content: {} });
-    vi.mocked(getLobbySessionTokenSnapshot).mockReturnValue(null);
+    mockedFetchTranslation.mockResolvedValue({ content: {} });
+    mockedInitV2.mockResolvedValue({ content: {} });
+    mockedGetPage.mockResolvedValue({ content: {} });
+    mockedGetLobbySessionTokenSnapshot.mockReturnValue(null);
   });
 
   it('passes abort signal to bootstrap translation request', async () => {
@@ -37,7 +35,7 @@ describe('lobby query functions', () => {
 
     await translationQueryFn(queryContext(lobbyQueryKeys.translation('en'), signal));
 
-    expect(fetchTranslation).toHaveBeenCalledWith('en', signal);
+    expect(mockedFetchTranslation).toHaveBeenCalledWith('en', signal);
   });
 
   it('passes lobby session token and abort signal to initV2', async () => {
@@ -45,16 +43,16 @@ describe('lobby query functions', () => {
 
     await initQueryFn(queryContext(lobbyQueryKeys.init('en', '/'), signal));
 
-    expect(initV2).toHaveBeenCalledWith({ language: 'en', page: '/' }, signal);
+    expect(mockedInitV2).toHaveBeenCalledWith({ language: 'en', page: '/' }, signal);
   });
 
   it('passes non-null snapshot token into initV2', async () => {
-    vi.mocked(getLobbySessionTokenSnapshot).mockReturnValue('1383_abc');
+    mockedGetLobbySessionTokenSnapshot.mockReturnValue('1383_abc');
     const signal = new AbortController().signal;
 
     await initQueryFn(queryContext(lobbyQueryKeys.init('en', '/'), signal));
 
-    expect(initV2).toHaveBeenCalledWith({ language: 'en', page: '/', token: '1383_abc' }, signal);
+    expect(mockedInitV2).toHaveBeenCalledWith({ language: 'en', page: '/', token: '1383_abc' }, signal);
   });
 
   it('passes abort signal to page requests', async () => {
@@ -62,16 +60,16 @@ describe('lobby query functions', () => {
 
     await pageQueryFn(queryContext(lobbyQueryKeys.page('en', '/games', 0), signal));
 
-    expect(getPage).toHaveBeenCalledWith({ language: 'en', page: '/games' }, signal);
+    expect(mockedGetPage).toHaveBeenCalledWith({ language: 'en', page: '/games' }, signal);
   });
 
   it('passes snapshot token into getPage (not from query key)', async () => {
-    vi.mocked(getLobbySessionTokenSnapshot).mockReturnValue('tok_1');
+    mockedGetLobbySessionTokenSnapshot.mockReturnValue('tok_1');
     const signal = new AbortController().signal;
 
     await pageQueryFn(queryContext(lobbyQueryKeys.page('en', '/games', 2), signal));
 
-    expect(getPage).toHaveBeenCalledWith(
+    expect(mockedGetPage).toHaveBeenCalledWith(
       { language: 'en', page: '/games', token: 'tok_1' },
       signal,
     );

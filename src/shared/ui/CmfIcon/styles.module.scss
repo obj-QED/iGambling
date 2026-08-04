@@ -23,4 +23,8 @@
     object-fit: var(--cmf-icon-object-fit, contain);
     border-radius: var(--cmf-icon-radius, var(--radius-sm, 6px));
   }
+
+  .hidden {
+    display: none !important;
+  }
 }

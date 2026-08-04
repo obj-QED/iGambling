@@ -4,4 +4,4 @@ export {
   resolveSidebarTypeTunableDefaults,
   SIDEBAR_TYPE_TUNABLE_DEFAULTS,
 } from './defaults';
-export { resolveSidebarConfig } from './resolve';
+export { resolveSidebarConfig, resolveSidebarSchema, type SidebarSchemaLayer } from './resolve';

@@ -19,8 +19,16 @@ import styles from './AppLayout.module.scss';
 function AppLayoutComponent() {
   const language = useLanguage();
   const isMobile = useIsMobile();
-  const { headerMenu, headerConfig, footerMenu, sidebarMenu, sidebarConfig, banner } =
-    useAppLayout(language);
+  const {
+    headerMenu,
+    headerConfig,
+    footerMenu,
+    footerSchema,
+    sidebarMenu,
+    sidebarConfig,
+    banner,
+    bannerSchema,
+  } = useAppLayout(language);
   const pageLayout = resolvePageLayoutFromMatches(useMatches() as unknown as PageLayoutMatch[]);
 
   return (
@@ -34,7 +42,7 @@ function AppLayoutComponent() {
           <AppHeader menu={headerMenu} config={headerConfig} className={styles.header} />
         )}
 
-        {banner && <AppBanner banner={banner} className={styles.banner} />}
+        {banner && <AppBanner banner={banner} schema={bannerSchema} className={styles.banner} />}
 
         <Container
           className={styles.page}
@@ -50,7 +58,9 @@ function AppLayoutComponent() {
           )}
         </Container>
 
-        {footerMenu && <AppFooter menu={footerMenu} className={styles.footer} />}
+        {footerMenu && (
+          <AppFooter menu={footerMenu} schema={footerSchema} className={styles.footer} />
+        )}
       </div>
     </div>
   );

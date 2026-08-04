@@ -55,7 +55,7 @@ function ItemButtonComponent({
       className={clsx(dropdownTrigger && styles.dropdownTrigger, className)}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
-      fullWidth
+      fullscreen
       justify={justify}
       leftSection={leftSection}
       rightSection={rightSection}

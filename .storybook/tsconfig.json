@@ -4,6 +4,7 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
@@ -35,5 +36,6 @@
     "../src/storybook/**/*.ts",
     "../src/storybook/**/*.tsx",
     "../build/scss-config.ts"
-  ]
+  ],
+  "exclude": ["test", "**/test/**", "node_modules"]
 }

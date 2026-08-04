@@ -27,7 +27,10 @@
       }
     ],
     "declaration-empty-line-before": "never",
-    "block-closing-brace-empty-line-before": "never"
+    "scss/no-global-function-names": null,
+    "scss/operator-no-unspaced": null,
+    "scss/operator-no-newline-after": null,
+    "scss/comment-no-empty": null
   },
   "overrides": [
     {

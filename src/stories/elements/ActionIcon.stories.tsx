@@ -25,6 +25,7 @@ import {
   mantineSizeArgType,
   mantineTextArgType,
   mantineVariantArgType,
+  omitStorybookNone,
 } from '@/storybook/helpers/mantineArgTypes';
 import {
   ACTION_ICON_DOCS_PLAYGROUND_FIELDS,
@@ -32,13 +33,14 @@ import {
   mantineDocsPlaygroundParameters,
 } from '@/storybook/helpers/MantineDocsPlayground';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
+import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
 
 const ACTION_ICON_STORY_VARIANTS = [
   ...MANTINE_ACTION_ICON_VARIANTS,
   ...CMF_ACTION_ICON_VARIANTS,
 ] as const;
 
-const STORYBOOK_ICON = '/uploads/jlogo.webp';
+const STORYBOOK_ICON = STORYBOOK_DEMO_ICON;
 
 type ActionIconStoryArgs = {
   variant?: (typeof ACTION_ICON_STORY_VARIANTS)[number];
@@ -103,7 +105,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   parameters: elementDocsPreviewParameters,
   render: (args) => {
-    const { iconScale, iconAspect, ...iconArgs } = args as ActionIconStoryArgs;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, ...iconArgs } = cleaned as ActionIconStoryArgs;
     void iconScale;
     void iconAspect;
     return (
@@ -125,7 +128,8 @@ export const WithCmfIcon: Story = {
     },
   },
   render: (args) => {
-    const { iconScale, iconAspect, ...iconArgs } = args as ActionIconStoryArgs;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, ...iconArgs } = cleaned as ActionIconStoryArgs;
     return (
       <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
         <ActionIcon {...iconArgs}>
@@ -141,43 +145,48 @@ export const IconCascade: Story = {
     ...elementDocsPreviewParameters,
     docs: {
       description: {
-        story: 'Control tokens `--cmf-action-icon-icon-{scale|aspect|width|height}`.',
+        story:
+          'Icon box = `--ai-size` × scale × aspect. Toggle **Color scheme** in the toolbar to verify light/dark brand paint. CMF media uses `CmfIcon`, not Tabler strokes.',
       },
     },
   },
   render: () => (
-    <Stack gap="lg" align="flex-start">
-      <Stack gap="xs">
+    <Stack gap="xl" align="stretch" maw={520}>
+      <Stack gap="sm">
         <Text size="sm" fw={600}>
-          scale 0.5 / 0.7 / 1
+          Scale — 0.5 / 0.7 / 1 (aspect 1)
         </Text>
-        <Group gap="md">
+        <Group gap="lg" align="flex-end" wrap="wrap">
           {(['0.5', '0.7', '1'] as const).map((scale) => (
-            <div
-              key={scale}
-              style={cmfControlIconCascadeStyle('action-icon', { scale, aspect: 1 })}
-            >
-              <ActionIcon variant="default" aria-label={`scale ${scale}`}>
-                <DemoCmfIcon alt={`scale ${scale}`} />
-              </ActionIcon>
-            </div>
+            <Stack key={scale} gap={6} align="center">
+              <div style={cmfControlIconCascadeStyle('action-icon', { scale, aspect: 1 })}>
+                <ActionIcon variant="default" size="lg" aria-label={`scale ${scale}`}>
+                  <DemoCmfIcon alt={`scale ${scale}`} />
+                </ActionIcon>
+              </div>
+              <Text size="xs" c="dimmed">
+                {scale}
+              </Text>
+            </Stack>
           ))}
         </Group>
       </Stack>
-      <Stack gap="xs">
+      <Stack gap="sm">
         <Text size="sm" fw={600}>
-          aspect 1 / 1.5 / 2 · scale 0.7
+          Aspect — 1 / 1.5 / 2 (scale 0.7)
         </Text>
-        <Group gap="md">
+        <Group gap="lg" align="flex-end" wrap="wrap">
           {(['1', '1.5', '2'] as const).map((aspect) => (
-            <div
-              key={aspect}
-              style={cmfControlIconCascadeStyle('action-icon', { scale: 0.7, aspect })}
-            >
-              <ActionIcon variant="outline" aria-label={`aspect ${aspect}`}>
-                <DemoCmfIcon alt={`aspect ${aspect}`} />
-              </ActionIcon>
-            </div>
+            <Stack key={aspect} gap={6} align="center">
+              <div style={cmfControlIconCascadeStyle('action-icon', { scale: 0.7, aspect })}>
+                <ActionIcon variant="outline" size="lg" aria-label={`aspect ${aspect}`}>
+                  <DemoCmfIcon alt={`aspect ${aspect}`} />
+                </ActionIcon>
+              </div>
+              <Text size="xs" c="dimmed">
+                {aspect}
+              </Text>
+            </Stack>
           ))}
         </Group>
       </Stack>
@@ -215,7 +224,8 @@ export const Playground: Story = {
   },
   render: function ActionIconPlayground() {
     const [args, updateArgs] = useArgs<ActionIconStoryArgs>();
-    const { iconScale, iconAspect, ...iconArgs } = args;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, ...iconArgs } = cleaned as ActionIconStoryArgs;
 
     return (
       <MantineDocsPlayground

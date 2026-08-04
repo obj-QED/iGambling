@@ -18,9 +18,11 @@ function AppLogoComponent({
 }: AppLogoProps) {
   const [imgFailed, setImgFailed] = useState(false);
   const alt = label.trim();
-  const hasImg = (img?.length ?? 0) > 0;
+  const hasName = alt.length > 0;
+  const hasImg = (img?.length ?? 0) > 0 && !imgFailed;
 
-  if (alt.length === 0 && !hasImg) return null;
+  // No usable img (missing or onError) and no name → do not render.
+  if (!hasImg && !hasName) return null;
 
   if (!hasImg) {
     return (
@@ -35,14 +37,12 @@ function AppLogoComponent({
     );
   }
 
-  if (imgFailed) return null;
-
   return (
     <AppButton
       href={href}
       variant={variant}
       className={clsx(styles.root, className)}
-      aria-label={alt.length > 0 ? alt : undefined}
+      aria-label={hasName ? alt : undefined}
       leftSection={
         <img
           className={clsx(styles.image, 'cmf-Button-image')}

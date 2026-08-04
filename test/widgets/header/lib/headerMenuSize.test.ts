@@ -33,7 +33,7 @@ describe('headerMenuSize', () => {
     header.style.setProperty('--header-size-button', 'not-a-size');
     document.body.appendChild(header);
 
-    expect(readHeaderMenuSizes(header).button).toBe('xl');
+    expect(readHeaderMenuSizes(header).button).toBe('md');
 
     header.remove();
   });

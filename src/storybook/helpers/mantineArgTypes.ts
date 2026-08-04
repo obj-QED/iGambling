@@ -1,4 +1,4 @@
-/** Shared Storybook controls shaped like Mantine docs (variant, color, size, radius). */
+/** Shared Storybook controls — select dropdowns with optional «none». */
 
 import { MANTINE_BUTTON_VARIANTS } from '@/assets/theme';
 
@@ -24,54 +24,80 @@ export const MANTINE_THEME_COLORS = [
 
 export const MANTINE_RADIUS_OPTIONS = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
+/** Sentinel for “prop not set” in select controls (maps to `undefined` in render). */
+export const STORYBOOK_NONE = '__none__' as const;
+export const STORYBOOK_NONE_LABEL = '— none —';
+
 export const mantinePlaygroundParameters = {
   layout: 'fullscreen' as const,
   controls: { expanded: true },
 };
 
-export function mantineVariantArgType(options: readonly string[], category = 'Appearance') {
+type SelectArgOptions = {
+  category?: string;
+  /** When true, first option is empty → prop omitted. */
+  allowNone?: boolean;
+};
+
+function withNoneOption(options: readonly string[], allowNone: boolean): string[] {
+  return allowNone ? [STORYBOOK_NONE, ...options] : [...options];
+}
+
+export function mantineSelectArgType(options: readonly string[], opts: SelectArgOptions = {}) {
+  const { category = 'Appearance', allowNone = false } = opts;
+  const list = withNoneOption(options, allowNone);
+
   return {
-    control: 'select',
-    options: [...options],
+    control: {
+      type: 'select' as const,
+      labels: allowNone
+        ? Object.fromEntries(
+            list.map((value) => [value, value === STORYBOOK_NONE ? STORYBOOK_NONE_LABEL : value]),
+          )
+        : undefined,
+    },
+    options: list,
     table: { category },
   };
 }
 
-export function mantineColorArgType() {
-  return {
-    control: 'select',
-    options: [...MANTINE_THEME_COLORS],
-    table: { category: 'Appearance' },
-  };
+export function mantineVariantArgType(options: readonly string[], category = 'Appearance') {
+  return mantineSelectArgType(options, { category, allowNone: true });
 }
 
-export function mantineSizeArgType(options: readonly string[]) {
-  return {
-    control: 'inline-radio',
-    options: [...options],
-    table: { category: 'Layout' },
-  };
+export function mantineColorArgType(allowNone = true) {
+  return mantineSelectArgType(MANTINE_THEME_COLORS, { category: 'Appearance', allowNone });
 }
 
-export function mantineRadiusArgType() {
-  return {
-    control: 'inline-radio',
-    options: [...MANTINE_RADIUS_OPTIONS],
-    table: { category: 'Layout' },
-  };
+export function mantineSizeArgType(options: readonly string[], allowNone = true) {
+  return mantineSelectArgType(options, { category: 'Layout', allowNone });
+}
+
+export function mantineRadiusArgType(allowNone = true) {
+  return mantineSelectArgType(MANTINE_RADIUS_OPTIONS, { category: 'Layout', allowNone });
 }
 
 export function mantineBooleanArgType(category = 'State') {
   return {
-    control: 'boolean',
+    control: 'boolean' as const,
     table: { category },
   };
 }
 
 export function mantineTextArgType(name = 'Label') {
   return {
-    control: 'text',
+    control: 'text' as const,
     table: { category: 'Content' },
     name,
   };
+}
+
+/** Drop empty sentinel before passing args to the component. */
+export function omitStorybookNone<T extends Record<string, unknown>>(args: T): Partial<T> {
+  const next: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(args)) {
+    if (value === STORYBOOK_NONE || value === undefined || value === null) continue;
+    next[key] = value;
+  }
+  return next as Partial<T>;
 }

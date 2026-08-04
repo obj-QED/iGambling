@@ -3,14 +3,16 @@ import { fileURLToPath } from 'node:url';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 
-import { scssAdditionalData } from './build/scss-config';
-import { themeBuildPlugin } from './vite-plugin-assets-build';
-import { fontsStylesheetPlugin } from './vite-plugin-fonts-stylesheet';
+import { scssAdditionalData } from './build/scss-config.ts';
+import { themeBuildPlugin } from './vite-plugin-assets-build.ts';
+import { cssCascadeFullReloadPlugin } from './vite-plugin-css-cascade-full-reload.ts';
+import { fontsStylesheetPlugin } from './vite-plugin-fonts-stylesheet.ts';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const viteAppUrl = env.VITE_APP_URL;
-  const lobbyApiUrl = env.VITE_LOBBY_API_URL;
+  // CI often has no .env — never call .length on undefined.
+  const viteAppUrl = typeof env.VITE_APP_URL === 'string' ? env.VITE_APP_URL : '';
+  const lobbyApiUrl = typeof env.VITE_LOBBY_API_URL === 'string' ? env.VITE_LOBBY_API_URL : '';
   const apiTarget =
     viteAppUrl.length > 0 ? viteAppUrl : lobbyApiUrl.length > 0 ? lobbyApiUrl : 'http://localhost';
   const isProd = mode === 'production';
@@ -20,6 +22,7 @@ export default defineConfig(({ mode }) => {
       react(),
       fontsStylesheetPlugin(),
       themeBuildPlugin(),
+      cssCascadeFullReloadPlugin(),
       shouldAnalyze
         ? visualizer({
             filename: 'dist/stats.html',

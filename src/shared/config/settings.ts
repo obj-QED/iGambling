@@ -1,7 +1,11 @@
 import type { AsideSettings } from './asideSettings';
+import type { BannerSettings } from './bannerSettings';
+import type { FooterSettings } from './footerSettings';
 import type { HeaderSettings } from './headerSettings';
 
 export type { AsideSettings } from './asideSettings';
+export type { BannerSettings } from './bannerSettings';
+export type { FooterSettings } from './footerSettings';
 export type { HeaderSettings } from './headerSettings';
 
 export type AppParams = {
@@ -9,7 +13,7 @@ export type AppParams = {
    * Mobile/tablet: request document fullscreen on first scroll.
    * Set `false` to disable.
    */
-  fullWidth?: boolean;
+  fullscreen?: boolean;
 };
 
 export type AppSettings = {
@@ -23,6 +27,8 @@ export type AppSettings = {
   lobbyToken?: string;
   header?: HeaderSettings;
   aside?: AsideSettings;
+  banner?: BannerSettings;
+  footer?: FooterSettings;
 };
 
 declare global {
@@ -37,5 +43,5 @@ export function getSettings(): AppSettings {
 }
 
 export function isScrollFullscreenEnabled(settings = getSettings()): boolean {
-  return settings.params?.fullWidth === true;
+  return settings.params?.fullscreen === true;
 }

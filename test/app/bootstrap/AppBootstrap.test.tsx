@@ -1,12 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider as ReactReduxProvider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import '@testing-library/jest-dom';
 
 import { AppBootstrap } from '@/app/bootstrap/AppBootstrap';
 
 const useAppBootstrapMock = vi.fn();
 
-vi.mock('./useAppBootstrap', () => ({
+// Fix the mock path to point to the actual file
+vi.mock('@/app/bootstrap/useAppBootstrap', () => ({
   useAppBootstrap: (...args: unknown[]) => useAppBootstrapMock(...args),
 }));
 
@@ -22,11 +27,40 @@ vi.mock('./GlobalPreloader', () => ({
   GlobalPreloader: () => <div>loading</div>,
 }));
 
+// Mock useInitData hook to prevent it from trying to use react-query
+vi.mock('@/api/lobby/queries/useInitData', () => ({
+  useInitData: () => ({
+    init: { status: 'idle', data: undefined },
+    translation: { status: 'idle', data: undefined },
+  }),
+}));
+
 function renderBootstrap() {
+  // Create a mock Redux store with observable
+  const observableMock = {
+    subscribe: (_observer: any) => {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      return { unsubscribe: () => {} };
+    },
+    [Symbol.observable]: () => observableMock,
+  };
+
+  const mockStore = {
+    dispatch: vi.fn(),
+    getState: vi.fn(() => ({})),
+    subscribe: vi.fn(),
+    replaceReducer: vi.fn(),
+    [Symbol.observable]: () => observableMock,
+  };
+
   return render(
-    <MemoryRouter>
-      <AppBootstrap />
-    </MemoryRouter>,
+    <ReactReduxProvider store={mockStore}>
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter>
+          <AppBootstrap />
+        </MemoryRouter>
+      </QueryClientProvider>
+    </ReactReduxProvider>
   );
 }
 
@@ -42,7 +76,7 @@ describe('AppBootstrap', () => {
 
     renderBootstrap();
 
-    expect(screen.getByText('loading')).toBeInTheDocument();
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it('shows server error page when bootstrap fails', () => {

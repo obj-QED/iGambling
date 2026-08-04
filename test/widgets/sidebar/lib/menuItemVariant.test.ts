@@ -11,8 +11,8 @@ describe('resolveMenuItemButtonVariant (sidebar)', () => {
     expect(resolveMenuItemButtonVariant({ key: 'home', type: 'link' })).toBe('transparent');
   });
 
-  it('uses outline for button items', () => {
-    expect(resolveMenuItemButtonVariant({ key: 'home', type: 'button' })).toBe('outline');
+  it('uses default for button items', () => {
+    expect(resolveMenuItemButtonVariant({ key: 'home', type: 'button' })).toBe('default');
   });
 
   it('defaults missing type to link (transparent)', () => {
@@ -46,7 +46,7 @@ describe('resolveMenuItemButtonVariant (sidebar)', () => {
     expect(resolveMenuItemActionIconVariant({ key: 'wheel_mdl', type: 'link' })).toBe(
       'transparent',
     );
-    expect(resolveMenuItemActionIconVariant({ key: 'home', type: 'button' })).toBe('outline');
+    expect(resolveMenuItemActionIconVariant({ key: 'home', type: 'button' })).toBe('default');
     expect(
       resolveMenuItemActionIconVariant({ key: 'home', type: 'button', variant: 'filled' }),
     ).toBe('filled');

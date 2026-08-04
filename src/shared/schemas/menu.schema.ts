@@ -14,6 +14,7 @@ export const menuItemDtoSchema: z.ZodType<MenuItemDto> = z.lazy(() =>
     type: z.string().optional(),
     variant: z.string().optional(),
     label: z.string().optional(),
+    menuIcon: z.boolean().optional(),
     badge: z.union([z.string(), z.number()]).optional(),
     subtitle: z.string().optional(),
     items: z.array(menuItemDtoSchema).min(1).optional(),

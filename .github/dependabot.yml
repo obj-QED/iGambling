@@ -1,0 +1,28 @@
+# One grouped PR per ecosystem — avoids flooding Actions with N× workflows.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 1
+    groups:
+      all-npm:
+        patterns:
+          - "*"
+    labels:
+      - dependencies
+      - security
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 1
+    groups:
+      all-actions:
+        patterns:
+          - "*"
+    labels:
+      - dependencies
+      - security

@@ -68,14 +68,26 @@ describe('sidebar dropdown CMF attrs', () => {
     expect(menuItemDropdownDataAttrs(casino, 'section-header')['data-cmf-role']).toBe(
       'section-header',
     );
-    expect(resolveMenuItemCmfAttrs(casino, { role: 'leaf' })['data-cmf-role']).toBe('leaf');
+    const leafAttrs = resolveMenuItemCmfAttrs(casino, { role: 'leaf' });
+    expect(leafAttrs['data-cmf-component']).toBe('sidebar-dropdown');
+    if (leafAttrs['data-cmf-component'] === 'sidebar-dropdown') {
+      expect(leafAttrs['data-cmf-role']).toBe('leaf');
+    }
   });
 
   it('resolveMenuItemCmfAttrs maps trigger/item to parent/child by default', () => {
-    expect(resolveMenuItemCmfAttrs(casino, { dropdownTrigger: true })['data-cmf-role']).toBe(
-      'parent',
-    );
-    expect(resolveMenuItemCmfAttrs(casino, { dropdownItem: true })['data-cmf-role']).toBe('child');
+    const triggerAttrs = resolveMenuItemCmfAttrs(casino, { dropdownTrigger: true });
+    expect(triggerAttrs['data-cmf-component']).toBe('sidebar-dropdown');
+    if (triggerAttrs['data-cmf-component'] === 'sidebar-dropdown') {
+      expect(triggerAttrs['data-cmf-role']).toBe('parent');
+    }
+
+    const itemAttrs = resolveMenuItemCmfAttrs(casino, { dropdownItem: true });
+    expect(itemAttrs['data-cmf-component']).toBe('sidebar-dropdown');
+    if (itemAttrs['data-cmf-component'] === 'sidebar-dropdown') {
+      expect(itemAttrs['data-cmf-role']).toBe('child');
+    }
+
     expect(resolveMenuItemCmfAttrs(casino)['data-cmf-component']).toBe('sidebar');
   });
 });

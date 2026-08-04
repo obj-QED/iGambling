@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
-import { AppHeader } from '@/widgets/header';
+import { AppHeader, DEFAULT_HEADER_CONFIG } from '@/widgets/header';
 
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -54,10 +54,18 @@ function renderHeader() {
         <AppHeader
           menu={SAMPLE_MENU}
           config={{
+            ...DEFAULT_HEADER_CONFIG,
             layout: 'container',
             type: 'default',
             blockVariants: {},
-            tooltip: { enabled: false, position: 'top', delay: 0, withArrow: true, offset: 5 },
+            tooltip: {
+              enabled: false,
+              position: 'top',
+              delay: 0,
+              closeDelay: 300,
+              withArrow: true,
+              offset: 5,
+            },
           }}
         />
       </MemoryRouter>
@@ -66,11 +74,11 @@ function renderHeader() {
 }
 
 describe('AppHeader', () => {
-  it('renders special blocks, logo and dropdown trigger', () => {
+  it('renders special blocks, logo and dropdown trigger', async () => {
     renderHeader();
 
     expect(screen.getByRole('button', { name: /logo/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'search' })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'search' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Profile' })).toBeInTheDocument();
   });
 
@@ -81,10 +89,18 @@ describe('AppHeader', () => {
           <AppHeader
             menu={{ sections: [{ key: 'empty', items: [{ key: 'x', name: '', url: '' }] }] }}
             config={{
+              ...DEFAULT_HEADER_CONFIG,
               layout: 'container',
               type: 'default',
               blockVariants: {},
-              tooltip: { enabled: false, position: 'top', delay: 0, withArrow: true, offset: 5 },
+              tooltip: {
+                enabled: false,
+                position: 'top',
+                delay: 0,
+                closeDelay: 300,
+                withArrow: true,
+                offset: 5,
+              },
             }}
           />
         </MemoryRouter>

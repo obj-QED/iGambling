@@ -4,12 +4,13 @@ import { memo } from 'react';
 
 import { ScrollArea } from '@mantine/core';
 
-import { filterRenderableItems, isSpecialBlockKey } from '../../lib';
+import { filterRenderableItems } from '../../lib';
 import { Block } from '../../ui/Block';
 import { SidebarFooter } from '../../ui/layout/SidebarFooter/SidebarFooter';
 import { SidebarHeader } from '../../ui/layout/SidebarHeader/SidebarHeader';
 import { Section } from '../../ui/Section';
 import { Shell } from '../../ui/Shell';
+import { renderChromeItems } from '../renderChromeItems';
 import { useSidebarTypePack } from '../useSidebarTypePack';
 
 import scrollAreaStyles from '../../styles/base/AsideScrollArea.module.scss';
@@ -33,16 +34,11 @@ function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) 
 
   return (
     <>
-      {regions.header && headerItems.length > 0 && (
-        <SidebarHeader>
-          {headerItems.map((item) => {
-            const Item = isSpecialBlockKey(item.key) ? Block : HeaderItem;
-            return <Item key={item.key ?? item.name} item={item} />;
-          })}
-        </SidebarHeader>
-      )}
+      {regions.header && layout.headerSection && headerItems.length > 0 ? (
+        <SidebarHeader>{renderChromeItems(headerItems, HeaderItem)}</SidebarHeader>
+      ) : null}
 
-      {regions.main && mainSections.length > 0 && (
+      {regions.main && mainSections.length > 0 ? (
         <ScrollArea
           className={styles.scroll}
           classNames={{
@@ -69,16 +65,11 @@ function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) 
             })}
           </Shell>
         </ScrollArea>
-      )}
+      ) : null}
 
-      {regions.footer && footerItems.length > 0 && (
-        <SidebarFooter>
-          {footerItems.map((item) => {
-            const Item = isSpecialBlockKey(item.key) ? Block : FooterItem;
-            return <Item key={item.key ?? item.name} item={item} />;
-          })}
-        </SidebarFooter>
-      )}
+      {regions.footer && layout.footerSection && footerItems.length > 0 ? (
+        <SidebarFooter>{renderChromeItems(footerItems, FooterItem)}</SidebarFooter>
+      ) : null}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import type { SectionProps } from '../types';
 
-import { memo } from 'react';
+import { Children, memo } from 'react';
 
 import clsx from 'clsx';
 
@@ -10,7 +10,7 @@ import { Block } from './Block';
 import styles from '../styles/base/Section.module.scss';
 
 function SectionComponent({ section, children, className }: SectionProps) {
-  if (children) {
+  if (Children.count(children) > 0) {
     const label = section?.key ?? 'section';
     return (
       <nav

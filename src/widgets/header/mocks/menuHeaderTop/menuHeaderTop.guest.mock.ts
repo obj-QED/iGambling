@@ -1,5 +1,7 @@
 import type { MenuHeaderTopBlockMock } from './types';
 
+import { publicAssetUrl } from '@/shared/lib/publicAssetUrl';
+
 /** Header menu mock for guest (no session / token). */
 export const MENU_HEADER_TOP_GUEST_MOCK: MenuHeaderTopBlockMock = {
   skin: '',
@@ -16,21 +18,21 @@ export const MENU_HEADER_TOP_GUEST_MOCK: MenuHeaderTopBlockMock = {
           url: '/',
           name: '',
           key: 'logo',
-          img: 'https://999ggg.net/uploads/logo.png',
+          img: import.meta.env.VITE_APP_URL + '/uploads/logo.png',
           type: 'link',
         },
         {
           url: '/',
           name: '',
           key: 'home',
-          img: '/uploads/jlogo.webp',
+          img: publicAssetUrl('uploads/jlogo.webp'),
           type: 'link',
         },
         {
           url: '/',
           name: 'Casino',
           key: 'casino',
-          img: '/uploads/logo.png',
+          img: publicAssetUrl('uploads/logo.png'),
           type: 'link',
           variant: 'outline',
         },
@@ -38,13 +40,13 @@ export const MENU_HEADER_TOP_GUEST_MOCK: MenuHeaderTopBlockMock = {
           name: '',
           label: 'Compact Search',
           key: 'search',
-          img: 'public/icons/tabler/search.svg',
+          img: publicAssetUrl('icons/tabler/search.svg'),
           variant: 'transparent',
         },
         {
           name: 'Wallet',
           key: 'wallet',
-          img: 'public/icons/tabler/wallet.svg',
+          img: publicAssetUrl('icons/tabler/wallet.svg'),
           type: 'link',
           variant: 'transparent',
         },

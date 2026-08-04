@@ -1,4 +1,6 @@
 export type {
+  AsideBehaviorSettings,
+  AsideCapabilitiesSettings,
   AsideLayoutKey,
   AsideLayoutStrategyKey,
   AsideRegionsSettings,
@@ -9,6 +11,7 @@ export type {
   AsideTypeKey,
   AsideTypeStrategyKey,
   AsideTypeTunablesSettings,
+  AsideWrappersSettings,
 } from './asideSettings';
 export {
   ASIDE_LAYOUT_KEYS,
@@ -17,7 +20,25 @@ export {
   ASIDE_TYPE_KEYS,
 } from './asideSettings';
 export type {
+  BannerBehaviorSettings,
+  BannerCapabilitiesSettings,
+  BannerLayoutKey,
+  BannerSettings,
+  BannerVariantKey,
+} from './bannerSettings';
+export { BANNER_LAYOUT_KEYS, BANNER_VARIANT_KEYS } from './bannerSettings';
+export type {
+  FooterBehaviorSettings,
+  FooterCapabilitiesSettings,
+  FooterLayoutKey,
+  FooterSettings,
+  FooterVariantKey,
+} from './footerSettings';
+export { FOOTER_LAYOUT_KEYS, FOOTER_VARIANT_KEYS } from './footerSettings';
+export type {
+  HeaderBehaviorSettings,
   HeaderBlockVariantSettings,
+  HeaderCapabilitiesSettings,
   HeaderCustomBlockConfig,
   HeaderCustomBlockInput,
   HeaderCustomBlockPlacement,
@@ -30,6 +51,7 @@ export type {
   HeaderTypeKey,
   HeaderTypeStrategyKey,
   HeaderTypeTunablesSettings,
+  HeaderWrappersSettings,
 } from './headerSettings';
 export {
   HEADER_DROPDOWN_OUTSIDE_KEYS,

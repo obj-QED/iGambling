@@ -31,6 +31,10 @@ export function mapItem(item: MenuItemDto): HeaderMenuItem {
     mapped.label = item.label;
   }
 
+  if (item.menuIcon === true) {
+    mapped.menuIcon = true;
+  }
+
   if (item.variant !== undefined) {
     mapped.variant = item.variant;
   }

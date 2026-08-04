@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useMemo } from 'react';
 
 import {
   DEFAULT_HEADER_MENU_SIZES,
@@ -8,11 +8,8 @@ import {
 
 /** Sync Mantine size props with `--header-size-*` CSS vars on `[data-widget='header']`. */
 export function useHeaderMenuSizesFromElement(headerEl: HTMLElement | null): HeaderMenuSizes {
-  const [sizes, setSizes] = useState<HeaderMenuSizes>(DEFAULT_HEADER_MENU_SIZES);
-
-  useLayoutEffect(() => {
-    setSizes(readHeaderMenuSizes(headerEl));
-  }, [headerEl]);
-
-  return sizes;
+  return useMemo(
+    () => (headerEl ? readHeaderMenuSizes(headerEl) : DEFAULT_HEADER_MENU_SIZES),
+    [headerEl],
+  );
 }

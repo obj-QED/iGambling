@@ -1,4 +1,4 @@
-import UAParser from 'ua-parser-js';
+import { UAParser } from 'ua-parser-js';
 
 export type DeviceBrowserSlug = 'chrome' | 'safari' | 'firefox' | 'edge' | 'opera' | 'unknown';
 
@@ -32,15 +32,16 @@ function resolveDeviceType(type: string | undefined): ParsedUserAgent['deviceTyp
 
 /** Parses UA via `ua-parser-js` (OS, browser, device type). */
 export function parseUserAgent(userAgent?: string): ParsedUserAgent {
-  const parser = new UAParser(userAgent);
-  const osName = (parser.getOS().name ?? '').toLowerCase();
-  const browserName = parser.getBrowser().name ?? 'unknown';
+  // ua-parser-js v2 types expose the call signature (not `new`); runtime accepts both.
+  const result = UAParser(userAgent);
+  const osName = (result.os.name ?? '').toLowerCase();
+  const browserName = result.browser.name ?? 'unknown';
 
   return {
     isIOS: osName === 'ios',
     isAndroid: osName === 'android',
-    browser: slugifyBrowser(parser.getBrowser().name),
+    browser: slugifyBrowser(result.browser.name),
     browserName,
-    deviceType: resolveDeviceType(parser.getDevice().type),
+    deviceType: resolveDeviceType(result.device.type),
   };
 }

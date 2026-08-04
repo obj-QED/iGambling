@@ -13,6 +13,8 @@ export type HeaderMenuItem = {
   name?: string;
   /** Optional a11y / tooltip copy; wins over `name` where consumers resolve it. Tooltip may be HTML. */
   label?: string;
+  /** Sidebar logo — render menu/burger trigger beside the mark. */
+  menuIcon?: boolean;
   img?: string;
   imgShape?: string;
   imgRadius?: string;

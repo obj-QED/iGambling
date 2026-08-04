@@ -1,6 +1,6 @@
 import type { ShellProps } from '../types';
 
-import { memo } from 'react';
+import { Children, memo } from 'react';
 
 import clsx from 'clsx';
 
@@ -9,7 +9,7 @@ import { Section } from './Section';
 import styles from '../styles/base/Shell.module.scss';
 
 function ShellComponent({ menu, children, className }: ShellProps) {
-  if (children) {
+  if (Children.count(children) > 0) {
     return <div className={clsx(styles.root, className)}>{children}</div>;
   }
 

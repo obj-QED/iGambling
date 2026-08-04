@@ -20,6 +20,7 @@ import {
   mantineSizeArgType,
   mantineTextArgType,
   mantineVariantArgType,
+  omitStorybookNone,
 } from '@/storybook/helpers/mantineArgTypes';
 import {
   BUTTON_DOCS_PLAYGROUND_FIELDS,
@@ -27,13 +28,14 @@ import {
   mantineDocsPlaygroundParameters,
 } from '@/storybook/helpers/MantineDocsPlayground';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
+import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
 
 const BUTTON_STORY_VARIANTS = [
   ...MANTINE_BUTTON_VARIANTS,
   ...CMF_BUTTON_VARIANTS.filter((variant) => variant !== 'exception'),
 ] as const;
 
-const STORYBOOK_ICON = '/uploads/jlogo.webp';
+const STORYBOOK_ICON = STORYBOOK_DEMO_ICON;
 
 type ButtonStoryArgs = {
   children?: string;
@@ -43,7 +45,8 @@ type ButtonStoryArgs = {
   radius?: string;
   disabled?: boolean;
   loading?: boolean;
-  fullWidth?: boolean;
+  /** Project alias — maps to Mantine `fullWidth`. */
+  fullscreen?: boolean;
   iconScale?: string;
   iconAspect?: string;
 };
@@ -72,7 +75,7 @@ const meta = {
     radius: mantineRadiusArgType(),
     disabled: mantineBooleanArgType(),
     loading: mantineBooleanArgType(),
-    fullWidth: mantineBooleanArgType('Layout'),
+    fullscreen: mantineBooleanArgType('Layout'),
     children: mantineTextArgType('children'),
     iconScale: mantineVariantArgType(['0.5', '0.7', '1'] as const, 'Icon'),
     iconAspect: mantineVariantArgType(['1', '1.5', '2'] as const, 'Icon'),
@@ -85,7 +88,7 @@ const meta = {
     radius: 'md',
     disabled: false,
     loading: false,
-    fullWidth: false,
+    fullscreen: false,
     iconScale: '0.7',
     iconAspect: '1',
   },
@@ -96,6 +99,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   parameters: elementDocsPreviewParameters,
+  render: (args) => {
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, children, fullscreen, ...buttonArgs } =
+      cleaned as ButtonStoryArgs;
+    void iconScale;
+    void iconAspect;
+    return (
+      <Button {...buttonArgs} fullWidth={fullscreen}>
+        {children}
+      </Button>
+    );
+  },
 };
 
 export const WithIcon: Story = {
@@ -108,10 +123,16 @@ export const WithIcon: Story = {
     },
   },
   render: (args) => {
-    const { iconScale, iconAspect, children, ...buttonArgs } = args as ButtonStoryArgs;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, children, fullscreen, ...buttonArgs } =
+      cleaned as ButtonStoryArgs;
     return (
       <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
-        <Button {...buttonArgs} leftSection={<DemoButtonIcon alt={String(children ?? 'Button')} />}>
+        <Button
+          {...buttonArgs}
+          fullWidth={fullscreen}
+          leftSection={<DemoButtonIcon alt={String(children ?? 'Button')} />}
+        >
           {children}
         </Button>
       </div>
@@ -125,17 +146,17 @@ export const IconCascade: Story = {
     docs: {
       description: {
         story:
-          'Token ladder demos. Prefer `--cmf-button-icon-*` / widget scope over bare `%` of row width.',
+          'Icon media size from `--cmf-button-icon-{scale|aspect|width|height}`. Use toolbar Color scheme for brand light/dark.',
       },
     },
   },
   render: () => (
-    <Stack gap="lg" align="flex-start">
-      <Stack gap="xs">
+    <Stack gap="xl" align="stretch" maw={640}>
+      <Stack gap="sm">
         <Text size="sm" fw={600}>
-          scale 0.5 / 0.7 / 1 · aspect 1
+          Scale — 0.5 / 0.7 / 1 (aspect 1)
         </Text>
-        <Group gap="md">
+        <Group gap="md" wrap="wrap" align="flex-end">
           {(['0.5', '0.7', '1'] as const).map((scale) => (
             <div key={scale} style={cmfControlIconCascadeStyle('button', { scale, aspect: 1 })}>
               <Button variant="default" leftSection={<DemoButtonIcon alt={`scale ${scale}`} />}>
@@ -145,11 +166,11 @@ export const IconCascade: Story = {
           ))}
         </Group>
       </Stack>
-      <Stack gap="xs">
+      <Stack gap="sm">
         <Text size="sm" fw={600}>
-          aspect 1 / 1.5 / 2 · scale 0.7 (sidebar-like)
+          Aspect — 1 / 1.5 / 2 (scale 0.7)
         </Text>
-        <Group gap="md">
+        <Group gap="md" wrap="wrap" align="flex-end">
           {(['1', '1.5', '2'] as const).map((aspect) => (
             <div key={aspect} style={cmfControlIconCascadeStyle('button', { scale: 0.7, aspect })}>
               <Button variant="outline" leftSection={<DemoButtonIcon alt={`aspect ${aspect}`} />}>
@@ -159,9 +180,9 @@ export const IconCascade: Story = {
           ))}
         </Group>
       </Stack>
-      <Stack gap="xs">
+      <Stack gap="sm">
         <Text size="sm" fw={600}>
-          explicit `--cmf-button-icon-height: 1.25rem`
+          Explicit height / width tokens
         </Text>
         <div style={cmfControlIconCascadeStyle('button', { height: '1.25rem', width: '1.875rem' })}>
           <Button variant="light" leftSection={<DemoButtonIcon alt="explicit size" />}>
@@ -199,7 +220,9 @@ export const Playground: Story = {
   },
   render: function ButtonPlayground() {
     const [args, updateArgs] = useArgs<ButtonStoryArgs>();
-    const { iconScale, iconAspect, children, ...buttonArgs } = args;
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    const { iconScale, iconAspect, children, fullscreen, ...buttonArgs } =
+      cleaned as ButtonStoryArgs;
 
     return (
       <MantineDocsPlayground
@@ -210,6 +233,7 @@ export const Playground: Story = {
         <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
           <Button
             {...buttonArgs}
+            fullWidth={fullscreen}
             leftSection={<DemoButtonIcon alt={String(children ?? 'Button')} />}
           >
             {children}

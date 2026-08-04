@@ -1,4 +1,7 @@
-/* CSS layers + Mantine + tokens — must stay above app imports (import sort). */
+/* eslint-disable simple-import-sort/imports -- CSS bootstrap must evaluate before App CSS modules (Vite @layer / HMR). */
+import './assets/styles-bootstrap';
+import '@/assets/settings/index.js';
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -11,9 +14,6 @@ import { queryClient } from '@api/queryClient';
 import { getBrowserLanguage } from '@hooks/useLanguage';
 
 import { initDeviceBodyClasses } from '@/shared/lib/device';
-
-import './assets/styles-bootstrap';
-import '@/assets/settings/index.js';
 
 const root = createRoot(document.getElementById('root')!);
 

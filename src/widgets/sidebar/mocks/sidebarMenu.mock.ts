@@ -1,5 +1,7 @@
 import type { HeaderMenuModel } from '@/widgets/header';
 
+import { publicAssetUrl } from '@/shared/lib/publicAssetUrl';
+
 export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
   sections: [
     {
@@ -31,14 +33,14 @@ export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
           name: '',
           label: 'Home',
           key: 'home',
-          img: '/uploads/web.svg',
+          img: publicAssetUrl('uploads/web.svg'),
           type: 'button',
         },
         {
           url: '/jackpots',
           name: 'Jackpots',
           key: 'jackpots',
-          img: '/uploads/jlogo.webp',
+          img: publicAssetUrl('uploads/jlogo.webp'),
           type: 'link',
         },
         {

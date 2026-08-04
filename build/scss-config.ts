@@ -1,4 +1,4 @@
-import { BREAKPOINTS_PX } from '../src/assets/theme/breakpoints';
+import { BREAKPOINTS_PX } from '../src/assets/theme/breakpoints.ts';
 
 export const scssBreakpoints = Object.entries(BREAKPOINTS_PX)
   .map(([name, px]) => `$${name}: ${px}px;`)

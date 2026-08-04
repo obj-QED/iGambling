@@ -1,9 +1,11 @@
 import type { ButtonProps } from '@mantine/core';
 import type { MouseEventHandler, ReactNode } from 'react';
 
-export type AppButtonProps = Omit<ButtonProps, 'children'> & {
+export type AppButtonProps = Omit<ButtonProps, 'children' | 'fullWidth'> & {
   label?: ReactNode;
   href?: string;
+  /** Stretch to container width (maps to Mantine `fullWidth`). */
+  fullscreen?: boolean;
   /** Native `<button>` only — skip href click navigation (dropdown trigger, etc.). */
   native?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;

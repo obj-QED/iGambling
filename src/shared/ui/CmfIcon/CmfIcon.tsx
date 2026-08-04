@@ -24,9 +24,8 @@ export const CmfIcon = memo(
       onError?.();
     }, [onError]);
 
-    if (hidden === true) return null;
+    const rootClassName = clsx(styles.root, className, { hidden });
 
-    const rootClassName = clsx(styles.root, className);
     const dataAttrs = cmfIconDataAttrs(src, shape, radius);
 
     if (isSvgMediaSrc(src) === true) {

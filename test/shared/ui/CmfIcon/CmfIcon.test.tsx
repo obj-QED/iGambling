@@ -10,12 +10,13 @@ vi.mock('react-inlinesvg', () => ({
 }));
 
 describe('CmfIcon', () => {
-  it('removes raster image from DOM when load fails', () => {
-    const { getByRole, queryByRole } = render(<CmfIcon src="/missing.png" alt="Logo" />);
+  it('hides raster image when load fails', () => {
+    const { getByRole } = render(<CmfIcon src="/missing.png" alt="Logo" />);
 
-    fireEvent.error(getByRole('img', { name: 'Logo' }));
+    const image = getByRole('img', { name: 'Logo' });
+    fireEvent.error(image);
 
-    expect(queryByRole('img', { name: 'Logo' })).toBeNull();
+    expect(image.className).toMatch(/hidden/);
   });
 
   it('renders inline SVG for .svg sources with data-src', () => {

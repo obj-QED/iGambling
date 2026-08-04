@@ -1,13 +1,32 @@
 import type { BlockProps, HeaderMenuItem } from '../types';
 import type { ComponentType } from 'react';
 
+import { BonusBoxBlock } from '../ui/blocks/BonusBoxBlock/BonusBoxBlock';
+import { ColorSchemeBlock } from '../ui/blocks/ColorSchemeBlock/ColorSchemeBlock';
 import { DefaultItemBlock } from '../ui/blocks/DefaultItemBlock/DefaultItemBlock';
+import { DropdownBlock } from '../ui/blocks/DropdownBlock/DropdownBlock';
+import { LogoBlock } from '../ui/blocks/LogoBlock/LogoBlock';
+import { NotificationBlock } from '../ui/blocks/NotificationBlock/NotificationBlock';
+import { SearchBlock } from '../ui/blocks/SearchBlock/SearchBlock';
+import { WalletBlock } from '../ui/blocks/WalletBlock/WalletBlock';
 import { type BlockRegistryKey, resolveBlockRegistryKey } from './keys';
 
+/**
+ * Sync block map — defined in one module so Vite HMR cannot wipe entries
+ * while leaving a stale empty `{ default }` registry (side-effect `registerBlocks` race).
+ */
 export const BLOCK_REGISTRY: Partial<Record<BlockRegistryKey, ComponentType<BlockProps>>> = {
   default: DefaultItemBlock,
+  menuDropdown: DropdownBlock,
+  search: SearchBlock,
+  logo: LogoBlock,
+  bonus_box: BonusBoxBlock,
+  wallet: WalletBlock,
+  notification: NotificationBlock,
+  color_scheme: ColorSchemeBlock,
 };
 
+/** Runtime overlay (tests / type-packs). Prefer static `BLOCK_REGISTRY` entries for app blocks. */
 export function registerBlocks(
   entries: Partial<Record<BlockRegistryKey, ComponentType<BlockProps>>>,
 ): void {

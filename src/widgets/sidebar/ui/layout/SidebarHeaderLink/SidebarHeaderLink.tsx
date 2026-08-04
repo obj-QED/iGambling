@@ -66,7 +66,7 @@ function SidebarHeaderLinkComponent({ item }: BlockProps) {
       label={labelContent}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
-      fullWidth
+      fullscreen
       justify="space-between"
       className={styles.mainLink}
       leftSection={avatar}

@@ -13,6 +13,7 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 
+import { AppButton } from '@/elements';
 import { getAppHrefKind } from '@/shared/lib';
 import { AppLink } from '@/shared/ui';
 
@@ -191,7 +192,7 @@ function HomePageComponent() {
         </Stack>
 
         <Stack gap="sm">
-          <Title order={5}>Состояния (default / disabled / loading / fullWidth)</Title>
+          <Title order={5}>Состояния (default / disabled / loading / fullscreen)</Title>
           {BUTTON_STATE_VARIANTS.map((variant) => (
             <Stack key={variant} gap="xs">
               <Text size="sm" fw={600}>
@@ -209,9 +210,7 @@ function HomePageComponent() {
                   disabled+loading
                 </Button>
               </Group>
-              <Button variant={variant} fullWidth>
-                fullWidth
-              </Button>
+              <AppButton variant={variant} fullscreen label="fullscreen" />
             </Stack>
           ))}
         </Stack>

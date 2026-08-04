@@ -44,16 +44,6 @@ coverage/
 # Optional
 *.pem
 .cursor/*
-!.cursor/agents/
-!.cursor/agents/**
-!.cursor/rules/
-!.cursor/rules/**
-!.cursor/hooks.json
-!.cursor/hooks/
-!.cursor/hooks/**
-!.cursor/GLOBAL_SETUP.md
-!.cursor/skills/
-!.cursor/skills/**/SKILL.md
 
 ai-rules/
 !ai-rules/
@@ -63,8 +53,18 @@ docs/*
 .cursorrules
 .cursor/*
 ai-rules/*
+# Local-only scripts stay ignored; CI / package.json entrypoints must be tracked.
 scripts/*
+!scripts/audit-deps.mjs
+!scripts/create-module.mjs
+!scripts/create-module/
+!scripts/sync-component-aliases.mjs
+!scripts/headroom-proxy.sh
 
 *storybook.log
 storybook-static
 reports/
+
+*.zip
+PROJECT_CONTEXT.md
+.claude/*

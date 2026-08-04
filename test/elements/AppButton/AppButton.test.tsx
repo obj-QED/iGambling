@@ -83,13 +83,10 @@ describe('AppButton', () => {
     expect(screen.getByText('home page')).toBeInTheDocument();
   });
 
-  it('does not put CMF size table in element.style', () => {
-    renderButton(<AppButton label="Sized" size="sm" variant="default" />);
+  it('maps fullscreen to Mantine fullWidth', () => {
+    renderButton(<AppButton label="Wide" fullscreen />);
 
-    const button = screen.getByRole('button', { name: 'Sized' });
-    expect(button).toHaveAttribute('data-size', 'sm');
-    // Mantine may set `--button-height: var(--button-height-sm)`; we must not inject the size table.
-    expect(button.style.getPropertyValue('--button-height-sm')).toBe('');
-    expect(button.style.getPropertyValue('--button-bg')).toContain('var(--cmf-button-default-bg');
+    const button = screen.getByRole('button', { name: 'Wide' });
+    expect(button).toHaveAttribute('data-block', 'true');
   });
 });

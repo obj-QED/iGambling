@@ -25,16 +25,9 @@ function AppTooltipComponent({
     return children;
   }
 
-  const {
-    enabled: _enabled,
-    delay,
-    position,
-    withArrow,
-    offset,
-    openDelay: _openDelay,
-    closeDelay,
-    ...mantineRest
-  } = resolved;
+  const { delay, position, withArrow, offset, closeDelay, ...mantineRest } = { ...resolved };
+  Reflect.deleteProperty(mantineRest, 'enabled');
+  Reflect.deleteProperty(mantineRest, 'openDelay');
 
   return (
     <Tooltip

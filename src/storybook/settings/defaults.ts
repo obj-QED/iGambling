@@ -11,7 +11,7 @@ export const STORYBOOK_APP_SETTINGS_DEFAULTS: AppSettings = {
   appName: 'iGambling',
   version: '1.0.0',
   params: {
-    fullWidth: true,
+    fullscreen: true,
   },
   header: {
     layout: 'container',
