@@ -17,6 +17,7 @@ jobs:
       - run: yarn lint
       - run: yarn stylelint
       - run: yarn test
+      - run: yarn audit:deps
       - run: yarn build
 
   storybook-pages:

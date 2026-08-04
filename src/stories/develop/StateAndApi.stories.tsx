@@ -63,8 +63,10 @@ export const Overview: Story = {
             <DevelopBulletList
               items={[
                 'Auth tokens: httpOnly cookies only (backend)',
+                'Lobby token: in-memory only — never sessionStorage; bot tokens forbidden in SPA',
                 'Never put secrets in VITE_* (inlined into browser bundle)',
-                'Do not log payment / PII payloads',
+                'Lobby cmd allowlist — no user/admin/webhook command strings',
+                'Do not log payment / PII / token payloads (axios errors are redacted)',
                 'Frontend caching is not security — backend rate limit / validation required',
               ]}
             />

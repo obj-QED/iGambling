@@ -13,6 +13,7 @@ import type {
 import { lobbyApiClient } from '@api/baseApi';
 import { API_LOBBY_PATH } from '@api/constants';
 import { toApiEnvelope } from '@api/contracts';
+import { assertLobbyCommand } from '@api/security';
 
 function isWords(value: unknown): value is Words {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
@@ -75,6 +76,7 @@ export async function fetchTranslation(
   language: string,
   signal?: AbortSignal,
 ): Promise<TranslationResponse> {
+  assertLobbyCommand('translation');
   const { data } = await lobbyApiClient.get<unknown>(API_LOBBY_PATH, {
     params: { translation: language },
     signal,
@@ -86,13 +88,16 @@ export async function initV2(
   params: Omit<InitV2Params, 'cmd'>,
   signal?: AbortSignal,
 ): Promise<InitV2Response> {
+  const cmd = assertLobbyCommand('initV2');
   const token = normalizedLobbyToken(params.token);
   const { data } = await lobbyApiClient.post<unknown>(
     API_LOBBY_PATH,
     {
-      cmd: 'initV2',
+      cmd,
       language: params.language,
       page: params.page,
+      // Prefer httpOnly session cookie (withCredentials). Body token is legacy PHP bridge —
+      // still visible in DevTools Network; backend should stop echoing tokens into JSON.
       ...(token && { token }),
     },
     { signal },
@@ -105,11 +110,12 @@ export async function getPage(
   params: GetPageParams,
   signal?: AbortSignal,
 ): Promise<GetPageResponse> {
+  const cmd = assertLobbyCommand('getPage');
   const token = normalizedLobbyToken(params.token);
   const { data } = await lobbyApiClient.post<unknown>(
     API_LOBBY_PATH,
     {
-      cmd: 'getPage',
+      cmd,
       language: params.language,
       page: params.page,
       ...(token && { token }),

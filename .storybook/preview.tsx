@@ -63,6 +63,7 @@ const preview: Preview = {
             'Widgets',
             'State and API',
             'Theme and Styles',
+            'Security',
           ],
           'Guide',
           ['How to use'],
