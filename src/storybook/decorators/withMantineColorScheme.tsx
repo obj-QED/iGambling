@@ -7,7 +7,7 @@ import type {
 import type { Decorator } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 import { MantineProvider, mergeThemeOverrides } from '@mantine/core';
 
@@ -47,28 +47,22 @@ function toMantineColorShade(value: number): MantineColorShade {
 }
 
 /** Keep brand palettes + iframe chrome in sync with Storybook toolbar. */
-function useDocumentColorScheme(scheme: ColorScheme) {
-  // Sync before paint — useEffect alone leaves a white flash / light text on white.
-  if (typeof document !== 'undefined') {
-    const root = document.documentElement;
-    const body = document.body;
-    root.setAttribute('data-mantine-color-scheme', scheme);
-    root.setAttribute('data-theme', scheme);
-    root.style.colorScheme = scheme;
-    root.style.backgroundColor = scheme === 'dark' ? '#0b1220' : '#ffffff';
-    body.style.backgroundColor = scheme === 'dark' ? '#0b1220' : '#ffffff';
-    body.style.color = scheme === 'dark' ? '#f8fafc' : '#0f172a';
-  }
+function applyDocumentColorScheme(scheme: ColorScheme) {
+  const root = document.documentElement;
+  const body = document.body;
+  root.setAttribute('data-mantine-color-scheme', scheme);
+  root.setAttribute('data-theme', scheme);
+  root.style.setProperty('color-scheme', scheme);
+  root.style.setProperty('background-color', scheme === 'dark' ? '#0b1220' : '#ffffff');
+  body.style.setProperty('background-color', scheme === 'dark' ? '#0b1220' : '#ffffff');
+  body.style.setProperty('color', scheme === 'dark' ? '#f8fafc' : '#0f172a');
+}
 
-  useEffect(() => {
-    const root = document.documentElement;
-    const body = document.body;
-    root.setAttribute('data-mantine-color-scheme', scheme);
-    root.setAttribute('data-theme', scheme);
-    root.style.colorScheme = scheme;
-    root.style.backgroundColor = scheme === 'dark' ? '#0b1220' : '#ffffff';
-    body.style.backgroundColor = scheme === 'dark' ? '#0b1220' : '#ffffff';
-    body.style.color = scheme === 'dark' ? '#f8fafc' : '#0f172a';
+function useDocumentColorScheme(scheme: ColorScheme) {
+  // useLayoutEffect: before paint (avoids white flash). Must not mutate DOM during render
+  // — react-hooks/immutability rejects documentElement/body writes outside effects.
+  useLayoutEffect(() => {
+    applyDocumentColorScheme(scheme);
   }, [scheme]);
 }
 

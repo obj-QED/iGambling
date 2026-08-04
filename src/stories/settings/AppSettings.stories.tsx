@@ -68,7 +68,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Overview: Story = {
-  name: 'Overview',
   render: (_args, context) => {
     applyStorybookAppSettings(context.globals);
 

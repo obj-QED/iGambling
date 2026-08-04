@@ -46,7 +46,9 @@ const localPlugin = {
 };
 
 export default tseslint.config(
-  { ignores: ['coverage', 'dist', 'node_modules', 'storybook-static', 'test', 'vitest.shims.d.ts'] },
+  {
+    ignores: ['coverage', 'dist', 'node_modules', 'storybook-static', 'test', 'vitest.shims.d.ts'],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
@@ -180,6 +182,13 @@ export default tseslint.config(
         projectService: false,
         tsconfigRootDir: import.meta.dirname,
       },
+    },
+  },
+  {
+    // Storybook decorators are HOCs — not Fast Refresh component modules.
+    files: ['src/storybook/decorators/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
   {
