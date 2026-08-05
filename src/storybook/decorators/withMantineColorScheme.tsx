@@ -11,7 +11,7 @@ import { useLayoutEffect } from 'react';
 
 import { MantineProvider, mergeThemeOverrides } from '@mantine/core';
 
-import { classNamesPrefix, mantineTheme } from '@/assets/theme';
+import { classNamesPrefix, mantineCssVariablesResolver, mantineTheme } from '@/assets/theme';
 import {
   readStorybookPrimaryColor,
   readStorybookPrimaryShade,
@@ -89,10 +89,10 @@ function StorybookThemeShell({
       style={{
         colorScheme: scheme,
         boxSizing: 'border-box',
-        padding: 'var(--spacing-md, 1rem)',
+        padding: 'var(--spacing-sm, 0.5rem)',
         background: SHELL_BG[scheme],
         color: SHELL_FG[scheme],
-        minHeight: '100vh',
+        minHeight: 0,
       }}
     >
       {children}
@@ -130,6 +130,7 @@ export const withMantineColorScheme: Decorator = (Story, context) => {
       key={settingsKey}
       theme={theme}
       classNamesPrefix={classNamesPrefix}
+      cssVariablesResolver={mantineCssVariablesResolver}
       defaultColorScheme={scheme satisfies MantineColorScheme}
       forceColorScheme={scheme}
       colorSchemeManager={storybookColorSchemeManager}

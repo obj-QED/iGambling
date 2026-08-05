@@ -10,14 +10,17 @@ describe('resolveAppButtonHrefState', () => {
     });
   });
 
-  it('disables when href is empty or missing', () => {
+  it('disables when href is an empty string', () => {
     expect(resolveAppButtonHrefState('', false)).toEqual({
       href: undefined,
       disabledForHref: true,
     });
+  });
+
+  it('does not disable when href is omitted (toggle / plain button)', () => {
     expect(resolveAppButtonHrefState(undefined, false)).toEqual({
       href: undefined,
-      disabledForHref: true,
+      disabledForHref: false,
     });
   });
 
@@ -32,7 +35,11 @@ describe('resolveAppButtonHrefState', () => {
     });
   });
 
-  it('ignores href when native is true (dropdown trigger)', () => {
+  it('ignores invalid parent url when native is true (dropdown trigger)', () => {
+    expect(resolveAppButtonHrefState('#', true)).toEqual({
+      href: undefined,
+      disabledForHref: false,
+    });
     expect(resolveAppButtonHrefState('/home', true)).toEqual({
       href: undefined,
       disabledForHref: false,

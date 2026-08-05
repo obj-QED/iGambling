@@ -48,10 +48,10 @@ function ItemActionIconComponent({
   'aria-expanded': ariaExpanded,
   'aria-haspopup': ariaHaspopup,
 }: ItemActionIconProps) {
-  const { activeAttrs } = useNavActive(item);
+  // Parent is toggle-only — never URL-active from `item.url`.
+  const { activeAttrs } = useNavActive(dropdownTrigger ? { ...item, matchRoute: false } : item);
   const { onImgError, iconControlAttrs, showItemImg } = useMediaState(item);
   const size = useAsideMenuButtonSize();
-  const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
   const content = resolveActionIconContent(item, label, showItemImg, onImgError);
 
@@ -59,21 +59,33 @@ function ItemActionIconComponent({
     <AppActionIcon
       name={item.name}
       img={item.img}
-      href={dropdownTrigger ? undefined : href}
-      native={dropdownTrigger}
       hidden={false}
       className={clsx(styles.root, dropdownTrigger && styles.dropdownTrigger, className)}
       variant={resolveMenuItemActionIconVariant(item)}
       size={size}
       aria-label={label}
-      aria-expanded={ariaExpanded}
-      aria-haspopup={ariaHaspopup}
-      onClick={onClick}
       {...(dropdownTrigger && { 'data-sidebar-dropdown-trigger': true })}
       {...(dropdownItem && { 'data-sidebar-dropdown-item': true })}
       {...resolveMenuItemCmfAttrs(item, { dropdownTrigger, dropdownItem })}
       {...activeAttrs}
       {...iconControlAttrs}
+      {...(dropdownTrigger
+        ? {
+            // Parent `url: '#'` ignored — toggle only, never disabled-for-href.
+            href: undefined,
+            native: true,
+            disabled: false,
+            onClick,
+            'aria-expanded': ariaExpanded,
+            'aria-haspopup': ariaHaspopup,
+          }
+        : {
+            href: resolveItemHref(item.url),
+            native: false,
+            onClick,
+            'aria-expanded': ariaExpanded,
+            'aria-haspopup': ariaHaspopup,
+          })}
     >
       {content}
       {indicator && (

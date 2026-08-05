@@ -2,53 +2,80 @@ import type { AppLinkProps } from './types';
 
 import { forwardRef } from 'react';
 
+import { Anchor } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
+import { useNavActive } from '@/shared/hooks';
 import { getAppHrefKind } from '@/shared/lib';
 
 export type { AppLinkProps } from './types';
 
-export const AppLink = forwardRef<HTMLElement, AppLinkProps>(function AppLink(
-  { href, children, className, ...rest },
+/**
+ * Mantine {@link https://mantine.dev/core/anchor/ Anchor} + routing:
+ * - internal → `component={Link}` + `to`
+ * - external → native `href` + `target="_blank"`
+ * - invalid → `Anchor component="span"` + `data-invalid-href`
+ *
+ * Active route: `data-active` + `aria-current="page"`.
+ */
+export const AppLink = forwardRef<HTMLAnchorElement, AppLinkProps>(function AppLink(
+  { href, children, active, matchRoute, activeMatch, ...rest },
   ref,
 ) {
   const kind = getAppHrefKind(href);
+  const { isActive, activeAttrs } = useNavActive({
+    url: href,
+    active,
+    matchRoute,
+    activeMatch,
+  });
+
+  const navAttrs = {
+    ...activeAttrs,
+    ...(isActive ? ({ 'aria-current': 'page' } as const) : {}),
+  };
 
   if (kind === 'invalid') {
     return (
-      <span ref={ref} className={className} data-invalid-href aria-disabled="true" {...rest}>
+      <Anchor
+        ref={ref as React.Ref<HTMLSpanElement>}
+        component="span"
+        data-invalid-href
+        aria-disabled="true"
+        {...rest}
+      >
         {children}
-      </span>
+      </Anchor>
     );
   }
 
   if (kind === 'internal') {
     return (
-      <Link ref={ref as React.Ref<HTMLAnchorElement>} to={href} className={className} {...rest}>
+      <Anchor ref={ref} component={Link} to={href} {...rest} {...navAttrs}>
         {children}
-      </Link>
+      </Anchor>
     );
   }
 
   if (kind === 'external') {
     return (
-      <a
-        ref={ref as React.Ref<HTMLAnchorElement>}
+      <Anchor
+        ref={ref}
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className={className}
         {...rest}
+        {...navAttrs}
       >
         {children}
-      </a>
+      </Anchor>
     );
   }
 
   return (
-    <a ref={ref as React.Ref<HTMLAnchorElement>} href={href} className={className} {...rest}>
+    <Anchor ref={ref} href={href} {...rest} {...navAttrs}>
       {children}
-    </a>
+    </Anchor>
   );
 });
 

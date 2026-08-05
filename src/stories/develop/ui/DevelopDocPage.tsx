@@ -27,7 +27,7 @@ type DevelopDocPageProps = {
   sections: readonly DevelopSection[];
 };
 
-/** Shared chrome for Develop/* stories — public architecture brief for AI + human review. */
+/** Shared chrome for Develop/* stories — high-contrast brief for AI + human review. */
 export function DevelopDocPage({
   eyebrow = 'Develop',
   title,
@@ -37,11 +37,16 @@ export function DevelopDocPage({
 }: DevelopDocPageProps) {
   return (
     <Stack
-      gap="xl"
-      maw={920}
-      p="md"
+      gap="lg"
+      maw={880}
       data-storybook-develop="doc"
-      style={{ color: 'var(--color-text)' }}
+      style={{
+        color: 'var(--color-text)',
+        background: 'var(--color-bg-body)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 12,
+        padding: 'var(--spacing-md, 1rem)',
+      }}
     >
       <Stack gap={6}>
         <Text size="xs" tt="uppercase" fw={700} c="var(--color-text-muted)" lts={0.6}>
@@ -50,13 +55,13 @@ export function DevelopDocPage({
         <Title order={2} c="var(--color-text)">
           {title}
         </Title>
-        <Text size="sm" c="var(--color-text-muted)">
+        <Text size="sm" c="var(--color-text-muted)" style={{ lineHeight: 1.5 }}>
           {subtitle}
         </Text>
         {badges.length > 0 ? (
           <Group gap={6} mt={4}>
             {badges.map((label) => (
-              <Badge key={label} variant="light" size="sm">
+              <Badge key={label} variant="light" size="sm" color="brand">
                 {label}
               </Badge>
             ))}
@@ -66,11 +71,11 @@ export function DevelopDocPage({
 
       {sections.map((section, index) => (
         <Stack key={section.id} gap="sm" id={section.id}>
-          {index > 0 ? <Divider /> : null}
+          {index > 0 ? <Divider color="var(--color-border)" /> : null}
           <Title order={3} c="var(--color-text)">
             {section.title}
           </Title>
-          {section.body}
+          <div style={{ color: 'var(--color-text)' }}>{section.body}</div>
         </Stack>
       ))}
     </Stack>
@@ -79,7 +84,17 @@ export function DevelopDocPage({
 
 export function DevelopCode({ children }: { children: string }) {
   return (
-    <Code block style={{ whiteSpace: 'pre-wrap', fontSize: 12, lineHeight: 1.45 }}>
+    <Code
+      block
+      style={{
+        whiteSpace: 'pre-wrap',
+        fontSize: 12,
+        lineHeight: 1.45,
+        color: 'var(--color-text)',
+        background: 'var(--color-bg-elevated, var(--mantine-color-default))',
+        border: '1px solid var(--color-border)',
+      }}
+    >
       {children}
     </Code>
   );
@@ -111,7 +126,14 @@ export function DevelopKvTable({
   columns?: readonly [string, string];
 }) {
   return (
-    <Table striped highlightOnHover withTableBorder withColumnBorders fz="sm">
+    <Table
+      striped
+      highlightOnHover
+      withTableBorder
+      withColumnBorders
+      fz="sm"
+      style={{ color: 'var(--color-text)' }}
+    >
       <Table.Thead>
         <Table.Tr>
           <Table.Th>{columns[0]}</Table.Th>

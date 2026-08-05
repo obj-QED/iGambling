@@ -92,33 +92,33 @@ describe('cmfCascadeResolve', () => {
 
   it('without component: data-variant only', () => {
     const token = buildCmfButtonPropToken('bg', '#059669', {
-      variant: 'hero',
+      variant: 'filled',
       tail: 'variant',
     });
 
-    expect(token).toBe('var(--cmf-button-hero-bg, #059669)');
+    expect(token).toBe('var(--cmf-button-filled-bg, #059669)');
   });
 
   it('without component + shared: data-variant → shared', () => {
     const token = buildCmfButtonPropToken('radius', 'var(--mantine-radius-md)', {
-      variant: 'hero',
+      variant: 'filled',
       tail: 'shared',
     });
 
     expect(token).toBe(
-      'var(--cmf-button-hero-radius, var(--cmf-button-radius, var(--mantine-radius-md)))',
+      'var(--cmf-button-filled-radius, var(--cmf-button-radius, var(--mantine-radius-md)))',
     );
   });
 
-  it('prepends exception key token', () => {
+  it('key layer wins over component and variant', () => {
     const token = buildCmfButtonPropToken('bg', '#d97706', {
       scope: { component: 'sidebar', key: 'search_leftmenu' },
-      variant: 'exception',
+      variant: 'default',
       tail: 'variant',
     });
 
     expect(token).toBe(
-      'var(--cmf-button-exception-search_leftmenu-bg, var(--cmf-button-sidebar-search_leftmenu-bg, var(--cmf-button-sidebar-bg, var(--cmf-button-exception-bg, #d97706))))',
+      'var(--cmf-button-sidebar-search_leftmenu-bg, var(--cmf-button-sidebar-bg, var(--cmf-button-default-bg, #d97706)))',
     );
   });
 

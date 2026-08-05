@@ -142,6 +142,37 @@ export const Wide: Story = {
 export const Compact: Story = {
   args: {
     type: 'compact',
+    width: '72',
+  },
+  render: (args) => {
+    const { menu, config } = resolveStorybookSidebarProps();
+    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+    return (
+      <div
+        style={{
+          display: 'flex',
+          minHeight: '100vh',
+          background: 'var(--color-bg-body, #0f172a)',
+        }}
+      >
+        <AppSidebar
+          menu={menu}
+          config={{
+            ...config,
+            type: 'compact',
+            width: 72,
+            // One open group so compact dropdown+chevron is readable (not every section).
+            openedDropdowns: ['casino'],
+            regions: {
+              header: args.regionHeader !== false,
+              main: args.regionMain !== false,
+              footer: args.regionFooter !== false,
+            },
+            ...(typeof cleaned.layout === 'string' ? { layout: cleaned.layout } : {}),
+          }}
+        />
+      </div>
+    );
   },
 };
 

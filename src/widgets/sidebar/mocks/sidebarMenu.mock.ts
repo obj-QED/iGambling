@@ -5,6 +5,28 @@ import { publicAssetUrl } from '@/shared/lib/publicAssetUrl';
 export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
   sections: [
     {
+      key: 'header',
+      items: [
+        {
+          url: '/',
+          name: 'Casino',
+          key: 'aside_header_logo',
+          img: publicAssetUrl('uploads/web.svg'),
+          type: 'link',
+          menuIcon: true,
+        },
+        {
+          url: '/profile',
+          name: 'Player',
+          key: 'account',
+          img: publicAssetUrl('icons/tabler/user.svg'),
+          type: 'link',
+          subtitle: 'ID 10482',
+          badge: 'VIP',
+        },
+      ],
+    },
+    {
       key: 'left',
       items: [
         {
@@ -819,6 +841,25 @@ export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
               img: '/images/tags/white/new.webp',
             },
           ],
+        },
+      ],
+    },
+    {
+      key: 'footer',
+      items: [
+        {
+          url: '/support',
+          name: 'Support',
+          key: 'support',
+          img: publicAssetUrl('uploads/web.svg'),
+          type: 'link',
+        },
+        {
+          url: '/terms',
+          name: 'Terms',
+          key: 'terms',
+          img: publicAssetUrl('uploads/web.svg'),
+          type: 'link',
         },
       ],
     },

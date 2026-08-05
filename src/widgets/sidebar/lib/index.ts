@@ -26,14 +26,10 @@ export {
   type SidebarDropdownCmfRole,
 } from './itemUtils';
 export {
-  isSidebarExceptionBlockItem,
   resolveLogoControlVariant,
   resolveMenuItemActionIconVariant,
   resolveMenuItemButtonVariant,
   resolveMenuItemExplicitVariant,
-  resolveSidebarExceptionButtonVariant,
-  SIDEBAR_EXCEPTION_VARIANT_PREFIX,
-  type SidebarExceptionButtonVariant,
   type SidebarMenuButtonVariant,
 } from './menuItemVariant';
 export { renderSidebarFooterIcon } from './resolveSidebarFooterIcon';

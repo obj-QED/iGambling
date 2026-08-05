@@ -14,7 +14,13 @@ import {
   STORYBOOK_NONE,
 } from '@/storybook/helpers/mantineArgTypes';
 import { StoryLabFrame } from '@/storybook/helpers/StoryLabFrame';
-import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
+import {
+  STORYBOOK_DEMO_LOGO,
+  STORYBOOK_TABLER_BELL,
+  STORYBOOK_TABLER_GIFT,
+  STORYBOOK_TABLER_SEARCH,
+  STORYBOOK_TABLER_WALLET,
+} from '@/storybook/lib';
 import { BonusBoxBlock } from '@/widgets/header/ui/blocks/BonusBoxBlock/BonusBoxBlock';
 import { ColorSchemeBlock } from '@/widgets/header/ui/blocks/ColorSchemeBlock/ColorSchemeBlock';
 import { LogoBlock } from '@/widgets/header/ui/blocks/LogoBlock/LogoBlock';
@@ -26,7 +32,6 @@ import { WalletBlock } from '@/widgets/header/ui/blocks/WalletBlock/WalletBlock'
 
 const SEARCH_VARIANTS = Object.keys(SEARCH_VARIANT_REGISTRY);
 const WALLET_VARIANTS = Object.keys(WALLET_VARIANT_REGISTRY);
-const STORYBOOK_ICON = STORYBOOK_DEMO_ICON;
 
 const MENU_ITEM_TYPES = ['link', 'button'] as const;
 const MENU_VARIANTS = [
@@ -159,7 +164,7 @@ export const Search: Story = {
     name: '',
     label: 'Search',
     url: '/search',
-    img: STORYBOOK_ICON,
+    img: STORYBOOK_TABLER_SEARCH,
     type: STORYBOOK_NONE,
     variant: STORYBOOK_NONE,
     showImg: true,
@@ -192,7 +197,7 @@ export const Wallet: Story = {
     name: 'Wallet',
     label: 'Wallet',
     url: '/wallet',
-    img: STORYBOOK_ICON,
+    img: STORYBOOK_TABLER_WALLET,
     type: STORYBOOK_NONE,
     variant: STORYBOOK_NONE,
     showImg: true,
@@ -224,13 +229,16 @@ export const Logo: Story = {
     name: 'Casino',
     label: 'Home',
     url: '/',
-    img: STORYBOOK_ICON,
+    img: STORYBOOK_DEMO_LOGO,
     type: 'link',
     variant: 'transparent',
     showImg: true,
   },
   render: (args) => {
-    const item = mergeItem({ key: 'logo', url: '/', name: 'Casino', img: STORYBOOK_ICON }, args);
+    const item = mergeItem(
+      { key: 'logo', url: '/', name: 'Casino', img: STORYBOOK_DEMO_LOGO },
+      args,
+    );
 
     return (
       <StoryLabFrame
@@ -256,7 +264,7 @@ export const Notification: Story = {
     name: '',
     label: 'Notifications',
     url: '/notifications',
-    img: STORYBOOK_ICON,
+    img: STORYBOOK_TABLER_BELL,
     type: STORYBOOK_NONE,
     variant: STORYBOOK_NONE,
     showImg: true,
@@ -310,21 +318,21 @@ export const BonusBox: Story = {
     name: 'Bonus',
     label: 'Bonus box',
     url: '/bonus',
-    img: STORYBOOK_ICON,
+    img: STORYBOOK_TABLER_GIFT,
     type: 'link',
     variant: STORYBOOK_NONE,
     showImg: true,
   },
   render: (args) => {
     const item = mergeItem(
-      { key: 'bonus_box', url: '/bonus', name: 'Bonus', img: STORYBOOK_ICON },
+      { key: 'bonus_box', url: '/bonus', name: 'Bonus', img: STORYBOOK_TABLER_GIFT },
       args,
     );
 
     return (
       <StoryLabFrame
         title="Bonus box"
-        summary="Requires an image. Hide img (showImg off) → block returns null."
+        summary="Requires an image (Tabler `gift` in Storybook). Hide img (showImg off) → block returns null."
         capabilities={[
           'requires img',
           'transparent AppButton + CmfIcon',

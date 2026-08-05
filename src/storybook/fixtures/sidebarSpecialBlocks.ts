@@ -1,12 +1,10 @@
 import type { HeaderMenuItem } from '@/widgets/header/types';
 
-import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
+import { STORYBOOK_DEMO_LOGO, STORYBOOK_TABLER, STORYBOOK_TABLER_FLAME } from '@/storybook/lib';
 import { sanitizeStorybookMenu } from '@/storybook/lib/sanitizeMenuMedia';
 import { SIDEBAR_MENU_MOCK } from '@/widgets/sidebar/mocks/sidebarMenu.mock';
 
 import { findHeaderMenuItem } from './headerMenu';
-
-const STORYBOOK_LOGO = STORYBOOK_DEMO_ICON;
 
 /** Stable fixtures for isolated sidebar special-block stories. */
 export const SIDEBAR_SPECIAL_BLOCK_FIXTURES = {
@@ -21,21 +19,21 @@ export const SIDEBAR_SPECIAL_BLOCK_FIXTURES = {
     key: 'timer',
     name: 'Get free money',
     url: '/timer',
-    img: STORYBOOK_LOGO,
+    img: STORYBOOK_TABLER_FLAME,
     type: 'link',
   },
   wheel_mdl: {
     key: 'wheel_mdl',
     name: 'Wheel of Fortune Bonus',
     url: '/wheel',
-    img: STORYBOOK_LOGO,
+    img: STORYBOOK_TABLER.carousel,
     type: 'link',
   },
   aside_header_logo: {
     key: 'aside_header_logo',
     name: 'Casino',
     url: '/',
-    img: STORYBOOK_LOGO,
+    img: STORYBOOK_DEMO_LOGO,
     type: 'link',
     menuIcon: true,
   },

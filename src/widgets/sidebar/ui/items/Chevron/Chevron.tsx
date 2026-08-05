@@ -10,7 +10,7 @@ function ChevronComponent({ opened }: ChevronProps) {
   return (
     <IconChevronDown
       className={styles.root}
-      size={16}
+      size={12}
       stroke={1.75}
       aria-hidden
       data-menu-chevron

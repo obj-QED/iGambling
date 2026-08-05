@@ -1,7 +1,8 @@
 /* Brand 10-shade palettes — SoT for CSS; Mantine reads via `var(--brand-color-*)` in brandPalette.ts */
 
 // Light: deeper shades for text/borders on white (outline/light readable)
-$palette-light: (0: #f0fdfa,
+$palette-light: (
+  0: #f0fdfa,
   1: #ccfbf1,
   2: #5eead4,
   3: #2dd4bf,
@@ -14,7 +15,8 @@ $palette-light: (0: #f0fdfa,
 );
 
 // Dark: cyan — readable on slate body
-$palette-dark: (0: #ecfeff,
+$palette-dark: (
+  0: #ecfeff,
   1: #cffafe,
   2: #a5f3fc,
   3: #67e8f9,
@@ -27,10 +29,7 @@ $palette-dark: (0: #ecfeff,
 );
 
 @mixin apply-palette($palette) {
-  @each $index,
-  $color in $palette {
+  @each $index, $color in $palette {
     --brand-color-#{$index}: #{$color};
   }
-
-  --color-primary: var(--brand-color-6);
 }

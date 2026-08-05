@@ -4,11 +4,7 @@ import { ActionIcon, Group, Stack, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useArgs } from 'storybook/preview-api';
 
-import {
-  CMF_ACTION_ICON_SIZES,
-  CMF_ACTION_ICON_VARIANTS,
-  MANTINE_ACTION_ICON_VARIANTS,
-} from '@/assets/theme';
+import { CMF_ACTION_ICON_SIZES, MANTINE_ACTION_ICON_VARIANTS } from '@/assets/theme';
 import { CmfIcon } from '@/shared/ui/CmfIcon';
 import {
   cmfControlIconCascadeStyle,
@@ -35,10 +31,7 @@ import {
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
 import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
 
-const ACTION_ICON_STORY_VARIANTS = [
-  ...MANTINE_ACTION_ICON_VARIANTS,
-  ...CMF_ACTION_ICON_VARIANTS,
-] as const;
+const ACTION_ICON_STORY_VARIANTS = [...MANTINE_ACTION_ICON_VARIANTS] as const;
 
 const STORYBOOK_ICON = STORYBOOK_DEMO_ICON;
 
@@ -218,6 +211,7 @@ export const AllVariants: Story = {
     <VariantMatrix
       items={ACTION_ICON_STORY_VARIANTS}
       columns={4}
+      contrastItems={['white']}
       renderItem={(variant) => (
         <ActionIcon variant={variant} aria-label={variant}>
           <DemoGlyph />

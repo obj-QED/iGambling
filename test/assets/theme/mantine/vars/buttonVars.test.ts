@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { resolveButtonRootVars } from '@/assets/theme/mantine/vars/buttonVars';
+import {
+  resolveButtonCustomVariantPaintVars,
+  resolveButtonRootVars,
+} from '@/assets/theme/mantine/vars/buttonVars';
 
 describe('resolveButtonRootVars', () => {
   it('writes data-variant cascade (no size CMF layer)', () => {
@@ -101,31 +104,16 @@ describe('resolveButtonRootVars', () => {
     );
   });
 
-  it('resolves exception key ahead of component layers', () => {
+  it('resolves sidebar key tokens ahead of component / variant layers', () => {
     const vars = resolveButtonRootVars({
-      variant: 'exception',
+      variant: 'default',
       'data-cmf-component': 'sidebar',
       'data-cmf-key': 'search_leftmenu',
     });
 
-    expect(vars['--button-bg']).toContain('--cmf-button-exception-search_leftmenu-bg');
+    expect(vars['--button-bg']).toContain('--cmf-button-sidebar-search_leftmenu-bg');
     expect(vars['--button-bg']).toContain('--cmf-button-sidebar-bg');
-    expect(vars['--button-bg']).toContain('--cmf-button-exception-bg');
-    expect(vars['--button-hover']).toContain('--cmf-button-exception-search_leftmenu-hover');
-  });
-
-  it('maps exception-{key} data-variant onto exception cascade (not default)', () => {
-    const vars = resolveButtonRootVars({
-      variant: 'exception-timer',
-      size: 'sm',
-      'data-cmf-component': 'sidebar',
-      'data-cmf-key': 'timer',
-    });
-
-    expect(vars['--button-bg']).toContain('--cmf-button-exception-timer-bg');
-    expect(vars['--button-bg']).toContain('--cmf-button-exception-bg');
-    expect(vars['--button-bg']).not.toContain('--cmf-button-default-bg');
-    expect(vars['--button-hover']).toContain('--cmf-button-exception-timer-hover');
+    expect(vars['--button-hover']).toContain('--cmf-button-sidebar-search_leftmenu-hover');
   });
 
   it('cascades gradient hover to app gradient hover token', () => {
@@ -135,19 +123,39 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-hover']).toContain('--app-gradient-default-hover');
   });
 
-  it('cascades hero by name with Mantine default paint fallback (not remapped to default key)', () => {
-    const hero = resolveButtonRootVars({ variant: 'hero' });
-    const exception = resolveButtonRootVars({ variant: 'exception' });
+  it('cascades arbitrary custom variant by name with Mantine default paint fallback', () => {
+    const custom = resolveButtonRootVars({ variant: 'promo-cta' });
 
-    expect(hero['--button-bg']).toBe('var(--cmf-button-hero-bg, var(--mantine-color-default))');
-    expect(hero['--button-hover']).toBe(
-      'var(--cmf-button-hero-hover, var(--mantine-color-default-hover))',
+    expect(custom['--button-bg']).toBe(
+      'var(--cmf-button-promo-cta-bg, var(--mantine-color-default))',
     );
-    expect(hero['--button-color']).toBe(
-      'var(--cmf-button-hero-color, var(--mantine-color-default-color))',
+    expect(custom['--button-hover']).toBe(
+      'var(--cmf-button-promo-cta-hover, var(--mantine-color-default-hover))',
     );
-    expect(exception['--button-bg']).toBe('var(--cmf-button-exception-bg, #b45309)');
-    expect(exception['--button-hover']).toBe('var(--cmf-button-exception-hover, #92400e)');
+    expect(custom['--button-color']).toBe(
+      'var(--cmf-button-promo-cta-color, var(--mantine-color-default-color))',
+    );
+  });
+
+  it('paint-only custom variant bridge skips size/icon/active inline dump', () => {
+    const paint = resolveButtonCustomVariantPaintVars({ variant: 'button-link', size: 'sm' });
+
+    expect(paint['--button-bg']).toBe('var(--cmf-button-link-bg, var(--mantine-color-default))');
+    expect(paint['--button-color']).toBe(
+      'var(--cmf-button-link-color, var(--mantine-color-default-color))',
+    );
+    expect(paint['--button-radius']).toBe(
+      'var(--cmf-button-link-radius, var(--cmf-button-radius, var(--mantine-radius-md)))',
+    );
+    expect(paint['--button-height']).toBeUndefined();
+    expect(paint['--cmf-control-icon-scale']).toBeUndefined();
+    expect(paint['--button-active-position']).toBeUndefined();
+  });
+
+  it('paint-only custom variant honors radius prop', () => {
+    const paint = resolveButtonCustomVariantPaintVars({ variant: 'button-link', radius: 'xl' });
+
+    expect(paint['--button-radius']).toBe('var(--mantine-radius-xl, var(--mantine-radius-md))');
   });
 
   it('emits icon cascade with data-variant (not size)', () => {

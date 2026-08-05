@@ -63,11 +63,51 @@
     text-box-edge: auto;
   }
 
+  /*
+   * Anchor token cascade (hero-style):
+   * color → `--mantine-color-anchor` / `--cmf-anchor`
+   * underline → `--root-anchor-underline` via Anchor.extend styles
+   */
+  .anchor {
+    --text-fz: var(--cmf-anchor-font-size, var(--mantine-font-size-md));
+    --text-lh: var(--cmf-anchor-line-height, var(--mantine-line-height-md));
+    --text-lh: var(--cmf-anchor-line-height, var(--mantine-line-height-md));
+    /* Avoid fighting Anchor.extend inline `text-decoration` — active = border. */
+    border-bottom: 1px solid transparent;
+
+    /* Invalid AppLink (`component="span"`) — no hover / active chrome. */
+    &:where([data-invalid-href], [aria-disabled='true']) {
+      cursor: not-allowed;
+      border-bottom-color: transparent;
+      pointer-events: none;
+    }
+
+    &:where([data-active='true']:not([data-invalid-href], [aria-disabled='true'])) {
+      border-bottom-color: var(--mantine-color-anchor);
+      font-weight: var(--cmf-anchor-font-weight, 600);
+    }
+
+    &:where(:hover:not([data-invalid-href], [aria-disabled='true'])) {
+      color: var(--cmf-anchor-hover);
+      border-bottom-color: var(--cmf-anchor-hover);
+    }
+  }
+
   .button {
-    @include cmfCascade.cmf-button-cascade;
+    /* `Button component={AppLink}` — no browser underline on the `<a>` root. */
+    text-decoration: none;
+
+    /*
+     * CMF paint/size cascade only in widget scope (`data-cmf-*`).
+     * Custom variants (`hero`, `button-link`) wire paints via theme `vars()` (paint-only).
+     */
+    &:where([data-cmf-component], [data-cmf-key]) {
+      @include cmfCascade.cmf-button-cascade;
+      @include cmfControl.cmf-control-shadow('button');
+      @include cmfControl.cmf-control-disabled-radius('button');
+    }
+
     @include gradient.gradient-variant-hover('button');
-    @include cmfControl.cmf-control-shadow('button');
-    @include cmfControl.cmf-control-disabled-radius('button');
 
     /* Keep control height stable when section media is present */
     min-height: var(--button-height);
@@ -78,6 +118,15 @@
      */
     border: var(--button-bd-width, calc(0.0625rem * var(--mantine-scale))) solid
       var(--button-bd, transparent);
+
+    /* After `border:` shorthand — AppLink `as="button"` active ≠ menu edge-bar. */
+    &:where([data-variant='button-link']) {
+      border-bottom: 1px solid transparent;
+
+      &:where([data-active='true']:not(:disabled, [data-disabled], [aria-disabled='true'])) {
+        border-bottom-color: var(--mantine-color-anchor);
+      }
+    }
 
     :where([data-cmf-icon-src]) {
       --_cmf-icon-box: var(--button-height, 1.25rem);
@@ -100,10 +149,13 @@
   }
 
   .actionIcon {
-    @include cmfCascade.cmf-action-icon-cascade;
+    &:where([data-cmf-component], [data-cmf-key]) {
+      @include cmfCascade.cmf-action-icon-cascade;
+      @include cmfControl.cmf-control-shadow('ai');
+      @include cmfControl.cmf-control-disabled-radius('ai');
+    }
+
     @include gradient.gradient-variant-hover('ai');
-    @include cmfControl.cmf-control-shadow('ai');
-    @include cmfControl.cmf-control-disabled-radius('ai');
 
     /* `--ai-bd` = color, `--ai-bd-width` = width — same contract as Button. */
     border: var(--ai-bd-width, calc(0.0625rem * var(--mantine-scale))) solid
@@ -134,8 +186,11 @@
 /*
  * Active edge bar — UNLAYERED compound selectors (no empty `.button`/`.actionIcon` shell).
  * Mantine roots set `overflow: hidden` in `@layer mantine`; unlayered wins so ::after shows.
+ * Skip `data-variant="button-link"` (AppLink button) — bottom border, not the edge bar.
  */
-.button[data-active='true']:where(:not(:disabled, [data-disabled], [aria-disabled='true'])) {
+.button[data-active='true']:where(
+    :not(:disabled, [data-disabled], [aria-disabled='true'], [data-variant='button-link'])
+  ) {
   @include cmfControl.cmf-control-active-after-body('button');
 }
 

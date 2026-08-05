@@ -73,11 +73,6 @@ type BuildCmfControlPropTokenOptions = {
   /** After component scopes: which token family to append (scoped mode only). */
   tail?: CmfControlCascadeTail;
   /**
-   * When true and variant is `exception`, also try
-   * `--cmf-{control}-exception-{key}-{prop}` first.
-   */
-  exceptionKeyLayer?: boolean;
-  /**
    * With `tail: 'shared'`, also insert `--cmf-{control}-{variant}-{prop}`
    * before the shared control token (icon-* / radius demos).
    */
@@ -92,17 +87,12 @@ function buildCmfControlPropToken(
     scope,
     variant,
     tail = 'variant',
-    exceptionKeyLayer = false,
     includeVariantInShared = false,
   }: BuildCmfControlPropTokenOptions = {},
 ): string {
   const names: string[] = [];
   const hasComponent = scope?.component !== undefined;
   const hasVariant = typeof variant === 'string' && variant.length > 0;
-
-  if (exceptionKeyLayer === true && variant === 'exception' && scope?.key !== undefined) {
-    names.push(cmfControlName(control, 'exception', scope.key, prop));
-  }
 
   if (hasComponent && scope.key !== undefined) {
     names.push(cmfControlName(control, scope.component!, scope.key, prop));
@@ -134,23 +124,18 @@ function buildCmfControlPropToken(
   return nestCssVars(names, fallback);
 }
 
-type BuildCmfPropTokenOptions = Omit<BuildCmfControlPropTokenOptions, 'exceptionKeyLayer'>;
+type BuildCmfPropTokenOptions = BuildCmfControlPropTokenOptions;
 
 /**
  * With scope: component+key → component+role → component → variant|shared → fallback
  * Without scope: variant → (shared) → fallback
- *
- * Exception + key also tries `--cmf-button-exception-{key}-{prop}` first.
  */
 export function buildCmfButtonPropToken(
   prop: string,
   fallback: string,
   options: BuildCmfPropTokenOptions = {},
 ): string {
-  return buildCmfControlPropToken('button', prop, fallback, {
-    ...options,
-    exceptionKeyLayer: true,
-  });
+  return buildCmfControlPropToken('button', prop, fallback, options);
 }
 
 /** Same cascade as Button, prefix `--cmf-action-icon-*`. */

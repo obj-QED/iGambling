@@ -16,12 +16,12 @@ import {
   STORYBOOK_NONE,
 } from '@/storybook/helpers/mantineArgTypes';
 import { StoryLabFrame } from '@/storybook/helpers/StoryLabFrame';
-import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
+import { STORYBOOK_TABLER, STORYBOOK_TABLER_GIFT } from '@/storybook/lib';
 import { Dropdown } from '@/widgets/header/ui/items/Dropdown/Dropdown';
 import { ItemActionIcon } from '@/widgets/header/ui/items/ItemActionIcon/ItemActionIcon';
 import { ItemButton } from '@/widgets/header/ui/items/ItemButton/ItemButton';
 
-const STORYBOOK_ICON = STORYBOOK_DEMO_ICON;
+const STORYBOOK_ICON = STORYBOOK_TABLER.spade;
 const MENU_ITEM_TYPES = ['link', 'button'] as const;
 const MENU_VARIANTS = [
   'default',
@@ -55,8 +55,15 @@ const meta = {
     docs: {
       ...elementDocsPreviewParameters.docs,
       description: {
-        component:
-          'Default menu item renderers (`DefaultItemBlock`). Use Playground for dropdown Controls. Icon size via CMF cascade on `[data-widget=header]`.',
+        component: [
+          '**What:** leaf renderers for header menu rows — `ItemButton`, `ItemActionIcon`, `Dropdown`.',
+          '',
+          '**Why:** these are what `DefaultItemBlock` / block registry mount for normal API items (not wallet/search adapters).',
+          '',
+          '**How:** open **Playground** → Controls (`renderAs`, `name`, `img`, `variant`). Icon-only rows use ActionIcon; labeled rows use Button; `items[]` → Dropdown.',
+          '',
+          'Scoped under `[data-widget=header]` so CMF icon/control tokens apply.',
+        ].join('\n'),
       },
     },
   },
@@ -66,47 +73,157 @@ export default meta;
 type Story = StoryObj<typeof meta & MenuItemPlaygroundArgs>;
 
 export const Overview: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Catalog of common menu-item shapes. Use Playground to mutate DTO fields; Lab/App Settings → Header for the full shell.',
+      },
+    },
+  },
   render: () => (
-    <HeaderMenuControlsShell>
-      <Stack gap="xl" align="flex-start">
-        <Stack gap="xs" align="flex-start">
-          <Text size="sm" fw={600}>
-            Icon only · type link · transparent
-          </Text>
-          <Group gap="sm">
-            <ItemActionIcon item={getHeaderMenuItemFixture('iconOnlyLink')} />
-          </Group>
-        </Stack>
+    <StoryLabFrame
+      title="Header menu items"
+      summary="Building blocks for default menu rows (not special adapters like wallet/search). Each sample is a real ItemButton / ItemActionIcon / Dropdown."
+      howTo="Open Playground for Controls. For full header chrome use Lab → App Settings → Header."
+      capabilities={[
+        'Icon-only → ItemActionIcon',
+        'Labeled → ItemButton',
+        'With children → Dropdown',
+      ]}
+    >
+      <HeaderMenuControlsShell>
+        <Stack gap="xl" align="flex-start">
+          <Stack gap="xs" align="flex-start">
+            <Text size="sm" fw={600} c="var(--color-text)">
+              Icon only · type link · transparent
+            </Text>
+            <Group gap="sm">
+              <ItemActionIcon item={getHeaderMenuItemFixture('iconOnlyLink')} />
+            </Group>
+          </Stack>
 
-        <Stack gap="xs" align="flex-start">
-          <Text size="sm" fw={600}>
-            Text only · type button · default
-          </Text>
-          <ItemButton item={getHeaderMenuItemFixture('textButton')} />
-        </Stack>
+          <Stack gap="xs" align="flex-start">
+            <Text size="sm" fw={600} c="var(--color-text)">
+              Text only · type button · default
+            </Text>
+            <ItemButton item={getHeaderMenuItemFixture('textButton')} />
+          </Stack>
 
-        <Stack gap="xs" align="flex-start">
-          <Text size="sm" fw={600}>
-            Icon + name · type link
-          </Text>
-          <ItemButton item={getHeaderMenuItemFixture('iconAndText')} />
-        </Stack>
+          <Stack gap="xs" align="flex-start">
+            <Text size="sm" fw={600} c="var(--color-text)">
+              Icon + name · type link
+            </Text>
+            <ItemButton item={getHeaderMenuItemFixture('iconAndText')} />
+          </Stack>
 
-        <Stack gap="xs" align="flex-start">
-          <Text size="sm" fw={600}>
-            Dropdown · icon trigger + menu
-          </Text>
-          <Dropdown item={getHeaderMenuItemFixture('dropdownProfile')} />
-        </Stack>
+          <Stack gap="xs" align="flex-start">
+            <Text size="sm" fw={600} c="var(--color-text)">
+              Dropdown · icon trigger + menu
+            </Text>
+            <Dropdown item={getHeaderMenuItemFixture('dropdownProfile')} />
+          </Stack>
 
-        <Stack gap="xs" align="flex-start">
-          <Text size="sm" fw={600}>
-            Broken image · fallback glyph when name is set
-          </Text>
-          <ItemButton item={getHeaderMenuItemFixture('brokenImgWithName')} />
+          <Stack gap="xs" align="flex-start">
+            <Text size="sm" fw={600} c="var(--color-text)">
+              Broken image · fallback glyph when name is set
+            </Text>
+            <ItemButton item={getHeaderMenuItemFixture('brokenImgWithName')} />
+          </Stack>
         </Stack>
-      </Stack>
-    </HeaderMenuControlsShell>
+      </HeaderMenuControlsShell>
+    </StoryLabFrame>
+  ),
+};
+
+export const Behaviors: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Menu DTO behaviors: `type` (link→transparent / button→default), explicit `variant`, icon-only vs labeled, dropdown with children.',
+      },
+    },
+  },
+  render: () => (
+    <StoryLabFrame
+      title="Item behaviors"
+      summary="How DefaultItemBlock chooses ActionIcon vs Button vs Dropdown, and how type/variant paint the control."
+      howTo="Compare rows: empty name → ActionIcon; name set → Button; items[] → Dropdown. type=link defaults transparent; type=button defaults default; variant overrides."
+      capabilities={[
+        'type: link → transparent (unless variant set)',
+        'type: button → default (unless variant set)',
+        'variant: filled | outline | light | …',
+        'icon-only | text-only | icon+text | dropdown',
+      ]}
+    >
+      <HeaderMenuControlsShell>
+        <Stack gap="lg" align="flex-start">
+          <Stack gap={6}>
+            <Text size="sm" fw={600} c="var(--color-text)">
+              Presentation
+            </Text>
+            <Group gap="md" align="center">
+              <Stack gap={4} align="center">
+                <ItemActionIcon item={getHeaderMenuItemFixture('iconOnlyLink')} />
+                <Text size="xs" c="var(--color-text-muted)">
+                  icon-only · link
+                </Text>
+              </Stack>
+              <Stack gap={4} align="center">
+                <ItemButton item={getHeaderMenuItemFixture('textButton')} />
+                <Text size="xs" c="var(--color-text-muted)">
+                  text · button
+                </Text>
+              </Stack>
+              <Stack gap={4} align="center">
+                <ItemButton item={getHeaderMenuItemFixture('iconAndText')} />
+                <Text size="xs" c="var(--color-text-muted)">
+                  icon+text · link
+                </Text>
+              </Stack>
+              <Stack gap={4} align="center">
+                <Dropdown item={getHeaderMenuItemFixture('dropdownProfile')} />
+                <Text size="xs" c="var(--color-text-muted)">
+                  dropdown
+                </Text>
+              </Stack>
+            </Group>
+          </Stack>
+
+          <Stack gap={6}>
+            <Text size="sm" fw={600} c="var(--color-text)">
+              type / variant paint
+            </Text>
+            <Group gap="md" wrap="wrap">
+              <ItemButton item={getHeaderMenuItemFixture('iconAndText')} />
+              <ItemButton item={getHeaderMenuItemFixture('iconAndTextFilled')} />
+              <ItemButton item={getHeaderMenuItemFixture('outlineLink')} />
+              <ItemButton
+                item={{
+                  key: 'subtle',
+                  name: 'Subtle',
+                  url: '/subtle',
+                  img: STORYBOOK_TABLER_GIFT,
+                  type: 'button',
+                  variant: 'subtle',
+                }}
+              />
+              <ItemButton
+                item={{
+                  key: 'light',
+                  name: 'Light',
+                  url: '/light',
+                  img: STORYBOOK_TABLER.star,
+                  type: 'button',
+                  variant: 'light',
+                }}
+              />
+            </Group>
+          </Stack>
+        </Stack>
+      </HeaderMenuControlsShell>
+    </StoryLabFrame>
   ),
 };
 

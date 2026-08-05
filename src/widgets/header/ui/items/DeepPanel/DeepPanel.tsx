@@ -3,7 +3,7 @@ import type { HeaderDeepPanelGroup } from '../../../lib';
 import { Fragment, memo } from 'react';
 
 import { Menu } from '@mantine/core';
-import { IconMenuDeep } from '@tabler/icons-react';
+import { IconMenu2 } from '@tabler/icons-react';
 
 import { AppActionIcon } from '@/elements';
 
@@ -32,7 +32,7 @@ function DeepPanelComponent({ groups }: DeepPanelProps) {
           data-cmf-component={HEADER_DROPDOWN_CMF_COMPONENT}
           data-cmf-key="trigger"
         >
-          <IconMenuDeep {...HEADER_TABLER_ICON_PROPS} aria-hidden />
+          <IconMenu2 {...HEADER_TABLER_ICON_PROPS} aria-hidden />
         </AppActionIcon>
       </Menu.Target>
       <Menu.Dropdown className={styles.dropdown} data-cmf-component={HEADER_DROPDOWN_CMF_COMPONENT}>

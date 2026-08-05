@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Group, Stack, Text } from '@mantine/core';
 import { useArgs } from 'storybook/preview-api';
 
-import { CMF_BUTTON_SIZES, CMF_BUTTON_VARIANTS, MANTINE_BUTTON_VARIANTS } from '@/assets/theme';
+import { CMF_BUTTON_SIZES, MANTINE_BUTTON_VARIANTS } from '@/assets/theme';
 import { CmfIcon } from '@/shared/ui/CmfIcon';
 import {
   cmfControlIconCascadeStyle,
@@ -30,10 +30,7 @@ import {
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
 import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
 
-const BUTTON_STORY_VARIANTS = [
-  ...MANTINE_BUTTON_VARIANTS,
-  ...CMF_BUTTON_VARIANTS.filter((variant) => variant !== 'exception'),
-] as const;
+const BUTTON_STORY_VARIANTS = [...MANTINE_BUTTON_VARIANTS] as const;
 
 const STORYBOOK_ICON = STORYBOOK_DEMO_ICON;
 
@@ -63,8 +60,12 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Mantine Button + CMF cascade. Icon media size: `--cmf-button[-{scope}]-icon-{scale|aspect|width|height}` → `--cmf-icon-*` → box × scale × aspect.',
+        component: [
+          'Mantine `Button` with project theme. **Playground** (Canvas): live variant / color swatches / size / radius — like [Mantine Button docs](https://mantine.dev/core/button/), compact.',
+          '',
+          'Widget menus (`data-cmf-*`) use CMF cascade paints; plain Elements keep Mantine `color` resolution.',
+          'Icon size: `--cmf-button[-{scope}]-icon-{scale|aspect|width|height}`.',
+        ].join('\n'),
       },
     },
   },
@@ -117,9 +118,7 @@ export const WithIcon: Story = {
   parameters: {
     ...elementDocsPreviewParameters,
     docs: {
-      description: {
-        story: 'CmfIcon in `leftSection` — size from `--button-height` × scale × aspect.',
-      },
+      disable: true,
     },
   },
   render: (args) => {
@@ -144,10 +143,7 @@ export const IconCascade: Story = {
   parameters: {
     ...elementDocsPreviewParameters,
     docs: {
-      description: {
-        story:
-          'Icon media size from `--cmf-button-icon-{scale|aspect|width|height}`. Use toolbar Color scheme for brand light/dark.',
-      },
+      disable: true,
     },
   },
   render: () => (
@@ -208,6 +204,7 @@ export const AllVariants: Story = {
     <VariantMatrix
       items={BUTTON_STORY_VARIANTS}
       columns={4}
+      contrastItems={['white']}
       renderItem={(variant) => <Button variant={variant}>{variant}</Button>}
     />
   ),

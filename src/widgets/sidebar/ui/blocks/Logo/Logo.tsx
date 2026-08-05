@@ -4,7 +4,7 @@ import type { HeaderMenuItem } from '@/widgets/header';
 import { memo } from 'react';
 
 import { Group } from '@mantine/core';
-import { IconArticle } from '@tabler/icons-react';
+import { IconMenu2 } from '@tabler/icons-react';
 import clsx from 'clsx';
 
 import { AppActionIcon } from '@/elements';
@@ -111,7 +111,7 @@ function LogoComponent({ item, className }: BlockProps) {
       aria-label={triggerItem.name}
       {...triggerAttrs}
     >
-      <IconArticle stroke={1} aria-hidden className="cmf-ActionIcon-icon-svg" />
+      <IconMenu2 stroke={1.75} aria-hidden className="cmf-ActionIcon-icon-svg" />
     </AppActionIcon>
   ) : null;
 

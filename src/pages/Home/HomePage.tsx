@@ -30,7 +30,7 @@ const BUTTON_VARIANTS = [
   'gradient',
 ] as const;
 
-const BUTTON_STATE_VARIANTS = ['filled', 'outline', 'gradient', 'hero'] as const;
+const BUTTON_STATE_VARIANTS = ['filled', 'outline', 'gradient'] as const;
 
 const BUTTON_SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
@@ -48,6 +48,7 @@ const ACTION_ICON_VARIANTS = [
 const ACTION_ICON_SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 const VALID_LINK_SAMPLES = [
+  { href: '/', label: 'internal-home' },
   { href: '/auth', label: 'internal' },
   { href: 'https://example.com', label: 'external' },
   { href: '#promo', label: 'hash' },
@@ -123,18 +124,9 @@ function LinkDemoRow({ href, label }: { href: string; label: string }) {
       <Code flex={1} style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {hrefLabel}
       </Code>
-      <Button
-        component={AppLink}
-        href={href}
-        variant="outline"
-        size="sm"
-        disabled={kind === 'invalid'}
-      >
-        AppLink
-      </Button>
       <AppLink href={href}>
         <Text size="sm" td={kind === 'invalid' ? 'line-through' : undefined}>
-          text link
+          AppLink
         </Text>
       </AppLink>
     </Group>
@@ -172,11 +164,12 @@ function HomePageComponent() {
         </Stack>
 
         <Stack gap="xs">
-          <Title order={5}>Hero variants (default / light / outline)</Title>
+          <Title order={5}>Hero / button-link (custom variants)</Title>
           <Group gap="sm">
             <Button variant="hero">hero default</Button>
             <Button variant="hero-light">hero light</Button>
             <Button variant="hero-outline">hero outline</Button>
+            <Button variant="button-link">button-link</Button>
           </Group>
         </Stack>
 
@@ -231,21 +224,6 @@ function HomePageComponent() {
         </Stack>
 
         <Stack gap="xs">
-          <Title order={5}>Hero variants (default / light / outline)</Title>
-          <Group gap="sm">
-            <ActionIcon variant="hero" aria-label="hero default">
-              <DemoIconGlyph />
-            </ActionIcon>
-            <ActionIcon variant="hero-light" aria-label="hero light">
-              <DemoIconGlyph />
-            </ActionIcon>
-            <ActionIcon variant="hero-outline" aria-label="hero outline">
-              <DemoIconGlyph />
-            </ActionIcon>
-          </Group>
-        </Stack>
-
-        <Stack gap="xs">
           <Title order={5}>Размеры</Title>
           <Group gap="sm" align="flex-end">
             {ACTION_ICON_SIZES.map((size) => (
@@ -258,7 +236,7 @@ function HomePageComponent() {
 
         <Stack gap="sm">
           <Title order={5}>Состояния (default / disabled / loading)</Title>
-          {(['filled', 'outline', 'gradient', 'hero'] as const).map((variant) => (
+          {(['filled', 'outline', 'gradient'] as const).map((variant) => (
             <Stack key={variant} gap="xs">
               <Text size="sm" fw={600}>
                 {variant}
@@ -282,7 +260,9 @@ function HomePageComponent() {
       <Stack gap="md" mt="xl">
         <Title order={3}>Ссылки (AppLink)</Title>
         <Text size="sm" c="dimmed">
-          Корректные: internal / external / hash. Некорректные: invalid → span с data-invalid-href.
+          {
+            'Mantine Anchor + RR Link / external <a>. Internal URL → data-active / aria-current. Невалидные → <span data-invalid-href>.'
+          }
         </Text>
 
         <Stack gap="xs">

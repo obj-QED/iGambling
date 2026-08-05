@@ -5,7 +5,9 @@
 
   .dropdownTrigger {
     position: relative;
-    margin-left: var(--aside-menu-compact-dropdown-trigger-margin-left, 6px);
+
+    /* Compact: 0 (token). Never nudge the square — clips under aside overflow. */
+    margin-left: var(--aside-menu-compact-dropdown-trigger-margin-left, 0);
   }
 
   .indicator {

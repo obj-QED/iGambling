@@ -9,7 +9,7 @@ export const elementDocsPreviewParameters = {
 
 /** Interactive playground — Canvas only (`useArgs` does not work in Docs embed). */
 export const elementPlaygroundParameters = {
-  layout: 'fullscreen' as const,
+  layout: 'padded' as const,
   controls: {
     hideNoControlsWarning: true,
   },

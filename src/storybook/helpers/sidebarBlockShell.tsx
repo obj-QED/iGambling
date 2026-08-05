@@ -33,7 +33,10 @@ export function SidebarBlockShell({ children, configPatch }: SidebarBlockShellPr
               data-widget="sidebar"
               data-cmf-component="sidebar"
               data-type={config.type}
-              style={{ maxWidth: 360 }}
+              style={{
+                maxWidth: typeof config.width === 'number' ? config.width : 360,
+                width: typeof config.width === 'number' ? config.width : undefined,
+              }}
             >
               {children}
             </div>

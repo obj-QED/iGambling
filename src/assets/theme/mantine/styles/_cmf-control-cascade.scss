@@ -11,8 +11,7 @@
 //   key → role → component → data-variant → shared → base(paint/size)
 //
 // Token shape:
-//   --cmf-button-{header|sidebar}-{key?}-{prop}
-//   --cmf-action-icon-{header|sidebar}-{key?}-{prop}
+//   --cmf-button|{action-icon}-{header|sidebar|header-dropdown|sidebar-dropdown}-{key?}-{prop}
 //
 // New menu key for key-layer: add to `$cmf-control-keys` below.
 // Never write `--x: var(--token, var(--x))` on the same node (self-ref breaks).
@@ -22,7 +21,9 @@
 @use 'sass:list';
 
 $cmf-control-sizes: xs, sm, md, lg, xl;
-$cmf-control-components: header, sidebar;
+
+/* Must match `data-cmf-component` (bar + dropdown scopes). */
+$cmf-control-components: header, sidebar, header-dropdown, sidebar-dropdown;
 $cmf-control-roles: parent, child, trigger;
 
 /* Opt-in key layer — must match `data-cmf-key` (Logo uses semantic logo / logo-trigger). */
@@ -91,42 +92,10 @@ $cmf-button-variants: (
     hover: var(--app-gradient-default-hover),
     hover-color: #fff,
   ),
-  'exception': (
-    /* amber-700 — white label ≥ 4.5 on both schemes */ bg: #b45309,
-    color: #fff,
-    bd: transparent,
-    hover: #92400e,
-    hover-color: #fff,
-  ),
-  'hero': (
-    bg: var(--mantine-color-default),
-    color: var(--mantine-color-default-color),
-    bd: var(--color-border),
-    hover: var(--mantine-color-default-hover),
-    hover-color: var(--mantine-color-text),
-  ),
-  'hero-light': (
-    bg: var(--mantine-color-default),
-    color: var(--mantine-color-default-color),
-    bd: var(--color-border),
-    hover: var(--mantine-color-default-hover),
-    hover-color: var(--mantine-color-text),
-  ),
-  'hero-outline': (
-    bg: var(--mantine-color-default),
-    color: var(--mantine-color-default-color),
-    bd: var(--color-border),
-    hover: var(--mantine-color-default-hover),
-    hover-color: var(--mantine-color-text),
-  ),
 );
-$cmf-ai-variants: map.remove(
-  $cmf-button-variants,
-  'exception',
-  'hero',
-  'hero-light',
-  'hero-outline'
-);
+
+/* ActionIcon uses the same Mantine paint keys (no hero/exception custom variants). */
+$cmf-ai-variants: $cmf-button-variants;
 
 /// Resolve public runtime var from intermediate layers (invalid → next).
 /// Layers set by selectors below — do not assign `--_cmf-*` from tokens.
@@ -276,20 +245,6 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
       @each $prop in $cmf-button-icon-props {
         @include cmf-layer-token('btn-#{$prop}', var, '--cmf-button-#{$variant}-#{$prop}');
       }
-    }
-  }
-
-  &:where([data-variant^='exception-']) {
-    $paint: map.get($cmf-button-variants, 'exception');
-
-    @include cmf-layer-base('btn-bg', map.get($paint, bg));
-    @include cmf-layer-base('btn-color', map.get($paint, color));
-    @include cmf-layer-base('btn-bd', map.get($paint, bd));
-    @include cmf-layer-base('btn-hover', map.get($paint, hover));
-    @include cmf-layer-base('btn-hover-color', map.get($paint, hover-color));
-
-    @each $prop in $cmf-button-paint-props {
-      @include cmf-layer-token('btn-#{$prop}', var, '--cmf-button-exception-#{$prop}');
     }
   }
 

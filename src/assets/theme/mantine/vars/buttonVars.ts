@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 
 import { CMF_BUTTON_SIZES, type CmfButtonSize } from '../cmf/cmfButtonVars';
-import { buildCmfButtonPropToken, type CmfScope, resolveCmfScope } from '../cmf/cmfCascadeResolve';
+import { buildCmfButtonPropToken, resolveCmfScope } from '../cmf/cmfCascadeResolve';
 import { resolveCmfIconControlVars } from '../cmf/cmfIconControlVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from '../theme/gradientTokens';
 
@@ -22,7 +22,8 @@ type VariantPaint = {
 
 /**
  * Last-resort paint when CMF tokens are unset.
- * Known keys only — custom variants (hero, …) cascade by name and reuse `default` paint.
+ * Known keys = Mantine built-ins only. Unknown custom `data-variant` reuses `default` paint
+ * and still cascades by name (`--cmf-button-{variant}-*`). Prefer `data-cmf-key` tokens for menu CTAs.
  * Keep in sync with `_cmf-control-cascade.scss` `$cmf-button-variants`.
  */
 const MANTINE_VARIANT_FALLBACKS = {
@@ -82,19 +83,12 @@ const MANTINE_VARIANT_FALLBACKS = {
     hover: `var(--app-gradient-default-hover, ${APP_GRADIENT_DEFAULT_HOVER})`,
     'hover-color': '#fff',
   },
-  exception: {
-    bg: '#b45309',
-    color: '#fff',
-    bd: MANTINE_BUTTON_BD_TRANSPARENT,
-    hover: '#92400e',
-    'hover-color': '#fff',
-  },
 } as const satisfies Record<string, VariantPaint>;
 
 type CmfButtonPaintKey = keyof typeof MANTINE_VARIANT_FALLBACKS;
 
 type ResolvedButtonVariant = {
-  /** Cascade segment: `--cmf-button-{cascade}-*` */
+  /** Cascade segment: `--cmf-button-{cascade}-*` (may differ from `data-variant`). */
   cascade: string;
   paint: VariantPaint;
 };
@@ -114,24 +108,33 @@ function resolveButtonSize(size: unknown): CmfButtonSize {
   return 'md';
 }
 
-/** Runtime guard for finite paint keys (Mantine built-ins + `exception`). */
+/** Runtime guard for finite Mantine paint keys. */
 export function isCmfButtonPaintVariant(variant: string): variant is CmfButtonPaintKey {
   return Object.hasOwn(MANTINE_VARIANT_FALLBACKS, variant);
 }
 
 /**
- * Cascade key = data-variant (or `exception` for `exception-*`).
+ * Custom `data-variant` → shorter token segment.
+ * e.g. `button-link` → `--cmf-button-link-*` (not `--cmf-button-button-link-*`).
+ */
+const CUSTOM_VARIANT_CASCADE: Record<string, string> = {
+  'button-link': 'link',
+};
+
+/**
+ * Cascade key = data-variant name, unless aliased in {@link CUSTOM_VARIANT_CASCADE}.
  * Unknown custom variants keep their name in cascade; paint last-resort = Mantine `default`.
  */
 function resolveVariant(variant: string | undefined): ResolvedButtonVariant {
-  if (typeof variant === 'string' && variant.startsWith('exception-')) {
-    return { cascade: 'exception', paint: MANTINE_VARIANT_FALLBACKS.exception };
-  }
   if (variant !== undefined && isCmfButtonPaintVariant(variant)) {
     return { cascade: variant, paint: MANTINE_VARIANT_FALLBACKS[variant] };
   }
   if (typeof variant === 'string' && variant.trim().length > 0) {
-    return { cascade: variant.trim(), paint: MANTINE_VARIANT_FALLBACKS.default };
+    const name = variant.trim();
+    return {
+      cascade: CUSTOM_VARIANT_CASCADE[name] ?? name,
+      paint: MANTINE_VARIANT_FALLBACKS.default,
+    };
   }
   return { cascade: 'default', paint: MANTINE_VARIANT_FALLBACKS.default };
 }
@@ -148,17 +151,6 @@ type ButtonVarsProps = {
   'data-cmf-key'?: string;
   'data-cmf-role'?: string;
 };
-
-/** Prefer data-cmf-key; if missing, peel key from `exception-{key}`. */
-function resolveButtonScope(props: ButtonVarsProps, rawVariant: string | undefined): CmfScope {
-  const scope = resolveCmfScope(props as Record<string, unknown>);
-  if (scope.key !== undefined) return scope;
-  if (typeof rawVariant !== 'string' || rawVariant.startsWith('exception-') === false) {
-    return scope;
-  }
-  const key = rawVariant.slice('exception-'.length);
-  return key.length > 0 ? { ...scope, key } : scope;
-}
 
 function resolveRadius(radius: unknown, cmfFallback: string): string {
   if (typeof radius === 'number' && Number.isFinite(radius)) {
@@ -186,7 +178,7 @@ function resolveRadius(radius: unknown, cmfFallback: string): string {
  * Size table tokens (`--button-height-sm`, …) stay in Mantine CSS as fallbacks only.
  */
 export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, string> {
-  const scope = resolveButtonScope(props, props.variant);
+  const scope = resolveCmfScope(props as Record<string, unknown>);
   const size = resolveButtonSize(props.size);
   const { cascade: variant, paint } = resolveVariant(props.variant);
 
@@ -339,5 +331,56 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       }),
       { scope, variant, tail: 'variant' },
     ),
+  };
+}
+
+/**
+ * Paint + radius bridge for custom `data-variant` (`hero`, `button-link`, …).
+ * Size / icons stay on Mantine defaults — avoids the fat dump from
+ * {@link resolveButtonRootVars} (widget `data-cmf-*` uses CSS cascade instead).
+ *
+ * Radius is required: Mantine only emits `--button-radius` when `radius` prop is set
+ * (`radius === undefined → void 0`), so custom variants would otherwise miss it.
+ */
+export function resolveButtonCustomVariantPaintVars(
+  props: ButtonVarsProps,
+): Record<string, string> {
+  const scope = resolveCmfScope(props as Record<string, unknown>);
+  const { cascade: variant, paint } = resolveVariant(props.variant);
+
+  return {
+    '--button-radius': resolveRadius(
+      props.radius,
+      buildCmfButtonPropToken('radius', 'var(--mantine-radius-md)', {
+        scope,
+        variant,
+        tail: 'shared',
+      }),
+    ),
+    '--button-bg': buildCmfButtonPropToken('bg', paint.bg, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-color': buildCmfButtonPropToken('color', paint.color, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-bd': buildCmfButtonPropToken('bd', paint.bd, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-hover': buildCmfButtonPropToken('hover', paint.hover, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-hover-color': buildCmfButtonPropToken('hover-color', paint['hover-color'], {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
   };
 }

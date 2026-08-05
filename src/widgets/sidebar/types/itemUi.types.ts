@@ -7,7 +7,7 @@ export type ItemButtonProps = {
   className?: string;
   /** Nested row inside `[data-sidebar-dropdown]`. */
   dropdownItem?: boolean;
-  /** Dropdown parent — always `button`, never navigates via `url`. */
+  /** Dropdown parent — toggle only: no `href`, no URL `data-active`. */
   dropdownTrigger?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   'aria-expanded'?: boolean;
@@ -19,7 +19,7 @@ export type ItemActionIconProps = {
   className?: string;
   /** Nested row inside `[data-sidebar-dropdown]`. */
   dropdownItem?: boolean;
-  /** Dropdown parent — always native button, never navigates via `url`. */
+  /** Dropdown parent — toggle only: no `href`, no URL `data-active`. */
   dropdownTrigger?: boolean;
   /** Extra node inside the control (e.g. chevron for compact dropdown). */
   indicator?: ReactNode;

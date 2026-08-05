@@ -1,4 +1,4 @@
-import { createTheme, type MantineColorScheme } from '@mantine/core';
+import { createTheme, type CSSVariablesResolver, type MantineColorScheme } from '@mantine/core';
 
 import { breakpointsEm } from '../../breakpoints';
 import { BRAND_PALETTE_FALLBACK, createBrandColorsTuple } from '../brand/brandPalette';
@@ -23,7 +23,27 @@ export const classNamesPrefix: string = 'cmf';
 
 const brand = createBrandColorsTuple(BRAND_PALETTE_FALLBACK);
 
+/**
+ * Mantine 9: `cssVariablesResolver` is a **MantineProvider** prop, not `createTheme`.
+ * Token SoT: `tokens/theme.scss` (`--cmf-anchor`, `--cmf-brand-text`).
+ *
+ * Put overrides in `light` + `dark` — not only `variables`. Scheme selectors
+ * (`:root[data-mantine-color-scheme=…]`) beat plain `:root` and would keep
+ * Mantine’s generated `--mantine-color-brand-text: var(--mantine-color-brand-4)`.
+ */
+const TOKEN_BRIDGED_COLOR_VARS = {
+  '--mantine-color-anchor': 'var(--cmf-anchor-color, #2161c8)',
+  '--mantine-color-brand-text': 'var(--cmf-brand-text-color, var(--brand-color-6))',
+} as const;
+
+export const mantineCssVariablesResolver: CSSVariablesResolver = () => ({
+  variables: { ...TOKEN_BRIDGED_COLOR_VARS },
+  light: { ...TOKEN_BRIDGED_COLOR_VARS },
+  dark: { ...TOKEN_BRIDGED_COLOR_VARS },
+});
+
 export const mantineTheme = createTheme({
+  focusRing: 'auto',
   autoContrast: true,
   luminanceThreshold: 0.3,
   cursorType: 'pointer',

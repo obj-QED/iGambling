@@ -8,7 +8,12 @@ import { Provider } from 'react-redux';
 import { queryClient } from '@api/queryClient';
 import { store } from '@store';
 
-import { classNamesPrefix, defaultColorScheme, mantineTheme } from '@/assets/theme';
+import {
+  classNamesPrefix,
+  defaultColorScheme,
+  mantineCssVariablesResolver,
+  mantineTheme,
+} from '@/assets/theme';
 
 import { DeviceBodySync } from './DeviceBodySync';
 import { ScrollFullscreenSync } from './ScrollFullscreenSync';
@@ -21,6 +26,7 @@ export function Providers({ children }: ProvidersProps) {
           theme={mantineTheme}
           defaultColorScheme={defaultColorScheme}
           classNamesPrefix={classNamesPrefix}
+          cssVariablesResolver={mantineCssVariablesResolver}
           deduplicateInlineStyles
         >
           <DeviceBodySync />

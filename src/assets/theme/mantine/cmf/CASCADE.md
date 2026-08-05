@@ -1,20 +1,21 @@
 # CMF cascade — how styles resolve
 
 **Edit tokens, not the Sass engine.**  
-Runtime cascade lives in CSS (`styles/_cmf-control-cascade.scss`).  
-JS helpers in this folder document the same naming; theme `vars()` no longer injects them.
+Runtime cascade for widget controls (`data-cmf-*`) lives in CSS (`styles/_cmf-control-cascade.scss`).  
+Custom `data-variant` (not a Mantine built-in) is wired in theme `vars()` → `--cmf-button|{action-icon}-{variant}-*`.
 
 ---
 
 ## Where to change what
 
-| Goal                               | File                                                  |
-| ---------------------------------- | ----------------------------------------------------- |
-| Header Button / ActionIcon look    | `tokens/widgets/header/tokens.scss`                   |
-| Sidebar Button / ActionIcon look   | `tokens/widgets/sidebar/tokens.scss`                  |
-| Tooltip colors / max-width         | `:root` in `tokens/theme.scss` (portal-safe)          |
-| New `data-cmf-key` in cascade      | add name to `$cmf-control-keys` / `$cmf-tooltip-keys` |
-| Paint fallbacks for `data-variant` | `$cmf-button-variants` in `_cmf-control-cascade.scss` |
+| Goal                                                     | File                                                   |
+| -------------------------------------------------------- | ------------------------------------------------------ |
+| Header Button / ActionIcon look                          | `tokens/widgets/header/tokens.scss`                    |
+| Sidebar Button / ActionIcon look                         | `tokens/widgets/sidebar/tokens.scss`                   |
+| Tooltip colors / max-width                               | `:root` in `tokens/theme.scss` (portal-safe)           |
+| Custom variant paint (e.g. `hero`, `button-link`→`link`) | `:root` `--cmf-button-{cascade}-{bg\|color\|hover\|…}` |
+| New `data-cmf-key` in cascade                            | add name to `$cmf-control-keys` / `$cmf-tooltip-keys`  |
+| Mantine paint fallbacks                                  | `$cmf-button-variants` in `_cmf-control-cascade.scss`  |
 
 ---
 
@@ -22,13 +23,13 @@ JS helpers in this folder document the same naming; theme `vars()` no longer inj
 
 On the control root (Button / ActionIcon / tooltip floating):
 
-| Attr                 | Example                           | Token segment   |
-| -------------------- | --------------------------------- | --------------- |
-| `data-cmf-component` | `header` / `sidebar`              | `{component}`   |
-| `data-cmf-key`       | `logo`, `sign_in`, `logo-trigger` | `{key}`         |
-| `data-cmf-role`      | `parent` / `child` / `trigger`    | `{role}`        |
-| `data-variant`       | `transparent`, `outline`, …       | `{variant}`     |
-| `data-size`          | `sm`, `md`, …                     | size table only |
+| Attr                 | Example                             | Token segment   |
+| -------------------- | ----------------------------------- | --------------- |
+| `data-cmf-component` | `header` / `sidebar` / `*-dropdown` | `{component}`   |
+| `data-cmf-key`       | `logo`, `sign_in`, `logo-trigger`   | `{key}`         |
+| `data-cmf-role`      | `parent` / `child` / `trigger`      | `{role}`        |
+| `data-variant`       | `transparent`, `outline`, …         | `{variant}`     |
+| `data-size`          | `sm`, `md`, …                       | size table only |
 
 `data-key` is identity only — cascade uses **`data-cmf-key`**.  
 Logo blocks force semantic keys: header/sidebar `logo`, sidebar trigger `logo-trigger`.

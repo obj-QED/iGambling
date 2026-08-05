@@ -79,7 +79,7 @@ export function menuItemDataAttrs(item: HeaderMenuItem): {
   };
 }
 
-/** Deep menu / IconMenuDeep panel — separate from bar `header` tokens. */
+/** Deep menu / IconMenu2 panel — separate from bar `header` tokens. */
 export function menuItemDropdownDataAttrs(item: HeaderMenuItem): {
   'data-cmf-component': typeof HEADER_DROPDOWN_CMF_COMPONENT;
   'data-cmf-key': string;

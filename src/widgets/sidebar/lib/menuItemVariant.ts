@@ -1,19 +1,9 @@
 import type { CmfActionIconVariant, CmfButtonVariant } from '@/assets/theme';
 import type { HeaderMenuItem } from '@/widgets/header';
 
-import {
-  isSidebarSpecialBlockKey,
-  type SidebarSpecialBlockKey,
-} from '../config/sidebarSpecialBlockKeys';
-
 type MenuItemVariantSource = Pick<HeaderMenuItem, 'key' | 'type' | 'variant'>;
 
-export const SIDEBAR_EXCEPTION_VARIANT_PREFIX = 'exception-' as const;
-
-export type SidebarExceptionButtonVariant =
-  `${typeof SIDEBAR_EXCEPTION_VARIANT_PREFIX}${SidebarSpecialBlockKey}`;
-
-export type SidebarMenuButtonVariant = CmfButtonVariant | SidebarExceptionButtonVariant;
+export type SidebarMenuButtonVariant = CmfButtonVariant;
 
 const DEFAULT_CONTROL_VARIANT = 'transparent' as const;
 
@@ -25,20 +15,9 @@ export function resolveMenuItemExplicitVariant(
   return value.length > 0 ? value : undefined;
 }
 
-/** ScrollArea special blocks (search, timer, wheel) — visually distinct CTA. */
-export function isSidebarExceptionBlockItem(item: MenuItemVariantSource): boolean {
-  return item.key !== undefined && isSidebarSpecialBlockKey(item.key);
-}
-
-export function resolveSidebarExceptionButtonVariant(
-  key: SidebarSpecialBlockKey,
-): SidebarExceptionButtonVariant {
-  return `${SIDEBAR_EXCEPTION_VARIANT_PREFIX}${key}`;
-}
-
 /**
- * Aside buttons: explicit `variant` → special `exception-{key}` → `type: button` default → transparent.
- * (Not `outline` — brand outline paint flashes cyan on Vite CSS HMR when theme tokens unload.)
+ * Aside buttons: explicit `variant` → `type: button` default → transparent.
+ * Special blocks (search/timer/wheel) style via `data-cmf-key` tokens — not custom variants.
  */
 export function resolveMenuItemButtonVariant(
   item: MenuItemVariantSource,
@@ -46,16 +25,12 @@ export function resolveMenuItemButtonVariant(
   const explicit = resolveMenuItemExplicitVariant(item);
   if (explicit) return explicit as SidebarMenuButtonVariant;
 
-  if (isSidebarExceptionBlockItem(item) && item.key !== undefined) {
-    return resolveSidebarExceptionButtonVariant(item.key as SidebarSpecialBlockKey);
-  }
   if (item.type === 'button') return 'default';
   return DEFAULT_CONTROL_VARIANT;
 }
 
 /**
  * ActionIcon: explicit `variant` → `type: button` default → transparent.
- * Never uses `exception-{key}`.
  */
 export function resolveMenuItemActionIconVariant(
   item: MenuItemVariantSource,
@@ -69,7 +44,7 @@ export function resolveMenuItemActionIconVariant(
 
 /**
  * Logo chrome (ActionIcon + AppLogo): explicit `variant` or transparent.
- * Does not follow `type` / exception rules — logo owns its look via `variant` only.
+ * Does not follow `type` rules — logo owns its look via `variant` only.
  */
 export function resolveLogoControlVariant(item: Pick<HeaderMenuItem, 'variant'>): string {
   return resolveMenuItemExplicitVariant(item) ?? DEFAULT_CONTROL_VARIANT;

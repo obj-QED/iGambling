@@ -55,7 +55,7 @@
       type: 'default', // 'default' | 'compact'
       layout: 'container',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
-      mockMenu: true,
+      mockMenu: false,
       openedDropdowns: ['category', 'providers', 'live_games', 'casino', 'betting'],
       /**
        * Tooltip for aside (Mantine-compatible). Omit → pack default.

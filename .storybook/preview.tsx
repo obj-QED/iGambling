@@ -42,7 +42,7 @@ const preview: Preview = {
     ),
   ],
   parameters: {
-    layout: 'fullscreen',
+    layout: 'padded',
     backgrounds: {
       disable: true,
     },

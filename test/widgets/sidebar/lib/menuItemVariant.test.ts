@@ -17,13 +17,14 @@ describe('resolveMenuItemButtonVariant (sidebar)', () => {
 
   it('defaults missing type to link (transparent)', () => {
     expect(resolveMenuItemButtonVariant({ key: 'home' })).toBe('transparent');
+    expect(resolveMenuItemButtonVariant({ key: 'home' })).toBe('transparent');
   });
 
   it('defaults unknown type to link (transparent)', () => {
     expect(resolveMenuItemButtonVariant({ key: 'home', type: 'custom' })).toBe('transparent');
   });
 
-  it('prefers explicit variant over type and exception keys', () => {
+  it('prefers explicit variant over type', () => {
     expect(resolveMenuItemButtonVariant({ key: 'home', type: 'button', variant: 'light' })).toBe(
       'light',
     );
@@ -32,17 +33,15 @@ describe('resolveMenuItemButtonVariant (sidebar)', () => {
     );
   });
 
-  it('uses exception-{key} for special scroll blocks', () => {
-    expect(resolveMenuItemButtonVariant({ key: 'timer', type: 'link' })).toBe('exception-timer');
-    expect(resolveMenuItemButtonVariant({ key: 'wheel_mdl', type: 'link' })).toBe(
-      'exception-wheel_mdl',
-    );
+  it('styles special blocks via data-cmf-key tokens — not exception-* variants', () => {
+    expect(resolveMenuItemButtonVariant({ key: 'timer', type: 'link' })).toBe('transparent');
+    expect(resolveMenuItemButtonVariant({ key: 'wheel_mdl', type: 'button' })).toBe('default');
     expect(resolveMenuItemButtonVariant({ key: 'search_leftmenu', type: 'link' })).toBe(
-      'exception-search_leftmenu',
+      'transparent',
     );
   });
 
-  it('never uses exception-{key} for action icons', () => {
+  it('action icons follow type / explicit only', () => {
     expect(resolveMenuItemActionIconVariant({ key: 'wheel_mdl', type: 'link' })).toBe(
       'transparent',
     );

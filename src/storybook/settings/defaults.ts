@@ -24,7 +24,7 @@ export const STORYBOOK_APP_SETTINGS_DEFAULTS: AppSettings = {
     width: 400,
     type: 'default',
     mockMenu: true,
-    openedDropdowns: ['category', 'providers', 'live_games', 'casino', 'betting'],
+    openedDropdowns: ['casino', 'providers', 'live_games', 'sport', 'betting'],
     customBlocks: [],
   },
 };

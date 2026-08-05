@@ -32,13 +32,13 @@ function ItemButtonComponent({
   'aria-haspopup': ariaHaspopup,
 }: ItemButtonProps) {
   const { visible, onImgError, showItemImg, iconControlAttrs } = useMenuItemRenderable(item);
-  const { activeAttrs } = useNavActive(item);
+  // Parent is toggle-only — never URL-active from `item.url`.
+  const { activeAttrs } = useNavActive(dropdownTrigger ? { ...item, matchRoute: false } : item);
   const size = useAsideMenuButtonSize();
 
   if (!isRenderableItem(item) || !visible) return null;
 
   const iconOnly = isIconOnlyItem(item);
-  const href = resolveItemHref(item.url);
   const displayLabel = hasItemName(item) ? item.name : undefined;
   const ariaLabel = resolveItemLabel(item);
   const leftSection = showItemImg ? (
@@ -50,8 +50,6 @@ function ItemButtonComponent({
     <AppButton
       label={displayLabel}
       aria-label={iconOnly ? ariaLabel : undefined}
-      href={dropdownTrigger ? undefined : href}
-      native={dropdownTrigger}
       className={clsx(dropdownTrigger && styles.dropdownTrigger, className)}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
@@ -66,12 +64,19 @@ function ItemButtonComponent({
       {...iconControlAttrs}
       {...(dropdownTrigger
         ? {
+            // Parent `url: '#'` ignored — toggle only, never disabled-for-href.
+            href: undefined,
+            native: true,
+            disabled: false,
             type: 'button' as const,
             onClick,
             'aria-expanded': ariaExpanded,
             'aria-haspopup': ariaHaspopup,
           }
-        : {})}
+        : {
+            href: resolveItemHref(item.url),
+            native: false,
+          })}
     />
   );
 }

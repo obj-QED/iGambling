@@ -11,6 +11,10 @@
       text-align: start;
     }
 
+    :global(.cmf-Button-section) {
+      color: var(--aside-menu-chevron-color, var(--mantine-color-bright));
+    }
+
     :global(.cmf-Button-section[data-position='right']) {
       margin-inline-start: auto;
     }

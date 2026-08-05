@@ -1,15 +1,25 @@
 .root {
-  max-width: 52rem;
-  margin: 0 auto;
-  padding: var(--spacing-lg, 1.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 17rem);
+  gap: var(--spacing-md, 1rem);
+  align-items: start;
+  max-width: 42rem;
+  margin: 0;
+  padding: var(--spacing-sm, 0.5rem);
+}
+
+@media (width <= 40rem) {
+  .root {
+    grid-template-columns: 1fr;
+  }
 }
 
 .preview {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 12.5rem;
-  padding: var(--spacing-xl, 2rem);
+  min-height: 5.5rem;
+  padding: var(--spacing-md, 1rem);
   border: 1px solid var(--color-border, var(--mantine-color-default-border));
   border-radius: var(--radius-md, var(--mantine-radius-md));
   background: var(--color-bg-body, var(--mantine-color-body));
@@ -18,27 +28,24 @@
 .controls {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md, 1rem);
-  padding-top: var(--spacing-lg, 1.5rem);
+  gap: var(--spacing-sm, 0.5rem);
+  padding: 0;
 }
 
 .row {
   display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-md, 1rem);
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
 }
 
 .label {
-  flex: 0 0 5.5rem;
-  padding-top: 0.35rem;
-  font-size: var(--mantine-font-size-sm);
-  font-weight: 500;
-  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-muted, var(--mantine-color-dimmed));
 }
 
 .control {
-  flex: 1 1 16rem;
   min-width: 0;
 }
 
@@ -57,7 +64,7 @@
 .variantSectionLabel {
   font-size: var(--mantine-font-size-xs);
   font-weight: 600;
-  color: var(--mantine-color-dimmed);
+  color: var(--color-text-muted, var(--mantine-color-dimmed));
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -71,13 +78,16 @@
 .colorGroup {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xs, 0.5rem);
+  gap: 0.35rem;
 }
 
 .colorSwatch {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.35rem;
+  height: 1.35rem;
   padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 2px solid transparent;
   border-radius: var(--mantine-radius-sm);
   background: var(--swatch-color);
@@ -92,12 +102,12 @@
 }
 
 .colorSwatchSelected {
-  border-color: var(--mantine-color-text);
+  border-color: var(--color-text, var(--mantine-color-text));
   box-shadow: 0 0 0 1px var(--color-bg-body, var(--mantine-color-body));
 }
 
 .switches {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-md, 1rem);
+  gap: var(--spacing-sm, 0.5rem);
 }

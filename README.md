@@ -198,14 +198,14 @@ mantineTheme.ts              ← thin Mantine theme bridge
 elements (AppButton / …) + widgets
 ```
 
-| Path                      | Role                                        |
-| ------------------------- | ------------------------------------------- |
-| `tokens/theme.scss`       | Global brand, spacing, tooltip, hero paints |
-| `tokens/widgets/header/`  | Header-scoped CMF tokens                    |
-| `tokens/widgets/sidebar/` | Sidebar-scoped CMF tokens                   |
-| `mantine/vars/`           | Mantine `vars()` resolvers                  |
-| `mantine/styles/`         | Control cascade + active states             |
-| `mantine/cmf/`            | Cascade naming helpers / docs               |
+| Path                      | Role                                  |
+| ------------------------- | ------------------------------------- |
+| `tokens/theme.scss`       | Global brand, spacing, tooltip paints |
+| `tokens/widgets/header/`  | Header-scoped CMF tokens              |
+| `tokens/widgets/sidebar/` | Sidebar-scoped CMF tokens             |
+| `mantine/vars/`           | Mantine `vars()` resolvers            |
+| `mantine/styles/`         | Control cascade + active states       |
+| `mantine/cmf/`            | Cascade naming helpers / docs         |
 
 ### CSS cascade layers
 

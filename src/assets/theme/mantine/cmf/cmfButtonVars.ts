@@ -1,17 +1,13 @@
 import type { ButtonVariant, MantineSize } from '@mantine/core';
 
 /**
- * CMF-only Button variants.
- * Built-ins: Mantine `ButtonVariant`.
- * `exception-*` data-variant maps to paint key `exception` in `buttonVars`.
- * Other custom strings still cascade in vars; this list is for Storybook / known docs.
+ * Button variant prop — Mantine built-ins + any custom string.
+ * Custom paints live in theme tokens (`--cmf-button-{variant}-*` or `data-cmf-key`), not a fixed list.
  */
-export const CMF_BUTTON_VARIANTS = ['hero', 'hero-light', 'hero-outline', 'exception'] as const;
+export type CmfButtonVariant = ButtonVariant | (string & {});
 
-export type CmfButtonCustomVariant = (typeof CMF_BUTTON_VARIANTS)[number] | (string & {});
-
-/** Paint / cascade keys = Mantine built-ins + CMF custom (finite; not `exception-${string}`). */
-export type CmfButtonVariant = ButtonVariant | CmfButtonCustomVariant;
+/** @deprecated Use `CmfButtonVariant` — no finite CMF custom list. */
+export type CmfButtonCustomVariant = string & {};
 
 /** Runtime list tied to Mantine `ButtonVariant`. */
 export const MANTINE_BUTTON_VARIANTS = [

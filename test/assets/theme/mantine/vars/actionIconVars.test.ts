@@ -69,12 +69,14 @@ describe('resolveActionIconRootVars', () => {
     );
   });
 
-  it('cascades hero by name with Mantine default paint fallback', () => {
-    const vars = resolveActionIconRootVars({ variant: 'hero' });
+  it('cascades arbitrary custom variant by name with Mantine default paint fallback', () => {
+    const vars = resolveActionIconRootVars({ variant: 'promo-cta' });
 
-    expect(vars['--ai-bg']).toBe('var(--cmf-action-icon-hero-bg, var(--mantine-color-default))');
+    expect(vars['--ai-bg']).toBe(
+      'var(--cmf-action-icon-promo-cta-bg, var(--mantine-color-default))',
+    );
     expect(vars['--ai-color']).toBe(
-      'var(--cmf-action-icon-hero-color, var(--mantine-color-default-color))',
+      'var(--cmf-action-icon-promo-cta-color, var(--mantine-color-default-color))',
     );
   });
 

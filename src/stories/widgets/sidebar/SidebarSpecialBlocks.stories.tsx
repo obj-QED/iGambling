@@ -19,14 +19,14 @@ import {
 } from '@/storybook/helpers/mantineArgTypes';
 import { SidebarBlockShell } from '@/storybook/helpers/sidebarBlockShell';
 import { StoryLabFrame } from '@/storybook/helpers/StoryLabFrame';
-import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
+import { STORYBOOK_DEMO_LOGO, STORYBOOK_TABLER, STORYBOOK_TABLER_FLAME } from '@/storybook/lib';
 import { resolveStorybookItemUrl } from '@/storybook/lib/sanitizeMenuMedia';
 import { Logo } from '@/widgets/sidebar/ui/blocks/Logo/Logo';
 import { Search } from '@/widgets/sidebar/ui/blocks/Search/Search';
 import { TimerBlock } from '@/widgets/sidebar/ui/blocks/TimerBlock/TimerBlock';
 import { WheelMdlBlock } from '@/widgets/sidebar/ui/blocks/WheelMdlBlock/WheelMdlBlock';
 
-const STORYBOOK_ICON = STORYBOOK_DEMO_ICON;
+const STORYBOOK_ICON = STORYBOOK_DEMO_LOGO;
 const MENU_ITEM_TYPES = ['link', 'button'] as const;
 const MENU_VARIANTS = [
   'default',
@@ -225,7 +225,7 @@ export const Timer: Story = {
     name: 'Get free money',
     label: 'Timer promo',
     url: '/timer',
-    img: '/images/menu/left/999/fire_icon.svg',
+    img: STORYBOOK_TABLER_FLAME,
     type: 'link',
     variant: STORYBOOK_NONE,
     showImg: true,
@@ -252,7 +252,7 @@ export const Wheel: Story = {
     name: 'Wheel of Fortune Bonus',
     label: 'Wheel',
     url: '/wheel',
-    img: '/images/menu/left/999/wheel_md_mini.png',
+    img: STORYBOOK_TABLER.carousel,
     type: 'link',
     variant: STORYBOOK_NONE,
     showImg: true,
@@ -270,4 +270,40 @@ export const Wheel: Story = {
       </StoryLabFrame>
     );
   },
+};
+
+export const TypeCompare: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <StoryLabFrame
+      title="Special blocks · default vs compact"
+      summary="Same registry keys, different typePack presentation (Button row vs ActionIcon rail)."
+      howTo="Open Logo / Search / Timer / Wheel stories and switch Controls → asideType."
+      capabilities={[
+        'default → labeled Button / promo rows',
+        'compact → ActionIcon + tooltip',
+        'aside_header_logo.menuIcon → IconMenu2 burger trigger',
+      ]}
+    >
+      <Group gap="xl" align="flex-start" wrap="wrap">
+        {(['default', 'compact'] as const).map((asideType) => (
+          <Stack key={asideType} gap="sm" style={{ minWidth: asideType === 'compact' ? 88 : 280 }}>
+            <Text size="sm" fw={700} c="var(--color-text)" tt="uppercase">
+              type={asideType}
+            </Text>
+            <SidebarBlockShell
+              configPatch={{ type: asideType, width: asideType === 'compact' ? 72 : 320 }}
+            >
+              <Stack gap="sm" align={asideType === 'compact' ? 'center' : 'stretch'}>
+                <Logo item={SIDEBAR_SPECIAL_BLOCK_FIXTURES.aside_header_logo} />
+                <Search item={getSidebarSpecialBlockFixture('search_leftmenu')} />
+                <TimerBlock item={getSidebarSpecialBlockFixture('timer')} />
+                <WheelMdlBlock item={getSidebarSpecialBlockFixture('wheel_mdl')} />
+              </Stack>
+            </SidebarBlockShell>
+          </Stack>
+        ))}
+      </Group>
+    </StoryLabFrame>
+  ),
 };

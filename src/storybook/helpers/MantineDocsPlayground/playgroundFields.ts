@@ -2,9 +2,7 @@ import type { DocsPlaygroundField, DocsPlaygroundOption } from './types';
 
 import {
   CMF_ACTION_ICON_SIZES,
-  CMF_ACTION_ICON_VARIANTS,
   CMF_BUTTON_SIZES,
-  CMF_BUTTON_VARIANTS,
   MANTINE_ACTION_ICON_VARIANTS,
   MANTINE_BUTTON_VARIANTS,
 } from '@/assets/theme';
@@ -22,19 +20,13 @@ function toOptions(values: readonly string[]): DocsPlaygroundOption[] {
   return values.map((value) => ({ value, label: titleCase(value) }));
 }
 
-/** Docs control — hero* only (`exception` is menu-key driven). */
-const CMF_BUTTON_DOCS_VARIANTS = CMF_BUTTON_VARIANTS.filter((variant) => variant !== 'exception');
-
 export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
   {
     type: 'variant',
     name: 'variant',
     label: 'Variant',
     allowNone: true,
-    groups: [
-      { label: 'Mantine', options: toOptions(MANTINE_BUTTON_VARIANTS) },
-      { label: 'CMF', options: toOptions(CMF_BUTTON_DOCS_VARIANTS) },
-    ],
+    groups: [{ label: 'Mantine', options: toOptions(MANTINE_BUTTON_VARIANTS) }],
   },
   {
     type: 'color',
@@ -48,14 +40,14 @@ export const BUTTON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     name: 'size',
     label: 'Size',
     options: toOptions(CMF_BUTTON_SIZES),
-    allowNone: true,
+    allowNone: false,
   },
   {
     type: 'select',
     name: 'radius',
     label: 'Radius',
     options: toOptions(MANTINE_RADIUS_OPTIONS),
-    allowNone: true,
+    allowNone: false,
   },
   { type: 'text', name: 'children', label: 'Text' },
   {
@@ -91,10 +83,7 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     name: 'variant',
     label: 'Variant',
     allowNone: true,
-    groups: [
-      { label: 'Mantine', options: toOptions(MANTINE_ACTION_ICON_VARIANTS) },
-      { label: 'CMF', options: toOptions(CMF_ACTION_ICON_VARIANTS) },
-    ],
+    groups: [{ label: 'Mantine', options: toOptions(MANTINE_ACTION_ICON_VARIANTS) }],
   },
   {
     type: 'color',
@@ -108,14 +97,14 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
     name: 'size',
     label: 'Size',
     options: toOptions(CMF_ACTION_ICON_SIZES),
-    allowNone: true,
+    allowNone: false,
   },
   {
     type: 'select',
     name: 'radius',
     label: 'Radius',
     options: toOptions(MANTINE_RADIUS_OPTIONS),
-    allowNone: true,
+    allowNone: false,
   },
   { type: 'text', name: 'aria-label', label: 'Aria label' },
   {
@@ -146,7 +135,7 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
 
 /** Hide controls duplicated in the Mantine-style canvas panel. */
 export const mantineDocsPlaygroundParameters = {
-  layout: 'fullscreen' as const,
+  layout: 'padded' as const,
   controls: {
     hideNoControlsWarning: true,
     exclude: [
