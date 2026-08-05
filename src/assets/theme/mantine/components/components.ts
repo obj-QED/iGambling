@@ -11,7 +11,7 @@ import cx from 'clsx';
 import { MANTINE_ACTION_ICON_VARIANTS } from '../cmf/cmfActionIconVars';
 import { MANTINE_BUTTON_VARIANTS } from '../cmf/cmfButtonVars';
 import { resolveActionIconRootVars } from '../vars/actionIconVars';
-import { resolveButtonCustomVariantPaintVars } from '../vars/buttonVars';
+import { resolveButtonCustomVariantPaintVars, resolveButtonRootVars } from '../vars/buttonVars';
 
 import classes from '../styles/components.module.scss';
 
@@ -29,8 +29,8 @@ const CLEAR_BUTTON_PAINT_INLINE_VARS = {
 } as const;
 
 /**
- * Clear Mantine default inline CSS vars — widget `data-cmf-*` uses CSS cascade
- * (`_cmf-control-cascade.scss`). Custom `data-variant` paints wire via `vars()` → tokens.
+ * Clear Mantine default inline CSS vars, then re-apply via `resolve*RootVars` (`nestCssVars`).
+ * Order: clear → add. See `cmf/CASCADE.md`.
  */
 const CLEAR_BUTTON_INLINE_VARS = {
   '--button-justify': null,
@@ -99,7 +99,7 @@ export const themeComponents: MantineThemeComponents = {
 
   /**
    * Button:
-   * - `data-cmf-*` → clear Mantine paints; CSS cascade owns known variants / keys
+   * - `data-cmf-*` → clear Mantine inline → `resolveButtonRootVars` (nestCssVars)
    * - custom `variant` (`hero`, `button-link`, …) → clear paints + paint-only token bridge
    * - plain Mantine variants → keep native `color` / variant paints
    */
@@ -121,7 +121,12 @@ export const themeComponents: MantineThemeComponents = {
       }
 
       if (hasCmfScope(record)) {
-        return { root: CLEAR_BUTTON_INLINE_VARS } as never;
+        return {
+          root: {
+            ...CLEAR_BUTTON_INLINE_VARS,
+            ...resolveButtonRootVars(record),
+          },
+        } as never;
       }
 
       return { root: {} } as never;
@@ -146,7 +151,12 @@ export const themeComponents: MantineThemeComponents = {
       }
 
       if (hasCmfScope(record)) {
-        return { root: CLEAR_ACTION_ICON_INLINE_VARS } as never;
+        return {
+          root: {
+            ...CLEAR_ACTION_ICON_INLINE_VARS,
+            ...resolveActionIconRootVars(record),
+          },
+        } as never;
       }
 
       return { root: {} } as never;

@@ -1,10 +1,8 @@
 // Shared Mantine theme classNames — Title, Container, Button/ActionIcon gradient hover.
-// CMF cascade: `_cmf-control-cascade.scss` (no inline `vars()`). Edit tokens, not engine.
-// Guide: `mantine/cmf/CASCADE.md` — header/sidebar tokens + :root tooltips.
+// CMF cascade SoT: JS `vars()` clear → nestCssVars (`cmf/CASCADE.md`). Tokens, not this file.
 
 @use './gradient-variant-states' as gradient;
 @use './cmf-control-active' as cmfControl;
-@use './cmf-control-cascade' as cmfCascade;
 
 @layer mantine-rebase {
   .heading {
@@ -97,11 +95,10 @@
     text-decoration: none;
 
     /*
-     * CMF paint/size cascade only in widget scope (`data-cmf-*`).
-     * Custom variants (`hero`, `button-link`) wire paints via theme `vars()` (paint-only).
+     * Widget scope: shadow / disabled radius consume runtime `--button-*` from JS cascade.
+     * Paint/size: theme `vars()` clear → nestCssVars (not CSS allowlist).
      */
     &:where([data-cmf-component], [data-cmf-key]) {
-      @include cmfCascade.cmf-button-cascade;
       @include cmfControl.cmf-control-shadow('button');
       @include cmfControl.cmf-control-disabled-radius('button');
     }
@@ -113,8 +110,7 @@
 
     /*
      * Mantine contract: `--button-bd` is the full `border` shorthand
-     * (`width style color`). CMF keeps color tokens separate and composes
-     * `--button-bd` from `--button-bd-width` + color in `_cmf-control-cascade.scss`.
+     * (`width style color`). JS composes from `--button-bd-width` + color.
      * Do NOT use `--button-bd` as border-color alone — that breaks outline Elements.
      */
     border: var(--button-bd, calc(0.0625rem * var(--mantine-scale)) solid transparent);
@@ -150,7 +146,6 @@
 
   .actionIcon {
     &:where([data-cmf-component], [data-cmf-key]) {
-      @include cmfCascade.cmf-action-icon-cascade;
       @include cmfControl.cmf-control-shadow('ai');
       @include cmfControl.cmf-control-disabled-radius('ai');
     }

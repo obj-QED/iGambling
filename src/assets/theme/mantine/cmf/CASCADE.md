@@ -1,21 +1,22 @@
 # CMF cascade — how styles resolve
 
-**Edit tokens, not the Sass engine.**  
-Runtime cascade for widget controls (`data-cmf-*`) lives in CSS (`styles/_cmf-control-cascade.scss`).  
-Custom `data-variant` (not a Mantine built-in) is wired in theme `vars()` → `--cmf-button|{action-icon}-{variant}-*`.
+**Edit tokens, not the engine.**  
+Runtime SoT for widget controls (`data-cmf-*`): theme `vars()` **clear** Mantine inline vars, then **add** nested `var()` chains from `cmfCascadeResolve.ts` (`nestCssVars` / `buildCmf*PropToken`).
+
+Custom `data-variant` (not a Mantine built-in) uses the same paint bridge (`resolveButtonCustomVariantPaintVars`).
 
 ---
 
 ## Where to change what
 
-| Goal                                                     | File                                                   |
-| -------------------------------------------------------- | ------------------------------------------------------ |
-| Header Button / ActionIcon look                          | `tokens/widgets/header/tokens.scss`                    |
-| Sidebar Button / ActionIcon look                         | `tokens/widgets/sidebar/tokens.scss`                   |
-| Tooltip colors / max-width                               | `:root` in `tokens/theme.scss` (portal-safe)           |
-| Custom variant paint (e.g. `hero`, `button-link`→`link`) | `:root` `--cmf-button-{cascade}-{bg\|color\|hover\|…}` |
-| New `data-cmf-key` in cascade                            | add name to `$cmf-control-keys` / `$cmf-tooltip-keys`  |
-| Mantine paint fallbacks                                  | `$cmf-button-variants` in `_cmf-control-cascade.scss`  |
+| Goal                                                     | File                                                                                |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Header Button / ActionIcon look                          | `tokens/widgets/header/tokens.scss`                                                 |
+| Sidebar Button / ActionIcon look                         | `tokens/widgets/sidebar/tokens.scss`                                                |
+| Tooltip colors / max-width                               | `:root` in `tokens/theme.scss` (portal-safe)                                        |
+| Custom variant paint (e.g. `hero`, `button-link`→`link`) | `:root` `--cmf-button-{cascade}-{bg\|color\|hover\|…}`                              |
+| New menu key                                             | set `--cmf-button\|action-icon-{component}-{key}-*` + `data-cmf-key` (no allowlist) |
+| Mantine paint fallbacks                                  | `MANTINE_VARIANT_FALLBACKS` in `vars/buttonVars.ts`                                 |
 
 ---
 
@@ -33,6 +34,18 @@ On the control root (Button / ActionIcon / tooltip floating):
 
 `data-key` is identity only — cascade uses **`data-cmf-key`**.  
 Logo blocks force semantic keys: header/sidebar `logo`, sidebar trigger `logo-trigger`.
+
+---
+
+## Runtime pipeline
+
+```txt
+data-cmf-* + data-variant
+        ↓
+vars(): CLEAR_* (null)  →  resolve*RootVars (nestCssVars)
+        ↓
+--button-* / --ai-* = var(--cmf-…-key, var(--cmf-…-role, var(--cmf-…-comp, var(--cmf-…-variant, fallback))))
+```
 
 ---
 
@@ -90,7 +103,7 @@ Button uses `--cmf-button-*` and **`height`** / **`padding-x`** / **`fz`**.
 
 1. Select the control.
 2. Check `data-cmf-component`, `data-cmf-key`, `data-variant`.
-3. Read computed `--button-*` / `--ai-*` (or `--tooltip-*`).
-4. Intermediate layers: `--_cmf-btn-*-key|role|comp|var|shared|base` (engine only — do not set these in tokens).
+3. Read computed `--button-*` / `--ai-*` (or `--tooltip-*`) — values are nested `var(--cmf-…, …)` from JS.
+4. Trace which `--cmf-*` token is defined on `[data-widget]` / `:root`.
 
-If a key token does nothing: key missing from `$cmf-control-keys`, or `data-cmf-key` ≠ token segment (e.g. API key `aside_header_logo` vs cascade key `logo`).
+If a key token does nothing: `data-cmf-key` ≠ token segment (e.g. API key `aside_header_logo` vs cascade key `logo`), or the token is unset.

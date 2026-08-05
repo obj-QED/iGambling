@@ -7,7 +7,7 @@
  *   --cmf-action-icon-sidebar-{key?}-{prop}  e.g. --cmf-action-icon-sidebar-logo-trigger-size
  * Winner: key → role → component → data-variant → shared → base
  * Logo cascade keys: `logo` / `logo-trigger` (not API aside_header_logo*)
- * Cascade engine: mantine/styles/_cmf-control-cascade.scss
+ * Cascade engine: mantine/cmf/cmfCascadeResolve.ts (clear → nestCssVars)
  * Guide: mantine/cmf/CASCADE.md
  * Tooltip tokens live on :root in tokens/theme.scss (portal).
  */

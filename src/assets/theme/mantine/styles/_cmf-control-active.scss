@@ -1,5 +1,5 @@
 // Active edge bar via ::after + corner radius by edge position.
-// Runtime vars: --{prefix}-active-* (from CMF CSS cascade).
+// Runtime vars: --{prefix}-active-* (from JS CMF nestCssVars).
 //
 // Prefer unlayered compound selectors (see components.module.scss) so CSS Modules
 // does not emit an empty `.actionIcon {}` / `.button {}` shell.

@@ -6,7 +6,7 @@
  *   --cmf-button-header-{key?}-{prop}       e.g. --cmf-button-header-sign_in-bg
  *   --cmf-action-icon-header-{key?}-{prop}  e.g. --cmf-action-icon-header-home-color
  * Winner: key → role → component → data-variant → shared → base
- * Cascade engine: mantine/styles/_cmf-control-cascade.scss
+ * Cascade engine: mantine/cmf/cmfCascadeResolve.ts (clear → nestCssVars)
  * Guide: mantine/cmf/CASCADE.md
  * Tooltip tokens live on :root in tokens/theme.scss (portal).
  */

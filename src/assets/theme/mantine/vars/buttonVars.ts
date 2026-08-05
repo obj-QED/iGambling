@@ -30,7 +30,7 @@ type VariantPaint = {
  * Last-resort paint when CMF tokens are unset.
  * Known keys = Mantine built-ins only. Unknown custom `data-variant` reuses `default` paint
  * and still cascades by name (`--cmf-button-{variant}-*`). Prefer `data-cmf-key` tokens for menu CTAs.
- * Keep in sync with `_cmf-control-cascade.scss` `$cmf-button-variants`.
+ * Keep in sync with `MANTINE_VARIANT_FALLBACKS` paint keys used by CSS gradient hover maps if any.
  */
 const MANTINE_VARIANT_FALLBACKS = {
   filled: {
@@ -178,10 +178,10 @@ function resolveRadius(radius: unknown, cmfFallback: string): string {
 }
 
 /**
- * Inline style CMF cascade:
- * - with `data-cmf-*`: component(+key) → data-variant|shared
+ * Runtime CMF cascade (`nestCssVars`) after Mantine inline clear:
+ * - with `data-cmf-*`: key → role → component → variant|shared → fallback
  * - without: data-variant → (shared for radius/justify)
- * Size table tokens (`--button-height-sm`, …) stay in Mantine CSS as fallbacks only.
+ * Size table tokens (`--button-height-sm`, …) stay as last-resort fallbacks only.
  */
 export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, string> {
   const scope = resolveCmfScope(props as Record<string, unknown>);
@@ -339,8 +339,7 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
 
 /**
  * Paint + radius bridge for custom `data-variant` (`hero`, `button-link`, …).
- * Size / icons stay on Mantine defaults — avoids the fat dump from
- * {@link resolveButtonRootVars} (widget `data-cmf-*` uses CSS cascade instead).
+ * Size / icons stay on Mantine defaults — thinner than {@link resolveButtonRootVars}.
  *
  * Radius is required: Mantine only emits `--button-radius` when `radius` prop is set
  * (`radius === undefined → void 0`), so custom variants would otherwise miss it.

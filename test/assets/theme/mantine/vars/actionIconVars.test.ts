@@ -10,9 +10,9 @@ describe('resolveActionIconRootVars', () => {
     expect(vars['--ai-bg']).toBe('var(--cmf-action-icon-default-bg, var(--mantine-color-default))');
     expect(vars['--ai-color']).toContain('var(--cmf-action-icon-default-color');
     expect(vars['--ai-color']).not.toContain('var(--cmf-action-icon-sm-color');
-    expect(vars['--ai-bd']).toContain('var(--cmf-action-icon-default-bd');
-    expect(vars['--ai-bd']).toMatch(/var\(--color-border\)\)$/);
-    expect(vars['--ai-bd']).not.toContain(' solid ');
+    expect(vars['--ai-bd-color']).toContain('var(--cmf-action-icon-default-bd');
+    expect(vars['--ai-bd-color']).toMatch(/var\(--color-border\)\)$/);
+    expect(vars['--ai-bd']).toBe('var(--ai-bd-width) solid var(--ai-bd-color)');
     expect(vars['--ai-bd-width']).toBe(
       'var(--cmf-action-icon-default-bd-width, calc(0.0625rem * var(--mantine-scale)))',
     );

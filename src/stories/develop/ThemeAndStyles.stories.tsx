@@ -73,7 +73,7 @@ export const Overview: Story = {
                 ['tokens/theme.scss', 'Global brand light/dark, spacing, tooltip paints'],
                 ['tokens/widgets/header|sidebar/', 'Widget-scoped CMF tokens'],
                 ['mantine/vars/', 'Mantine vars() resolvers'],
-                ['mantine/styles/_cmf-control-cascade.scss', 'Cascade engine — do not paint here'],
+                ['mantine/cmf/cmfCascadeResolve.ts', 'Cascade engine — nestCssVars'],
                 ['mantine/cmf/CASCADE.md', 'Naming guide'],
               ]}
               columns={['Path under assets/theme/', 'Role']}

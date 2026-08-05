@@ -20,10 +20,10 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-color']).toBe(
       'var(--cmf-button-default-color, var(--mantine-color-default-color))',
     );
-    expect(vars['--button-bd']).toContain('var(--cmf-button-default-bd');
-    expect(vars['--button-bd']).not.toContain('var(--cmf-button-sm-bd');
-    expect(vars['--button-bd']).toMatch(/var\(--color-border\)\)$/);
-    expect(vars['--button-bd']).not.toContain(' solid ');
+    expect(vars['--button-bd-color']).toContain('var(--cmf-button-default-bd');
+    expect(vars['--button-bd-color']).not.toContain('var(--cmf-button-sm-bd');
+    expect(vars['--button-bd-color']).toMatch(/var\(--color-border\)\)$/);
+    expect(vars['--button-bd']).toBe('var(--button-bd-width) solid var(--button-bd-color)');
     expect(vars['--button-bd-width']).toBe(
       'var(--cmf-button-default-bd-width, calc(0.0625rem * var(--mantine-scale)))',
     );
@@ -69,7 +69,7 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-radius']).toBe('var(--mantine-radius-xl, var(--mantine-radius-md))');
   });
 
-  it('applies component + key → component → data-variant cascade', () => {
+  it('scoped data-cmf-*: key → component → variant nestCssVars (runtime after clear)', () => {
     const vars = resolveButtonRootVars({
       variant: 'filled',
       size: 'xs',
@@ -77,6 +77,7 @@ describe('resolveButtonRootVars', () => {
       'data-cmf-key': 'sign_in',
     });
 
+    // theme vars() spreads CLEAR_* then these — nestCssVars replaces nulls
     expect(vars['--button-bg']).toBe(
       'var(--cmf-button-header-sign_in-bg, var(--cmf-button-header-bg, var(--cmf-button-filled-bg, light-dark(var(--brand-color-7), var(--brand-color-8)))))',
     );

@@ -27,7 +27,7 @@ type VariantPaint = {
   'hover-color': string;
 };
 
-/** Last-resort paint when CMF tokens are unset. Keep in sync with cascade `$cmf-button-variants`. */
+/** Last-resort paint when CMF tokens are unset. Keep in sync with buttonVars MANTINE_VARIANT_FALLBACKS. */
 const MANTINE_VARIANT_FALLBACKS = {
   filled: {
     bg: 'light-dark(var(--brand-color-7), var(--brand-color-8))',

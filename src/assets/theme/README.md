@@ -24,16 +24,19 @@ theme/
 
 **Do not** add `@forward` stubs under `tokens/` root — import from `tokens/global/` directly.
 
-## CMF — all Mantine components except Container
+## CMF — Button / ActionIcon (except Container)
 
-| Priority | Layer                         | CSS vars                                                   |
-| -------- | ----------------------------- | ---------------------------------------------------------- |
-| 1        | control+variant+component+key | `--cmf-button-{variant}-{component}-{key}-*`               |
-| 2        | control+variant+component     | `--cmf-button-{variant}-{component}-*`                     |
-| 3        | control+variant (base)        | `--cmf-button-{variant}-*`                                 |
-| 4        | Mantine                       | fallbacks in `mantine/styles/_control-module-cascade.scss` |
+Runtime: theme `vars()` **clear** Mantine inline → **`nestCssVars`** from `data-cmf-*` + `data-variant` (`cmf/CASCADE.md`).
 
-Cascade resolved in CSS module (no `element.style`). Layers (`assets/styles/layer-order.css`): `reset → base → env → mantine → **mantine-rebase** → components → page → widget → **theme**`.
+| Priority | Layer            | CSS vars                                |
+| -------- | ---------------- | --------------------------------------- |
+| 1        | component + key  | `--cmf-button-{component}-{key}-*`      |
+| 2        | component + role | `--cmf-button-{component}-{role}-*`     |
+| 3        | component        | `--cmf-button-{component}-*`            |
+| 4        | variant          | `--cmf-button-{variant}-*`              |
+| 5        | shared / Mantine | `--cmf-button-*` / size table fallbacks |
+
+CSS `@layer` order (`assets/styles/layer-order.css`): `reset → base → env → mantine → **mantine-rebase** → components → page → widget → **theme**.
 
 ## Scrollbar
 
