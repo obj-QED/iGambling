@@ -21,7 +21,7 @@
     "scaffold": "node scripts/create-module.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix && stylelint \"src/**/*.{css,scss}\" --fix",
-    "check:precommit": "yarn lint && yarn stylelint && yarn build",
+    "check:precommit": "yarn lint && yarn stylelint && yarn typecheck && yarn build",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
     "format": "prettier . --write",
