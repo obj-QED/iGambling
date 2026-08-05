@@ -12,9 +12,9 @@ function PalettePreview() {
   const primary = theme.colors[theme.primaryColor] ?? theme.colors.brand;
 
   return (
-    <Stack gap="lg">
+    <Stack gap="lg" style={{ color: 'var(--color-text)' }}>
       <Stack gap="xs">
-        <Text size="sm" fw={600}>
+        <Text size="sm" fw={600} c="var(--color-text)">
           Active primary: {theme.primaryColor} (shade{' '}
           {typeof theme.primaryShade === 'number' ? theme.primaryShade : theme.primaryShade.dark})
         </Text>
@@ -31,7 +31,7 @@ function PalettePreview() {
       </Stack>
 
       <Stack gap="xs">
-        <Text size="sm" fw={600}>
+        <Text size="sm" fw={600} c="var(--color-text)">
           Live controls (use toolbar Primary color / shade / Color scheme)
         </Text>
         <Group gap="sm">
@@ -49,7 +49,7 @@ function PalettePreview() {
       </Stack>
 
       <Stack gap="xs">
-        <Text size="sm" fw={600}>
+        <Text size="sm" fw={600} c="var(--color-text)">
           Named palettes in theme
         </Text>
         <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="sm">
@@ -60,7 +60,7 @@ function PalettePreview() {
               <Group key={name} gap="sm" wrap="nowrap">
                 <ColorSwatch color={sample} size={28} />
                 <div>
-                  <Text size="sm" fw={600}>
+                  <Text size="sm" fw={600} c="var(--color-text)">
                     {name}
                   </Text>
                   <Text size="xs" c="var(--color-text-muted)">

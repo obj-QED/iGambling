@@ -28,6 +28,10 @@ import {
   MantineDocsPlayground,
   mantineDocsPlaygroundParameters,
 } from '@/storybook/helpers/MantineDocsPlayground';
+import {
+  playgroundGradientFromColor,
+  playgroundPaintStyle,
+} from '@/storybook/helpers/playgroundGradient';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
 import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
 
@@ -80,7 +84,7 @@ const meta = {
     iconAspect: mantineVariantArgType(['1', '1.5', '2'] as const, 'Icon'),
   },
   args: {
-    variant: 'default',
+    variant: 'filled',
     color: 'brand',
     size: 'md',
     radius: 'md',
@@ -226,19 +230,26 @@ export const Playground: Story = {
     ...elementPlaygroundParameters,
     controls: mantineDocsPlaygroundParameters.controls,
   },
-  render: function ActionIconPlayground() {
-    const [args, updateArgs] = useArgs<ActionIconStoryArgs>();
-    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+  /** Use story `args` (incl. URL) for values; `useArgs` only to write updates. */
+  render: function ActionIconPlayground(storyArgs) {
+    const [, updateArgs] = useArgs<ActionIconStoryArgs>();
+    const cleaned = omitStorybookNone(storyArgs as Record<string, unknown>);
     const { iconScale, iconAspect, ...iconArgs } = cleaned as ActionIconStoryArgs;
+    const isGradient = iconArgs.variant === 'gradient';
+    const paintStyle = playgroundPaintStyle('ai', iconArgs.variant, iconArgs.color);
 
     return (
       <MantineDocsPlayground
-        args={args}
+        args={storyArgs as ActionIconStoryArgs & Record<string, unknown>}
         fields={ACTION_ICON_DOCS_PLAYGROUND_FIELDS}
         onChange={updateArgs}
       >
         <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
-          <ActionIcon {...iconArgs}>
+          <ActionIcon
+            {...iconArgs}
+            gradient={isGradient ? playgroundGradientFromColor(iconArgs.color) : undefined}
+            style={paintStyle}
+          >
             <DemoCmfIcon alt={String(iconArgs['aria-label'] ?? 'action')} />
           </ActionIcon>
         </div>

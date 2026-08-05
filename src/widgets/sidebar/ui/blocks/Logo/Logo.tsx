@@ -6,9 +6,10 @@ import { memo } from 'react';
 import { Group } from '@mantine/core';
 import { IconMenu2 } from '@tabler/icons-react';
 import clsx from 'clsx';
+import SVG from 'react-inlinesvg';
 
 import { AppActionIcon } from '@/elements';
-import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { controlAttrs, isSvgMediaSrc, resolveCmfScope } from '@/shared/lib';
 import { AppLogo, AppTooltip } from '@/shared/ui';
 
 import { useSidebarConfig } from '../../../context';
@@ -42,10 +43,18 @@ function LogoMark({
   onError?: () => void;
 }) {
   const hasImg = (img?.length ?? 0) > 0;
-  if (hasImg) {
+  if (hasImg && img !== undefined) {
+    const markClassName = clsx(styles.mark, className);
+    if (isSvgMediaSrc(img) === true) {
+      return (
+        <span className={markClassName} aria-hidden>
+          <SVG src={img} data-src={img} className={styles.markSvg} onError={onError} aria-hidden />
+        </span>
+      );
+    }
     return (
       <img
-        className={clsx(styles.mark, className)}
+        className={markClassName}
         src={img}
         alt=""
         aria-hidden

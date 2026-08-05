@@ -1,12 +1,46 @@
 import type { AppLogoProps } from './types';
+import type { ReactNode } from 'react';
 
 import { memo, useState } from 'react';
 
 import clsx from 'clsx';
+import SVG from 'react-inlinesvg';
 
 import { AppButton } from '@/elements';
+import { isSvgMediaSrc } from '@/shared/lib/cmfIcon';
 
 import styles from './styles.module.scss';
+
+function AppLogoMedia({
+  img,
+  alt,
+  onError,
+}: {
+  img: string;
+  alt: string;
+  onError: () => void;
+}): ReactNode {
+  const mediaClassName = clsx(styles.image, 'cmf-Button-image');
+
+  if (isSvgMediaSrc(img) === true) {
+    return (
+      <span className={mediaClassName} role="img" aria-label={alt.length > 0 ? alt : undefined}>
+        <SVG src={img} data-src={img} className={styles.svg} onError={onError} aria-hidden />
+      </span>
+    );
+  }
+
+  return (
+    <img
+      className={mediaClassName}
+      src={img}
+      alt={alt}
+      loading="eager"
+      decoding="async"
+      onError={onError}
+    />
+  );
+}
 
 function AppLogoComponent({
   label,
@@ -44,12 +78,9 @@ function AppLogoComponent({
       className={clsx(styles.root, className)}
       aria-label={hasName ? alt : undefined}
       leftSection={
-        <img
-          className={clsx(styles.image, 'cmf-Button-image')}
-          src={img}
+        <AppLogoMedia
+          img={img!}
           alt={alt}
-          loading="eager"
-          decoding="async"
           onError={() => {
             setImgFailed(true);
           }}

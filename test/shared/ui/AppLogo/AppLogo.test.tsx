@@ -1,10 +1,32 @@
 import { MantineProvider } from '@mantine/core';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
 import { AppLogo } from '@/shared/ui';
+
+vi.mock('react-inlinesvg', () => ({
+  default: ({
+    src,
+    onError,
+    className,
+  }: {
+    src: string;
+    onError?: () => void;
+    className?: string;
+  }) => (
+    <svg
+      data-testid="inline-svg"
+      data-src={src}
+      className={className}
+      // react-inlinesvg `onError` is a prop callback, not a DOM media error.
+      onClick={() => {
+        onError?.();
+      }}
+    />
+  ),
+}));
 
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -44,6 +66,13 @@ describe('AppLogo', () => {
     expect(screen.getByRole('img', { name: 'Brand' })).toHaveAttribute('src', '/uploads/logo.png');
   });
 
+  it('renders inline SVG for .svg sources', () => {
+    renderLogo(<AppLogo href="/" label="Brand" img="/uploads/logo.svg" />);
+
+    expect(screen.getByTestId('inline-svg')).toHaveAttribute('data-src', '/uploads/logo.svg');
+    expect(screen.getByRole('img', { name: 'Brand' }).tagName).toBe('SPAN');
+  });
+
   it('returns null when label and img are empty', () => {
     renderLogo(<AppLogo href="/" label="   " />);
 
@@ -57,6 +86,17 @@ describe('AppLogo', () => {
 
     expect(await screen.findByRole('button', { name: 'Brand' })).toBeInTheDocument();
     expect(screen.queryByRole('img')).toBeNull();
+  });
+
+  it('falls back to text logo when SVG errors and name is set', async () => {
+    renderLogo(<AppLogo href="/" label="Brand" img="/uploads/broken.svg" />);
+
+    fireEvent.click(screen.getByTestId('inline-svg'));
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('inline-svg')).toBeNull();
+    });
+    expect(screen.getByRole('button', { name: 'Brand' })).toBeInTheDocument();
   });
 
   it('returns null when img errors and name is empty', async () => {

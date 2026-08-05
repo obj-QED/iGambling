@@ -3,24 +3,43 @@
   Do not link `./src/...` here — it 404s on GitHub Pages static deploy.
 -->
 <style>
-  /* Readable iframe chrome before React hydrates (default app scheme = dark). */
-  html,
-  body {
-    margin: 0;
-    background: #0b1220;
-    color: #f8fafc;
+  /*
+   * Docs / canvas scheme surfaces.
+   * Storybook Autodocs ships dark text for a light manager canvas; our toolbar
+   * flips mantine scheme on <html>. Force opaque scheme-matched chrome, then
+   * restore token colors inside story previews only.
+   */
+  :root {
+    --sb-docs-bg: #0b1220;
+    --sb-docs-fg: #f8fafc;
+    --sb-docs-border: #334155;
+    --sb-docs-muted: #94a3b8;
   }
 
   html[data-mantine-color-scheme='light'],
   html[data-theme='light'] {
-    background: #ffffff;
-    color: #0f172a;
+    --sb-docs-bg: #ffffff;
+    --sb-docs-fg: #0f172a;
+    --sb-docs-border: #cbd5e1;
+    --sb-docs-muted: #475569;
   }
 
-  /*
-   * Story shell must hug content — never stretch to the viewport.
-   * Docs inline preview + Canvas both render through [data-storybook-shell].
-   */
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--sb-docs-bg);
+    color: var(--sb-docs-fg);
+  }
+
+  html,
+  body,
+  #storybook-root,
+  #storybook-docs,
+  .sbdocs-wrapper {
+    min-height: 100vh;
+  }
+
   [data-storybook-shell] {
     box-sizing: border-box;
     width: 100%;
@@ -38,15 +57,143 @@
     height: auto !important;
   }
 
-  /* Docs iframe: don't paint a full-viewport dark slab behind md pages. */
-  body.sb-show-main.sb-main-fullscreen:has(#storybook-docs) {
-    background: transparent;
-    height: auto !important;
-    min-height: 0 !important;
-  }
-
+  body.sb-show-main,
+  #storybook-root,
+  #storybook-docs,
+  .sbdocs-wrapper,
+  .sbdocs-content,
+  .sbdocs-preview,
   .sbdocs-preview .docs-story,
   .docs-story {
-    background: transparent;
+    background: var(--sb-docs-bg) !important;
+    color: var(--sb-docs-fg) !important;
+  }
+
+  .sbdocs-preview {
+    border-color: var(--sb-docs-border) !important;
+  }
+
+  /*
+   * Autodocs chrome (titles, story list headings, MD descriptions, tables).
+   * Nested under .sbdocs-content — not only direct children.
+   */
+  #storybook-docs
+    .sbdocs-content
+    :is(h1, h2, h3, h4, h5, h6, p, li, a, span, td, th, label, code, strong, em, small, button) {
+    color: var(--sb-docs-fg) !important;
+  }
+
+  #storybook-docs .sbdocs-content :is(h2, h3, .sbdocs-title) {
+    color: var(--sb-docs-fg) !important;
+  }
+
+  #storybook-docs .sbdocs-content a {
+    text-decoration-color: currentColor;
+  }
+
+  /*
+   * Inline code chips: Storybook uses near-white bg; our Autodocs fg is light
+   * → chips look like empty white bars (“What/Why/How” line).
+   */
+  #storybook-docs .sbdocs-content :is(code, kbd, samp):not(pre code) {
+    background: color-mix(in srgb, var(--sb-docs-fg) 12%, var(--sb-docs-bg)) !important;
+    color: var(--sb-docs-fg) !important;
+    border: 1px solid var(--sb-docs-border);
+  }
+
+  #storybook-docs .sbdocs-content pre,
+  #storybook-docs .sbdocs-content pre code {
+    background: color-mix(in srgb, var(--sb-docs-fg) 8%, var(--sb-docs-bg)) !important;
+    color: var(--sb-docs-fg) !important;
+    border-color: var(--sb-docs-border) !important;
+  }
+
+  #storybook-docs .sbdocs-preview-actions,
+  #storybook-docs .sbdocs-preview-actions :is(button, span) {
+    color: var(--sb-docs-muted) !important;
+  }
+
+  /*
+   * Args / Properties table: Storybook ships white row backgrounds.
+   * Our Autodocs fg is light in dark scheme → white-on-white (looks “empty”).
+   */
+  #storybook-docs .docblock-argstable,
+  #storybook-docs .sb-argstableBlock,
+  #storybook-docs table.docblock-argstable {
+    color: var(--sb-docs-fg) !important;
+    border-color: var(--sb-docs-border) !important;
+  }
+
+  #storybook-docs .docblock-argstable :is(th, td),
+  #storybook-docs .sb-argstableBlock :is(th, td),
+  #storybook-docs .docblock-argstable-body td,
+  #storybook-docs .docblock-argstable-head th {
+    background: var(--sb-docs-bg) !important;
+    color: var(--sb-docs-fg) !important;
+    border-color: var(--sb-docs-border) !important;
+  }
+
+  #storybook-docs .docblock-argstable-body tr:nth-of-type(even) td,
+  #storybook-docs .sb-argstableBlock tbody tr:nth-of-type(even) td {
+    background: color-mix(in srgb, var(--sb-docs-fg) 6%, var(--sb-docs-bg)) !important;
+  }
+
+  #storybook-docs .docblock-argstable span,
+  #storybook-docs .sb-argstableBlock span,
+  #storybook-docs .docblock-argstable code,
+  #storybook-docs .sb-argstableBlock code {
+    color: var(--sb-docs-fg) !important;
+  }
+
+  /* Controls inside the table (selects) keep readable chrome */
+  #storybook-docs .docblock-argstable select,
+  #storybook-docs .sb-argstableBlock select,
+  #storybook-docs .docblock-argstable input,
+  #storybook-docs .sb-argstableBlock input {
+    color: var(--sb-docs-fg) !important;
+    background: color-mix(in srgb, var(--sb-docs-fg) 8%, var(--sb-docs-bg)) !important;
+    border-color: var(--sb-docs-border) !important;
+  }
+
+  /*
+   * Category rows: Storybook keeps absolute “Hide … items” buttons transparent
+   * until hover. Our Autodocs fg override made them always visible → double text
+   * (“C O N F I G” + “Hide Config items”).
+   */
+  #storybook-docs .docblock-argstable-body > tr > td > button,
+  #storybook-docs .sb-argstableBlock-body > tr > td > button {
+    color: transparent !important;
+  }
+
+  #storybook-docs .docblock-argstable-body > tr > td:hover > button,
+  #storybook-docs .docblock-argstable-body > tr > td > button:focus-visible,
+  #storybook-docs .sb-argstableBlock-body > tr > td:hover > button,
+  #storybook-docs .sb-argstableBlock-body > tr > td > button:focus-visible {
+    color: var(--sb-docs-fg) !important;
+  }
+
+  /*
+   * Story canvas / inline preview: drop Autodocs color override so Mantine +
+   * --color-text* tokens paint normally.
+   */
+  #storybook-docs
+    .sbdocs-preview
+    :is(h1, h2, h3, h4, h5, h6, p, li, a, span, td, th, label, code, strong, em, small, button),
+  #storybook-docs
+    .docs-story
+    :is(h1, h2, h3, h4, h5, h6, p, li, a, span, td, th, label, code, strong, em, small, button),
+  #storybook-docs
+    [data-storybook-shell]
+    :is(h1, h2, h3, h4, h5, h6, p, li, a, span, td, th, label, code, strong, em, small, button),
+  [data-storybook-shell]
+    :is(h1, h2, h3, h4, h5, h6, p, li, a, span, td, th, label, code, strong, em, small, button) {
+    color: unset !important;
+    background: unset !important;
+    border-color: unset !important;
+  }
+
+  body.sb-show-main.sb-main-fullscreen:has(#storybook-docs) {
+    height: auto !important;
+    min-height: 0 !important;
   }
 </style>

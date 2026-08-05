@@ -18,7 +18,7 @@ export const MENU_HEADER_TOP_GUEST_MOCK: MenuHeaderTopBlockMock = {
           url: '/',
           name: '',
           key: 'logo',
-          img: publicAssetUrl('/uploads/logo.png'),
+          img: publicAssetUrl('/uploads/logo.svg'),
           type: 'link',
         },
         {

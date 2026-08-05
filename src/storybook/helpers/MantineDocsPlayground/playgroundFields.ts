@@ -133,24 +133,12 @@ export const ACTION_ICON_DOCS_PLAYGROUND_FIELDS: DocsPlaygroundField[] = [
   { type: 'switch', name: 'loading', label: 'Loading' },
 ];
 
-/** Hide controls duplicated in the Mantine-style canvas panel. */
+/** Hide addon Controls — canvas panel is the source of truth for Playground. */
 export const mantineDocsPlaygroundParameters = {
   layout: 'padded' as const,
   controls: {
+    disable: true,
     hideNoControlsWarning: true,
-    exclude: [
-      'variant',
-      'color',
-      'size',
-      'radius',
-      'disabled',
-      'loading',
-      'fullscreen',
-      'children',
-      'aria-label',
-      'iconScale',
-      'iconAspect',
-    ],
   },
 };
 

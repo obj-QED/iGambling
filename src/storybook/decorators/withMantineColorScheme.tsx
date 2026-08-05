@@ -20,13 +20,13 @@ import {
 type ColorScheme = 'light' | 'dark';
 
 const SHELL_BG: Record<ColorScheme, string> = {
-  light: 'var(--color-bg-body, #ffffff)',
-  dark: 'var(--color-bg-body, #0b1220)',
+  light: '#ffffff',
+  dark: '#0b1220',
 };
 
 const SHELL_FG: Record<ColorScheme, string> = {
-  light: 'var(--color-text, #0f172a)',
-  dark: 'var(--color-text, #f8fafc)',
+  light: '#0f172a',
+  dark: '#f8fafc',
 };
 
 const storybookColorSchemeManager: MantineColorSchemeManager = {

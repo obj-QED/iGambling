@@ -25,6 +25,15 @@
   background: var(--color-bg-body, var(--mantine-color-body));
 }
 
+/* Let `fullWidth` / fullscreen stretch — wrap must be full preview width. */
+.preview > * {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .controls {
   display: flex;
   flex-direction: column;
@@ -42,7 +51,7 @@
 .label {
   font-size: var(--mantine-font-size-xs);
   font-weight: 600;
-  color: var(--color-text-muted, var(--mantine-color-dimmed));
+  color: var(--color-text, var(--mantine-color-text));
 }
 
 .control {

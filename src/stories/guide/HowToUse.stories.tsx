@@ -22,9 +22,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Overview: Story = {
   render: () => (
-    <Stack gap="lg" maw={720}>
+    <Stack gap="lg" maw={720} style={{ color: 'var(--color-text)' }}>
       <Stack gap={4}>
-        <Title order={2}>Storybook lab</Title>
+        <Title order={2} c="var(--color-text)">
+          Storybook lab
+        </Title>
         <Text size="sm" c="var(--color-text-muted)">
           Change appearance with toolbar dropdowns and the Controls panel. Start at{' '}
           <Code>Develop / Theme and Styles</Code> for a live brand preview.
@@ -32,30 +34,32 @@ export const Overview: Story = {
       </Stack>
 
       <Stack gap="xs">
-        <Title order={4}>1. Toolbar (top)</Title>
-        <List size="sm" spacing={4}>
+        <Title order={4} c="var(--color-text)">
+          1. Toolbar (top)
+        </Title>
+        <List size="sm" spacing={4} c="var(--color-text)">
           <List.Item>
-            <Text span fw={600}>
+            <Text span fw={600} c="var(--color-text)">
               Color scheme
             </Text>{' '}
             — Light / Dark. Syncs <Code>data-theme</Code> + CSS <Code>color-scheme</Code> so brand
             palettes and <Code>light-dark()</Code> tokens update.
           </List.Item>
           <List.Item>
-            <Text span fw={600}>
+            <Text span fw={600} c="var(--color-text)">
               Primary shade
             </Text>{' '}
             — Mantine primaryShade (4–8). Useful with brand palette.
           </List.Item>
           <List.Item>
-            <Text span fw={600}>
+            <Text span fw={600} c="var(--color-text)">
               Primary color
             </Text>{' '}
             — Mantine <Code>theme.primaryColor</Code>. CMF cascade often pins <Code>brand-*</Code>{' '}
             CSS vars — brand Button paint may not follow this control.
           </List.Item>
           <List.Item>
-            <Text span fw={600}>
+            <Text span fw={600} c="var(--color-text)">
               Header / Aside
             </Text>{' '}
             — layout, type, session, width, mock menu (maps to <Code>window.__SETTINGS__</Code>)
@@ -64,16 +68,20 @@ export const Overview: Story = {
       </Stack>
 
       <Stack gap="xs">
-        <Title order={4}>2. Controls panel (right)</Title>
-        <Text size="sm">
+        <Title order={4} c="var(--color-text)">
+          2. Controls panel (right)
+        </Title>
+        <Text size="sm" c="var(--color-text)">
           Open <Code>Controls</Code>. Most knobs are <Code>select</Code> dropdowns. Value{' '}
           <Code>— none —</Code> means “do not override” (prop omitted).
         </Text>
       </Stack>
 
       <Stack gap="xs">
-        <Title order={4}>3. Where to go</Title>
-        <List size="sm" spacing={4}>
+        <Title order={4} c="var(--color-text)">
+          3. Where to go
+        </Title>
+        <List size="sm" spacing={4} c="var(--color-text)">
           <List.Item>
             <Code>Guide / How to use</Code> — start here
           </List.Item>

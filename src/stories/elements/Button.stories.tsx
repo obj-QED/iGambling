@@ -27,6 +27,10 @@ import {
   MantineDocsPlayground,
   mantineDocsPlaygroundParameters,
 } from '@/storybook/helpers/MantineDocsPlayground';
+import {
+  playgroundGradientFromColor,
+  playgroundPaintStyle,
+} from '@/storybook/helpers/playgroundGradient';
 import { VariantMatrix } from '@/storybook/helpers/VariantMatrix';
 import { STORYBOOK_DEMO_ICON } from '@/storybook/lib';
 
@@ -215,22 +219,32 @@ export const Playground: Story = {
     ...elementPlaygroundParameters,
     controls: mantineDocsPlaygroundParameters.controls,
   },
-  render: function ButtonPlayground() {
-    const [args, updateArgs] = useArgs<ButtonStoryArgs>();
-    const cleaned = omitStorybookNone(args as Record<string, unknown>);
+  /** Use story `args` (incl. URL) for values; `useArgs` only to write updates. */
+  render: function ButtonPlayground(storyArgs) {
+    const [, updateArgs] = useArgs<ButtonStoryArgs>();
+    const cleaned = omitStorybookNone(storyArgs as Record<string, unknown>);
     const { iconScale, iconAspect, children, fullscreen, ...buttonArgs } =
       cleaned as ButtonStoryArgs;
+    const isGradient = buttonArgs.variant === 'gradient';
+    const paintStyle = playgroundPaintStyle('button', buttonArgs.variant, buttonArgs.color);
 
     return (
       <MantineDocsPlayground
-        args={args}
+        args={storyArgs as ButtonStoryArgs & Record<string, unknown>}
         fields={BUTTON_DOCS_PLAYGROUND_FIELDS}
         onChange={updateArgs}
       >
-        <div style={cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect })}>
+        <div
+          style={{
+            ...cmfIconCascadeStyle({ scale: iconScale, aspect: iconAspect }),
+            width: '100%',
+          }}
+        >
           <Button
             {...buttonArgs}
-            fullWidth={fullscreen}
+            fullWidth={Boolean(fullscreen)}
+            gradient={isGradient ? playgroundGradientFromColor(buttonArgs.color) : undefined}
+            style={paintStyle}
             leftSection={<DemoButtonIcon alt={String(children ?? 'Button')} />}
           >
             {children}
