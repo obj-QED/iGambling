@@ -15,6 +15,7 @@ import {
 } from '@/storybook/helpers/mantineArgTypes';
 import { StoryLabFrame } from '@/storybook/helpers/StoryLabFrame';
 import {
+  STORYBOOK_DEMO_ICON,
   STORYBOOK_DEMO_LOGO,
   STORYBOOK_TABLER_BELL,
   STORYBOOK_TABLER_GIFT,
@@ -63,7 +64,7 @@ function mergeItem(base: HeaderMenuItem | undefined, args: BlockStoryArgs): Head
       ? ''
       : typeof cleaned.img === 'string'
         ? cleaned.img
-        : (base?.img ?? STORYBOOK_ICON);
+        : (base?.img ?? STORYBOOK_DEMO_ICON);
 
   return {
     ...(base ?? { key: 'demo', url: '/', name: 'Demo' }),
