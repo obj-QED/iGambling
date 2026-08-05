@@ -303,6 +303,13 @@ On push/PR: lint · stylelint · test · build.
 
 Storybook build + GitHub Pages deploy only when `STORYBOOK=true` in `.env.production` (branch `storybook`).
 
+<<<<<<< HEAD
+=======
+**Pages environment:** Settings → Environments → `github-pages` → Deployment branches → allow `storybook` (or “All branches”). By default only `main` is allowed — without this, deploy fails with “Branch storybook is not allowed…”.
+
+**Dependabot:** weekly grouped PRs (npm + GitHub Actions). Patch/minor PRs get auto-merge enabled and wait for required CI (and reviews if branch protection asks for them). Config: `.github/dependabot.yml`.
+
+>>>>>>> d76b8c6 (Add Dependabot with CI-gated auto-merge for patch/minor)
 ```bash
 yarn check:precommit   # lint + stylelint + build
 ```
