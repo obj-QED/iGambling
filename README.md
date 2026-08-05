@@ -283,7 +283,7 @@ Bootstrap order: **translation → init**. Auth tokens stay httpOnly on the back
 yarn storybook
 ```
 
-**Published (main):** [obj-qed.github.io/iGambling](https://obj-qed.github.io/iGambling/)
+**Published** (when `STORYBOOK=true` in `.env.production`, typically branch `storybook`): [obj-qed.github.io/iGambling](https://obj-qed.github.io/iGambling/)
 
 | Area              | Contents                                                      |
 | ----------------- | ------------------------------------------------------------- |
@@ -299,9 +299,9 @@ Toolbar: color scheme, primary brand, header session, app settings.
 
 ## Quality & CI
 
-On push/PR to `main`: lint · stylelint · test · build.
+On push/PR: lint · stylelint · test · build.
 
-On push to `main`: Storybook → **GitHub Pages** (`.github/workflows/ci.yml`).
+Storybook build + GitHub Pages deploy only when `STORYBOOK=true` in `.env.production` (branch `storybook`).
 
 ```bash
 yarn check:precommit   # lint + stylelint + build

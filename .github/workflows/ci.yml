@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, storybook]
   pull_request:
   workflow_dispatch:
 
@@ -43,10 +43,36 @@ jobs:
       - name: App build
         run: yarn build
 
+  storybook-gate:
+    name: Storybook gate
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: check
+        name: Read STORYBOOK from .env.production
+        run: |
+          set -euo pipefail
+          enabled=false
+          if [ -f .env.production ]; then
+            line=$(grep -E '^[[:space:]]*STORYBOOK=' .env.production | tail -n1 || true)
+            val=${line#*=}
+            val=${val%%#*}
+            val=$(printf '%s' "$val" | tr -d "[:space:]\"'")
+            if [ "$val" = "true" ] || [ "$val" = "1" ]; then
+              enabled=true
+            fi
+          fi
+          echo "enabled=${enabled}" >> "$GITHUB_OUTPUT"
+          echo "STORYBOOK gate: enabled=${enabled}"
+
   build-storybook:
     name: Build Storybook
     runs-on: ubuntu-latest
-    needs: quality
+    needs: [quality, storybook-gate]
+    if: needs.storybook-gate.outputs.enabled == 'true'
     steps:
       - uses: actions/checkout@v4
 
@@ -61,11 +87,11 @@ jobs:
         run: node .github/scripts/storybook-index-report.mjs
 
       - name: Configure GitHub Pages
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.event_name == 'push'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
           path: storybook-static
@@ -89,7 +115,8 @@ jobs:
   a11y:
     name: Accessibility
     runs-on: ubuntu-latest
-    needs: build-storybook
+    needs: [build-storybook, storybook-gate]
+    if: needs.storybook-gate.outputs.enabled == 'true'
     env:
       STORYBOOK_A11Y_STRICT: "false"
     steps:
@@ -120,7 +147,8 @@ jobs:
   chromatic:
     name: Visual regression (Chromatic)
     runs-on: ubuntu-latest
-    needs: build-storybook
+    needs: [build-storybook, storybook-gate]
+    if: needs.storybook-gate.outputs.enabled == 'true'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -146,7 +174,8 @@ jobs:
   ai-review:
     name: AI design review
     runs-on: ubuntu-latest
-    needs: build-storybook
+    needs: [build-storybook, storybook-gate]
+    if: needs.storybook-gate.outputs.enabled == 'true'
     steps:
       - uses: actions/checkout@v4
 
@@ -179,8 +208,8 @@ jobs:
   deploy:
     name: Deploy GitHub Pages
     runs-on: ubuntu-latest
-    needs: build-storybook
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [build-storybook, storybook-gate]
+    if: needs.storybook-gate.outputs.enabled == 'true' && github.event_name == 'push'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -192,31 +221,51 @@ jobs:
   report:
     name: PR report
     runs-on: ubuntu-latest
-    needs: [quality, build-storybook, a11y]
-    if: github.event_name == 'pull_request'
+    needs: [quality, storybook-gate, build-storybook, a11y]
+    if: |
+      github.event_name == 'pull_request' &&
+      always() &&
+      needs.quality.result == 'success' &&
+      (
+        needs.storybook-gate.outputs.enabled != 'true' ||
+        (needs.build-storybook.result == 'success' && needs.a11y.result == 'success')
+      )
     steps:
       - uses: actions/github-script@v7
         env:
           PAGES_URL: https://obj-qed.github.io/iGambling/
+          STORYBOOK_ENABLED: ${{ needs.storybook-gate.outputs.enabled }}
         with:
           script: |
             const pagesUrl = process.env.PAGES_URL;
+            const storybookEnabled = process.env.STORYBOOK_ENABLED === 'true';
             const sha = context.sha.slice(0, 7);
-            const body = [
-              '## CI',
-              '',
+            const rows = [
               '| Check | Status |',
               '| --- | --- |',
               '| Lint + typecheck + unit tests | passed |',
-              '| Storybook build | passed |',
-              '| Accessibility (axe) | passed |',
+            ];
+            if (storybookEnabled) {
+              rows.push('| Storybook build | passed |');
+              rows.push('| Accessibility (axe) | passed |');
+            } else {
+              rows.push('| Storybook | skipped (`STORYBOOK!=true`) |');
+            }
+            const body = [
+              '## CI',
+              '',
+              ...rows,
               '',
               `Commit: \`${sha}\``,
               '',
-              'After merge to `main`, Storybook deploys to:',
-              pagesUrl,
-              '',
-              'Optional secrets: `CHROMATIC_PROJECT_TOKEN`, `OPENAI_API_KEY`.',
+              storybookEnabled
+                ? [
+                    'With `STORYBOOK=true`, push deploys Storybook to:',
+                    pagesUrl,
+                    '',
+                    'Optional secrets: `CHROMATIC_PROJECT_TOKEN`, `OPENAI_API_KEY`.',
+                  ].join('\n')
+                : 'Storybook build/deploy runs when `STORYBOOK=true` in `.env.production` (branch `storybook`).',
             ].join('\n');
 
             const { data: comments } = await github.rest.issues.listComments({
