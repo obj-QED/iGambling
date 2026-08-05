@@ -1,5 +1,6 @@
 # Loaded from the default branch (`main`) only — required by GitHub.
 # All version/security update PRs target `storybook` (not `main`).
+# Version updates wait ≥30 days after a release (cooldown); security updates are immediate.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -9,6 +10,8 @@ updates:
       interval: weekly
       day: monday
     open-pull-requests-limit: 1
+    cooldown:
+      default-days: 30
     groups:
       all-npm:
         patterns:
@@ -29,6 +32,8 @@ updates:
       interval: weekly
       day: monday
     open-pull-requests-limit: 1
+    cooldown:
+      default-days: 30
     groups:
       all-actions:
         patterns:
