@@ -33,11 +33,7 @@ export {
   shouldRenderMenuItem,
 } from './item';
 export { resolveSidebarWidth, type SidebarWidth, toSidebarWidthCss } from './layout';
-export {
-  hasSidebarLayoutContent,
-  type SidebarLayoutModel,
-  splitSidebarMenu,
-} from './layout';
+export { hasSidebarLayoutContent, type SidebarLayoutModel, splitSidebarMenu } from './layout';
 export {
   ASIDE_SIZE_BUTTON_VAR,
   DEFAULT_ASIDE_MENU_BUTTON_SIZE,
@@ -50,5 +46,5 @@ export {
   resolveMenuItemExplicitVariant,
   type SidebarMenuButtonVariant,
 } from './variant';
-/** @deprecated Use `CmfChromeRegion` from `@/shared/lib`. */
-export type { CmfChromeRegion as SidebarChromeRegion } from '@/shared/lib';
+/** @deprecated Use `chrome?: string` on `ResolveCmfScopeOptions` from `@/shared/lib`. */
+export type SidebarChromeRegion = string;

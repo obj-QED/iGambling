@@ -4,21 +4,12 @@ import type { CmfControlAttrsInput } from './types';
 export const CMF_DROPDOWN_ROLE_PARENT = 'parent';
 export const CMF_DROPDOWN_ROLE_CHILD = 'child';
 
-/** Chrome strip segment → `{widget}-header` / `{widget}-footer`. */
-export type CmfChromeRegion = 'header' | 'footer';
-
 export type ResolveCmfScopeOptions = {
   /** Base widget segment (`sidebar`, `header`, …). */
   widget: string;
-  /** Aside/header chrome strip. */
-  chrome?: CmfChromeRegion;
-  /** Nested dropdown component (`{widget}-dropdown`). */
-  dropdown?: boolean;
-  /** Dropdown trigger → role `parent`. */
-  dropdownTrigger?: boolean;
-  /** Nested dropdown row → role `child`. */
-  dropdownItem?: boolean;
-  /** Explicit dropdown role (forces `{widget}-dropdown`). */
+  /** Strip segment → `{widget}-{chrome}` (`header`, `footer`, `dropdown`, …). */
+  chrome?: string;
+  /** Optional `data-cmf-role` (e.g. parent / child). */
   role?: string;
   /** Cascade key override (defaults to `item.key`). */
   key?: string;
@@ -29,14 +20,14 @@ type CmfScopeItem = {
 };
 
 /**
- * Maps widget UI flags → `{ component, key, role }` for {@link controlAttrs} /
- * {@link cmfControlAttrs}.
+ * Maps widget + optional chrome/role → `{ component, key, role }` for
+ * {@link controlAttrs} / {@link cmfControlAttrs}.
  *
  * Examples:
  * - `{ widget: 'sidebar' }` → `sidebar`
  * - `{ widget: 'sidebar', chrome: 'footer' }` → `sidebar-footer`
- * - `{ widget: 'sidebar', dropdownTrigger: true }` → `sidebar-dropdown` + role `parent`
- * - `{ widget: 'header', dropdown: true }` → `header-dropdown`
+ * - `{ widget: 'sidebar', chrome: 'dropdown', role: 'parent' }` → `sidebar-dropdown` + role
+ * - `{ widget: 'header', role: 'child' }` → `header-dropdown` + role (role-only default)
  */
 export function resolveCmfScope(
   item: CmfScopeItem | null | undefined,
@@ -48,30 +39,16 @@ export function resolveCmfScope(
     return key ? { key } : {};
   }
 
-  if (options.chrome === 'header' || options.chrome === 'footer') {
-    return { component: `${widget}-${options.chrome}`, key };
+  const chrome = options.chrome?.trim();
+  const role = options.role?.trim();
+  const roleAttr = role && role.length > 0 ? { role } : {};
+
+  if (chrome && chrome.length > 0) {
+    return { component: `${widget}-${chrome}`, key, ...roleAttr };
   }
 
-  const role = options.role?.trim();
   if (role && role.length > 0) {
     return { component: `${widget}-dropdown`, key, role };
-  }
-  if (options.dropdownTrigger === true) {
-    return {
-      component: `${widget}-dropdown`,
-      key,
-      role: CMF_DROPDOWN_ROLE_PARENT,
-    };
-  }
-  if (options.dropdownItem === true) {
-    return {
-      component: `${widget}-dropdown`,
-      key,
-      role: CMF_DROPDOWN_ROLE_CHILD,
-    };
-  }
-  if (options.dropdown === true) {
-    return { component: `${widget}-dropdown`, key };
   }
 
   return { component: widget, key };

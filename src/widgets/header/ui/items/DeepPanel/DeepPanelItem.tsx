@@ -74,7 +74,7 @@ function DeepPanelItemComponent({ item }: DeepPanelItemProps) {
       size="md"
       fullscreen
       justify="flex-start"
-      {...controlAttrs(item, resolveCmfScope(item, { widget: 'header', dropdown: true }))}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'header', chrome: 'dropdown' }))}
       {...activeAttrs}
       {...iconControlAttrs}
     />

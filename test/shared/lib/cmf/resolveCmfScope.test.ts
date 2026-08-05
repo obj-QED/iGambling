@@ -12,7 +12,7 @@ describe('resolveCmfScope', () => {
     });
   });
 
-  it('maps chrome to {widget}-header / {widget}-footer', () => {
+  it('maps chrome to {widget}-{chrome}', () => {
     expect(resolveCmfScope(item, { widget: 'sidebar', chrome: 'header' })).toEqual({
       component: 'sidebar-header',
       key: 'casino',
@@ -21,17 +21,34 @@ describe('resolveCmfScope', () => {
       component: 'header-footer',
       key: 'casino',
     });
+    expect(resolveCmfScope(item, { widget: 'header', chrome: 'dropdown' })).toEqual({
+      component: 'header-dropdown',
+      key: 'casino',
+    });
   });
 
-  it('maps dropdown flags to {widget}-dropdown + roles', () => {
-    expect(resolveCmfScope(item, { widget: 'sidebar', dropdownTrigger: true })).toEqual({
+  it('maps chrome + role for dropdown parent/child', () => {
+    expect(
+      resolveCmfScope(item, { widget: 'sidebar', chrome: 'dropdown', role: 'parent' }),
+    ).toEqual({
       component: 'sidebar-dropdown',
       key: 'casino',
       role: 'parent',
     });
-    expect(resolveCmfScope(item, { widget: 'header', dropdown: true })).toEqual({
+    expect(resolveCmfScope(item, { widget: 'sidebar', chrome: 'dropdown', role: 'child' })).toEqual(
+      {
+        component: 'sidebar-dropdown',
+        key: 'casino',
+        role: 'child',
+      },
+    );
+  });
+
+  it('maps role-only to {widget}-dropdown + role', () => {
+    expect(resolveCmfScope(item, { widget: 'header', role: 'child' })).toEqual({
       component: 'header-dropdown',
       key: 'casino',
+      role: 'child',
     });
   });
 

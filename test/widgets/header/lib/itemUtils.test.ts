@@ -99,7 +99,7 @@ describe('controlAttrs + resolveCmfScope (header)', () => {
   it('uses header-dropdown component scope for deep rows', () => {
     const casino = { key: 'casino', name: 'Casino', url: '/casino', type: 'link' } as const;
     expect(
-      controlAttrs(casino, resolveCmfScope(casino, { widget: 'header', dropdown: true })),
+      controlAttrs(casino, resolveCmfScope(casino, { widget: 'header', chrome: 'dropdown' })),
     ).toEqual({
       'data-key': 'casino',
       'data-cmf-component': 'header-dropdown',

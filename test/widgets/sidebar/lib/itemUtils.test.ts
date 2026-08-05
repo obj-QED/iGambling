@@ -57,7 +57,10 @@ describe('resolveCmfScope + controlAttrs (sidebar)', () => {
 
   it('parent trigger uses sidebar-dropdown + role parent', () => {
     expect(
-      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar', dropdownTrigger: true })),
+      controlAttrs(
+        casino,
+        resolveCmfScope(casino, { widget: 'sidebar', chrome: 'dropdown', role: 'parent' }),
+      ),
     ).toMatchObject({
       'data-cmf-component': 'sidebar-dropdown',
       'data-cmf-key': 'casino',
@@ -76,14 +79,16 @@ describe('resolveCmfScope + controlAttrs (sidebar)', () => {
 
   it('maps trigger/item to parent/child by default', () => {
     expect(
-      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar', dropdownTrigger: true }))[
-        'data-cmf-role'
-      ],
+      controlAttrs(
+        casino,
+        resolveCmfScope(casino, { widget: 'sidebar', chrome: 'dropdown', role: 'parent' }),
+      )['data-cmf-role'],
     ).toBe('parent');
     expect(
-      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar', dropdownItem: true }))[
-        'data-cmf-role'
-      ],
+      controlAttrs(
+        casino,
+        resolveCmfScope(casino, { widget: 'sidebar', chrome: 'dropdown', role: 'child' }),
+      )['data-cmf-role'],
     ).toBe('child');
     expect(
       controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar' }))['data-cmf-component'],

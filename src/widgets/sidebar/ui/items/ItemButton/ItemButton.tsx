@@ -6,7 +6,12 @@ import clsx from 'clsx';
 
 import { AppButton } from '@/elements';
 import { useNavActive } from '@/shared/hooks';
-import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import {
+  CMF_DROPDOWN_ROLE_CHILD,
+  CMF_DROPDOWN_ROLE_PARENT,
+  controlAttrs,
+  resolveCmfScope,
+} from '@/shared/lib';
 
 import { useAsideMenuButtonSize, useMenuItemRenderable } from '../../../hooks';
 import {
@@ -64,9 +69,13 @@ function ItemButtonComponent({
         item,
         resolveCmfScope(item, {
           widget: 'sidebar',
-          dropdownTrigger,
-          dropdownItem,
-          chrome,
+          ...(chrome
+            ? { chrome }
+            : dropdownTrigger
+              ? { chrome: 'dropdown', role: CMF_DROPDOWN_ROLE_PARENT }
+              : dropdownItem
+                ? { chrome: 'dropdown', role: CMF_DROPDOWN_ROLE_CHILD }
+                : {}),
         }),
       )}
       {...activeAttrs}

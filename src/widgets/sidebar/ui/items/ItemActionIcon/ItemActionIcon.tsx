@@ -6,7 +6,12 @@ import clsx from 'clsx';
 
 import { AppActionIcon } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
-import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import {
+  CMF_DROPDOWN_ROLE_CHILD,
+  CMF_DROPDOWN_ROLE_PARENT,
+  controlAttrs,
+  resolveCmfScope,
+} from '@/shared/lib';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {
@@ -71,9 +76,13 @@ function ItemActionIconComponent({
         item,
         resolveCmfScope(item, {
           widget: 'sidebar',
-          dropdownTrigger,
-          dropdownItem,
-          chrome,
+          ...(chrome
+            ? { chrome }
+            : dropdownTrigger
+              ? { chrome: 'dropdown', role: CMF_DROPDOWN_ROLE_PARENT }
+              : dropdownItem
+                ? { chrome: 'dropdown', role: CMF_DROPDOWN_ROLE_CHILD }
+                : {}),
         }),
       )}
       {...activeAttrs}
