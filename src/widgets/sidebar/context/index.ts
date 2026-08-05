@@ -1,8 +1,17 @@
-export { AsideMenuSizeContext } from './asideMenuSizeContext';
-export { SidebarConfigContext } from './context';
-export { SidebarConfigProvider } from './provider';
-export { SidebarDropdownContext } from './sidebarDropdownContext';
-export { SidebarDropdownProvider } from './sidebarDropdownProvider';
-export { SidebarTypePackContext } from './typePackContext';
-export { useSidebarConfig } from './useSidebarConfig';
-export { useSidebarDropdown } from './useSidebarDropdown';
+/**
+ * Sidebar React contexts — grouped by concern.
+ *
+ * - `config/`   — resolved SidebarConfig
+ * - `dropdown/` — open-key set for nested rows
+ * - `size/`     — Mantine button size from CSS var
+ * - `typePack/` — default vs compact presentation pack
+ */
+
+export { AsideMenuSizeContext } from './size';
+export { SidebarConfigContext, SidebarConfigProvider, useSidebarConfig } from './config';
+export {
+  SidebarDropdownContext,
+  SidebarDropdownProvider,
+  useSidebarDropdown,
+} from './dropdown';
+export { SidebarTypePackContext } from './typePack';

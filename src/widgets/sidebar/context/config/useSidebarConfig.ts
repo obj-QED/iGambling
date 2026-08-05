@@ -1,4 +1,4 @@
-import type { SidebarConfig } from '../types';
+import type { SidebarConfig } from '../../types';
 
 import { useContext } from 'react';
 

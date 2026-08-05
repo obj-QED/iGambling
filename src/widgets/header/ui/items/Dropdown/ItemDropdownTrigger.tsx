@@ -4,13 +4,13 @@ import { forwardRef } from 'react';
 
 import { AppActionIcon, AppButton } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useHeaderMenuSizes } from '../../../context';
 import {
   hasItemImg,
   isIconOnlyItem,
   isRenderableItem,
-  menuItemDataAttrs,
   resolveHeaderMenuActionIconSize,
   resolveHeaderMenuButtonSize,
   resolveItemLabel,
@@ -47,7 +47,7 @@ const ItemDropdownTriggerComponent = forwardRef<HTMLButtonElement, ItemDropdownT
           size={actionIconSize}
           aria-label={label}
           aria-haspopup="menu"
-          {...menuItemDataAttrs(item)}
+          {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
           {...activeAttrs}
           {...iconControlAttrs}
         >
@@ -73,7 +73,7 @@ const ItemDropdownTriggerComponent = forwardRef<HTMLButtonElement, ItemDropdownT
         rightSection={rightSection}
         aria-label={label}
         aria-haspopup="menu"
-        {...menuItemDataAttrs(item)}
+        {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
         {...activeAttrs}
         {...iconControlAttrs}
       />

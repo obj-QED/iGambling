@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { AppActionIcon } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {
@@ -14,7 +15,6 @@ import {
   resolveItemHref,
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
-  resolveMenuItemCmfAttrs,
 } from '../../../lib';
 import { SidebarPhotoFallback } from '../icons/SidebarPhotoFallback';
 import { ItemMedia } from '../ItemMedia/ItemMedia';
@@ -43,6 +43,7 @@ function ItemActionIconComponent({
   className,
   dropdownItem = false,
   dropdownTrigger = false,
+  chrome,
   indicator,
   onClick,
   'aria-expanded': ariaExpanded,
@@ -66,7 +67,15 @@ function ItemActionIconComponent({
       aria-label={label}
       {...(dropdownTrigger && { 'data-sidebar-dropdown-trigger': true })}
       {...(dropdownItem && { 'data-sidebar-dropdown-item': true })}
-      {...resolveMenuItemCmfAttrs(item, { dropdownTrigger, dropdownItem })}
+      {...controlAttrs(
+        item,
+        resolveCmfScope(item, {
+          widget: 'sidebar',
+          dropdownTrigger,
+          dropdownItem,
+          chrome,
+        }),
+      )}
       {...activeAttrs}
       {...iconControlAttrs}
       {...(dropdownTrigger

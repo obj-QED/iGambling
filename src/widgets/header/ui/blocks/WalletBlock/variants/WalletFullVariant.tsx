@@ -6,12 +6,16 @@ import { IconWallet } from '@tabler/icons-react';
 
 import { AppButton } from '@/elements';
 import { useCmfIconStyle, useMediaState } from '@/shared/hooks';
-import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib';
+import {
+  controlAttrs,
+  resolveCmfIconRadius,
+  resolveCmfIconShape,
+  resolveCmfScope,
+} from '@/shared/lib';
 
 import { useHeaderMenuSizes } from '../../../../context';
 import {
   isRenderableItem,
-  menuItemDataAttrs,
   resolveHeaderMenuButtonSize,
   resolveItemHref,
   resolveItemLabel,
@@ -50,7 +54,7 @@ function WalletFullVariantComponent({ item }: BlockProps) {
       variant={resolveMenuItemButtonVariant(item)}
       size={resolveHeaderMenuButtonSize(item, menuSizes)}
       leftSection={leftSection}
-      {...menuItemDataAttrs(item)}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
       {...iconControlAttrs}
     />
   );

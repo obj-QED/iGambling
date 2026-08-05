@@ -1,4 +1,4 @@
-import type { SidebarDropdownOpenKeysState } from '../hooks/useSidebarDropdownOpenKeys';
+import type { SidebarDropdownOpenKeysState } from '../../hooks/useSidebarDropdownOpenKeys';
 
 import { createContext } from 'react';
 

@@ -6,14 +6,10 @@ import { Menu } from '@mantine/core';
 
 import { AppButton } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useHeaderMenuSizes } from '../../../context';
-import {
-  menuItemDataAttrs,
-  resolveHeaderMenuButtonSize,
-  resolveItemHref,
-  resolveItemLabel,
-} from '../../../lib';
+import { resolveHeaderMenuButtonSize, resolveItemHref, resolveItemLabel } from '../../../lib';
 import { ItemImage } from '../ItemImage/ItemImage';
 
 function DropdownItemComponent({ item }: DropdownItemProps) {
@@ -37,7 +33,7 @@ function DropdownItemComponent({ item }: DropdownItemProps) {
       size={resolveHeaderMenuButtonSize(item, menuSizes)}
       fullscreen
       justify="flex-start"
-      {...menuItemDataAttrs(item)}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
       {...activeAttrs}
       {...iconControlAttrs}
     />

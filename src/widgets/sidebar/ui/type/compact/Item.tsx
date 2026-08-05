@@ -12,6 +12,7 @@ function CompactItemComponent({
   className,
   dropdownItem,
   dropdownTrigger,
+  chrome,
   indicator,
   onClick,
   'aria-expanded': ariaExpanded,
@@ -24,6 +25,7 @@ function CompactItemComponent({
       className={className}
       dropdownItem={dropdownItem}
       dropdownTrigger={dropdownTrigger}
+      chrome={chrome}
       indicator={indicator}
       onClick={onClick}
       aria-expanded={ariaExpanded}
@@ -36,7 +38,9 @@ function CompactItemComponent({
       label={item.label}
       name={item.name}
       config={tooltip}
-      cmfComponent="sidebar"
+      cmfComponent={
+        chrome === 'header' ? 'sidebar-header' : chrome === 'footer' ? 'sidebar-footer' : 'sidebar'
+      }
       cmfKey="item"
     >
       {control}

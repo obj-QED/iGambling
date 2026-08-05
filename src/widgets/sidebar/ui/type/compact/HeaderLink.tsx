@@ -8,7 +8,7 @@ import headerStyles from '../../../styles/blocks/SidebarHeader.module.scss';
 
 function CompactHeaderLinkComponent({ item }: BlockProps) {
   const { Item } = useSidebarTypePack();
-  return <Item item={item} className={headerStyles.mainLinkCompact} />;
+  return <Item item={item} className={headerStyles.mainLinkCompact} chrome="header" />;
 }
 
 export const CompactHeaderLink = memo(CompactHeaderLinkComponent);

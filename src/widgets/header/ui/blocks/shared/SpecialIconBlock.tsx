@@ -4,14 +4,18 @@ import { memo, useRef } from 'react';
 
 import { AppActionIcon } from '@/elements';
 import { useCmfIconStyle, useMediaState, useNavActive } from '@/shared/hooks';
-import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib';
+import {
+  controlAttrs,
+  resolveCmfIconRadius,
+  resolveCmfIconShape,
+  resolveCmfScope,
+} from '@/shared/lib';
 
 import { useHeaderMenuSizes } from '../../../context';
 import {
   hasItemImg,
   hasItemName,
   isRenderableItem,
-  menuItemDataAttrs,
   resolveHeaderMenuActionIconSize,
   resolveItemHref,
   resolveItemLabel,
@@ -64,7 +68,7 @@ function SpecialIconBlockComponent({
         size={actionIconSize}
         aria-label={label}
         disabled={disabled}
-        {...menuItemDataAttrs(item)}
+        {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
         {...activeAttrs}
         {...iconControlAttrs}
       >

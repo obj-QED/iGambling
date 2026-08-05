@@ -1,8 +1,8 @@
-import type { SidebarDropdownOpenKeysState } from '../hooks/useSidebarDropdownOpenKeys';
+import type { SidebarDropdownOpenKeysState } from '../../hooks/useSidebarDropdownOpenKeys';
 
 import { useContext } from 'react';
 
-import { SidebarDropdownContext } from './sidebarDropdownContext';
+import { SidebarDropdownContext } from './context';
 
 export function useSidebarDropdown(): SidebarDropdownOpenKeysState {
   const value = useContext(SidebarDropdownContext);

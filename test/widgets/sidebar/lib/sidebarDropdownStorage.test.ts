@@ -4,7 +4,7 @@ import {
   readSidebarDropdownOpenKeys,
   toggleSidebarDropdownOpenKey,
   writeSidebarDropdownOpenKeys,
-} from '@/widgets/sidebar/lib/sidebarDropdownStorage';
+} from '@/widgets/sidebar/lib';
 
 const STORAGE_KEY = 'igambling:sidebar:dropdown-open-keys';
 

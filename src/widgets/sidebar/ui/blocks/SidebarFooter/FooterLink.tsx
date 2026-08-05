@@ -4,10 +4,10 @@ import { memo } from 'react';
 
 import { AppButton } from '@/elements';
 import { useMediaState } from '@/shared/hooks';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {
-  menuItemDataAttrs,
   renderSidebarFooterIcon,
   resolveItemHref,
   resolveItemLabel,
@@ -37,7 +37,7 @@ function SidebarFooterLinkComponent({ item }: BlockProps) {
       fullscreen
       justify="flex-start"
       leftSection={leftSection}
-      {...menuItemDataAttrs(item)}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar', chrome: 'footer' }))}
     />
   );
 }

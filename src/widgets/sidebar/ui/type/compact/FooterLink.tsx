@@ -3,11 +3,11 @@ import type { BlockProps } from '../../../types';
 import { memo } from 'react';
 
 import { AppActionIcon } from '@/elements';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {
   hasItemImg,
-  menuItemDataAttrs,
   renderSidebarFooterIcon,
   resolveItemHref,
   resolveItemLabel,
@@ -35,14 +35,14 @@ function CompactFooterLinkComponent({ item }: BlockProps) {
         variant={resolveMenuItemActionIconVariant(item)}
         size={size}
         aria-label={label}
-        {...menuItemDataAttrs(item)}
+        {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar', chrome: 'footer' }))}
       >
         {fallbackIcon}
       </AppActionIcon>
     );
   }
 
-  return <Item item={item} />;
+  return <Item item={item} chrome="footer" />;
 }
 
 export const CompactFooterLink = memo(CompactFooterLinkComponent);

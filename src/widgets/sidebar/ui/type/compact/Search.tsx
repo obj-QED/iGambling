@@ -5,6 +5,7 @@ import { memo } from 'react';
 import { IconSearch } from '@tabler/icons-react';
 
 import { AppActionIcon } from '@/elements';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 import { AppTooltip } from '@/shared/ui';
 
 import { useSidebarConfig } from '../../../context';
@@ -12,7 +13,6 @@ import { useAsideMenuButtonSize } from '../../../hooks';
 import {
   hasItemName,
   isRenderableItem,
-  menuItemDataAttrs,
   resolveItemHref,
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
@@ -38,7 +38,7 @@ function SearchComponent({ item, className }: BlockProps) {
       variant={resolveMenuItemActionIconVariant(item)}
       size={size}
       aria-label={ariaLabel}
-      {...menuItemDataAttrs(item)}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar' }))}
     >
       <IconSearch className="cmf-ActionIcon-icon-svg" stroke={1.75} aria-hidden />
     </AppActionIcon>

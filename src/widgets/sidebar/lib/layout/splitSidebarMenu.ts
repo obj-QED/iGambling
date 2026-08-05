@@ -1,6 +1,6 @@
 import type { HeaderMenuModel, HeaderSection } from '@/widgets/header';
 
-import { SIDEBAR_FOOTER_SECTION_KEY, SIDEBAR_HEADER_SECTION_KEY } from '../config/sectionKeys';
+import { SIDEBAR_FOOTER_SECTION_KEY, SIDEBAR_HEADER_SECTION_KEY } from '../../config/sectionKeys';
 
 export type SidebarLayoutModel = {
   headerSection: HeaderSection | null;

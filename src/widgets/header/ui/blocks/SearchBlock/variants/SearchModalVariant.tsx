@@ -6,11 +6,11 @@ import { Modal, TextInput } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 
 import { AppActionIcon } from '@/elements';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useHeaderMenuSizes } from '../../../../context';
 import {
   isRenderableItem,
-  menuItemDataAttrs,
   resolveHeaderMenuActionIconSize,
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
@@ -43,7 +43,7 @@ function SearchModalVariantComponent({ item }: BlockProps) {
           size={resolveHeaderMenuActionIconSize(menuSizes)}
           aria-label={label}
           onClick={open}
-          {...menuItemDataAttrs(item)}
+          {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
         >
           <IconSearch {...HEADER_TABLER_ICON_PROPS} />
         </AppActionIcon>

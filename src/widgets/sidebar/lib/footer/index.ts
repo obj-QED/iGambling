@@ -1,0 +1,1 @@
+export { renderSidebarFooterIcon } from './resolveSidebarFooterIcon';

@@ -1,4 +1,4 @@
-import type { SidebarTypePack } from '../ui/type/types';
+import type { SidebarTypePack } from '../../ui/type/types';
 
 import { createContext } from 'react';
 

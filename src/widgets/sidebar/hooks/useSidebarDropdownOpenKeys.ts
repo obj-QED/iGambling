@@ -4,7 +4,7 @@ import {
   readSidebarDropdownOpenKeys,
   toggleSidebarDropdownOpenKey,
   writeSidebarDropdownOpenKeys,
-} from '../lib/sidebarDropdownStorage';
+} from '../lib';
 
 export type SidebarDropdownOpenKeysState = {
   isOpen: (menuKey: string) => boolean;

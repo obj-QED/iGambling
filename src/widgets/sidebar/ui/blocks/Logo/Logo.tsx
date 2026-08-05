@@ -8,16 +8,12 @@ import { IconMenu2 } from '@tabler/icons-react';
 import clsx from 'clsx';
 
 import { AppActionIcon } from '@/elements';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 import { AppLogo, AppTooltip } from '@/shared/ui';
 
 import { useSidebarConfig } from '../../../context';
 import { useAsideMenuButtonSize, useMenuItemRenderable } from '../../../hooks';
-import {
-  itemKey,
-  menuItemDataAttrs,
-  resolveItemHref,
-  resolveLogoControlVariant,
-} from '../../../lib';
+import { itemKey, resolveItemHref, resolveLogoControlVariant } from '../../../lib';
 import { useSidebarTypePack } from '../../type';
 
 import styles from './styles.module.scss';
@@ -25,7 +21,7 @@ import styles from './styles.module.scss';
 /** Fallback aria when item has neither `label` nor `name` but still shows an image. */
 const LOGO_FALLBACK_LABEL = 'Logo';
 const LOGO_TRIGGER_KEY_SUFFIX = '-trigger';
-/** Cascade SoT keys — match `--cmf-*-sidebar-logo*` / `--cmf-*-sidebar-logo-trigger-*` tokens. */
+/** Cascade SoT keys — match `--cmf-*-sidebar-header-logo*` / `*-logo-trigger-*` tokens. */
 const LOGO_CMF_KEY = 'logo';
 const LOGO_TRIGGER_CMF_KEY = 'logo-trigger';
 
@@ -92,13 +88,21 @@ function LogoComponent({ item, className }: BlockProps) {
   const variant = resolveLogoControlVariant(item);
   const triggerItem = resolveTriggerItem(item);
   const triggerAttrs = {
-    ...menuItemDataAttrs(triggerItem),
-    'data-cmf-key': LOGO_TRIGGER_CMF_KEY,
+    ...controlAttrs(
+      triggerItem,
+      resolveCmfScope(triggerItem, {
+        widget: 'sidebar',
+        chrome: 'header',
+        key: LOGO_TRIGGER_CMF_KEY,
+      }),
+    ),
     disabled: false,
   };
   const logoAttrs = {
-    ...menuItemDataAttrs(item),
-    'data-cmf-key': LOGO_CMF_KEY,
+    ...controlAttrs(
+      item,
+      resolveCmfScope(item, { widget: 'sidebar', chrome: 'header', key: LOGO_CMF_KEY }),
+    ),
     disabled: false,
   };
 

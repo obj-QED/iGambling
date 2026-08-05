@@ -4,9 +4,15 @@ import { memo } from 'react';
 
 import { AppButton } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useHeaderMenuSizes } from '../../../context';
-import { menuItemDataAttrs, resolveHeaderMenuButtonSize, resolveItemHref, resolveItemLabel, resolveMenuItemButtonVariant } from '../../../lib';
+import {
+  resolveHeaderMenuButtonSize,
+  resolveItemHref,
+  resolveItemLabel,
+  resolveMenuItemButtonVariant,
+} from '../../../lib';
 import { ItemImage } from '../ItemImage/ItemImage';
 
 import styles from '../../../styles/items/ItemButton.module.scss';
@@ -31,7 +37,7 @@ function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
       justify="flex-start"
       leftSection={leftSection}
       rightSection={rightSection}
-      {...menuItemDataAttrs(item)}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
       {...activeAttrs}
       {...iconControlAttrs}
     />

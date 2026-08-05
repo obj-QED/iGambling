@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  DEFAULT_ASIDE_MENU_BUTTON_SIZE,
-  readAsideMenuButtonSize,
-} from '@/widgets/sidebar/lib/asideMenuSize';
+import { DEFAULT_ASIDE_MENU_BUTTON_SIZE, readAsideMenuButtonSize } from '@/widgets/sidebar/lib';
 
 describe('readAsideMenuButtonSize', () => {
   it('returns default when element is null', () => {

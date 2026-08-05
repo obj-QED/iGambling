@@ -7,14 +7,10 @@ import { IconChevronRight } from '@tabler/icons-react';
 
 import { AppButton } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
-import {
-  menuItemDataAttrs,
-  resolveItemHref,
-  resolveItemLabel,
-  resolveMenuItemButtonVariant,
-} from '../../../lib';
+import { resolveItemHref, resolveItemLabel, resolveMenuItemButtonVariant } from '../../../lib';
 import { ItemMedia } from '../../items/ItemMedia/ItemMedia';
 
 import styles from '../../../styles/blocks/SidebarHeader.module.scss';
@@ -71,7 +67,7 @@ function SidebarHeaderLinkComponent({ item }: BlockProps) {
       className={styles.mainLink}
       leftSection={avatar}
       rightSection={rightSection}
-      {...menuItemDataAttrs(item)}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar', chrome: 'header' }))}
       {...activeAttrs}
     />
   );

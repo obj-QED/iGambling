@@ -3,10 +3,14 @@
  * Flat CSS vars only (edit here / prod theme.css — no Sass mixins).
  *
  * CMF Button / ActionIcon — change look HERE:
- *   --cmf-button-sidebar-{key?}-{prop}       e.g. --cmf-button-sidebar-account-height
- *   --cmf-action-icon-sidebar-{key?}-{prop}  e.g. --cmf-action-icon-sidebar-logo-trigger-size
+ *   --cmf-button-sidebar-{key?}-{prop}              menu body (`data-cmf-component="sidebar"`)
+ *   --cmf-button-sidebar-header-{key?}-{prop}       header strip
+ *   --cmf-button-sidebar-footer-{key?}-{prop}       footer strip
+ *   --cmf-*-sidebar-dropdown-{key|role}-{prop}      nested menu
  * Winner: key → role → component → data-variant → shared → base
- * Logo cascade keys: `logo` / `logo-trigger` (not API aside_header_logo*)
+ * Logo (header chrome): `data-cmf-component="sidebar-header"` + keys `logo` / `logo-trigger`
+ *   → `--cmf-*-sidebar-header-logo*` / `--cmf-*-sidebar-header-logo-trigger-*`
+ *   (not API `aside_header_logo*`)
  * Cascade engine: mantine/cmf/cmfCascadeResolve.ts (clear → nestCssVars)
  * Guide: mantine/cmf/CASCADE.md
  * Tooltip tokens live on :root in tokens/theme.scss (portal).
@@ -22,9 +26,9 @@
   --aside-header-color: inherit;
   --aside-header-border-color: var(--mantine-color-dark-4);
   --aside-header-avatar-size: 1.5rem;
-  --cmf-button-sidebar-account-height: 2.5rem;
-  --cmf-button-sidebar-account-padding-x: 10px;
-  --cmf-button-sidebar-account-hover: light-dark(
+  --cmf-button-sidebar-header-account-height: 3.5rem;
+  --cmf-button-sidebar-header-account-padding-x: 10px;
+  --cmf-button-sidebar-header-account-hover: light-dark(
     var(--mantine-color-gray-2),
     var(--mantine-color-dark-4)
   );
@@ -79,26 +83,15 @@
    * Dropdown: data-cmf-role (trigger→parent, nested→child). Token layers:
    *   --cmf-*-sidebar-dropdown-{key|role|}-{prop} then variant / shared
    */
-
-  --cmf-button-sidebar-dropdown-parent-bg: light-dark(
-    var(--mantine-color-gray-4),
-    var(--mantine-color-dark-5)
-  );
+  --cmf-button-sidebar-dropdown-parent-bg: light-dark(var(--mantine-color-gray-4), transparent);
 
   --cmf-button-sidebar-dropdown-child-bg: light-dark(
     var(--mantine-color-gray-3),
-    var(--mantine-color-dark-4)
+    var(--mantine-color-dark-6)
   );
 
-  // Sidebar header, menu, footer Buttons colors
-  --cmf-button-sidebar-header-bg: light-dark(
-    var(--mantine-color-gray-7),
-    var(--mantine-color-dark-9)
-  );
-  --cmf-button-sidebar-menu-bg: light-dark(
-    var(--mantine-color-gray-4),
-    var(--mantine-color-dark-5)
-  );
+  /* Region component paints (attrs on controls: sidebar / sidebar-header / sidebar-footer) */
+  --cmf-button-sidebar-bg: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-6));
   --cmf-button-sidebar-footer-bg: light-dark(
     var(--mantine-color-gray-8),
     var(--mantine-color-dark-7)
@@ -138,10 +131,10 @@
   // --cmf-action-icon-sidebar-active-radius-tl: 0px;
   // --cmf-action-icon-sidebar-active-radius-bl: 0px;
 
-  --cmf-action-icon-sidebar-logo-trigger-size: calc(2.25rem * var(--mantine-scale));
-  --cmf-button-sidebar-logo-padding-x: 0;
-  --cmf-button-sidebar-logo-height: calc(2.25rem * var(--mantine-scale));
-  --cmf-action-icon-sidebar-logo-trigger-icon-scale: 1.25;
+  --cmf-action-icon-sidebar-header-logo-trigger-size: calc(2.25rem * var(--mantine-scale));
+  --cmf-button-sidebar-header-logo-padding-x: 0;
+  --cmf-button-sidebar-header-logo-height: calc(2.25rem * var(--mantine-scale));
+  --cmf-action-icon-sidebar-header-logo-trigger-icon-scale: 1.25;
   --header-logo-width: 120px;
 
   --tooltip-sidebar-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-7));
@@ -158,15 +151,22 @@
     --aside-shell-padding: var(--mantine-spacing-xs);
     --aside-menu-gap: var(--spacing-xs, 0.25rem);
 
-    /* Square md ActionIcon — bar + dropdown must match (same visual family). */
+    /* Square md ActionIcon — bar + dropdown + chrome must match. */
     --cmf-action-icon-sidebar-size: calc(2.625rem * var(--mantine-scale));
     --cmf-action-icon-sidebar-dropdown-size: calc(2.625rem * var(--mantine-scale));
+    --cmf-action-icon-sidebar-header-size: calc(2.625rem * var(--mantine-scale));
+    --cmf-action-icon-sidebar-footer-size: calc(2.625rem * var(--mantine-scale));
 
-    /* Square media — Tabler SVGs match sibling ActionIcons (was 0.75 → clipped look). */
+    /* Square media — was 0.7 → −15% ≈ 0.595; dropdown parent (role) smaller. */
     --cmf-action-icon-sidebar-icon-aspect: 1;
-    --cmf-action-icon-sidebar-icon-scale: 0.7;
+    --cmf-action-icon-sidebar-icon-scale: 0.595;
     --cmf-action-icon-sidebar-dropdown-icon-aspect: 1;
-    --cmf-action-icon-sidebar-dropdown-icon-scale: 0.7;
+    --cmf-action-icon-sidebar-dropdown-icon-scale: 0.595;
+    --cmf-action-icon-sidebar-dropdown-parent-icon-scale: 0.5;
+    --cmf-action-icon-sidebar-header-icon-aspect: 1;
+    --cmf-action-icon-sidebar-header-icon-scale: 0.595;
+    --cmf-action-icon-sidebar-footer-icon-aspect: 1;
+    --cmf-action-icon-sidebar-footer-icon-scale: 0.595;
     --cmf-action-icon-sidebar-bg: var(--mantine-color-default);
     --cmf-action-icon-sidebar-color: var(--mantine-color-default-color);
     --cmf-action-icon-sidebar-hover: var(--mantine-color-default-hover);
@@ -175,12 +175,20 @@
     --cmf-action-icon-sidebar-dropdown-color: var(--mantine-color-default-color);
     --cmf-action-icon-sidebar-dropdown-hover: var(--mantine-color-default-hover);
     --cmf-action-icon-sidebar-dropdown-hover-color: var(--mantine-color-text);
+    --cmf-action-icon-sidebar-header-bg: var(--mantine-color-default);
+    --cmf-action-icon-sidebar-header-color: var(--mantine-color-default-color);
+    --cmf-action-icon-sidebar-header-hover: var(--mantine-color-default-hover);
+    --cmf-action-icon-sidebar-header-hover-color: var(--mantine-color-text);
+    --cmf-action-icon-sidebar-footer-bg: var(--mantine-color-default);
+    --cmf-action-icon-sidebar-footer-color: var(--mantine-color-default-color);
+    --cmf-action-icon-sidebar-footer-hover: var(--mantine-color-default-hover);
+    --cmf-action-icon-sidebar-footer-hover-color: var(--mantine-color-text);
 
     /* Compact dropdown chevron — corner badge on ActionIcon (no horizontal shift). */
     --aside-menu-chevron-size: 0.75rem;
     --aside-menu-compact-dropdown-trigger-margin-left: 0;
     --aside-menu-dropdown-indicator-position: absolute;
-    --cmf-action-icon-sidebar-logo-trigger-bg: transparent;
-    --cmf-action-icon-sidebar-logo-trigger-hover: transparent;
+    --cmf-action-icon-sidebar-header-logo-trigger-bg: transparent;
+    --cmf-action-icon-sidebar-header-logo-trigger-hover: transparent;
   }
 }

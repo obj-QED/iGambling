@@ -9,6 +9,7 @@ function DefaultItemComponent({
   className,
   dropdownItem,
   dropdownTrigger,
+  chrome,
   rightSection,
   onClick,
   'aria-expanded': ariaExpanded,
@@ -20,6 +21,7 @@ function DefaultItemComponent({
       className={className}
       dropdownItem={dropdownItem}
       dropdownTrigger={dropdownTrigger}
+      chrome={chrome}
       rightSection={rightSection}
       onClick={onClick}
       aria-expanded={ariaExpanded}

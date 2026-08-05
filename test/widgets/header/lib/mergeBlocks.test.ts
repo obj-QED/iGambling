@@ -2,7 +2,7 @@ import type { HeaderMenuModel } from '@/widgets/header/types';
 
 import { describe, expect, it } from 'vitest';
 
-import { filterRenderableMenu } from '@/widgets/header/lib/itemUtils';
+import { filterRenderableMenu } from '@/widgets/header/lib';
 import { mergeCustomBlocks } from '@/widgets/header/lib/mergeBlocks';
 
 const BASE_MENU: HeaderMenuModel = {

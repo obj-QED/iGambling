@@ -6,11 +6,11 @@ import { Drawer, Text } from '@mantine/core';
 import { IconWallet } from '@tabler/icons-react';
 
 import { AppActionIcon } from '@/elements';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useHeaderMenuSizes } from '../../../../context';
 import {
   isRenderableItem,
-  menuItemDataAttrs,
   resolveHeaderMenuActionIconSize,
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
@@ -43,7 +43,7 @@ function WalletDrawerVariantComponent({ item }: BlockProps) {
           size={resolveHeaderMenuActionIconSize(menuSizes)}
           aria-label={label}
           onClick={open}
-          {...menuItemDataAttrs(item)}
+          {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
         >
           <IconWallet {...HEADER_TABLER_ICON_PROPS} />
         </AppActionIcon>

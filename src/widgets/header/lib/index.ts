@@ -1,4 +1,5 @@
 export { resolveButtonVariant } from './buttonVariant';
+export { HEADER_CMF_COMPONENT, HEADER_DROPDOWN_CMF_COMPONENT } from './cmfConstants';
 export {
   DEFAULT_HEADER_MENU_SIZES,
   type HeaderMenuSizes,
@@ -11,13 +12,10 @@ export {
   hasItemImg,
   hasItemName,
   hasRenderableMenu,
-  HEADER_CMF_COMPONENT,
-  HEADER_DROPDOWN_CMF_COMPONENT,
+  isDeepPanelItemEligible,
   isIconOnlyItem,
   isRenderableItem,
   isSpecialBlockKey,
-  menuItemDataAttrs,
-  menuItemDropdownDataAttrs,
   resolveItemHref,
   resolveItemLabel,
 } from './itemUtils';

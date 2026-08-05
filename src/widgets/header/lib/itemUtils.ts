@@ -1,8 +1,6 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
 
 import { isHeaderSpecialBlockKey } from '@/shared/config/headerSpecialBlockKeys';
-import { cmfScopeAttrs } from '@/shared/lib/cmf';
-import { menuApiTypeAttrs } from '@/shared/lib/menu';
 
 import { HEADER_CONFIG_ONLY_BLOCK_KEYS } from '../types/items.types';
 
@@ -59,40 +57,6 @@ export function resolveItemLabel(item: HeaderMenuItem): string {
 }
 
 export { resolveItemHref } from '@/shared/lib';
-
-export const HEADER_CMF_COMPONENT = 'header';
-
-/** Independent cascade for deep-menu rows (`--cmf-button-header-dropdown-*`). */
-export const HEADER_DROPDOWN_CMF_COMPONENT = 'header-dropdown';
-
-export function menuItemDataAttrs(item: HeaderMenuItem): {
-  'data-cmf-component': typeof HEADER_CMF_COMPONENT;
-  'data-cmf-key': string;
-  'api-type'?: 'button' | 'link';
-} {
-  return {
-    ...(cmfScopeAttrs(HEADER_CMF_COMPONENT, itemKey(item)) as {
-      'data-cmf-component': typeof HEADER_CMF_COMPONENT;
-      'data-cmf-key': string;
-    }),
-    ...menuApiTypeAttrs(item.type),
-  };
-}
-
-/** Deep menu / IconMenu2 panel — separate from bar `header` tokens. */
-export function menuItemDropdownDataAttrs(item: HeaderMenuItem): {
-  'data-cmf-component': typeof HEADER_DROPDOWN_CMF_COMPONENT;
-  'data-cmf-key': string;
-  'api-type'?: 'button' | 'link';
-} {
-  return {
-    ...(cmfScopeAttrs(HEADER_DROPDOWN_CMF_COMPONENT, itemKey(item)) as {
-      'data-cmf-component': typeof HEADER_DROPDOWN_CMF_COMPONENT;
-      'data-cmf-key': string;
-    }),
-    ...menuApiTypeAttrs(item.type),
-  };
-}
 
 export function filterRenderableItems(items: HeaderMenuItem[]): HeaderMenuItem[] {
   const result: HeaderMenuItem[] = [];

@@ -4,13 +4,17 @@ import { memo, useRef, useState } from 'react';
 
 import { AppButton } from '@/elements';
 import { useCmfIconStyle } from '@/shared/hooks';
-import { resolveCmfIconRadius, resolveCmfIconShape } from '@/shared/lib';
+import {
+  controlAttrs,
+  resolveCmfIconRadius,
+  resolveCmfIconShape,
+  resolveCmfScope,
+} from '@/shared/lib';
 
 import {
   hasItemImg,
   hasItemName,
   isRenderableItem,
-  menuItemDataAttrs,
   resolveItemHref,
   resolveItemLabel,
 } from '../../../lib';
@@ -54,7 +58,7 @@ function BonusBoxBlockComponent({ item }: BlockProps) {
       aria-label={label}
       leftSection={leftSection}
       data-header-block={item.key}
-      {...menuItemDataAttrs(item)}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
     />
   );
 }

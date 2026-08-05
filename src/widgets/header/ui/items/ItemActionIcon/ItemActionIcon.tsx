@@ -4,11 +4,11 @@ import { memo } from 'react';
 
 import { AppActionIcon } from '@/elements';
 import { useMediaState, useNavActive } from '@/shared/hooks';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useHeaderMenuSizes } from '../../../context';
 import {
   hasItemImg,
-  menuItemDataAttrs,
   resolveHeaderMenuActionIconSize,
   resolveItemHref,
   resolveItemLabel,
@@ -44,7 +44,7 @@ function ItemActionIconComponent({ item }: ItemActionIconProps) {
         variant={resolveMenuItemActionIconVariant(item)}
         size={resolveHeaderMenuActionIconSize(menuSizes)}
         aria-label={label}
-        {...menuItemDataAttrs(item)}
+        {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
         {...activeAttrs}
         {...iconControlAttrs}
       >

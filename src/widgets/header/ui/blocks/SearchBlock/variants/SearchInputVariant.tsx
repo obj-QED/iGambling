@@ -5,13 +5,10 @@ import { memo } from 'react';
 import { TextInput } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+
 import { useHeaderMenuSizes } from '../../../../context';
-import {
-  isRenderableItem,
-  menuItemDataAttrs,
-  resolveHeaderMenuButtonSize,
-  resolveItemLabel,
-} from '../../../../lib';
+import { isRenderableItem, resolveHeaderMenuButtonSize, resolveItemLabel } from '../../../../lib';
 import { HEADER_TABLER_ICON_PROPS } from '../../../items/icons/iconProps';
 
 import styles from '../../../../styles/blocks/SearchInput.module.scss';
@@ -30,7 +27,7 @@ function SearchInputVariantComponent({ item }: BlockProps) {
       aria-label={label}
       size={resolveHeaderMenuButtonSize(item, menuSizes)}
       leftSection={<IconSearch {...HEADER_TABLER_ICON_PROPS} />}
-      {...menuItemDataAttrs(item)}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
     />
   );
 }

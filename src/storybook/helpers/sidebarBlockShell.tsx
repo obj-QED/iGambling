@@ -8,7 +8,7 @@ import {
   SidebarDropdownProvider,
   SidebarTypePackContext,
 } from '@/widgets/sidebar/context';
-import { DEFAULT_ASIDE_MENU_BUTTON_SIZE } from '@/widgets/sidebar/lib/asideMenuSize';
+import { DEFAULT_ASIDE_MENU_BUTTON_SIZE } from '@/widgets/sidebar/lib';
 import { resolveSidebarTypePack } from '@/widgets/sidebar/ui/type';
 
 import '@/widgets/sidebar/registry/registerBlocks';

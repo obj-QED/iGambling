@@ -1,9 +1,9 @@
-import type { SidebarDropdownProviderProps } from '../types';
+import type { SidebarDropdownProviderProps } from '../../types';
 
-import { useSidebarDropdownOpenKeys } from '../hooks/useSidebarDropdownOpenKeys';
-import { SidebarDropdownContext } from './sidebarDropdownContext';
+import { useSidebarDropdownOpenKeys } from '../../hooks/useSidebarDropdownOpenKeys';
+import { SidebarDropdownContext } from './context';
 
-export type { SidebarDropdownProviderProps } from '../types';
+export type { SidebarDropdownProviderProps } from '../../types';
 
 export function SidebarDropdownProvider({
   defaultOpenKeys,

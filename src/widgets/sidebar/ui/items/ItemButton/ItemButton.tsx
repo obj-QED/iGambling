@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { AppButton } from '@/elements';
 import { useNavActive } from '@/shared/hooks';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useAsideMenuButtonSize, useMenuItemRenderable } from '../../../hooks';
 import {
@@ -15,7 +16,6 @@ import {
   resolveItemHref,
   resolveItemLabel,
   resolveMenuItemButtonVariant,
-  resolveMenuItemCmfAttrs,
 } from '../../../lib';
 import { ItemMedia } from '../ItemMedia/ItemMedia';
 
@@ -27,6 +27,7 @@ function ItemButtonComponent({
   className,
   dropdownItem = false,
   dropdownTrigger = false,
+  chrome,
   onClick,
   'aria-expanded': ariaExpanded,
   'aria-haspopup': ariaHaspopup,
@@ -59,7 +60,15 @@ function ItemButtonComponent({
       rightSection={rightSection}
       {...(dropdownItem && { 'data-sidebar-dropdown-item': true })}
       {...(dropdownTrigger && { 'data-sidebar-dropdown-trigger': true })}
-      {...resolveMenuItemCmfAttrs(item, { dropdownTrigger, dropdownItem })}
+      {...controlAttrs(
+        item,
+        resolveCmfScope(item, {
+          widget: 'sidebar',
+          dropdownTrigger,
+          dropdownItem,
+          chrome,
+        }),
+      )}
       {...activeAttrs}
       {...iconControlAttrs}
       {...(dropdownTrigger

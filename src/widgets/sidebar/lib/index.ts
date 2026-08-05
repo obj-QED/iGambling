@@ -1,8 +1,21 @@
+/**
+ * Sidebar pure helpers — grouped by concern.
+ *
+ * - `item/`     — visibility, keys, labels, filter
+ * - `layout/`   — split header/main/footer, width CSS
+ * - `size/`     — `--aside-size-button` reader
+ * - `dropdown/` — localStorage open-keys
+ * - `variant/`  — Button / ActionIcon variant from item
+ * - `footer/`   — known footer Tabler glyphs
+ *
+ * CMF scope: `resolveCmfScope` / `controlAttrs` from `@/shared/lib`.
+ */
+
 export {
   ASIDE_SIZE_BUTTON_VAR,
   DEFAULT_ASIDE_MENU_BUTTON_SIZE,
   readAsideMenuButtonSize,
-} from './asideMenuSize';
+} from './size';
 export {
   filterRenderableItems,
   filterRenderableMenu,
@@ -13,35 +26,29 @@ export {
   isRenderableItem,
   isSpecialBlockKey,
   itemKey,
-  menuItemDataAttrs,
-  menuItemDropdownDataAttrs,
   menuItemKeyAttr,
   resolveItemHref,
   resolveItemLabel,
-  resolveMenuItemCmfAttrs,
   shouldRenderMenuItem,
-  SIDEBAR_CMF_COMPONENT,
-  SIDEBAR_DROPDOWN_CMF_COMPONENT,
-  SIDEBAR_DROPDOWN_ROLE_ITEM,
-  SIDEBAR_DROPDOWN_ROLE_TRIGGER,
-  type SidebarDropdownCmfRole,
-} from './itemUtils';
+} from './item';
 export {
   resolveLogoControlVariant,
   resolveMenuItemActionIconVariant,
   resolveMenuItemButtonVariant,
   resolveMenuItemExplicitVariant,
   type SidebarMenuButtonVariant,
-} from './menuItemVariant';
-export { renderSidebarFooterIcon } from './resolveSidebarFooterIcon';
+} from './variant';
+export { renderSidebarFooterIcon } from './footer';
 export {
   readSidebarDropdownOpenKeys,
   toggleSidebarDropdownOpenKey,
   writeSidebarDropdownOpenKeys,
-} from './sidebarDropdownStorage';
-export { resolveSidebarWidth, type SidebarWidth, toSidebarWidthCss } from './sidebarWidth';
+} from './dropdown';
+export { resolveSidebarWidth, type SidebarWidth, toSidebarWidthCss } from './layout';
 export {
   hasSidebarLayoutContent,
   type SidebarLayoutModel,
   splitSidebarMenu,
-} from './splitSidebarMenu';
+} from './layout';
+/** @deprecated Use `CmfChromeRegion` from `@/shared/lib`. */
+export type { CmfChromeRegion as SidebarChromeRegion } from '@/shared/lib';

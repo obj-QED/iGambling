@@ -5,12 +5,10 @@ import { memo, useCallback } from 'react';
 import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { IconMoon, IconSunHigh } from '@tabler/icons-react';
 
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+
 import { useHeaderMenuSizes } from '../../../context';
-import {
-  menuItemDataAttrs,
-  resolveHeaderMenuActionIconSize,
-  resolveMenuItemActionIconVariant,
-} from '../../../lib';
+import { resolveHeaderMenuActionIconSize, resolveMenuItemActionIconVariant } from '../../../lib';
 import { HEADER_TABLER_ICON_PROPS } from '../../items/icons/iconProps';
 import { HeaderActionIconTooltip } from '../../shared/HeaderActionIconTooltip';
 
@@ -30,7 +28,7 @@ function ColorSchemeBlockComponent({ item }: BlockProps) {
         variant={resolveMenuItemActionIconVariant(item)}
         size={resolveHeaderMenuActionIconSize(menuSizes)}
         aria-label={item.name?.trim() || 'Toggle color scheme'}
-        {...menuItemDataAttrs(item)}
+        {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
       >
         {computedColorScheme === 'light' ? (
           <IconSunHigh {...HEADER_TABLER_ICON_PROPS} />

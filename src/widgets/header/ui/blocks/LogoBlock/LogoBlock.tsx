@@ -2,11 +2,11 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 import { AppLogo } from '@/shared/ui';
 
 import {
   isRenderableItem,
-  menuItemDataAttrs,
   resolveItemHref,
   resolveItemLabel,
   resolveMenuItemButtonVariant,
@@ -24,8 +24,7 @@ function LogoBlockComponent({ item }: BlockProps) {
       label={resolveItemLabel(item)}
       img={item.img}
       variant={resolveMenuItemButtonVariant(item)}
-      {...menuItemDataAttrs(item)}
-      data-cmf-key={LOGO_CMF_KEY}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'header', key: LOGO_CMF_KEY }))}
     />
   );
 }

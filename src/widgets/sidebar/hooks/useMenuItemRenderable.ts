@@ -2,7 +2,7 @@ import type { HeaderMenuItem } from '@/widgets/header';
 
 import { useMediaState } from '@/shared/hooks';
 
-import { resolveItemLabel, shouldRenderMenuItem } from '../lib/itemUtils';
+import { resolveItemLabel, shouldRenderMenuItem } from '../lib';
 
 export function useMenuItemRenderable(item: HeaderMenuItem) {
   const media = useMediaState(item);

@@ -7,9 +7,10 @@ import clsx from 'clsx';
 
 import { AppButton } from '@/elements';
 import { useNavActive } from '@/shared/hooks';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
-import { menuItemDataAttrs, resolveItemHref, resolveMenuItemButtonVariant } from '../../../lib';
+import { resolveItemHref, resolveMenuItemButtonVariant } from '../../../lib';
 
 import styles from '../../../styles/items/SidebarExceptionButton.module.scss';
 
@@ -40,7 +41,7 @@ function SidebarExceptionButtonComponent({
       justify="flex-start"
       className={clsx(styles.root, className)}
       leftSection={leftSection}
-      {...menuItemDataAttrs(item)}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar' }))}
       {...activeAttrs}
     />
   );

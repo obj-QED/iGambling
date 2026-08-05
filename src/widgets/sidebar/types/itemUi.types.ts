@@ -1,3 +1,4 @@
+import type { SidebarChromeRegion } from '../lib';
 import type { HeaderMenuItem } from '@/widgets/header';
 import type { MouseEventHandler, ReactNode } from 'react';
 
@@ -9,6 +10,8 @@ export type ItemButtonProps = {
   dropdownItem?: boolean;
   /** Dropdown parent — toggle only: no `href`, no URL `data-active`. */
   dropdownTrigger?: boolean;
+  /** Aside header/footer strip — `sidebar-header` / `sidebar-footer` CMF component. */
+  chrome?: SidebarChromeRegion;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   'aria-expanded'?: boolean;
   'aria-haspopup'?: boolean | 'menu';
@@ -21,6 +24,8 @@ export type ItemActionIconProps = {
   dropdownItem?: boolean;
   /** Dropdown parent — toggle only: no `href`, no URL `data-active`. */
   dropdownTrigger?: boolean;
+  /** Aside header/footer strip — `sidebar-header` / `sidebar-footer` CMF component. */
+  chrome?: SidebarChromeRegion;
   /** Extra node inside the control (e.g. chevron for compact dropdown). */
   indicator?: ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;

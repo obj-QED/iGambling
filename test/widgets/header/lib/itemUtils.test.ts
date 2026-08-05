@@ -2,6 +2,7 @@ import type { HeaderMenuItem } from '@/widgets/header/types';
 
 import { describe, expect, it } from 'vitest';
 
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 import {
   filterRenderableItems,
   filterRenderableMenu,
@@ -9,10 +10,8 @@ import {
   isDeepPanelItemEligible,
   isIconOnlyItem,
   isRenderableItem,
-  menuItemDataAttrs,
-  menuItemDropdownDataAttrs,
   resolveItemLabel,
-} from '@/widgets/header/lib/itemUtils';
+} from '@/widgets/header/lib';
 
 describe('isRenderableItem', () => {
   it('allows name only, img only, and name + img', () => {
@@ -70,16 +69,18 @@ describe('hasItemImg', () => {
   });
 });
 
-describe('menuItemDataAttrs', () => {
+describe('controlAttrs + resolveCmfScope (header)', () => {
   it('adds CMF scope and api-type for menu items', () => {
-    expect(menuItemDataAttrs({ key: 'promo', name: 'Promo', url: '/', type: 'link' })).toEqual({
+    const promo = { key: 'promo', name: 'Promo', url: '/', type: 'link' } as const;
+    expect(controlAttrs(promo, resolveCmfScope(promo, { widget: 'header' }))).toEqual({
+      'data-key': 'promo',
       'data-cmf-component': 'header',
       'data-cmf-key': 'promo',
       'api-type': 'link',
     });
-    expect(
-      menuItemDataAttrs({ key: 'sign_up', name: 'Sign Up', url: '/', type: 'button' }),
-    ).toEqual({
+    const signUp = { key: 'sign_up', name: 'Sign Up', url: '/', type: 'button' } as const;
+    expect(controlAttrs(signUp, resolveCmfScope(signUp, { widget: 'header' }))).toEqual({
+      'data-key': 'sign_up',
       'data-cmf-component': 'header',
       'data-cmf-key': 'sign_up',
       'api-type': 'button',
@@ -87,18 +88,20 @@ describe('menuItemDataAttrs', () => {
   });
 
   it('adds CMF scope for special blocks without api-type when unset', () => {
-    expect(menuItemDataAttrs({ key: 'search', name: '', url: '' })).toEqual({
+    const search = { key: 'search', name: '', url: '' } as const;
+    expect(controlAttrs(search, resolveCmfScope(search, { widget: 'header' }))).toEqual({
+      'data-key': 'search',
       'data-cmf-component': 'header',
       'data-cmf-key': 'search',
     });
   });
-});
 
-describe('menuItemDropdownDataAttrs', () => {
-  it('uses header-dropdown component scope (independent from bar header)', () => {
+  it('uses header-dropdown component scope for deep rows', () => {
+    const casino = { key: 'casino', name: 'Casino', url: '/casino', type: 'link' } as const;
     expect(
-      menuItemDropdownDataAttrs({ key: 'casino', name: 'Casino', url: '/casino', type: 'link' }),
+      controlAttrs(casino, resolveCmfScope(casino, { widget: 'header', dropdown: true })),
     ).toEqual({
+      'data-key': 'casino',
       'data-cmf-component': 'header-dropdown',
       'data-cmf-key': 'casino',
       'api-type': 'link',

@@ -1,3 +1,4 @@
+import type { SidebarChromeRegion } from '../../lib';
 import type { SidebarBlockRegistryKey } from '../../registry/keys';
 import type { BlockProps, SidebarTypeStrategyProps } from '../../types';
 import type { SidebarTypeTunables } from './tunableDefaults';
@@ -12,6 +13,8 @@ export type SidebarItemPresentationProps = {
   className?: string;
   dropdownItem?: boolean;
   dropdownTrigger?: boolean;
+  /** Aside header/footer strip CMF component. */
+  chrome?: SidebarChromeRegion;
   rightSection?: ReactNode;
   indicator?: ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;

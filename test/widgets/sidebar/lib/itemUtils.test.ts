@@ -2,14 +2,13 @@ import type { HeaderMenuItem } from '@/widgets/header';
 
 import { describe, expect, it } from 'vitest';
 
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 import {
   isIconOnlyItem,
   isRenderableItem,
-  menuItemDropdownDataAttrs,
   resolveItemHref,
-  resolveMenuItemCmfAttrs,
   shouldRenderMenuItem,
-} from '@/widgets/sidebar/lib/itemUtils';
+} from '@/widgets/sidebar/lib';
 
 const iconOnlyItem: HeaderMenuItem = {
   key: 'home',
@@ -48,7 +47,7 @@ describe('sidebar itemUtils visibility', () => {
   });
 });
 
-describe('sidebar dropdown CMF attrs', () => {
+describe('resolveCmfScope + controlAttrs (sidebar)', () => {
   const casino: HeaderMenuItem = {
     key: 'casino',
     name: 'Casino',
@@ -57,7 +56,9 @@ describe('sidebar dropdown CMF attrs', () => {
   };
 
   it('parent trigger uses sidebar-dropdown + role parent', () => {
-    expect(menuItemDropdownDataAttrs(casino, 'parent')).toMatchObject({
+    expect(
+      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar', dropdownTrigger: true })),
+    ).toMatchObject({
       'data-cmf-component': 'sidebar-dropdown',
       'data-cmf-key': 'casino',
       'data-cmf-role': 'parent',
@@ -65,29 +66,42 @@ describe('sidebar dropdown CMF attrs', () => {
   });
 
   it('accepts arbitrary dropdown role keys', () => {
-    expect(menuItemDropdownDataAttrs(casino, 'section-header')['data-cmf-role']).toBe(
-      'section-header',
-    );
-    const leafAttrs = resolveMenuItemCmfAttrs(casino, { role: 'leaf' });
-    expect(leafAttrs['data-cmf-component']).toBe('sidebar-dropdown');
-    if (leafAttrs['data-cmf-component'] === 'sidebar-dropdown') {
-      expect(leafAttrs['data-cmf-role']).toBe('leaf');
-    }
+    expect(
+      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar', role: 'section-header' })),
+    ).toMatchObject({
+      'data-cmf-component': 'sidebar-dropdown',
+      'data-cmf-role': 'section-header',
+    });
   });
 
-  it('resolveMenuItemCmfAttrs maps trigger/item to parent/child by default', () => {
-    const triggerAttrs = resolveMenuItemCmfAttrs(casino, { dropdownTrigger: true });
-    expect(triggerAttrs['data-cmf-component']).toBe('sidebar-dropdown');
-    if (triggerAttrs['data-cmf-component'] === 'sidebar-dropdown') {
-      expect(triggerAttrs['data-cmf-role']).toBe('parent');
-    }
+  it('maps trigger/item to parent/child by default', () => {
+    expect(
+      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar', dropdownTrigger: true }))[
+        'data-cmf-role'
+      ],
+    ).toBe('parent');
+    expect(
+      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar', dropdownItem: true }))[
+        'data-cmf-role'
+      ],
+    ).toBe('child');
+    expect(
+      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar' }))['data-cmf-component'],
+    ).toBe('sidebar');
+  });
 
-    const itemAttrs = resolveMenuItemCmfAttrs(casino, { dropdownItem: true });
-    expect(itemAttrs['data-cmf-component']).toBe('sidebar-dropdown');
-    if (itemAttrs['data-cmf-component'] === 'sidebar-dropdown') {
-      expect(itemAttrs['data-cmf-role']).toBe('child');
-    }
-
-    expect(resolveMenuItemCmfAttrs(casino)['data-cmf-component']).toBe('sidebar');
+  it('chrome header/footer use sidebar-header / sidebar-footer', () => {
+    expect(
+      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar', chrome: 'header' })),
+    ).toMatchObject({
+      'data-cmf-component': 'sidebar-header',
+      'data-cmf-key': 'casino',
+    });
+    expect(
+      controlAttrs(casino, resolveCmfScope(casino, { widget: 'sidebar', chrome: 'footer' })),
+    ).toMatchObject({
+      'data-cmf-component': 'sidebar-footer',
+      'data-cmf-key': 'casino',
+    });
   });
 });

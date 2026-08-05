@@ -85,9 +85,9 @@ Props: `bg` | `color` | `radius` | `max-width`.
 --cmf-button-header-logo-padding-x: 0;
 --cmf-button-header-logo-bg: transparent;
 
-/* Sidebar burger / logo-trigger ActionIcon */
---cmf-action-icon-sidebar-logo-trigger-size: calc(2.25rem * var(--mantine-scale));
---cmf-action-icon-sidebar-logo-trigger-icon-scale: 1.25;
+/* Sidebar header chrome: burger / logo-trigger ActionIcon */
+--cmf-action-icon-sidebar-header-logo-trigger-size: calc(2.25rem * var(--mantine-scale));
+--cmf-action-icon-sidebar-header-logo-trigger-icon-scale: 1.25;
 
 /* Tooltip width for aside rows */
 --tooltip-sidebar-max-width: 12rem;

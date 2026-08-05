@@ -1,1 +1,7 @@
-export type { CmfScopeAttrs, CmfScopeAttrsKey, CmfScopeAttrsRole } from './scopeAttrs.types';
+export type {
+  CmfControlAttrs,
+  CmfControlAttrsInput,
+  CmfScopeAttrs,
+  CmfScopeAttrsKey,
+  CmfScopeAttrsRole,
+} from './scopeAttrs.types';
