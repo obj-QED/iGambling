@@ -1,7 +1,6 @@
 import type { CmfControlAttrsInput } from './types';
 
-import { menuApiTypeAttrs } from '@/shared/lib/menu/menuApiTypeAttrs';
-
+import { menuApiTypeAttrs } from '../menu/menuApiTypeAttrs';
 import { cmfControlAttrs } from './cmfControlAttrs';
 
 export type ControlAttrsItem = {

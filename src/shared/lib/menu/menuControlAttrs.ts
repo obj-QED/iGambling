@@ -6,4 +6,4 @@ export {
   controlAttrs as menuControlAttrs,
   type ControlAttrsOptions as MenuControlAttrsOptions,
   type ControlAttrsItem as MenuControlItem,
-} from '@/shared/lib/cmf/controlAttrs';
+} from '@/shared/lib/cmf';

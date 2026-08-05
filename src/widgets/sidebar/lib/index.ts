@@ -12,10 +12,11 @@
  */
 
 export {
-  ASIDE_SIZE_BUTTON_VAR,
-  DEFAULT_ASIDE_MENU_BUTTON_SIZE,
-  readAsideMenuButtonSize,
-} from './size';
+  readSidebarDropdownOpenKeys,
+  toggleSidebarDropdownOpenKey,
+  writeSidebarDropdownOpenKeys,
+} from './dropdown';
+export { renderSidebarFooterIcon } from './footer';
 export {
   filterRenderableItems,
   filterRenderableMenu,
@@ -31,6 +32,17 @@ export {
   resolveItemLabel,
   shouldRenderMenuItem,
 } from './item';
+export { resolveSidebarWidth, type SidebarWidth, toSidebarWidthCss } from './layout';
+export {
+  hasSidebarLayoutContent,
+  type SidebarLayoutModel,
+  splitSidebarMenu,
+} from './layout';
+export {
+  ASIDE_SIZE_BUTTON_VAR,
+  DEFAULT_ASIDE_MENU_BUTTON_SIZE,
+  readAsideMenuButtonSize,
+} from './size';
 export {
   resolveLogoControlVariant,
   resolveMenuItemActionIconVariant,
@@ -38,17 +50,5 @@ export {
   resolveMenuItemExplicitVariant,
   type SidebarMenuButtonVariant,
 } from './variant';
-export { renderSidebarFooterIcon } from './footer';
-export {
-  readSidebarDropdownOpenKeys,
-  toggleSidebarDropdownOpenKey,
-  writeSidebarDropdownOpenKeys,
-} from './dropdown';
-export { resolveSidebarWidth, type SidebarWidth, toSidebarWidthCss } from './layout';
-export {
-  hasSidebarLayoutContent,
-  type SidebarLayoutModel,
-  splitSidebarMenu,
-} from './layout';
 /** @deprecated Use `CmfChromeRegion` from `@/shared/lib`. */
 export type { CmfChromeRegion as SidebarChromeRegion } from '@/shared/lib';

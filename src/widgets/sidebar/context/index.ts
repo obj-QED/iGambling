@@ -7,11 +7,11 @@
  * - `typePack/` — default vs compact presentation pack
  */
 
-export { AsideMenuSizeContext } from './size';
 export { SidebarConfigContext, SidebarConfigProvider, useSidebarConfig } from './config';
 export {
   SidebarDropdownContext,
   SidebarDropdownProvider,
   useSidebarDropdown,
 } from './dropdown';
+export { AsideMenuSizeContext } from './size';
 export { SidebarTypePackContext } from './typePack';
