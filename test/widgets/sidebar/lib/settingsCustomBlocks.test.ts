@@ -4,13 +4,16 @@ import { mergeCustomBlocks } from '@/widgets/header/lib/mergeBlocks';
 import { filterRenderableMenu, splitSidebarMenu } from '@/widgets/sidebar/lib';
 import { SIDEBAR_MENU_MOCK } from '@/widgets/sidebar/mocks/sidebarMenu.mock';
 
-/** Mirrors Root: settings customBlocks → merge → split (mock has no header section). */
 describe('sidebar settings customBlocks → layout', () => {
-  it('injects account into header from customBlocks when mock has no header', () => {
-    expect(SIDEBAR_MENU_MOCK.sections.some((section) => section.key === 'header')).toBe(false);
+  it('injects account into header from customBlocks when menu has no header', () => {
+    const menuWithoutHeader = {
+      ...SIDEBAR_MENU_MOCK,
+      sections: SIDEBAR_MENU_MOCK.sections.filter((section) => section.key !== 'header'),
+    };
+    expect(menuWithoutHeader.sections.some((section) => section.key === 'header')).toBe(false);
 
     const merged = filterRenderableMenu(
-      mergeCustomBlocks(SIDEBAR_MENU_MOCK, [
+      mergeCustomBlocks(menuWithoutHeader, [
         {
           key: 'header',
           placement: { header: 'start' },

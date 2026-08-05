@@ -4,6 +4,7 @@ import {
   resolveStorybookItemUrl,
   resolveStorybookMediaSrc,
   sanitizeStorybookMenu,
+  STORYBOOK_TABLER,
 } from '@/storybook/lib/sanitizeMenuMedia';
 
 describe('sanitizeMenuMedia', () => {
@@ -14,9 +15,10 @@ describe('sanitizeMenuMedia', () => {
     expect(resolveStorybookItemUrl('#')).toBe('/');
   });
 
-  it('maps missing media to local svg under public/', () => {
-    expect(resolveStorybookMediaSrc('/images/tags/white/keno.webp')).toContain('uploads/web.svg');
+  it('maps missing media to Tabler icons under public/', () => {
+    expect(resolveStorybookMediaSrc('/images/tags/white/keno.webp')).toBe(STORYBOOK_TABLER.star);
     expect(resolveStorybookMediaSrc('')).toBe('');
+    expect(resolveStorybookMediaSrc('/images/x.webp', 'slots')).toBe(STORYBOOK_TABLER.dice);
   });
 
   it('sanitizes nested menu urls and imgs', () => {
@@ -49,6 +51,6 @@ describe('sanitizeMenuMedia', () => {
     expect(menu.sections[0]?.items[0]?.url).toBe('/search?search=ice');
     expect(menu.sections[0]?.items[1]?.url).toBe('/');
     expect(menu.sections[0]?.items[1]?.items?.[0]?.url).toBe('/category/slots');
-    expect(menu.sections[0]?.items[1]?.items?.[0]?.img).toContain('uploads/web.svg');
+    expect(menu.sections[0]?.items[1]?.items?.[0]?.img).toBe(STORYBOOK_TABLER.dice);
   });
 });

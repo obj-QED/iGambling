@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Fail CI on high/critical advisories for direct production dependencies only.
- * Transitive / dev-tool advisories are printed as warnings (Dependabot tracks them).
+ * Transitive / dev-tool advisories are printed as warnings (not CI-blocking).
  */
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -14,11 +14,11 @@ const root = join(__dirname, '..');
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
 const productionDirect = new Set(Object.keys(pkg.dependencies ?? {}));
 
-const result = spawnSync(
-  'yarn',
-  ['npm', 'audit', '--json', '--recursive', '--severity', 'high'],
-  { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024, cwd: root },
-);
+const result = spawnSync('yarn', ['npm', 'audit', '--json', '--recursive', '--severity', 'high'], {
+  encoding: 'utf8',
+  maxBuffer: 20 * 1024 * 1024,
+  cwd: root,
+});
 
 const lines = `${result.stdout}\n${result.stderr}`
   .split('\n')

@@ -54,7 +54,7 @@ const THREAT_ROWS: readonly [string, string][] = [
   ],
   [
     'Vulnerable deps / malware',
-    'Dependabot weekly + CI yarn audit:deps. SSRF: assertSafeRequestUrl blocks foreign absolute URLs.',
+    'CI yarn audit:deps (high/critical on direct prod deps). SSRF: assertSafeRequestUrl blocks foreign absolute URLs.',
   ],
   [
     'Malicious files',
@@ -71,7 +71,7 @@ export const Overview: Story = {
     <DevelopDocPage
       title="Security threat model"
       subtitle="Public brief for security / AI agents. Frontend is defense-in-depth — PHP backend remains the enforcement plane."
-      badges={['httpOnly', 'cmd allowlist', 'Dependabot', 'SSRF guard']}
+      badges={['httpOnly', 'cmd allowlist', 'yarn audit:deps', 'SSRF guard']}
       sections={[
         {
           id: 'map',
@@ -88,7 +88,7 @@ export const Overview: Story = {
                 'src/api/security/lobbyCommands — assertLobbyCommand allowlist',
                 'src/api/lobby/lobbySession — memory only; never sessionStorage',
                 'Query keys — sessionRevision, never raw token',
-                'CI — yarn audit:deps; .github/dependabot.yml',
+                'CI — yarn audit:deps',
               ]}
             />
           ),
