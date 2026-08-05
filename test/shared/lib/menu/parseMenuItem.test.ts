@@ -137,7 +137,10 @@ describe('parseMenuItemDto (Zod boundary)', () => {
   it('rejects when key cannot be derived', () => {
     expect(parseMenuItemDto({ key: '', name: '', url: '#' })).toBeNull();
     expect(parseMenuItemDto({ key: '', name: '', url: '' })).toBeNull();
-    expect(parseMenuItemDto({ key: 123, name: 'x' })).toBeNull();
+  });
+
+  it('derives key from name when key is non-string', () => {
+    expect(parseMenuItemDto({ key: 123, name: 'x' })).toMatchObject({ key: 'x', name: 'x' });
   });
 
   it('keeps nested tag children without keys under Themes parent', () => {

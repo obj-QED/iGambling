@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { hasSidebarLayoutContent, splitSidebarMenu } from '@/widgets/sidebar/lib/splitSidebarMenu';
+import { hasSidebarLayoutContent, splitSidebarMenu } from '@/widgets/sidebar/lib';
 
 describe('splitSidebarMenu', () => {
   it('splits header, main, and footer sections by key', () => {

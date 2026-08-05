@@ -4,7 +4,7 @@ import {
   resolveLogoControlVariant,
   resolveMenuItemActionIconVariant,
   resolveMenuItemButtonVariant,
-} from '@/widgets/sidebar/lib/menuItemVariant';
+} from '@/widgets/sidebar/lib';
 
 describe('resolveMenuItemButtonVariant (sidebar)', () => {
   it('uses transparent for link items', () => {

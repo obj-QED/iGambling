@@ -304,5 +304,7 @@ On push/PR: lint · stylelint · test · build.
 Storybook build + GitHub Pages deploy only when `STORYBOOK=true` in `.env.production` (branch `storybook`).
 
 ```bash
-yarn check:precommit   # lint + stylelint + build
+yarn check:precommit   # lint + stylelint + typecheck + tests + build
 ```
+
+Husky pre-commit: `lint-staged` → `typecheck` → `test:precommit` (unit tests without coverage).
