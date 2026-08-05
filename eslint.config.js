@@ -96,7 +96,15 @@ const localPlugin = {
 
 export default tseslint.config(
   {
-    ignores: ['coverage', 'dist', 'node_modules', 'storybook-static', 'test', 'vitest.shims.d.ts'],
+    ignores: [
+      'coverage',
+      'dist',
+      'node_modules',
+      'storybook-static',
+      'test',
+      'vitest.shims.d.ts',
+      'vitest.*.temp.config.ts',
+    ],
   },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],

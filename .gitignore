@@ -64,6 +64,7 @@ scripts/*
 *storybook.log
 storybook-static
 reports/
+vitest.*.temp.config.ts
 
 *.zip
 PROJECT_CONTEXT.md

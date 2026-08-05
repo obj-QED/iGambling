@@ -155,8 +155,6 @@ function LogoComponent({ item, className }: BlockProps) {
       logo
     );
 
-  if (trigger === null && logoNode === null) return null;
-
   return (
     <Group gap="sm" className={className} justify={isCompact ? 'center' : 'flex-start'}>
       {trigger}
