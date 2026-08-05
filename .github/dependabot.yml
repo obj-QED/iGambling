@@ -1,5 +1,8 @@
-# Config must live on the default branch (`main`), but all PRs target `storybook` only.
-# Grouped PRs — one per ecosystem so CI is not flooded with N× workflows.
+# Storybook-branch Dependabot config (this branch only — not on `main`).
+# GitHub loads dependabot.yml only from the repository default branch.
+# With the file removed from `main`, Dependabot version updates are inactive
+# unless the default branch changes or a minimal config is restored on `main`
+# with target-branch: storybook.
 version: 2
 updates:
   - package-ecosystem: npm
