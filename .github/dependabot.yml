@@ -1,9 +1,10 @@
+# Config must live on the default branch (`main`), but all PRs target `storybook` only.
 # Grouped PRs — one per ecosystem so CI is not flooded with N× workflows.
-# Lives on the default branch (`main`). Auto-merge waits for required CI / reviews.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
+    target-branch: storybook
     schedule:
       interval: weekly
       day: monday
@@ -23,6 +24,7 @@ updates:
 
   - package-ecosystem: github-actions
     directory: /
+    target-branch: storybook
     schedule:
       interval: weekly
       day: monday
