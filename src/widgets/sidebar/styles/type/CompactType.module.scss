@@ -4,7 +4,6 @@
  */
 
 @layer widget.variant {
-
   /*
    * Compact rail — ActionIcon column.
    * Applied as second class on `[data-widget='sidebar'][data-type='compact']`.
@@ -15,7 +14,6 @@
   }
 
   .root {
-
     /* Type-owned spacing — ItemActionIcon `.dropdownTrigger` / `.indicator` read these. */
     align-items: center;
     width: var(--app-layout-sidebar-width, 4.5rem);

@@ -71,6 +71,7 @@
   .anchor {
     --text-fz: var(--cmf-anchor-font-size, var(--mantine-font-size-md));
     --text-lh: var(--cmf-anchor-line-height, var(--mantine-line-height-md));
+
     /* Avoid fighting Anchor.extend inline `text-decoration` — active = border. */
     border-bottom: 1px solid transparent;
 
