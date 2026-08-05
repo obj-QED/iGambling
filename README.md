@@ -297,22 +297,6 @@ Toolbar: color scheme, primary brand, header session, app settings.
 
 ---
 
-## Headroom (optional LLM proxy)
-
-Local [Headroom](https://headroom-docs.vercel.app/) proxy for agent/context compression. **Output shaper** (verbosity / effort routing) is off by default upstream — this repo turns it on when you start the script:
-
-```bash
-export HEADROOM_OUTPUT_SHAPER=1     # off by default upstream; script sets this
-yarn headroom:proxy                 # → headroom proxy --port 8787
-# or: bash scripts/headroom-proxy.sh
-```
-
-Point clients at the proxy (`ANTHROPIC_BASE_URL=http://127.0.0.1:8787` or `headroom wrap …`). If `:8787` is taken (e.g. another local tool), set `HEADROOM_PORT`.
-
-Live knobs (including `HEADROOM_OUTPUT_SHAPER`) can also be hot-synced via `headroom wrap` without restarting the proxy.
-
----
-
 ## Quality & CI
 
 On push/PR to `main`: lint · stylelint · test · build.
@@ -322,14 +306,3 @@ On push to `main`: Storybook → **GitHub Pages** (`.github/workflows/ci.yml`).
 ```bash
 yarn check:precommit   # lint + stylelint + build
 ```
-
----
-
-## Further reading
-
-| Doc                                       | Topic                       |
-| ----------------------------------------- | --------------------------- |
-| `src/widgets/ARCHITECTURE.md`             | Header pipeline (mermaid)   |
-| `src/assets/theme/README.md`              | Theme layout & CMF overview |
-| `src/assets/theme/mantine/cmf/CASCADE.md` | CMF token naming & debug    |
-| `src/assets/styles/layer-order.css`       | CSS `@layer` order          |
