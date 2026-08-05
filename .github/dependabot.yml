@@ -1,0 +1,43 @@
+# Loaded from the default branch (`main`) only — required by GitHub.
+# All version/security update PRs target `storybook` (not `main`).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: storybook
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 1
+    groups:
+      all-npm:
+        patterns:
+          - '*'
+    labels:
+      - dependencies
+      - security
+    assignees:
+      - obj-QED
+    commit-message:
+      prefix: 'deps'
+      include: 'scope'
+
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: storybook
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 1
+    groups:
+      all-actions:
+        patterns:
+          - '*'
+    labels:
+      - dependencies
+      - github-actions
+    assignees:
+      - obj-QED
+    commit-message:
+      prefix: 'ci'
+      include: 'scope'
