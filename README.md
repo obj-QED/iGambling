@@ -305,7 +305,7 @@ Storybook build + GitHub Pages deploy only when `STORYBOOK=true` in `.env.produc
 
 **Pages environment:** Settings → Environments → `github-pages` → Deployment branches → allow `storybook` (or “All branches”). By default only `main` is allowed — without this, deploy fails with “Branch storybook is not allowed…”.
 
-**Dependabot:** enabled via config on `main` with `target-branch: storybook` — PRs and auto-merge only against **`storybook`**, never into `main`. Weekly grouped npm + Actions; patch/minor auto-merge waits for required CI/reviews.
+**Dependabot:** config on `main` with `target-branch: storybook` — PRs only into **storybook**, never into `main`. Version bumps wait **≥30 days** after release (`cooldown`); security updates are immediate. Weekly grouped npm + Actions; patch/minor auto-merge waits for required CI/reviews.
 
 ```bash
 yarn check:precommit   # lint + stylelint + typecheck + tests + build
