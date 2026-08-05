@@ -47,7 +47,7 @@ export const DEVELOP_PLATFORM_PIPELINE = `PHP API / init
 export const DEVELOP_HEADER_PIPELINE = `useAppLayout
   → resolveHeaderSchema({ global: settings.header })
   → AppHeader({ menu, config })
-  → typePack Strategy (sync)           ← layout chrome
+  → ui/type Strategy (sync)            ← layout chrome
   → layoutRegistry (sync)
   → section → blockRegistry (sync)
   → plugin adapters (lazy, wallet/search seeded) + WRAPPER_REGISTRY
@@ -56,19 +56,22 @@ export const DEVELOP_HEADER_PIPELINE = `useAppLayout
 Status (honest):
   shared/schema + overlays     shipped
   resolveHeaderSchema          shipped
-  typePacks                    active
+  ui/type                      active
   plugins/ + runtime/          wallet/search only
   engine/ singleton (v4 core)  deferred — do not invent it in PRs`;
 
 export const DEVELOP_SIDEBAR_PIPELINE = `__SETTINGS__.aside + menu
   → resolveSidebarSchema / resolveSidebarConfig
   → Root: mergeCustomBlocks → splitSidebarMenu
-  → typePack Strategy owns chrome tree
-  → SidebarHeader / ScrollArea+Shell / SidebarFooter (children slots)
+  → ui/type Strategy owns chrome tree
+  → layouts (container | container-fluid) wrap Strategy
+  → SidebarHeader / ScrollArea+Shell / SidebarFooter (blocks)
   → Section → Block → BLOCK_REGISTRY
   → ItemButton / Dropdown / CmfIcon / AppLink
 
 Regions gate (config.regions): header | main | footer
+layout: container | container-fluid → LAYOUT_REGISTRY
+type: default | compact → ui/type packs
 Type customBlocks = global customBlocks + aside.types[type].customBlocks
 No Header Engine plugins in sidebar (unless explicitly migrating).`;
 
@@ -103,7 +106,7 @@ export const DEVELOP_KEY_PATHS: readonly [string, string][] = [
   ['src/shared/ui/overlay/', 'WRAPPER_REGISTRY (popover/drawer/modal/…)'],
   ['src/shared/ui/CmfIcon/', 'Menu/media icons (SVG + raster)'],
   ['src/shared/lib/publicAssetUrl.ts', 'public/ URLs that respect Vite base'],
-  ['src/widgets/header/', 'Header path (typePacks + seeded plugins)'],
+  ['src/widgets/header/', 'Header path (ui/type + seeded plugins)'],
   ['src/widgets/sidebar/', 'Aside Strategy + regions + customBlocks'],
   ['src/assets/theme/', 'Design tokens SoT + CMF cascade'],
   ['src/assets/theme/tokens/theme.scss', 'Brand light/dark palettes + global vars'],

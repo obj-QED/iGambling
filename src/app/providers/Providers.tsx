@@ -33,9 +33,7 @@ export function Providers({ children }: ProvidersProps) {
           <ScrollFullscreenSync />
           {children}
         </MantineProvider>
-        {import.meta.env.DEV ? (
-          <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
-        ) : null}
+        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />}
       </QueryClientProvider>
     </Provider>
   );

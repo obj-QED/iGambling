@@ -6,8 +6,8 @@ import { IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
 
 import { isRenderableItem } from '../../../lib';
-import { useSidebarTypePack } from '../../../typePacks';
 import { SidebarExceptionButton } from '../../items/SidebarExceptionButton/SidebarExceptionButton';
+import { useSidebarTypePack } from '../../type';
 
 /** Default search row; compact overrides via typePack.blocks.search_leftmenu. */
 function SearchComponent({ item, className }: BlockProps) {

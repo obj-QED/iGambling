@@ -20,7 +20,7 @@ export const STORYBOOK_THEME_GLOBAL_TYPES = {
   primaryShade: {
     name: 'Primary shade',
     description: 'Mantine theme.primaryShade for light + dark schemes',
-    defaultValue: '5' satisfies StorybookPrimaryShadeKey,
+    defaultValue: '7' satisfies StorybookPrimaryShadeKey,
     toolbar: {
       icon: 'mirror',
       items: STORYBOOK_PRIMARY_SHADE_KEYS.map((value) => ({
@@ -42,5 +42,5 @@ export function readStorybookPrimaryColor(globals: Record<string, unknown>): Sto
 export function readStorybookPrimaryShade(globals: Record<string, unknown>): number {
   const raw = String(globals.primaryShade);
   const n = Number(raw);
-  return Number.isFinite(n) && n >= 0 && n <= 9 ? n : 5;
+  return Number.isFinite(n) && n >= 0 && n <= 9 ? n : 7;
 }

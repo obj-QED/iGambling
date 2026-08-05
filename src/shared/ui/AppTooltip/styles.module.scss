@@ -1,6 +1,6 @@
 @use './cmf-tooltip-cascade' as tip;
 
-@layer fdd-base {
+@layer components {
   .target {
     display: inline-flex;
     max-width: 100%;

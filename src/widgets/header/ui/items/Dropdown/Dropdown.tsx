@@ -6,8 +6,8 @@ import { Menu } from '@mantine/core';
 
 import { isRenderableItem } from '../../../lib';
 import { Chevron } from '../Chevron/Chevron';
-import { DropdownItem } from '../DropdownItem/DropdownItem';
-import { ItemDropdownTrigger } from '../ItemDropdownTrigger/ItemDropdownTrigger';
+import { DropdownItem } from './DropdownItem';
+import { ItemDropdownTrigger } from './ItemDropdownTrigger';
 
 import styles from '../../../styles/items/Dropdown.module.scss';
 

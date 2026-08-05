@@ -6,6 +6,10 @@
 
 @layer theme {
   :root {
+    /* Default brand = dark palette (matches `defaultColorScheme`). Ensures
+     * `--brand-color-*` exist before `data-theme` is applied (Storybook iframe). */
+    @include brand.apply-palette(brand.$palette-dark);
+
     --font-family-base: 'IBM Plex Sans', sans-serif;
     --cmf-heading-font-family: 'Inter', sans-serif;
     --cmf-embedded-font-family: 'Noto Sans Georgian', sans-serif;

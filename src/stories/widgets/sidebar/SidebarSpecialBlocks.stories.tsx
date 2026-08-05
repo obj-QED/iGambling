@@ -22,9 +22,8 @@ import { StoryLabFrame } from '@/storybook/helpers/StoryLabFrame';
 import { STORYBOOK_DEMO_LOGO, STORYBOOK_TABLER, STORYBOOK_TABLER_FLAME } from '@/storybook/lib';
 import { resolveStorybookItemUrl } from '@/storybook/lib/sanitizeMenuMedia';
 import { Logo } from '@/widgets/sidebar/ui/blocks/Logo/Logo';
+import { PromoBlock } from '@/widgets/sidebar/ui/blocks/PromoBlock/PromoBlock';
 import { Search } from '@/widgets/sidebar/ui/blocks/Search/Search';
-import { TimerBlock } from '@/widgets/sidebar/ui/blocks/TimerBlock/TimerBlock';
-import { WheelMdlBlock } from '@/widgets/sidebar/ui/blocks/WheelMdlBlock/WheelMdlBlock';
 
 const STORYBOOK_ICON = STORYBOOK_DEMO_LOGO;
 const MENU_ITEM_TYPES = ['link', 'button'] as const;
@@ -140,13 +139,13 @@ export const Overview: Story = {
             <Text size="sm" fw={600}>
               Timer
             </Text>
-            <TimerBlock item={getSidebarSpecialBlockFixture('timer')} />
+            <PromoBlock item={getSidebarSpecialBlockFixture('timer')} />
           </Stack>
           <Stack gap="xs">
             <Text size="sm" fw={600}>
               Wheel
             </Text>
-            <WheelMdlBlock item={getSidebarSpecialBlockFixture('wheel_mdl')} />
+            <PromoBlock item={getSidebarSpecialBlockFixture('wheel_mdl')} />
           </Stack>
         </Group>
       </SidebarBlockShell>
@@ -239,7 +238,7 @@ export const Timer: Story = {
         summary="Promo / timer special block."
         capabilities={['key: timer', 'img + name from menu DTO']}
       >
-        {shellForArgs(args, <TimerBlock item={item} />)}
+        {shellForArgs(args, <PromoBlock item={item} />)}
       </StoryLabFrame>
     );
   },
@@ -266,7 +265,7 @@ export const Wheel: Story = {
         summary="Registry key `wheel_mdl`."
         capabilities={['key: wheel_mdl', 'img + name from menu DTO']}
       >
-        {shellForArgs(args, <WheelMdlBlock item={item} />)}
+        {shellForArgs(args, <PromoBlock item={item} />)}
       </StoryLabFrame>
     );
   },
@@ -297,8 +296,8 @@ export const TypeCompare: Story = {
               <Stack gap="sm" align={asideType === 'compact' ? 'center' : 'stretch'}>
                 <Logo item={SIDEBAR_SPECIAL_BLOCK_FIXTURES.aside_header_logo} />
                 <Search item={getSidebarSpecialBlockFixture('search_leftmenu')} />
-                <TimerBlock item={getSidebarSpecialBlockFixture('timer')} />
-                <WheelMdlBlock item={getSidebarSpecialBlockFixture('wheel_mdl')} />
+                <PromoBlock item={getSidebarSpecialBlockFixture('timer')} />
+                <PromoBlock item={getSidebarSpecialBlockFixture('wheel_mdl')} />
               </Stack>
             </SidebarBlockShell>
           </Stack>

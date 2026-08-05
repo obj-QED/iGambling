@@ -1,6 +1,6 @@
 import type { SectionProps } from '../types';
 
-import { Children, memo } from 'react';
+import { memo } from 'react';
 
 import clsx from 'clsx';
 
@@ -9,22 +9,7 @@ import { Block } from './Block';
 
 import styles from '../styles/base/Section.module.scss';
 
-function SectionComponent({ section, children, className }: SectionProps) {
-  if (Children.count(children) > 0) {
-    const label = section?.key ?? 'section';
-    return (
-      <nav
-        className={clsx(styles.root, className)}
-        aria-label={label}
-        data-section-key={section?.key}
-      >
-        <ul className={styles.list}>{children}</ul>
-      </nav>
-    );
-  }
-
-  if (!section) return null;
-
+function SectionComponent({ section, className }: SectionProps) {
   const items = filterRenderableItems(section.items);
   if (items.length === 0) return null;
 

@@ -175,3 +175,7 @@ export function filterRenderableMenu(menu: HeaderMenuModel): HeaderMenuModel {
 
   return { sections };
 }
+
+export function hasRenderableMenuSections(menu: HeaderMenuModel): boolean {
+  return menu.sections.some((section) => filterRenderableItems(section.items).length > 0);
+}

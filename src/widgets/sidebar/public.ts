@@ -5,7 +5,7 @@ export {
   type SidebarSchemaLayer,
 } from './config';
 export { getSidebarMenuMock } from './mocks/getSidebarMenuMock';
-export type { SidebarItemPresentationProps, SidebarTypePack } from './typePacks';
+export type { SidebarItemPresentationProps, SidebarTypePack } from './ui/type';
 export type { AppSidebarProps } from './types';
 export type {
   AsideTypeKey,

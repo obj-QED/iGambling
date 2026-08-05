@@ -1,4 +1,4 @@
-export { resolveHeaderTypePack, TYPE_PACK_REGISTRY } from '../typePacks';
+export { resolveHeaderTypePack, TYPE_PACK_REGISTRY } from '../ui/type';
 export { BLOCK_REGISTRY, registerBlocks, resolveBlockComponent } from './blocks';
 export {
   type BlockRegistryKey,

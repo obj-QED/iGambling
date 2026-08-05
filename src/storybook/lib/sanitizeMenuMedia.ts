@@ -36,6 +36,8 @@ const LOGO_MARK = publicAssetUrl('uploads/web.svg');
 
 /** Menu `key` → Tabler icon (prefer over generic web.svg). */
 const KEY_ICON_MAP: Record<string, string> = {
+  logo: LOGO_MARK,
+  aside_header_logo: LOGO_MARK,
   search: STORYBOOK_TABLER.search,
   search_leftmenu: STORYBOOK_TABLER.search,
   wallet: STORYBOOK_TABLER.wallet,
@@ -99,55 +101,66 @@ function pickIconFromPath(path: string): string | null {
 }
 
 /**
- * Map menu `img` to a Tabler (or logo) file under Storybook `public/`.
- * Never collapse every unknown path to the same web.svg globe.
+ * Map menu `img` to a usable Storybook/public URL.
+ * Explicit CDN / uploads (e.g. logo.png) must NOT be overwritten by the demo globe.
  */
 export function resolveStorybookMediaSrc(
   src: string | undefined | null,
   key?: string | null,
 ): string {
-  if (src == null) return '';
-  const raw = String(src).trim();
-  if (raw.length === 0) return '';
+  const keyed = key != null && key.length > 0 && KEY_ICON_MAP[key] ? KEY_ICON_MAP[key] : undefined;
 
-  const path = raw
-    .replace(/^https?:\/\/[^/]+/i, '')
-    .replace(/^\/+/, '')
-    .replace(/^public\//, '');
+  if (src == null || String(src).trim().length === 0) {
+    return keyed ?? '';
+  }
+
+  const raw = String(src).trim();
+
+  // Absolute CDN/API urls — keep as-is (publicAssetUrl already applied in mocks).
+  if (/^https?:\/\//i.test(raw) || raw.startsWith('//')) return raw;
+
+  const path = raw.replace(/^\/+/, '').replace(/^public\//, '');
 
   if (path.includes('icons/tabler/')) {
     const file = path.split('/').pop() ?? '';
     return publicAssetUrl(`icons/tabler/${file}`);
   }
 
-  if (key != null && key.length > 0 && KEY_ICON_MAP[key]) {
-    return KEY_ICON_MAP[key];
+  // Local/demo or CDN-style uploads — keep (logo.png ≠ web.svg fallback).
+  if (/^uploads\//i.test(path)) {
+    return publicAssetUrl(path);
+  }
+
+  // Broken/missing API media under /images/… → key map or path heuristics.
+  if (/^images\//i.test(path)) {
+    if (keyed) return keyed;
+    const fromPath = pickIconFromPath(path);
+    if (fromPath) return fromPath;
+    if (key != null && key.length > 0) {
+      const pool = [
+        STORYBOOK_TABLER.star,
+        STORYBOOK_TABLER.cards,
+        STORYBOOK_TABLER.spade,
+        STORYBOOK_TABLER.dice,
+        STORYBOOK_TABLER.coin,
+        STORYBOOK_TABLER.gamepad,
+        STORYBOOK_TABLER.trophy,
+        STORYBOOK_TABLER.diamond,
+      ];
+      let hash = 0;
+      for (let i = 0; i < key.length; i += 1)
+        hash = (hash + key.charCodeAt(i) * (i + 1)) % pool.length;
+      return pool[hash] ?? STORYBOOK_TABLER.star;
+    }
+    return STORYBOOK_TABLER.star;
   }
 
   const fromPath = pickIconFromPath(path);
   if (fromPath) return fromPath;
 
-  if (key === 'logo' || key === 'aside_header_logo' || path.includes('uploads/web')) {
-    return LOGO_MARK;
-  }
+  if (keyed) return keyed;
 
-  // Stable but varied fallback from key hash — avoid identical WWW for every row.
-  if (key != null && key.length > 0) {
-    const pool = [
-      STORYBOOK_TABLER.star,
-      STORYBOOK_TABLER.cards,
-      STORYBOOK_TABLER.spade,
-      STORYBOOK_TABLER.dice,
-      STORYBOOK_TABLER.coin,
-      STORYBOOK_TABLER.gamepad,
-      STORYBOOK_TABLER.trophy,
-      STORYBOOK_TABLER.diamond,
-    ];
-    let hash = 0;
-    for (let i = 0; i < key.length; i += 1)
-      hash = (hash + key.charCodeAt(i) * (i + 1)) % pool.length;
-    return pool[hash] ?? STORYBOOK_TABLER.star;
-  }
+  if (path.includes('.')) return publicAssetUrl(path);
 
   return STORYBOOK_TABLER.star;
 }

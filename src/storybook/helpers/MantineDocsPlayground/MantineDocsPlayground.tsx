@@ -110,7 +110,7 @@ function renderColorField<T extends Record<string, unknown>>(
 
   return (
     <div className={styles.colorGroup} role="group" aria-label={field.label}>
-      {allowNone ? (
+      {allowNone && (
         <button
           type="button"
           className={clsx(
@@ -124,7 +124,7 @@ function renderColorField<T extends Record<string, unknown>>(
             onChange({ [field.name]: STORYBOOK_NONE } as Partial<T>);
           }}
         />
-      ) : null}
+      )}
       {field.options.map((color) => {
         const selected = current === color;
         return (
@@ -141,7 +141,7 @@ function renderColorField<T extends Record<string, unknown>>(
               onChange({ [field.name]: color } as Partial<T>);
             }}
           >
-            {selected ? <CheckIcon size={10} color="#fff" /> : null}
+            {selected && <CheckIcon size={10} color="#fff" />}
           </button>
         );
       })}
@@ -211,7 +211,7 @@ export function MantineDocsPlayground<T extends Record<string, unknown>>({
           </div>
         ))}
 
-        {textFields.length > 0 ? (
+        {textFields.length > 0 && (
           <div className={styles.row}>
             <div className={styles.label}>Label</div>
             <div className={styles.control}>
@@ -222,9 +222,9 @@ export function MantineDocsPlayground<T extends Record<string, unknown>>({
               </Group>
             </div>
           </div>
-        ) : null}
+        )}
 
-        {switchFields.length > 0 ? (
+        {switchFields.length > 0 && (
           <div className={styles.row}>
             <div className={styles.label}>State</div>
             <div className={clsx(styles.control, styles.switches)}>
@@ -233,7 +233,7 @@ export function MantineDocsPlayground<T extends Record<string, unknown>>({
               ))}
             </div>
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );

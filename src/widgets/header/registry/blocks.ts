@@ -39,7 +39,7 @@ type TypePackBlocksResolver = (type: string) => TypePackBlockOverlay | undefined
 
 let resolveTypePackBlocks: TypePackBlocksResolver | null = null;
 
-/** Called from `typePacks/registry` after packs are initialized (breaks import cycle). */
+/** Called from `ui/type/registry` after packs are initialized (breaks import cycle). */
 export function bindHeaderTypePackBlocksResolver(resolver: TypePackBlocksResolver): void {
   resolveTypePackBlocks = resolver;
 }

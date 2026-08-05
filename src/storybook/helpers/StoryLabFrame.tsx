@@ -33,7 +33,7 @@ export function StoryLabFrame({
         <Text size="sm" c="var(--color-text-muted)">
           {summary}
         </Text>
-        {howTo ? (
+        {howTo && (
           <Text
             size="xs"
             fw={500}
@@ -48,15 +48,15 @@ export function StoryLabFrame({
           >
             {howTo}
           </Text>
-        ) : null}
+        )}
       </Stack>
-      {capabilities !== undefined && capabilities.length > 0 ? (
+      {capabilities !== undefined && capabilities.length > 0 && (
         <List size="xs" spacing={2} c="var(--color-text)">
           {capabilities.map((line) => (
             <List.Item key={line}>{line}</List.Item>
           ))}
         </List>
-      ) : null}
+      )}
       <div data-story-lab-preview="">{children}</div>
     </Stack>
   );

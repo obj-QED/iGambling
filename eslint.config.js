@@ -8,6 +8,17 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import { typescriptStrictRules } from './eslint.typescript.rules.js';
 
+function isNullLiteral(node) {
+  return node?.type === 'Literal' && node.value === null;
+}
+
+function isJsxConsequent(node) {
+  if (!node) return false;
+  if (node.type === 'JSXElement' || node.type === 'JSXFragment') return true;
+  if (node.type === 'ParenthesizedExpression') return isJsxConsequent(node.expression);
+  return false;
+}
+
 const localPlugin = {
   rules: {
     'no-empty-jsx-whitespace': {
@@ -42,6 +53,44 @@ const localPlugin = {
         };
       },
     },
+    /**
+     * Forbid `cond ? <Jsx /> : null` — use `cond && <Jsx />`.
+     * Applies to JSX children and JSX assigned expressions.
+     */
+    'no-jsx-ternary-null': {
+      meta: {
+        type: 'suggestion',
+        fixable: 'code',
+        schema: [],
+        messages: {
+          preferAnd: 'Use `condition && <Jsx />` instead of `condition ? <Jsx /> : null`.',
+        },
+      },
+      create(context) {
+        const sourceCode = context.sourceCode ?? context.getSourceCode();
+
+        return {
+          ConditionalExpression(node) {
+            if (!isNullLiteral(node.alternate) || !isJsxConsequent(node.consequent)) return;
+
+            context.report({
+              node,
+              messageId: 'preferAnd',
+              fix(fixer) {
+                const test = sourceCode.getText(node.test);
+                let consequent = sourceCode.getText(node.consequent);
+                const isMultiline = consequent.includes('\n');
+                const alreadyWrapped = node.consequent.type === 'ParenthesizedExpression';
+                if (isMultiline && !alreadyWrapped) {
+                  consequent = `(${consequent})`;
+                }
+                return fixer.replaceText(node, `${test} && ${consequent}`);
+              },
+            });
+          },
+        };
+      },
+    },
   },
 };
 
@@ -69,6 +118,7 @@ export default tseslint.config(
       ...typescriptStrictRules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'local/no-empty-jsx-whitespace': 'error',
+      'local/no-jsx-ternary-null': 'error',
 
       /**
        * Import group order:

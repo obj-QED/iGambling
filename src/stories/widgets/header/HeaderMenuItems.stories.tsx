@@ -339,9 +339,9 @@ export const Playground: Story = {
         ]}
       >
         <HeaderMenuControlsShell>
-          {renderAs === 'actionIcon' ? <ItemActionIcon item={item} /> : null}
-          {renderAs === 'button' ? <ItemButton item={item} /> : null}
-          {renderAs === 'dropdown' ? <Dropdown item={item} /> : null}
+          {renderAs === 'actionIcon' && <ItemActionIcon item={item} />}
+          {renderAs === 'button' && <ItemButton item={item} />}
+          {renderAs === 'dropdown' && <Dropdown item={item} />}
         </HeaderMenuControlsShell>
       </StoryLabFrame>
     );

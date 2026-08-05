@@ -89,7 +89,6 @@
 
     &:where(:hover:not([data-invalid-href], [aria-disabled='true'])) {
       color: var(--cmf-anchor-hover);
-      border-bottom-color: var(--cmf-anchor-hover);
     }
   }
 
@@ -113,11 +112,12 @@
     min-height: var(--button-height);
 
     /*
-     * `--button-bd` = color, `--button-bd-width` = width (CMF cascade).
-     * Style stays `solid` here.
+     * Mantine contract: `--button-bd` is the full `border` shorthand
+     * (`width style color`). CMF keeps color tokens separate and composes
+     * `--button-bd` from `--button-bd-width` + color in `_cmf-control-cascade.scss`.
+     * Do NOT use `--button-bd` as border-color alone — that breaks outline Elements.
      */
-    border: var(--button-bd-width, calc(0.0625rem * var(--mantine-scale))) solid
-      var(--button-bd, transparent);
+    border: var(--button-bd, calc(0.0625rem * var(--mantine-scale)) solid transparent);
 
     /* After `border:` shorthand — AppLink `as="button"` active ≠ menu edge-bar. */
     &:where([data-variant='button-link']) {
@@ -157,9 +157,8 @@
 
     @include gradient.gradient-variant-hover('ai');
 
-    /* `--ai-bd` = color, `--ai-bd-width` = width — same contract as Button. */
-    border: var(--ai-bd-width, calc(0.0625rem * var(--mantine-scale))) solid
-      var(--ai-bd, transparent);
+    /* Mantine contract: `--ai-bd` = full border shorthand (same as Button). */
+    border: var(--ai-bd, calc(0.0625rem * var(--mantine-scale)) solid transparent);
 
     :where(svg, [data-cmf-icon-src]):not([data-menu-chevron]) {
       box-sizing: border-box;

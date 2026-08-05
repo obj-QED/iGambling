@@ -5,9 +5,8 @@ import type { ComponentType } from 'react';
 import { DefaultItemBlock } from '../ui/blocks/DefaultItemBlock/DefaultItemBlock';
 import { DropdownBlock } from '../ui/blocks/DropdownBlock/DropdownBlock';
 import { Logo } from '../ui/blocks/Logo/Logo';
+import { PromoBlock } from '../ui/blocks/PromoBlock/PromoBlock';
 import { Search } from '../ui/blocks/Search/Search';
-import { TimerBlock } from '../ui/blocks/TimerBlock/TimerBlock';
-import { WheelMdlBlock } from '../ui/blocks/WheelMdlBlock/WheelMdlBlock';
 import { resolveBlockRegistryKey, type SidebarBlockRegistryKey } from './keys';
 
 /**
@@ -18,8 +17,8 @@ export const BLOCK_REGISTRY: Partial<Record<SidebarBlockRegistryKey, ComponentTy
   default: DefaultItemBlock,
   menuDropdown: DropdownBlock,
   search_leftmenu: Search,
-  timer: TimerBlock,
-  wheel_mdl: WheelMdlBlock,
+  timer: PromoBlock,
+  wheel_mdl: PromoBlock,
   aside_header_logo: Logo,
 };
 
@@ -36,7 +35,7 @@ type TypePackBlocksResolver = (type: string) => TypePackBlockOverlay | undefined
 
 let resolveTypePackBlocks: TypePackBlocksResolver | null = null;
 
-/** Called from `typePacks/registry` after packs are initialized (breaks import cycle). */
+/** Called from `ui/type/registry` after packs are initialized (breaks import cycle). */
 export function bindSidebarTypePackBlocksResolver(resolver: TypePackBlocksResolver): void {
   resolveTypePackBlocks = resolver;
 }

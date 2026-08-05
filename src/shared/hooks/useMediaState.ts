@@ -26,8 +26,11 @@ export function useMediaState(item: MediaSource) {
     onImgError,
     showItemImg,
     isIconOnly,
-    /** Hide ActionIcon (or icon-only control) when item image load fails. */
-    hideImageControl: hasImg === true && imgFailed === true,
+    /**
+     * Hide only when icon-only row has no fallback path (name empty + img failed).
+     * Named / special blocks keep the control and swap to `fallbackIcon`.
+     */
+    hideImageControl: isIconOnly === true && imgFailed === true,
     iconControlAttrs: cmfIconControlAttrs(img, showItemImg),
   };
 }

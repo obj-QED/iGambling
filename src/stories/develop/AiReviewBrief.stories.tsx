@@ -64,7 +64,7 @@ export const Overview: Story = {
                 'Start here (Develop/*), then Widgets stories for live behavior, then source under src/widgets and src/shared/schema.',
                 'Judge against FSD import direction, public.ts boundaries, and registry-over-switch rules.',
                 'Flag violations from the Forbidden list — not stylistic preferences.',
-                'Cite concrete paths (e.g. src/widgets/sidebar/typePacks/default/Strategy.tsx).',
+                'Cite concrete paths (e.g. src/widgets/sidebar/ui/type/default/Strategy.tsx).',
                 <>
                   Published Storybook:{' '}
                   <DevelopExternalLink href="https://obj-qed.github.io/iGambling/">

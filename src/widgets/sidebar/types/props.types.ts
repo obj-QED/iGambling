@@ -1,7 +1,6 @@
 import type { SidebarLayoutModel } from '../lib';
 import type { SidebarConfig } from './config.types';
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '@/widgets/header';
-import type { ReactNode } from 'react';
 
 export type RootProps = {
   menu: HeaderMenuModel | null;
@@ -21,8 +20,6 @@ export type BlockProps = {
 };
 
 export type SectionProps = {
-  /** Required for legacy auto-map; optional when `children` provided. */
-  section?: HeaderSection;
-  children?: ReactNode;
+  section: HeaderSection;
   className?: string;
 };

@@ -1,21 +1,18 @@
 import type { ShellProps } from '../types';
 
-import { Children, memo } from 'react';
+import { memo } from 'react';
 
 import clsx from 'clsx';
 
+import { filterRenderableItems } from '../lib';
 import { Section } from './Section';
 
 import styles from '../styles/base/Shell.module.scss';
 
-function ShellComponent({ menu, children, className }: ShellProps) {
-  if (Children.count(children) > 0) {
-    return <div className={clsx(styles.root, className)}>{children}</div>;
-  }
-
-  if (!menu) return null;
-
-  const sections = menu.sections.filter((section) => section.items.length > 0);
+function ShellComponent({ menu, className }: ShellProps) {
+  const sections = menu.sections.filter(
+    (section) => filterRenderableItems(section.items).length > 0,
+  );
   if (sections.length === 0) return null;
 
   return (

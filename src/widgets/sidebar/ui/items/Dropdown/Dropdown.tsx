@@ -8,8 +8,8 @@ import clsx from 'clsx';
 import { useSidebarDropdown } from '../../../context';
 import { useMenuItemRenderable } from '../../../hooks';
 import { isRenderableItem, itemKey } from '../../../lib';
-import { DropdownItem } from '../DropdownItem/DropdownItem';
-import { DropdownTrigger } from '../DropdownTrigger/DropdownTrigger';
+import { DropdownItem } from './DropdownItem';
+import { DropdownTrigger } from './DropdownTrigger';
 
 import styles from '../../../styles/items/Dropdown.module.scss';
 

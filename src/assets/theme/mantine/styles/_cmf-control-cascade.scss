@@ -29,7 +29,8 @@ $cmf-control-roles: parent, child, trigger;
 /* Opt-in key layer — must match `data-cmf-key` (Logo uses semantic logo / logo-trigger). */
 $cmf-control-keys:
   logo, home, casino, search, wallet, sign_in, sign_up, color_scheme, notification, bonus_box,
-  account, dropdown, logo-trigger, dropdown-trigger, search_leftmenu, timer, wheel_mdl, promo;
+  account, dropdown, logo-trigger, dropdown-trigger, search_leftmenu, timer, wheel_mdl, promo,
+  change_account, switch_account;
 $cmf-button-variants: (
   'filled': (
     /* brand-color-7/8 — white label ≥ ~4.5 on light + dark brand palettes */
@@ -186,13 +187,19 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
   /* Wire public --button-* / icon vars */
   @include cmf-resolve('--button-bg', 'btn-bg');
   @include cmf-resolve('--button-color', 'btn-color');
-  @include cmf-resolve('--button-bd', 'btn-bd');
+
+  /* Color token stays on btn-bd; public `--button-bd` is Mantine shorthand. */
+  @include cmf-resolve('--button-bd-color', 'btn-bd');
   @include cmf-resolve('--button-hover', 'btn-hover');
   @include cmf-resolve('--button-hover-color', 'btn-hover-color');
   @include cmf-resolve('--button-height', 'btn-height');
   @include cmf-resolve('--button-padding-x', 'btn-padding-x');
   @include cmf-resolve('--button-fz', 'btn-fz');
   @include cmf-resolve('--button-bd-width', 'btn-bd-width');
+
+  /* Compose Mantine `--button-bd` from width + color (tokens stay separate). */
+  --button-bd: var(--button-bd-width) solid var(--button-bd-color);
+
   @include cmf-resolve('--button-shadow', 'btn-shadow');
   @include cmf-resolve('--button-justify', 'btn-justify');
   @include cmf-resolve('--button-radius', 'btn-radius');
@@ -336,11 +343,13 @@ $cmf-ai-icon-props: icon-scale, icon-aspect, icon-width, icon-height;
   @include cmf-layer-token('ai-icon-height', shared, '--cmf-action-icon-icon-height');
   @include cmf-resolve('--ai-bg', 'ai-bg');
   @include cmf-resolve('--ai-color', 'ai-color');
-  @include cmf-resolve('--ai-bd', 'ai-bd');
+  @include cmf-resolve('--ai-bd-color', 'ai-bd');
   @include cmf-resolve('--ai-hover', 'ai-hover');
   @include cmf-resolve('--ai-hover-color', 'ai-hover-color');
   @include cmf-resolve('--ai-size', 'ai-size');
   @include cmf-resolve('--ai-bd-width', 'ai-bd-width');
+  --ai-bd: var(--ai-bd-width) solid var(--ai-bd-color);
+
   @include cmf-resolve('--ai-shadow', 'ai-shadow');
   @include cmf-resolve('--ai-radius', 'ai-radius');
   @include cmf-resolve('--ai-radius-disabled', 'ai-radius-disabled');

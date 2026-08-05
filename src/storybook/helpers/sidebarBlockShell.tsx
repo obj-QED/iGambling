@@ -9,7 +9,7 @@ import {
   SidebarTypePackContext,
 } from '@/widgets/sidebar/context';
 import { DEFAULT_ASIDE_MENU_BUTTON_SIZE } from '@/widgets/sidebar/lib/asideMenuSize';
-import { resolveSidebarTypePack } from '@/widgets/sidebar/typePacks';
+import { resolveSidebarTypePack } from '@/widgets/sidebar/ui/type';
 
 import '@/widgets/sidebar/registry/registerBlocks';
 

@@ -25,7 +25,7 @@ import {
 } from '@/shared/schema';
 
 import { resolveSidebarWidth } from '../lib';
-import { resolveSidebarTypeTunableDefaults } from '../typePacks/tunableDefaults';
+import { resolveSidebarTypeTunableDefaults } from '../ui/type/tunableDefaults';
 import { DEFAULT_SIDEBAR_CONFIG } from './defaults';
 
 /** Settings-shaped layer; version stays open until coerce. */

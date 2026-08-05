@@ -116,9 +116,47 @@ describe('parseMenuItemDto (Zod boundary)', () => {
     expect(parseMenuItemDto({ key: '  ', name: 'x', url: '' })?.key).toBe('  ');
   });
 
-  it('rejects empty key', () => {
-    expect(parseMenuItemDto({ key: '', name: 'x' })).toBeNull();
+  it('derives key from url when backend omits key (Themes tags)', () => {
+    expect(
+      parseMenuItemDto({
+        url: '/tag/fruits',
+        name: 'fruits',
+        img: '/images/tags/white/fruits.webp',
+      }),
+    ).toMatchObject({ key: 'fruits', url: '/tag/fruits', name: 'fruits' });
+  });
+
+  it('derives key from name when url cannot supply one', () => {
+    expect(parseMenuItemDto({ key: '', name: 'Themes', url: '#' })).toMatchObject({
+      key: 'themes',
+      name: 'Themes',
+      url: '#',
+    });
+  });
+
+  it('rejects when key cannot be derived', () => {
+    expect(parseMenuItemDto({ key: '', name: '', url: '#' })).toBeNull();
+    expect(parseMenuItemDto({ key: '', name: '', url: '' })).toBeNull();
     expect(parseMenuItemDto({ key: 123, name: 'x' })).toBeNull();
+  });
+
+  it('keeps nested tag children without keys under Themes parent', () => {
+    const item = parseMenuItemDto({
+      key: 'tags',
+      name: 'Themes',
+      url: '#',
+      type: 'link',
+      items: [
+        { url: '/tag/fruits', name: 'fruits', img: '/x.webp' },
+        { url: '/tag/jackpot', name: 'jackpot', img: '/y.webp' },
+        { key: '', name: '', url: '' },
+        null,
+      ],
+    });
+
+    expect(item?.items).toHaveLength(2);
+    expect(item?.items?.[0]?.key).toBe('fruits');
+    expect(item?.items?.[1]?.key).toBe('jackpot');
   });
 
   it('skips invalid nested items', () => {

@@ -18,7 +18,7 @@ import {
   resolveItemHref,
   resolveLogoControlVariant,
 } from '../../../lib';
-import { useSidebarTypePack } from '../../../typePacks';
+import { useSidebarTypePack } from '../../type';
 
 import styles from './styles.module.scss';
 
@@ -102,7 +102,7 @@ function LogoComponent({ item, className }: BlockProps) {
     disabled: false,
   };
 
-  const trigger = showTrigger ? (
+  const trigger = showTrigger && (
     <AppActionIcon
       name={triggerItem.name}
       className={className}
@@ -113,7 +113,7 @@ function LogoComponent({ item, className }: BlockProps) {
     >
       <IconMenu2 stroke={1.75} aria-hidden className="cmf-ActionIcon-icon-svg" />
     </AppActionIcon>
-  ) : null;
+  );
 
   const logo = !visible ? null : isCompact ? (
     <AppActionIcon

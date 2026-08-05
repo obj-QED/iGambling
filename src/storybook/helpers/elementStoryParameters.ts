@@ -1,8 +1,11 @@
-/** Inline preview on component Docs page (first story). */
+/** Inline preview on component Docs page (first story) — hug content, no viewport stretch. */
 export const elementDocsPreviewParameters = {
+  layout: 'padded' as const,
   docs: {
     story: {
       inline: true,
+      height: 'auto',
+      autoplay: false,
     },
   },
 } as const;

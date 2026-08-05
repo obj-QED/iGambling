@@ -1,17 +1,52 @@
-<!-- Layer order before Storybook preview imports `@/assets/theme`. -->
-<link rel="stylesheet" href="./src/assets/styles/layer-order.css" />
+<!--
+  Layer order comes from `@/assets/styles-bootstrap` (bundled).
+  Do not link `./src/...` here — it 404s on GitHub Pages static deploy.
+-->
 <style>
   /* Readable iframe chrome before React hydrates (default app scheme = dark). */
   html,
   body {
     margin: 0;
-    min-height: 100%;
     background: #0b1220;
     color: #f8fafc;
   }
+
   html[data-mantine-color-scheme='light'],
   html[data-theme='light'] {
     background: #ffffff;
     color: #0f172a;
+  }
+
+  /*
+   * Story shell must hug content — never stretch to the viewport.
+   * Docs inline preview + Canvas both render through [data-storybook-shell].
+   */
+  [data-storybook-shell] {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none;
+    align-self: flex-start;
+  }
+
+  #storybook-root,
+  .sb-show-main,
+  .docs-story,
+  .sbdocs-preview .docs-story {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  /* Docs iframe: don't paint a full-viewport dark slab behind md pages. */
+  body.sb-show-main.sb-main-fullscreen:has(#storybook-docs) {
+    background: transparent;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .sbdocs-preview .docs-story,
+  .docs-story {
+    background: transparent;
   }
 </style>

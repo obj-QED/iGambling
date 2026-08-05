@@ -39,7 +39,7 @@ export const Overview: Story = {
                 'Export surface: public.ts',
                 'config/ — resolve* (no React)',
                 'registry/ — sync maps only (no lazy in blockRegistry)',
-                'typePacks/ — Strategy owns layout tree',
+                'ui/type/ — Strategy owns layout tree',
                 'ui/ — props in, JSX out; types in types/',
                 'See also live stories under Widgets/Header and Widgets/Sidebar',
               ]}
@@ -94,7 +94,7 @@ export const Overview: Story = {
 ├── public.ts
 ├── config/          defaults + resolve*Schema
 ├── registry/        sync layouts / blocks
-├── typePacks/       Strategy + pack defaults
+├── ui/type/         Strategy + pack defaults
 ├── ui/              Root, Shell, Section, blocks, items
 ├── lib/             pure helpers
 ├── types/

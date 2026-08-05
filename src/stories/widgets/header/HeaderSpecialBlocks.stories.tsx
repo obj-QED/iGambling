@@ -128,19 +128,19 @@ export const Overview: Story = {
               <Text size="sm" fw={600}>
                 Search
               </Text>
-              {searchItem ? <SearchBlock item={searchItem} /> : null}
+              {searchItem && <SearchBlock item={searchItem} />}
             </Stack>
             <Stack gap="xs">
               <Text size="sm" fw={600}>
                 Wallet
               </Text>
-              {walletItem ? <WalletBlock item={walletItem} /> : null}
+              {walletItem && <WalletBlock item={walletItem} />}
             </Stack>
             <Stack gap="xs">
               <Text size="sm" fw={600}>
                 Notification
               </Text>
-              {notificationItem ? <NotificationBlock item={notificationItem} /> : null}
+              {notificationItem && <NotificationBlock item={notificationItem} />}
             </Stack>
             <Stack gap="xs">
               <Text size="sm" fw={600}>

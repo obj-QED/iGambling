@@ -53,7 +53,7 @@
     aside: {
       width: 'calc(2.625rem * var(--mantine-scale) + 1.25rem)',
       type: 'default', // 'default' | 'compact'
-      layout: 'container',
+      layout: 'aside',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: false,
       openedDropdowns: ['category', 'providers', 'live_games', 'casino', 'betting'],

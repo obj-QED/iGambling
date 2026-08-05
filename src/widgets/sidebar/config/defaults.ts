@@ -1,13 +1,13 @@
 import type { SidebarSchema } from '../types';
 
-import { SIDEBAR_TYPE_TUNABLE_DEFAULTS } from '../typePacks/tunableDefaults';
+import { SIDEBAR_TYPE_TUNABLE_DEFAULTS } from '../ui/type/tunableDefaults';
 
 export {
   DEFAULT_SIDEBAR_REGIONS,
   DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG,
   resolveSidebarTypeTunableDefaults,
   SIDEBAR_TYPE_TUNABLE_DEFAULTS,
-} from '../typePacks/tunableDefaults';
+} from '../ui/type/tunableDefaults';
 
 export const DEFAULT_SIDEBAR_CONFIG: SidebarSchema = {
   version: 1,

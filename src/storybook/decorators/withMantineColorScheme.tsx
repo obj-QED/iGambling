@@ -93,6 +93,9 @@ function StorybookThemeShell({
         background: SHELL_BG[scheme],
         color: SHELL_FG[scheme],
         minHeight: 0,
+        height: 'auto',
+        width: '100%',
+        alignSelf: 'flex-start',
       }}
     >
       {children}

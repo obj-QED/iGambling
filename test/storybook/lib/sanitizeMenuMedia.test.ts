@@ -18,7 +18,17 @@ describe('sanitizeMenuMedia', () => {
   it('maps missing media to Tabler icons under public/', () => {
     expect(resolveStorybookMediaSrc('/images/tags/white/keno.webp')).toBe(STORYBOOK_TABLER.star);
     expect(resolveStorybookMediaSrc('')).toBe('');
+    expect(resolveStorybookMediaSrc('', 'search')).toBe(STORYBOOK_TABLER.search);
+    expect(resolveStorybookMediaSrc('', 'logo')).toMatch(/uploads\/web\.svg$/);
     expect(resolveStorybookMediaSrc('/images/x.webp', 'slots')).toBe(STORYBOOK_TABLER.dice);
+  });
+
+  it('preserves explicit logo CDN / uploads (does not force web.svg)', () => {
+    expect(resolveStorybookMediaSrc('https://999ggg.net/uploads/logo.png', 'logo')).toBe(
+      'https://999ggg.net/uploads/logo.png',
+    );
+    expect(resolveStorybookMediaSrc('/uploads/logo.png', 'logo')).toMatch(/uploads\/logo\.png$/);
+    expect(resolveStorybookMediaSrc('uploads/web.svg', 'logo')).toMatch(/uploads\/web\.svg$/);
   });
 
   it('sanitizes nested menu urls and imgs', () => {

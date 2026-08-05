@@ -5,11 +5,17 @@ import { buildCmfButtonPropToken, resolveCmfScope } from '../cmf/cmfCascadeResol
 import { resolveCmfIconControlVars } from '../cmf/cmfIconControlVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from '../theme/gradientTokens';
 
-/** `--button-bd` / CMF `*-bd` are border-color only (width+style in CSS). */
+/** Paint `bd` values are border-color only; public `--button-bd` is Mantine full shorthand. */
 const MANTINE_BUTTON_BD_TRANSPARENT = 'transparent';
 const MANTINE_BUTTON_BD_DEFAULT = 'var(--color-border)';
 const MANTINE_BUTTON_BD_OUTLINE =
   'color-mix(in srgb, var(--brand-color-7) 55%, var(--mantine-color-default-border))';
+const MANTINE_BUTTON_BD_WIDTH = 'calc(0.0625rem * var(--mantine-scale))';
+
+/** Compose Mantine `--button-bd` from width token + color. */
+function buttonBdShorthand(colorToken: string, widthToken = 'var(--button-bd-width)'): string {
+  return `${widthToken} solid ${colorToken}`;
+}
 
 type VariantPaint = {
   bg: string;
@@ -231,20 +237,17 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       variant,
       tail: 'variant',
     }),
-    '--button-bd': buildCmfButtonPropToken('bd', paint.bd, {
+    '--button-bd-color': buildCmfButtonPropToken('bd', paint.bd, {
       scope,
       variant,
       tail: 'variant',
     }),
-    '--button-bd-width': buildCmfButtonPropToken(
-      'bd-width',
-      'calc(0.0625rem * var(--mantine-scale))',
-      {
-        scope,
-        variant,
-        tail: 'variant',
-      },
-    ),
+    '--button-bd-width': buildCmfButtonPropToken('bd-width', MANTINE_BUTTON_BD_WIDTH, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-bd': buttonBdShorthand('var(--button-bd-color)'),
     '--button-hover': buildCmfButtonPropToken('hover', paint.hover, {
       scope,
       variant,
@@ -367,11 +370,17 @@ export function resolveButtonCustomVariantPaintVars(
       variant,
       tail: 'variant',
     }),
-    '--button-bd': buildCmfButtonPropToken('bd', paint.bd, {
+    '--button-bd-color': buildCmfButtonPropToken('bd', paint.bd, {
       scope,
       variant,
       tail: 'variant',
     }),
+    '--button-bd-width': buildCmfButtonPropToken('bd-width', MANTINE_BUTTON_BD_WIDTH, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-bd': buttonBdShorthand('var(--button-bd-color)'),
     '--button-hover': buildCmfButtonPropToken('hover', paint.hover, {
       scope,
       variant,

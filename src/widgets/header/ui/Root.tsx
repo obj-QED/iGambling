@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { ConfigProvider, HeaderMenuSizesContext } from '../context';
 import { useHeaderMenuSizesFromElement } from '../hooks';
 import { filterRenderableMenu, mergeCustomBlocks } from '../lib';
-import { resolveHeaderTypePack } from '../typePacks';
+import { resolveHeaderTypePack } from './type';
 
 import styles from '../styles/base/Root.module.scss';
 

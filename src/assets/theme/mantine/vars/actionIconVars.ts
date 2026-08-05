@@ -7,11 +7,16 @@ import {
 import { resolveCmfIconControlVars } from '../cmf/cmfIconControlVars';
 import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from '../theme/gradientTokens';
 
-/** `--ai-bd` / CMF `*-bd` are border-color only (width+style in CSS). */
+/** Paint `bd` values are border-color only; public `--ai-bd` is Mantine full shorthand. */
 const MANTINE_AI_BD_TRANSPARENT = 'transparent';
 const MANTINE_AI_BD_DEFAULT = 'var(--color-border)';
 const MANTINE_AI_BD_OUTLINE =
   'color-mix(in srgb, var(--brand-color-7) 55%, var(--mantine-color-default-border))';
+const MANTINE_AI_BD_WIDTH = 'calc(0.0625rem * var(--mantine-scale))';
+
+function aiBdShorthand(colorToken: string, widthToken = 'var(--ai-bd-width)'): string {
+  return `${widthToken} solid ${colorToken}`;
+}
 
 type VariantPaint = {
   bg: string;
@@ -187,20 +192,17 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
       variant,
       tail: 'variant',
     }),
-    '--ai-bd': buildCmfActionIconPropToken('bd', paint.bd, {
+    '--ai-bd-color': buildCmfActionIconPropToken('bd', paint.bd, {
       scope,
       variant,
       tail: 'variant',
     }),
-    '--ai-bd-width': buildCmfActionIconPropToken(
-      'bd-width',
-      'calc(0.0625rem * var(--mantine-scale))',
-      {
-        scope,
-        variant,
-        tail: 'variant',
-      },
-    ),
+    '--ai-bd-width': buildCmfActionIconPropToken('bd-width', MANTINE_AI_BD_WIDTH, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-bd': aiBdShorthand('var(--ai-bd-color)'),
     '--ai-hover': buildCmfActionIconPropToken('hover', paint.hover, {
       scope,
       variant,

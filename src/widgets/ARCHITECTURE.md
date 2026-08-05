@@ -53,7 +53,7 @@ useAppLayout → resolveHeaderSchema → AppHeader(menu, config/schema)
 | ------------------------------------------- | -------------------- |
 | `shared/schema` + overlay wrappers          | shipped              |
 | `resolveHeaderSchema` / HeaderSchema fields | shipped              |
-| typePacks (layout strategy)                 | active               |
+| `ui/type` (layout strategy packs)           | active               |
 | `plugins/` + `runtime/` lazy adapters       | wallet/search seeded |
 | Full Header Engine v4 (`engine/` singleton) | deferred             |
 

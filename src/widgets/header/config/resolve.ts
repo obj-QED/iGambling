@@ -20,7 +20,7 @@ import {
   type WrapperMode,
 } from '@/shared/schema';
 
-import { resolveHeaderTypeTunableDefaults } from '../typePacks/tunableDefaults';
+import { resolveHeaderTypeTunableDefaults } from '../ui/type/tunableDefaults';
 import { DEFAULT_HEADER_CONFIG } from './defaults';
 
 /** Settings-shaped layer; version stays open until coerce. */

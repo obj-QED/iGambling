@@ -31,8 +31,11 @@ export class ErrorBoundary extends Component<Props, State> {
         this.props.fallback ?? (
           <main style={{ padding: '2rem', textAlign: 'center' }}>
             <h1>Ошибка интерфейса</h1>
-            <p>Приложение столкнулось с непредвиденной ошибкой. Попробуйте обновить страницу или зайти позже.</p>
-            {import.meta.env.DEV && this.state.error != null ? (
+            <p>
+              Приложение столкнулось с непредвиденной ошибкой. Попробуйте обновить страницу или
+              зайти позже.
+            </p>
+            {import.meta.env.DEV && this.state.error != null && (
               <pre
                 style={{
                   marginTop: '1rem',
@@ -48,7 +51,7 @@ export class ErrorBoundary extends Component<Props, State> {
               >
                 {this.state.error.message}
               </pre>
-            ) : null}
+            )}
             <p style={{ marginTop: '1.5rem' }}>
               <a href="/auth">Вход</a>
             </p>

@@ -8,6 +8,7 @@ export {
   filterRenderableMenu,
   hasItemImg,
   hasItemName,
+  hasRenderableMenuSections,
   isIconOnlyItem,
   isRenderableItem,
   isSpecialBlockKey,

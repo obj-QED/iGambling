@@ -39,9 +39,7 @@ function DeepPanelComponent({ groups }: DeepPanelProps) {
         <div className={styles.scroll}>
           {groups.map((group) => (
             <Fragment key={group.key}>
-              {group.label.length > 0 ? (
-                <Menu.Label className={styles.label}>{group.label}</Menu.Label>
-              ) : null}
+              {group.label.length > 0 && <Menu.Label className={styles.label}>{group.label}</Menu.Label>}
               {group.items.map((item) => (
                 <DeepPanelItem key={item.key} item={item} />
               ))}

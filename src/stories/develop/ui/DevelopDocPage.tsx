@@ -58,7 +58,7 @@ export function DevelopDocPage({
         <Text size="sm" c="var(--color-text-muted)" style={{ lineHeight: 1.5 }}>
           {subtitle}
         </Text>
-        {badges.length > 0 ? (
+        {badges.length > 0 && (
           <Group gap={6} mt={4}>
             {badges.map((label) => (
               <Badge key={label} variant="light" size="sm" color="brand">
@@ -66,12 +66,12 @@ export function DevelopDocPage({
               </Badge>
             ))}
           </Group>
-        ) : null}
+        )}
       </Stack>
 
       {sections.map((section, index) => (
         <Stack key={section.id} gap="sm" id={section.id}>
-          {index > 0 ? <Divider color="var(--color-border)" /> : null}
+          {index > 0 && <Divider color="var(--color-border)" />}
           <Title order={3} c="var(--color-text)">
             {section.title}
           </Title>

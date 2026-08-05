@@ -9,15 +9,34 @@ function readRecordField(raw: Record<string, unknown>, key: string): string | un
   return readString(raw[key]);
 }
 
+/**
+ * Backend sometimes omits `key` on nested rows (e.g. Themes tags).
+ * Without a key the item is dropped → parent loses `items` → `url: '#'` renders disabled.
+ */
+function deriveMenuItemKey(url: string, name: string): string {
+  if (url.startsWith('/') && url.length > 1) {
+    const pathOnly = url.split(/[?#]/, 1)[0] ?? '';
+    const segment =
+      pathOnly
+        .split('/')
+        .filter((part) => part.length > 0)
+        .pop() ?? '';
+    if (segment.length > 0) return segment;
+  }
+  return name.trim().toLowerCase().replace(/\s+/g, '_');
+}
+
 function coerceMenuItem(raw: unknown): MenuItemDto | null {
   const cleaned = cleanApiPayload(raw);
   if (!isRecord(cleaned)) return null;
 
-  const key = readString(cleaned.key);
-  if (key.length === 0) return null;
-
   const name = readString(cleaned.name);
   const url = readString(cleaned.url);
+  let key = readString(cleaned.key);
+  if (key.length === 0) {
+    key = deriveMenuItemKey(url, name);
+  }
+  if (key.length === 0) return null;
   const img = readRecordField(cleaned, 'img');
   const imgShape = readRecordField(cleaned, 'imgShape') ?? readRecordField(cleaned, 'img_shape');
   const imgRadius = readRecordField(cleaned, 'imgRadius') ?? readRecordField(cleaned, 'img_radius');
