@@ -1,6 +1,5 @@
-# Enable GitHub auto-merge on Dependabot PRs (patch/minor only).
-# Merge happens only after required status checks (CI) and reviews pass
-# (whatever branch protection requires on the base branch).
+# Auto-merge Dependabot PRs into `storybook` only (patch/minor).
+# Waits for required CI / reviews on that base branch.
 name: Dependabot auto-merge
 
 on:
@@ -14,7 +13,9 @@ jobs:
   enable-auto-merge:
     name: Enable auto-merge
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    if: >
+      github.actor == 'dependabot[bot]' &&
+      github.base_ref == 'storybook'
     steps:
       - name: Dependabot metadata
         id: meta
