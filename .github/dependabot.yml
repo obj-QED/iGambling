@@ -1,8 +1,5 @@
-# Storybook-branch Dependabot config (this branch only — not on `main`).
-# GitHub loads dependabot.yml only from the repository default branch.
-# With the file removed from `main`, Dependabot version updates are inactive
-# unless the default branch changes or a minimal config is restored on `main`
-# with target-branch: storybook.
+# Loaded from the default branch (`main`) only — required by GitHub.
+# All version/security update PRs target `storybook` (not `main`).
 version: 2
 updates:
   - package-ecosystem: npm
