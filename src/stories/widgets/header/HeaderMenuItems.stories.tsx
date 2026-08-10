@@ -50,7 +50,6 @@ const meta = {
   title: 'Widgets/Header/Menu Items',
   tags: ['autodocs'],
   parameters: {
-    layout: 'padded',
     ...elementDocsPreviewParameters,
     docs: {
       ...elementDocsPreviewParameters.docs,
