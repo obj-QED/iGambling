@@ -57,7 +57,7 @@ Status (honest):
   shared/schema + overlays     shipped
   resolveHeaderSchema          shipped
   ui/type                      active
-  plugins/ + runtime/          wallet/search only
+  block adapters.ts + widgetAdapter   wallet/search
   engine/ singleton (v4 core)  deferred — do not invent it in PRs`;
 
 export const DEVELOP_SIDEBAR_PIPELINE = `__SETTINGS__.aside + menu

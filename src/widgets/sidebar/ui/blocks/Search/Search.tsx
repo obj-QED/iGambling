@@ -1,33 +1,57 @@
 import type { BlockProps } from '../../../types';
 
-import { memo } from 'react';
+import { createElement, memo } from 'react';
 
-import { IconSearch } from '@tabler/icons-react';
-import clsx from 'clsx';
+import {
+  AdapterBoundary,
+  preloadAdapters,
+  useAdapter,
+  useWrapper,
+} from '@/shared/lib/widgetAdapter';
+import { isCapabilityEnabled } from '@/shared/schema';
 
-import { isRenderableItem } from '../../../lib';
-import { SidebarExceptionButton } from '../../items/SidebarExceptionButton/SidebarExceptionButton';
-import { useSidebarTypePack } from '../../type';
+import { useSidebarConfig } from '../../../context';
+import { resolveItemLabel } from '../../../lib';
+import { SEARCH_ADAPTERS } from './adapters';
 
-/** Default search row; compact overrides via typePack.blocks.search_leftmenu. */
+/**
+ * Sync search block router.
+ * Compact: typePack.blocks.search_leftmenu → SearchIconVariant (sync).
+ */
 function SearchComponent({ item, className }: BlockProps) {
-  const { itemKind, Item } = useSidebarTypePack();
+  const { blockVariants, wrappers, capabilities } = useSidebarConfig();
+  const Adapter = useAdapter(SEARCH_ADAPTERS, blockVariants.search ?? 'row', ['row', 'icon']);
+  const wrapperMode = wrappers.search;
+  const Wrapper = useWrapper(wrapperMode);
+  const label = resolveItemLabel(item);
+  const enabled = isCapabilityEnabled(capabilities, 'search');
 
-  if (!isRenderableItem(item)) return null;
+  if (!enabled || !Adapter) return null;
 
-  const placeholder = item.name ?? 'Search';
+  const adapterNode = createElement(Adapter, { item, className });
 
-  if (itemKind === 'actionIcon') {
-    return <Item item={item} className={className} />;
+  if (!wrapperMode || wrapperMode === 'none') {
+    return (
+      <AdapterBoundary>
+        <span
+          onPointerEnter={() => {
+            preloadAdapters(SEARCH_ADAPTERS, 'row');
+          }}
+        >
+          {adapterNode}
+        </span>
+      </AdapterBoundary>
+    );
   }
 
   return (
-    <SidebarExceptionButton
-      item={item}
-      label={placeholder}
-      leftSection={<IconSearch size={16} stroke={1.75} aria-hidden />}
-      className={clsx(className)}
-    />
+    <AdapterBoundary>
+      {createElement(Wrapper, {
+        target: adapterNode,
+        title: label.length > 0 ? label : (item.name ?? 'Search'),
+        children: adapterNode,
+      })}
+    </AdapterBoundary>
   );
 }
 

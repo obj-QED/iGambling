@@ -11,4 +11,5 @@ export type {
   SidebarTypePack,
   SidebarTypeStyles,
 } from './types';
-export { useSidebarTypePack } from './useSidebarTypePack';
+/** Re-export — implementation lives next to `SidebarTypePackContext`. */
+export { useSidebarTypePack } from '../../context/typePack';

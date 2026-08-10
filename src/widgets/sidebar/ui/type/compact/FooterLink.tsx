@@ -13,7 +13,7 @@ import {
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
 } from '../../../lib';
-import { useSidebarTypePack } from '../useSidebarTypePack';
+import { useSidebarTypePack } from '../../type';
 
 function CompactFooterLinkComponent({ item }: BlockProps) {
   const { Item } = useSidebarTypePack();

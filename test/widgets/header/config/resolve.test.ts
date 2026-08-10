@@ -72,4 +72,13 @@ describe('resolveHeaderConfig / resolveHeaderSchema', () => {
     expect(schema.blockVariants.search).toBe('input');
     expect(schema.version).toBe(1);
   });
+
+  it('resolves header.active from settings; omit → element', () => {
+    expect(resolveHeaderConfig({}).active).toEqual({ type: 'element', position: 'bottom' });
+    expect(
+      resolveHeaderConfig({
+        header: { active: { type: 'line', position: 'left' } },
+      }).active,
+    ).toEqual({ type: 'line', position: 'left' });
+  });
 });

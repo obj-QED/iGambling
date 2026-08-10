@@ -1,0 +1,28 @@
+@layer components {
+  .root {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    display: block;
+    border: 0;
+    box-sizing: border-box;
+    inset: var(--_cmf-active-inset);
+    width: var(--_cmf-active-width);
+    height: var(--_cmf-active-height);
+    background-color: var(--_cmf-active-color);
+  }
+
+  .button {
+    --_cmf-active-inset: var(--button-active-inset, auto 0 0 0);
+    --_cmf-active-width: var(--button-active-width, 100%);
+    --_cmf-active-height: var(--button-active-height, 2px);
+    --_cmf-active-color: var(--button-active-color, var(--brand-color-5));
+  }
+
+  .ai {
+    --_cmf-active-inset: var(--ai-active-inset, auto 0 0 0);
+    --_cmf-active-width: var(--ai-active-width, 100%);
+    --_cmf-active-height: var(--ai-active-height, 2px);
+    --_cmf-active-color: var(--ai-active-color, var(--brand-color-5));
+  }
+}

@@ -8,10 +8,6 @@
  */
 
 export { SidebarConfigContext, SidebarConfigProvider, useSidebarConfig } from './config';
-export {
-  SidebarDropdownContext,
-  SidebarDropdownProvider,
-  useSidebarDropdown,
-} from './dropdown';
+export { SidebarDropdownContext, SidebarDropdownProvider, useSidebarDropdown } from './dropdown';
 export { AsideMenuSizeContext } from './size';
-export { SidebarTypePackContext } from './typePack';
+export { SidebarTypePackContext, useSidebarTypePack } from './typePack';

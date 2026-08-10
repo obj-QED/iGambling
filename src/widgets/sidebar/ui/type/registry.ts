@@ -1,7 +1,6 @@
 import type { SidebarTypePack } from './types';
 import type { AsideTypeStrategyKey } from '@/shared/config';
 
-import { bindSidebarTypePackBlocksResolver } from '../../registry/blocks';
 import { compactTypePack } from './compact';
 import { defaultTypePack } from './default';
 
@@ -17,5 +16,3 @@ export function resolveSidebarTypePack(type: string): SidebarTypePack {
   }
   return TYPE_PACK_REGISTRY.default;
 }
-
-bindSidebarTypePackBlocksResolver((type) => resolveSidebarTypePack(type).blocks);

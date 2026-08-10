@@ -37,6 +37,11 @@ Generated structure:
 
 Tests (repo root, not under src):
   test/widgets/{kebab}/resolve.test.ts
+
+Sidebar / header domain blocks (colocated adapters.ts + shared widgetAdapter):
+  yarn scaffold:sidebar-plugin Notification
+  yarn scaffold:header-plugin Notification --adapters compact,input
+  yarn scaffold:widget-plugin header|sidebar Name
 `);
 }
 
@@ -76,10 +81,14 @@ async function main() {
   console.log(`  Layouts   : container | container-fluid`);
   if (isWidget) {
     console.log(`  Theme     : src/assets/theme/tokens/widgets/${target.kebabName}/`);
-    console.log(`              + theme.scss @include ${meta.sassAlias}.${target.kebabName}-root-tokens`);
+    console.log(
+      `              + theme.scss @include ${meta.sassAlias}.${target.kebabName}-root-tokens`,
+    );
   }
   console.log(`  Files     : ${files.length}\n`);
-  console.log(`Import:\n  import { ${meta.appExportName}, ${meta.resolveConfig} } from '${importBase}';\n`);
+  console.log(
+    `Import:\n  import { ${meta.appExportName}, ${meta.resolveConfig} } from '${importBase}';\n`,
+  );
 }
 
 main().catch((error) => {

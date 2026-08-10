@@ -29,16 +29,9 @@ export function registerBlocks(
   Object.assign(BLOCK_REGISTRY, entries);
 }
 
-type TypePackBlockOverlay = Partial<Record<SidebarBlockRegistryKey, ComponentType<BlockProps>>>;
-
-type TypePackBlocksResolver = (type: string) => TypePackBlockOverlay | undefined;
-
-let resolveTypePackBlocks: TypePackBlocksResolver | null = null;
-
-/** Called from `ui/type/registry` after packs are initialized (breaks import cycle). */
-export function bindSidebarTypePackBlocksResolver(resolver: TypePackBlocksResolver): void {
-  resolveTypePackBlocks = resolver;
-}
+export type TypePackBlockOverlay = Partial<
+  Record<SidebarBlockRegistryKey, ComponentType<BlockProps>>
+>;
 
 function requireGlobalBlock(key: SidebarBlockRegistryKey): ComponentType<BlockProps> {
   const block = BLOCK_REGISTRY[key];
@@ -51,15 +44,15 @@ function requireGlobalBlock(key: SidebarBlockRegistryKey): ComponentType<BlockPr
   return fallback;
 }
 
+/** Resolve block: type-pack overlay first, then global `BLOCK_REGISTRY`. */
 export function resolveBlockComponent(
   item: HeaderMenuItem,
-  type: string,
+  overlay?: TypePackBlockOverlay,
 ): ComponentType<BlockProps> {
   const key: SidebarBlockRegistryKey =
     item.items !== undefined && item.items.length > 0
       ? 'menuDropdown'
       : resolveBlockRegistryKey(item.key ?? '');
 
-  const overlay = resolveTypePackBlocks?.(type);
   return overlay?.[key] ?? requireGlobalBlock(key);
 }

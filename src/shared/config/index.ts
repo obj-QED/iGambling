@@ -1,5 +1,6 @@
 export type {
   AsideBehaviorSettings,
+  AsideBlockVariantSettings,
   AsideCapabilitiesSettings,
   AsideLayoutKey,
   AsideLayoutStrategyKey,
@@ -27,6 +28,19 @@ export type {
   BannerVariantKey,
 } from './bannerSettings';
 export { BANNER_LAYOUT_KEYS, BANNER_VARIANT_KEYS } from './bannerSettings';
+export type {
+  CmfActiveConfig,
+  CmfActivePosition,
+  CmfActiveSettings,
+  CmfActiveType,
+} from './cmfActiveSettings';
+export {
+  CMF_ACTIVE_POSITIONS,
+  CMF_ACTIVE_TYPES,
+  DEFAULT_CMF_ACTIVE_CONFIG,
+  DEFAULT_SIDEBAR_CMF_ACTIVE_CONFIG,
+  resolveCmfActiveConfig,
+} from './cmfActiveSettings';
 export type {
   FooterBehaviorSettings,
   FooterCapabilitiesSettings,

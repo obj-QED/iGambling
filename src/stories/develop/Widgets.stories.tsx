@@ -54,8 +54,8 @@ export const Overview: Story = {
               <DevelopCode>{DEVELOP_HEADER_PIPELINE}</DevelopCode>
               <Text size="sm" mt="sm" c="var(--color-text-muted)">
                 Special blocks: search, logo, wallet, notification, color_scheme, bonus_box.
-                Migration: shared schema + overlays shipped; plugins/runtime seeded; full engine
-                singleton deferred.
+                Migration: shared schema + overlays shipped; colocated adapters.ts + shared
+                widgetAdapter; full engine singleton deferred.
               </Text>
             </>
           ),

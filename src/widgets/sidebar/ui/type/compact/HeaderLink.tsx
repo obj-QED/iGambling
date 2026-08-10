@@ -2,7 +2,7 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { useSidebarTypePack } from '../useSidebarTypePack';
+import { useSidebarTypePack } from '../../type';
 
 import headerStyles from '../../../styles/blocks/SidebarHeader.module.scss';
 

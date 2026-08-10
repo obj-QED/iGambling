@@ -49,19 +49,30 @@ useAppLayout → resolveHeaderSchema → AppHeader(menu, config/schema)
 
 **Current migration state**
 
-| Layer                                       | Status               |
-| ------------------------------------------- | -------------------- |
-| `shared/schema` + overlay wrappers          | shipped              |
-| `resolveHeaderSchema` / HeaderSchema fields | shipped              |
-| `ui/type` (layout strategy packs)           | active               |
-| `plugins/` + `runtime/` lazy adapters       | wallet/search seeded |
-| Full Header Engine v4 (`engine/` singleton) | deferred             |
+| Layer                                            | Status               |
+| ------------------------------------------------ | -------------------- |
+| `shared/schema` + overlay wrappers               | shipped              |
+| `resolveHeaderSchema` / HeaderSchema fields      | shipped              |
+| `ui/type` (layout strategy packs)                | active               |
+| Block `adapters.ts` + `shared/lib/widgetAdapter` | wallet/search seeded |
+| Full Header Engine v4 (`engine/` singleton)      | deferred (optional)  |
 
 Blocks must not call `getSettings()` — only resolved schema via props/context.
 
 ## Sidebar / banner / footer
 
 Same contract: `resolve*Schema` in app layout, widgets receive `menu`/`content` + `schema` only.
+
+**Sidebar migration state**
+
+| Layer                                            | Status              |
+| ------------------------------------------------ | ------------------- |
+| `resolveSidebarSchema` + typePack shell          | shipped             |
+| Block `adapters.ts` + `shared/lib/widgetAdapter` | search/promo seeded |
+| `blockVariants` (derive from `type` when omit)   | shipped             |
+| Full engine singleton                            | deferred (optional) |
+
+**Type pack flow:** `config.type` → `resolveSidebarTypePack` → `Root` provides pack via context. Pack owns **per-type** `Strategy` (full chrome tree), `Item` / chrome links, optional `blocks` overlay. `ui/Block` applies `typePack.blocks` over `BLOCK_REGISTRY`. See `ui/type/README.md`.
 
 ## SCSS
 

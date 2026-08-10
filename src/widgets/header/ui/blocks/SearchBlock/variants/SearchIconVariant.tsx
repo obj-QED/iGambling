@@ -1,18 +1,24 @@
 import type { BlockProps } from '../../../../types';
 
-import { memo } from 'react';
+import { memo, useSyncExternalStore } from 'react';
 
 import { IconSearch } from '@tabler/icons-react';
-import { useLocation } from 'react-router-dom';
 
-import { normalizeAppPathname } from '@/shared/lib';
+import { getPathname, normalizeAppPathname, subscribePathname } from '@/shared/lib';
 
 import { HEADER_TABLER_ICON_PROPS } from '../../../items/icons/iconProps';
 import { SpecialIconBlock } from '../../shared/SpecialIconBlock';
 
+function isSearchDisabledOnPath(): boolean {
+  return normalizeAppPathname(getPathname()) === '/profile';
+}
+
 function SearchIconVariantComponent({ item }: BlockProps) {
-  const { pathname } = useLocation();
-  const disabled = normalizeAppPathname(pathname) === '/profile';
+  const disabled = useSyncExternalStore(
+    subscribePathname,
+    isSearchDisabledOnPath,
+    isSearchDisabledOnPath,
+  );
 
   return (
     <SpecialIconBlock

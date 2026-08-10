@@ -1,37 +1,57 @@
-import type { PromoBlockProps } from '../../../types';
+import type { BlockProps } from '../../../types';
 
-import { memo } from 'react';
+import { createElement, memo } from 'react';
 
-import clsx from 'clsx';
+import {
+  AdapterBoundary,
+  preloadAdapters,
+  useAdapter,
+  useWrapper,
+} from '@/shared/lib/widgetAdapter';
+import { isCapabilityEnabled } from '@/shared/schema';
 
-import { useMenuItemRenderable } from '../../../hooks';
-import { hasItemImg, hasItemName, isRenderableItem } from '../../../lib';
-import { ItemMedia } from '../../items/ItemMedia/ItemMedia';
-import { SidebarExceptionButton } from '../../items/SidebarExceptionButton/SidebarExceptionButton';
-import { useSidebarTypePack } from '../../type';
+import { useSidebarConfig } from '../../../context';
+import { resolveItemLabel } from '../../../lib';
+import { PROMO_ADAPTERS } from './adapters';
 
-/** Default-type promo; compact overrides via typePack.blocks. */
-function PromoBlockComponent({ item, className }: PromoBlockProps) {
-  const { itemKind, Item } = useSidebarTypePack();
-  const { visible, onImgError, label } = useMenuItemRenderable(item);
+/**
+ * Sync promo block router (`timer` / `wheel_mdl`).
+ * Compact: typePack.blocks → PromoIconVariant (sync).
+ */
+function PromoBlockComponent({ item, className }: BlockProps) {
+  const { blockVariants, wrappers, capabilities } = useSidebarConfig();
+  const Adapter = useAdapter(PROMO_ADAPTERS, blockVariants.promo ?? 'row', ['row', 'icon']);
+  const wrapperMode = wrappers.promo;
+  const Wrapper = useWrapper(wrapperMode);
+  const label = resolveItemLabel(item);
+  const enabled = isCapabilityEnabled(capabilities, 'promo');
 
-  if (!isRenderableItem(item) || !visible) return null;
+  if (!enabled || !Adapter) return null;
 
-  if (itemKind === 'actionIcon') {
-    return <Item item={item} className={className} />;
+  const adapterNode = createElement(Adapter, { item, className });
+
+  if (!wrapperMode || wrapperMode === 'none') {
+    return (
+      <AdapterBoundary>
+        <span
+          onPointerEnter={() => {
+            preloadAdapters(PROMO_ADAPTERS, 'row');
+          }}
+        >
+          {adapterNode}
+        </span>
+      </AdapterBoundary>
+    );
   }
 
-  const leftSection = hasItemImg(item) ? (
-    <ItemMedia item={item} alt={label} onImgError={onImgError} />
-  ) : undefined;
-
   return (
-    <SidebarExceptionButton
-      item={item}
-      label={hasItemName(item) ? item.name : undefined}
-      leftSection={leftSection}
-      className={clsx(className)}
-    />
+    <AdapterBoundary>
+      {createElement(Wrapper, {
+        target: adapterNode,
+        title: label.length > 0 ? label : (item.name ?? 'Promo'),
+        children: adapterNode,
+      })}
+    </AdapterBoundary>
   );
 }
 

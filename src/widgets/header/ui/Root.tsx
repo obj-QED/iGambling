@@ -4,6 +4,8 @@ import { memo, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
 
+import { CmfActiveIndicatorProvider } from '@/shared/ui/CmfActiveLine';
+
 import { ConfigProvider, HeaderMenuSizesContext } from '../context';
 import { useHeaderMenuSizesFromElement } from '../hooks';
 import { filterRenderableMenu, mergeCustomBlocks } from '../lib';
@@ -27,21 +29,25 @@ function RootComponent({ menu, config, className }: RootProps) {
 
   return (
     <ConfigProvider config={config}>
-      <HeaderMenuSizesContext.Provider value={menuSizes}>
-        <header
-          ref={setHeaderEl}
-          className={clsx(styles.root, typeStyles.root, className)}
-          data-widget="header"
-          data-cmf-component="header"
-          data-layout={config.layout}
-          data-type={config.type}
-          data-sticky={config.behavior.sticky ? 'true' : undefined}
-          data-transparent={config.behavior.transparent ? 'true' : undefined}
-          data-hide-on-scroll={config.behavior.hideOnScroll ? 'true' : undefined}
-        >
-          <Strategy menu={menuModel} config={config} />
-        </header>
-      </HeaderMenuSizesContext.Provider>
+      <CmfActiveIndicatorProvider value={config.active}>
+        <HeaderMenuSizesContext.Provider value={menuSizes}>
+          <header
+            ref={setHeaderEl}
+            className={clsx(styles.root, typeStyles.root, className)}
+            data-widget="header"
+            data-cmf-component="header"
+            data-layout={config.layout}
+            data-type={config.type}
+            data-cmf-active-type={config.active.type}
+            data-cmf-active-position={config.active.position}
+            data-sticky={config.behavior.sticky ? 'true' : undefined}
+            data-transparent={config.behavior.transparent ? 'true' : undefined}
+            data-hide-on-scroll={config.behavior.hideOnScroll ? 'true' : undefined}
+          >
+            <Strategy menu={menuModel} config={config} />
+          </header>
+        </HeaderMenuSizesContext.Provider>
+      </CmfActiveIndicatorProvider>
     </ConfigProvider>
   );
 }

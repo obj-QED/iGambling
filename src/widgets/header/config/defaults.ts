@@ -1,6 +1,6 @@
 import type { HeaderSchema } from '../types';
 
-import { DEFAULT_TOOLTIP_CONFIG } from '@/shared/config';
+import { DEFAULT_CMF_ACTIVE_CONFIG, DEFAULT_TOOLTIP_CONFIG } from '@/shared/config';
 import { HEADER_SPECIAL_BLOCK_KEYS } from '@/shared/config/headerSpecialBlockKeys';
 
 const DEFAULT_CAPABILITIES: HeaderSchema['capabilities'] = Object.fromEntries(
@@ -20,4 +20,5 @@ export const DEFAULT_HEADER_CONFIG: HeaderSchema = {
   },
   capabilities: { ...DEFAULT_CAPABILITIES },
   tooltip: { ...DEFAULT_TOOLTIP_CONFIG },
+  active: { ...DEFAULT_CMF_ACTIVE_CONFIG },
 };

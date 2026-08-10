@@ -1,4 +1,5 @@
 import type { HeaderBlockVariants } from './items.types';
+import type { CmfActiveConfig } from '@/shared/config/cmfActiveSettings';
 import type {
   HeaderCustomBlockConfig,
   HeaderLayoutKey,
@@ -33,6 +34,8 @@ export type HeaderSchema = {
   capabilities: HeaderCapabilitiesConfig;
   customBlocks?: HeaderCustomBlockConfig[];
   tooltip: TooltipConfig;
+  /** Active route chrome — `line` mounts DOM bar; `element` uses CSS `::after`. */
+  active: CmfActiveConfig;
 };
 
 /** @deprecated Prefer `HeaderSchema` */

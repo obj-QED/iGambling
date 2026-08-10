@@ -49,6 +49,7 @@ export const CmfIcon = memo(
         src={src}
         alt={alt}
         loading="lazy"
+        decoding="async"
         onError={handleError}
         {...dataAttrs}
       />

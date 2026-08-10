@@ -1,4 +1,4 @@
-import { SEARCH_ADAPTER_KEYS } from '../../../plugins/search';
+import { SEARCH_ADAPTER_KEYS } from './adapters';
 
 /** Storybook / docs — adapter keys only (overlays via schema.wrappers). */
 export const SEARCH_VARIANT_REGISTRY = Object.fromEntries(

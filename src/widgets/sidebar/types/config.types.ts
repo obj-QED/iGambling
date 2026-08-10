@@ -5,6 +5,7 @@ import type {
   AsideScrollAreaType,
   AsideTypeKey,
 } from '@/shared/config/asideSettings';
+import type { CmfActiveConfig } from '@/shared/config/cmfActiveSettings';
 import type { HeaderCustomBlockConfig } from '@/shared/config/headerSettings';
 import type { TooltipConfig } from '@/shared/config/tooltipSettings';
 import type { SchemaVersion, WrapperMode } from '@/shared/schema';
@@ -36,6 +37,15 @@ export type SidebarWrappersConfig = Partial<Record<string, WrapperMode>>;
 export type SidebarCapabilitiesConfig = Record<string, boolean>;
 
 /**
+ * Special-block adapter keys from settings (`blockVariants`).
+ * Values are open strings — must match a plugin adapter key; unknown → runtime fallback.
+ */
+export type SidebarBlockVariants = Partial<Record<string, string>>;
+
+export type SidebarSearchAdapterVariant = 'row' | 'icon';
+export type SidebarPromoAdapterVariant = 'row' | 'icon';
+
+/**
  * Resolved sidebar schema — components receive this; they do not read settings.
  * `SidebarConfig` is an alias for backward compatibility.
  */
@@ -45,6 +55,8 @@ export type SidebarSchema = {
   width?: number | string;
   layout: AsideLayoutKey;
   type: AsideTypeKey;
+  /** Adapter variants per domain plugin (`search` | `promo` → `row` | `icon`). */
+  blockVariants: SidebarBlockVariants;
   /** Default open dropdown keys — first visit only; then localStorage. */
   openedDropdowns: readonly string[];
   customBlocks?: HeaderCustomBlockConfig[];
@@ -54,6 +66,8 @@ export type SidebarSchema = {
   scrollArea: SidebarScrollAreaConfig;
   /** Resolved tooltip: pack defaults → `aside.tooltip`. */
   tooltip: TooltipConfig;
+  /** Active route chrome — omit in settings → `element` (CSS `::after`). */
+  active: CmfActiveConfig;
   wrappers: SidebarWrappersConfig;
   behavior: SidebarBehaviorConfig;
   capabilities: SidebarCapabilitiesConfig;

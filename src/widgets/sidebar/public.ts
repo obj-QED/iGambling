@@ -11,10 +11,13 @@ export type {
   BlockProps,
   RootProps,
   SectionProps,
+  SidebarBlockVariants,
   SidebarConfig,
+  SidebarPromoAdapterVariant,
   SidebarRegionsConfig,
   SidebarSchema,
   SidebarScrollAreaConfig,
+  SidebarSearchAdapterVariant,
 } from './types';
 export { Root as AppSidebar } from './ui/Root';
 export type { SidebarItemPresentationProps, SidebarTypePack } from './ui/type';

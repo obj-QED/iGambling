@@ -114,9 +114,9 @@
   --cmf-button-sidebar-active-position: left;
   --cmf-button-sidebar-active-size: 2px;
   --cmf-button-sidebar-active-color: var(--brand-color-5);
-  --cmf-button-sidebar-active-inset: 0 auto 0 0;
+  --cmf-button-sidebar-active-inset: -0.5px auto auto -1px;
   --cmf-button-sidebar-active-width: var(--cmf-button-sidebar-active-size);
-  --cmf-button-sidebar-active-height: 100%;
+  --cmf-button-sidebar-active-height: calc(100% + 1px);
 
   --cmf-button-sidebar-active-radius-tl: 0px;
   --cmf-button-sidebar-active-radius-bl: 0px;
@@ -124,9 +124,9 @@
   --cmf-action-icon-sidebar-active-position: left;
   --cmf-action-icon-sidebar-active-size: 2px;
   --cmf-action-icon-sidebar-active-color: var(--brand-color-5);
-  --cmf-action-icon-sidebar-active-inset: 0 auto 0 0;
+  --cmf-action-icon-sidebar-active-inset: -0.5px auto auto -1px;
   --cmf-action-icon-sidebar-active-width: var(--cmf-action-icon-sidebar-active-size);
-  --cmf-action-icon-sidebar-active-height: 100%;
+  --cmf-action-icon-sidebar-active-height: calc(100% + 1px);
 
   // --cmf-action-icon-sidebar-active-radius-tl: 0px;
   // --cmf-action-icon-sidebar-active-radius-bl: 0px;
@@ -141,6 +141,7 @@
   --tooltip-sidebar-color: var(--mantine-color-white);
   --tooltip-sidebar-radius: var(--mantine-radius-default);
   --tooltip-sidebar-max-width: 10rem;
+  --aside-shell-padding: 10px;
 
   /*
    * `type: compact` — ActionIcon-only rail (edit here).
@@ -190,5 +191,8 @@
     --aside-menu-dropdown-indicator-position: absolute;
     --cmf-action-icon-sidebar-header-logo-trigger-bg: transparent;
     --cmf-action-icon-sidebar-header-logo-trigger-hover: transparent;
+
+    --aside-shell-padding-top: var(--mantine-spacing-xs);
+    --aside-shell-padding-bottom: var(--mantine-spacing-xs);
   }
 }

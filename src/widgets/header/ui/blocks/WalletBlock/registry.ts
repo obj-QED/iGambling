@@ -1,4 +1,4 @@
-import { WALLET_ADAPTER_KEYS } from '../../../plugins/wallet';
+import { WALLET_ADAPTER_KEYS } from './adapters';
 
 /** Storybook / docs — adapter keys only (overlays via schema.wrappers). */
 export const WALLET_VARIANT_REGISTRY = Object.fromEntries(

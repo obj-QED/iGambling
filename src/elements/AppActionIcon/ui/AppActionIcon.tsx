@@ -5,6 +5,11 @@ import { forwardRef, isValidElement, type ReactNode } from 'react';
 import { ActionIcon } from '@mantine/core';
 
 import { resolveAppButtonHrefState, useAppHrefClickHandler } from '@/shared/lib';
+import {
+  CmfActiveLine,
+  shouldRenderCmfActiveLine,
+  useCmfActiveIndicator,
+} from '@/shared/ui/CmfActiveLine';
 
 function hasActionIconContent(name?: string, img?: string, children?: ReactNode): boolean {
   if ((img?.length ?? 0) > 0 || (name?.length ?? 0) > 0) return true;
@@ -35,26 +40,35 @@ export const AppActionIcon = forwardRef<HTMLButtonElement, AppActionIconProps>(
     const { href, disabledForHref } = resolveAppButtonHrefState(hrefProp, native);
     const hrefNavigationEnabled = href !== undefined;
     const navigateHref = useAppHrefClickHandler(href, hrefNavigationEnabled);
+    const resolvedDisabled = disabled ?? disabledForHref;
+    const { type: activeType } = useCmfActiveIndicator();
 
     if (hidden === true || hasActionIconContent(name, img, children) === false) return null;
 
     const handleClick = hrefNavigationEnabled
       ? (event: React.MouseEvent<HTMLButtonElement>) => {
-        onClick?.(event);
-        if (event.defaultPrevented) return;
-        navigateHref(event);
-      }
+          onClick?.(event);
+          if (event.defaultPrevented) return;
+          navigateHref(event);
+        }
       : onClick;
+
+    const showActiveLine = shouldRenderCmfActiveLine({
+      ...actionIconProps,
+      disabled: resolvedDisabled,
+      activeType,
+    });
 
     return (
       <ActionIcon
         ref={ref}
         {...actionIconProps}
         type={type}
-        disabled={disabled ?? disabledForHref}
+        disabled={resolvedDisabled}
         onClick={handleClick}
       >
         {children}
+        {showActiveLine && <CmfActiveLine control="ai" />}
       </ActionIcon>
     );
   },

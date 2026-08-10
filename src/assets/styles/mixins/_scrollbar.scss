@@ -58,8 +58,8 @@ $cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
 }
 
 /**
- * Mantine `ScrollArea` — unlayered CSS module with `classNames.scrollbar` + `thumb`.
- * Not inside `@layer widget.*` (must beat `@layer mantine`).
+ * Mantine `ScrollArea` — local `.scrollbar` / `.thumb` for `classNames`.
+ * Prefer unlayered module (or `@include` outside `@layer`) so rules beat `@layer mantine`.
  *
  * Size: set `--scrollarea-scrollbar-size` on the ScrollArea root (see sidebar `.scroll`),
  * from `--{prefix}-size` → `--cmf-scrollbar-size`. Do not pass Mantine `scrollbarSize`
@@ -77,7 +77,8 @@ $cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
   $size: --#{$prefix}-size;
   $radius: --#{$prefix}-radius;
 
-  .scrollbar:global([data-mantine-scrollbar]) {
+  /* Hashed class alone is enough — avoid `:global([attr])` compound (fragile in CSS modules). */
+  .scrollbar {
     padding: 0;
     background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
     border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
@@ -101,16 +102,16 @@ $cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
       &:where([data-orientation='horizontal']) {
         height: var(--scrollarea-scrollbar-size, var(#{$size}, #{$cmf-scrollbar-size-fallback}));
       }
+
+      > .thumb {
+        background-color: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
+      }
     }
   }
 
-  .thumb:global([data-state]) {
+  .thumb {
     background-color: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
     border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
-  }
-
-  .scrollbar:global([data-mantine-scrollbar]):where(:hover, :active) > .thumb:global([data-state]) {
-    background-color: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
   }
 }
 

@@ -1,8 +1,5 @@
 import { memo } from 'react';
 
-import { Container } from '@mantine/core';
-import { Outlet, useMatches } from 'react-router-dom';
-
 import { useIsMobile } from '@hooks/useIsMobile';
 import { useLanguage } from '@hooks/useLanguage';
 
@@ -11,7 +8,7 @@ import { AppFooter } from '@/widgets/footer';
 import { AppHeader } from '@/widgets/header';
 import { AppSidebar } from '@/widgets/sidebar';
 
-import { type PageLayoutMatch, resolvePageLayoutFromMatches } from '../lib/resolvePageLayout';
+import { AppLayoutMain } from './AppLayoutMain';
 import { useAppLayout } from './useAppLayout';
 
 import styles from './AppLayout.module.scss';
@@ -29,7 +26,6 @@ function AppLayoutComponent() {
     banner,
     bannerSchema,
   } = useAppLayout(language);
-  const pageLayout = resolvePageLayoutFromMatches(useMatches() as unknown as PageLayoutMatch[]);
 
   return (
     <div className={styles.root}>
@@ -44,19 +40,7 @@ function AppLayoutComponent() {
 
         {banner && <AppBanner banner={banner} schema={bannerSchema} className={styles.banner} />}
 
-        <Container
-          className={styles.page}
-          component="main"
-          size={pageLayout === 'info' ? 'md' : 'responsive'}
-        >
-          {pageLayout === 'info' ? (
-            <div className={styles.infoPageContent}>
-              <Outlet />
-            </div>
-          ) : (
-            <Outlet />
-          )}
-        </Container>
+        <AppLayoutMain />
 
         {footerMenu && (
           <AppFooter menu={footerMenu} schema={footerSchema} className={styles.footer} />

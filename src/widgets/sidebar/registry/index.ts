@@ -7,7 +7,3 @@ export {
   type SidebarBlockRegistryKey,
 } from './keys';
 export { LAYOUT_REGISTRY, resolveSidebarLayout } from './layouts';
-/** @deprecated Use `resolveSidebarTypePack(type).Strategy` */
-export { resolveSidebarTypeStrategy, TYPE_STRATEGY_REGISTRY } from './strategies';
-/** @deprecated Use `resolveSidebarTypePack(type).styles` */
-export { resolveSidebarTypeStyles, TYPE_STYLE_REGISTRY } from './typeStyles';

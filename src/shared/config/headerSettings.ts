@@ -1,3 +1,4 @@
+import type { CmfActiveSettings } from './cmfActiveSettings';
 import type { TooltipSettings } from './tooltipSettings';
 import type { BehaviorFlags, SchemaVersion, WrapperMode } from '@/shared/schema';
 import type { MenuItemDto } from '@/shared/types/menu';
@@ -122,6 +123,11 @@ export type HeaderSettings = {
    * Cascade: defaults → `header.tooltip` → place override in AppTooltip.
    */
   tooltip?: TooltipSettings;
+  /**
+   * Active route chrome: `line` → DOM `CmfActiveLine`; `element` → CSS `::after`.
+   * Omit → `element`.
+   */
+  active?: CmfActiveSettings;
   /** Per-type tunables keyed by `header.type`. */
   types?: Partial<Record<string, HeaderTypeTunablesSettings>>;
 };

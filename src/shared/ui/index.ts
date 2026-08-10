@@ -1,6 +1,15 @@
 export { AppLink, type AppLinkProps } from './AppLink';
 export { AppLogo, type AppLogoProps } from './AppLogo';
 export { AppTooltip, type AppTooltipProps } from './AppTooltip';
+export {
+  CmfActiveIndicatorProvider,
+  type CmfActiveIndicatorValue,
+  CmfActiveLine,
+  type CmfActiveLineControl,
+  type CmfActiveLineProps,
+  shouldRenderCmfActiveLine,
+  useCmfActiveIndicator,
+} from './CmfActiveLine';
 export { CmfIcon, type CmfIconProps } from './CmfIcon';
 export {
   DrawerWrapper,

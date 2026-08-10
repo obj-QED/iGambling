@@ -9,36 +9,49 @@ import { SidebarFooter } from '../../blocks/SidebarFooter/SidebarFooter';
 import { SidebarHeader } from '../../blocks/SidebarHeader/SidebarHeader';
 import { Shell } from '../../Shell';
 
-import scrollAreaStyles from '../../../styles/base/AsideScrollArea.module.scss';
 import styles from '../../../styles/base/Root.module.scss';
 
 /**
- * Compact type — owns full chrome tree (duplicate of default OK; reshape freely here).
+ * Compact type chrome — owns the full aside tree for this pack (narrow ActionIcon rail).
+ * Not shared with default: reshape regions, scroll, shell, or inject type-only chrome here.
+ *
+ * Layout slots (override per product needs):
+ * 1. Header region — pack `HeaderLink` / compact overlays via `blocks`
+ * 2. Main region — scroll + `Shell` (sync block overlays for search/promo/logo)
+ * 3. Footer region — pack `FooterLink`
  */
 function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) {
   const { regions, scrollArea } = config;
+  // Omit Mantine `scrollbarSize` — size comes from `.scroll` CSS tokens.
+  const { scrollbarSize, ...scrollAreaProps } = scrollArea;
+  void scrollbarSize;
+
+  const showHeader = regions.header && layout.headerSection;
+  const showMain = regions.main && hasRenderableMenuSections(layout.mainMenu);
+  const showFooter = regions.footer && layout.footerSection;
 
   return (
     <>
-      {regions.header && layout.headerSection && <SidebarHeader section={layout.headerSection} />}
+      {showHeader && <SidebarHeader section={layout.headerSection!} />}
 
-      {regions.main && hasRenderableMenuSections(layout.mainMenu) && (
+      {showMain && (
         <ScrollArea
           className={styles.scroll}
-          classNames={{
-            root: styles.scrollContent,
-            scrollbar: scrollAreaStyles.scrollbar,
-            thumb: scrollAreaStyles.thumb,
-          }}
           h="100%"
           scrollbars="y"
-          {...scrollArea}
+          {...scrollAreaProps}
+          classNames={{
+            viewport: styles.viewport,
+            content: styles.scrollContent,
+            scrollbar: styles.scrollbar,
+            thumb: styles.thumb,
+          }}
         >
           <Shell menu={layout.mainMenu} />
         </ScrollArea>
       )}
 
-      {regions.footer && layout.footerSection && <SidebarFooter section={layout.footerSection} />}
+      {showFooter && <SidebarFooter section={layout.footerSection!} />}
     </>
   );
 }

@@ -2,7 +2,7 @@ import type { RouteObject } from 'react-router-dom';
 
 import { createElement } from 'react';
 
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 
 import { AppLayout } from '@/app/layouts/AppLayout';
 import {
@@ -21,6 +21,11 @@ import {
   ServerErrorPage,
 } from '@pages';
 
+/**
+ * All app routes live under `AppLayout` so header/sidebar stay mounted across
+ * navigations (including unknown paths → NotFound). A sibling `*` catch-all
+ * would unmount chrome and remount icons on every miss.
+ */
 const appRouteObjects: RouteObject[] = [
   {
     element: createElement(AppLayout),
@@ -39,6 +44,7 @@ const appRouteObjects: RouteObject[] = [
               { path: '/register', element: createElement(RegisterPage) },
             ],
           },
+          { path: '*', element: createElement(NotFoundPage) },
         ],
       },
       {
@@ -48,7 +54,6 @@ const appRouteObjects: RouteObject[] = [
       },
     ],
   },
-  { path: '*', element: createElement(Navigate, { to: '/404', replace: true }) },
 ];
 
 export const appRouter = createBrowserRouter(appRouteObjects);

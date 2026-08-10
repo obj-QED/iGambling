@@ -178,16 +178,32 @@
 }
 
 /*
- * Active edge bar — UNLAYERED compound selectors (no empty `.button`/`.actionIcon` shell).
- * Mantine roots set `overflow: hidden` in `@layer mantine`; unlayered wins so ::after shows.
+ * Active chrome — UNLAYERED (Mantine `overflow: hidden` in `@layer mantine`).
  * Skip `data-variant="button-link"` (AppLink button) — bottom border, not the edge bar.
+ *
+ * `element` (default / omit settings): CSS `::after` via cascade tokens.
+ * `line` (`[data-cmf-active-type='line']` on widget root): DOM `CmfActiveLine`, no `::after`.
  */
 .button[data-active='true']:where(
     :not(:disabled, [data-disabled], [aria-disabled='true'], [data-variant='button-link'])
-  ) {
+  ):not(:where([data-cmf-active-type='line'] *)) {
   @include cmfControl.cmf-control-active-after-body('button');
 }
 
-.actionIcon[data-active='true']:where(:not(:disabled, [data-disabled], [aria-disabled='true'])) {
+.actionIcon[data-active='true']:where(:not(:disabled, [data-disabled], [aria-disabled='true'])):not(
+    :where([data-cmf-active-type='line'] *)
+  ) {
   @include cmfControl.cmf-control-active-after-body('ai');
+}
+
+[data-cmf-active-type='line']
+  .button[data-active='true']:where(
+    :not(:disabled, [data-disabled], [aria-disabled='true'], [data-variant='button-link'])
+  ) {
+  @include cmfControl.cmf-control-active-host('button');
+}
+
+[data-cmf-active-type='line']
+  .actionIcon[data-active='true']:where(:not(:disabled, [data-disabled], [aria-disabled='true'])) {
+  @include cmfControl.cmf-control-active-host('ai');
 }

@@ -16,6 +16,10 @@
       type: 'dropdown', // omit / empty → 'dropdown'; 'default' | 'custom' | 'dropdown' | …
       /** `true` → header menu from `src/widgets/header/mocks` */
       mockMenu: true,
+      active: {
+        type: 'line', // type: 'line' | 'element'
+        position: 'bottom', // position: 'bottom' | 'top' | 'left' | 'right'
+      },
       /**
        * Global adapter variants for special blocks — apply wherever they render
        * (default bar, dropdown outside row, …). Per-type override: `types.<type>.blockVariants`.
@@ -52,11 +56,16 @@
 
     aside: {
       width: 'calc(2.625rem * var(--mantine-scale) + 1.25rem)',
-      type: 'default', // 'default' | 'compact'
+      type: 'compact', // 'default' | 'compact'
       layout: 'aside',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: false,
       openedDropdowns: ['category', 'providers', 'live_games', 'casino', 'betting'],
+      /**
+       * Active route chrome. Omit → `element` (CSS `::after` via tokens, e.g. left bar).
+       * `type: 'line'` → DOM `CmfActiveLine` (same contract as `header.active`).
+       */
+      // active: { type: 'line', position: 'left' },
       /**
        * Tooltip for aside (Mantine-compatible). Omit → pack default.
        * Cascade: pack → aside.tooltip → place override in AppTooltip.

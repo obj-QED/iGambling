@@ -1,3 +1,4 @@
+import type { CmfActiveSettings } from './cmfActiveSettings';
 import type {
   HeaderCustomBlockInput,
   HeaderCustomBlockPlacement,
@@ -46,10 +47,14 @@ export type AsideRegionsSettings = {
   footer?: boolean;
 };
 
+/** Adapter variant keys per domain (`search` → `row` | `icon`). Open strings from settings. */
+export type AsideBlockVariantSettings = Partial<Record<string, string>>;
+
 /** Per-type layout/blocks only — do not duplicate scrollArea/tooltip here. */
 export type AsideTypeTunablesSettings = {
   regions?: AsideRegionsSettings;
   customBlocks?: HeaderCustomBlockSettings[];
+  blockVariants?: AsideBlockVariantSettings;
 };
 
 export type AsideCapabilitiesSettings = Partial<Record<string, boolean>>;
@@ -57,7 +62,6 @@ export type AsideCapabilitiesSettings = Partial<Record<string, boolean>>;
 export type AsideWrappersSettings = Partial<Record<string, WrapperMode>>;
 
 export type AsideBehaviorSettings = BehaviorFlags;
-
 export type AsideSettings = {
   /** Schema major; omit → 1. */
   version?: SchemaVersion | number | string;
@@ -66,6 +70,12 @@ export type AsideSettings = {
   layout?: AsideLayoutKey;
   /** Active type pack (`default` | `compact` | …). Structure lives in code type packs. */
   type?: AsideTypeKey;
+  /**
+   * Plugin adapter variants (`search`: `row` | `icon`).
+   * Nested `types.<type>.blockVariants` overrides when present.
+   * Omit → derive from `type` (`compact` → search `icon`, else `row`).
+   */
+  blockVariants?: AsideBlockVariantSettings;
   /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
   mockMenu?: boolean;
   /** Menu keys open on first visit; user toggles persist in localStorage. */
@@ -78,6 +88,11 @@ export type AsideSettings = {
    * Cascade: pack defaults → `aside.tooltip` → place override in UI.
    */
   tooltip?: TooltipSettings;
+  /**
+   * Active route chrome: `line` → DOM `CmfActiveLine`; `element` → CSS `::after`.
+   * Omit → `element` (aside has no `active` in default settings).
+   */
+  active?: CmfActiveSettings;
   wrappers?: AsideWrappersSettings;
   behavior?: AsideBehaviorSettings;
   capabilities?: AsideCapabilitiesSettings;

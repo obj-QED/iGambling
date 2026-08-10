@@ -6,6 +6,7 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
 import { AppButton } from '@/elements';
+import { CmfActiveIndicatorProvider } from '@/shared/ui/CmfActiveLine';
 
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -23,15 +24,23 @@ beforeAll(() => {
   });
 });
 
-function renderButton(ui: React.ReactElement) {
+function renderButton(
+  ui: React.ReactElement,
+  active: { type: 'line' | 'element'; position: 'bottom' | 'top' | 'left' | 'right' } = {
+    type: 'element',
+    position: 'bottom',
+  },
+) {
   return render(
     <MantineProvider theme={mantineTheme} defaultColorScheme="light">
-      <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route path="/" element={ui} />
-          <Route path="/home" element={<div>home page</div>} />
-        </Routes>
-      </MemoryRouter>
+      <CmfActiveIndicatorProvider value={active}>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route path="/" element={ui} />
+            <Route path="/home" element={<div>home page</div>} />
+          </Routes>
+        </MemoryRouter>
+      </CmfActiveIndicatorProvider>
     </MantineProvider>,
   );
 }
@@ -88,5 +97,36 @@ describe('AppButton', () => {
 
     const button = screen.getByRole('button', { name: 'Wide' });
     expect(button).toHaveAttribute('data-block', 'true');
+  });
+
+  it('mounts CmfActiveLine DOM node when data-active and active.type=line', () => {
+    renderButton(<AppButton label="Active" data-active="true" data-cmf-component="header" />, {
+      type: 'line',
+      position: 'bottom',
+    });
+
+    const button = screen.getByRole('button', { name: 'Active' });
+    const line = button.querySelector('[data-cmf-active-line]');
+    expect(line).not.toBeNull();
+    expect(line).toHaveAttribute('data-cmf-active-control', 'button');
+  });
+
+  it('does not mount active line when active.type is element (aside default)', () => {
+    renderButton(<AppButton label="Active" data-active="true" data-cmf-component="sidebar" />);
+
+    expect(
+      screen.getByRole('button', { name: 'Active' }).querySelector('[data-cmf-active-line]'),
+    ).toBeNull();
+  });
+
+  it('does not mount active line for button-link variant', () => {
+    renderButton(<AppButton label="Linkish" data-active="true" data-variant="button-link" />, {
+      type: 'line',
+      position: 'bottom',
+    });
+
+    expect(
+      screen.getByRole('button', { name: 'Linkish' }).querySelector('[data-cmf-active-line]'),
+    ).toBeNull();
   });
 });

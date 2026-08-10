@@ -139,7 +139,7 @@ UI files stay dumb: props in, JSX out. Props types live in `types/`, not inline 
 
 ```txt
 item.key  →  BLOCK_REGISTRY[key]  →  Block component
-config.type → TYPE_STRATEGY_REGISTRY[type]
+config.type → resolveSidebarTypePack(type)  →  Strategy / Item / blocks
 ```
 
 Forbidden in JSX:

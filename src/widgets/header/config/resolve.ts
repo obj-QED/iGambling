@@ -8,6 +8,7 @@ import {
   type HeaderCustomBlockInput,
   type HeaderCustomBlockSettings,
   type HeaderSettings,
+  resolveCmfActiveConfig,
 } from '@/shared/config';
 import { pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
@@ -169,6 +170,7 @@ function coerceHeaderSchema(merged: HeaderSchema & HeaderSchemaLayer): HeaderSch
     capabilities: resolveCapabilities(merged.capabilities),
     customBlocks: resolveCustomBlocks(merged),
     tooltip: resolveTooltipConfig(DEFAULT_HEADER_CONFIG.tooltip, merged.tooltip),
+    active: resolveCmfActiveConfig(merged.active, DEFAULT_HEADER_CONFIG.active),
   };
 }
 

@@ -9,6 +9,50 @@ describe('resolveSidebarConfig', () => {
     expect(resolveSidebarConfig({})).toEqual(DEFAULT_SIDEBAR_CONFIG);
   });
 
+  it('derives blockVariants.search from type when omitted', () => {
+    expect(resolveSidebarConfig({ aside: {} }).blockVariants).toEqual({
+      search: 'row',
+      promo: 'row',
+    });
+    expect(resolveSidebarConfig({ aside: { type: 'compact' } }).blockVariants).toEqual({
+      search: 'icon',
+      promo: 'icon',
+    });
+  });
+
+  it('merges aside.blockVariants and types[type].blockVariants', () => {
+    expect(
+      resolveSidebarConfig({
+        aside: {
+          type: 'compact',
+          blockVariants: { search: 'row' },
+        },
+      }).blockVariants.search,
+    ).toBe('row');
+
+    expect(
+      resolveSidebarConfig({
+        aside: {
+          type: 'default',
+          blockVariants: { search: 'row' },
+          types: { default: { blockVariants: { search: 'icon' } } },
+        },
+      }).blockVariants.search,
+    ).toBe('icon');
+  });
+
+  it('defaults aside.active to element when omitted', () => {
+    expect(resolveSidebarConfig({ aside: {} }).active).toEqual({
+      type: 'element',
+      position: 'left',
+    });
+    expect(
+      resolveSidebarConfig({
+        aside: { active: { type: 'line', position: 'left' } },
+      }).active,
+    ).toEqual({ type: 'line', position: 'left' });
+  });
+
   it('fills scrollArea defaults when aside.scrollArea is missing or partial', () => {
     expect(resolveSidebarConfig({ aside: {} }).scrollArea).toEqual(
       DEFAULT_SIDEBAR_CONFIG.scrollArea,

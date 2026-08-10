@@ -1,6 +1,6 @@
 /**
- * Sidebar type skins — CSS Modules composed onto `<aside>` via `resolveSidebarTypeStyles`.
- * Add `styles/type/<Name>Type.module.scss` + registry entry when introducing a type.
+ * Sidebar type skins — CSS Modules composed onto `<aside>` via `resolveSidebarTypePack(type).styles`.
+ * Add `styles/type/<Name>Type.module.scss` + type pack entry when introducing a type.
  */
 
 @layer widget.variant {

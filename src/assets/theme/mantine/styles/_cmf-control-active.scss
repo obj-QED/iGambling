@@ -1,5 +1,9 @@
-// Active edge bar via ::after + corner radius by edge position.
+// Active edge chrome for Button / ActionIcon.
 // Runtime vars: --{prefix}-active-* (from JS CMF nestCssVars).
+//
+// `active.type`:
+//   - `element` (default, omit in settings) → CSS `::after` bar (cascade tokens)
+//   - `line` → DOM `CmfActiveLine` + host only (no `::after`)
 //
 // Prefer unlayered compound selectors (see components.module.scss) so CSS Modules
 // does not emit an empty `.actionIcon {}` / `.button {}` shell.
@@ -43,10 +47,7 @@
   }
 }
 
-/// Body of the active indicator (no selector wrapper).
-@mixin cmf-control-active-after-body($prefix, $position: null) {
-  position: relative;
-
+@mixin cmf-control-active-radius-cascade($prefix, $position: null) {
   @if $position {
     @include cmf-control-active-radius($prefix, $position);
   } @else {
@@ -55,6 +56,14 @@
       var(--#{$prefix}-active-radius-br, var(--#{$prefix}-radius))
       var(--#{$prefix}-active-radius-bl, var(--#{$prefix}-radius));
   }
+}
+
+/// `element` mode: CSS `::after` bar (aside default when `active` omitted).
+@mixin cmf-control-active-after-body($prefix, $position: null) {
+  position: relative;
+  overflow: visible; // Mantine clips; needed for negative active-inset (e.g. -6px)
+
+  @include cmf-control-active-radius-cascade($prefix, $position);
 
   &::after {
     content: '';
@@ -66,6 +75,14 @@
     width: var(--#{$prefix}-active-width, 100%);
     height: var(--#{$prefix}-active-height, 2px);
   }
+}
+
+/// `line` mode host for {@link CmfActiveLine}: relative + overflow visible (Mantine clips).
+@mixin cmf-control-active-host($prefix, $position: null) {
+  position: relative;
+  overflow: visible;
+
+  @include cmf-control-active-radius-cascade($prefix, $position);
 }
 
 /// Nested form: use inside `.button` / `.actionIcon` when those blocks already have other rules.

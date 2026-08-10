@@ -1,6 +1,7 @@
 import type { ItemButtonProps } from '../../../types';
+import type { NavActiveSource } from '@/shared/lib/menu';
 
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
 import clsx from 'clsx';
 
@@ -39,7 +40,11 @@ function ItemButtonComponent({
 }: ItemButtonProps) {
   const { visible, onImgError, showItemImg, iconControlAttrs } = useMenuItemRenderable(item);
   // Parent is toggle-only — never URL-active from `item.url`.
-  const { activeAttrs } = useNavActive(dropdownTrigger ? { ...item, matchRoute: false } : item);
+  const navSource = useMemo<NavActiveSource>(
+    () => (dropdownTrigger ? { ...item, matchRoute: false } : item),
+    [dropdownTrigger, item],
+  );
+  const { activeAttrs } = useNavActive(navSource);
   const size = useAsideMenuButtonSize();
 
   if (!isRenderableItem(item) || !visible) return null;

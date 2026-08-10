@@ -221,7 +221,7 @@ export function buildFileTree(meta) {
     ),
     file(
       'registry/strategies.ts',
-      `import type { ${m.propsType}, ${m.typeKey} } from '../types';\nimport type { ComponentType } from 'react';\n\nimport { ClassicTypeStrategy } from '../ui/type/ClassicTypeStrategy';\nimport { DefaultTypeStrategy } from '../ui/type/DefaultTypeStrategy';\n\nexport const TYPE_STRATEGY_REGISTRY: Record<${m.typeKey}, ComponentType<${m.propsType}>> = {\n  default: DefaultTypeStrategy,\n  classic: ClassicTypeStrategy,\n};\n`,
+      `import type { ${m.propsType}, ${m.typeKey} } from '../types';\nimport type { ComponentType } from 'react';\n\nimport { ClassicStrategy } from '../ui/type/classic/Strategy';\nimport { DefaultStrategy } from '../ui/type/default/Strategy';\n\nexport const TYPE_STRATEGY_REGISTRY: Record<${m.typeKey}, ComponentType<${m.propsType}>> = {\n  default: DefaultStrategy,\n  classic: ClassicStrategy,\n};\n`,
     ),
     file(
       `ui/${m.rootComponent}.tsx`,
@@ -256,12 +256,12 @@ export function buildFileTree(meta) {
       `import { memo, type ReactNode } from 'react';\n\nimport { Container } from '@mantine/core';\n\nimport styles from '../../../styles/layout/ContainerFluidLayout.module.scss';\n\ntype ContainerFluidLayoutProps = {\n  children: ReactNode;\n};\n\nfunction ContainerFluidLayoutComponent({ children }: ContainerFluidLayoutProps) {\n  return (\n    <Container className={styles.root} fluid>\n      {children}\n    </Container>\n  );\n}\n\nexport const ContainerFluidLayout = memo(ContainerFluidLayoutComponent);\nContainerFluidLayout.displayName = 'ContainerFluidLayout';\n`,
     ),
     file(
-      'ui/type/DefaultTypeStrategy.tsx',
-      `import type { ${m.propsType} } from '../../types';\n\nimport { memo } from 'react';\n\nimport { ${m.shell} } from '../${m.shell}';\n\nfunction DefaultTypeStrategyComponent({ menu, config }: ${m.propsType}) {\n  return <${m.shell} menu={menu} config={config} />;\n}\n\nexport const DefaultTypeStrategy = memo(DefaultTypeStrategyComponent);\nDefaultTypeStrategy.displayName = 'DefaultTypeStrategy';\n`,
+      'ui/type/default/Strategy.tsx',
+      `import type { ${m.propsType} } from '../../../types';\n\nimport { memo } from 'react';\n\nimport { ${m.shell} } from '../../${m.shell}';\n\nfunction DefaultStrategyComponent({ menu, config }: ${m.propsType}) {\n  return <${m.shell} menu={menu} config={config} />;\n}\n\nexport const DefaultStrategy = memo(DefaultStrategyComponent);\nDefaultStrategy.displayName = '${m.Pascal}DefaultTypeStrategy';\n`,
     ),
     file(
-      'ui/type/ClassicTypeStrategy.tsx',
-      `import type { ${m.propsType} } from '../../types';\n\nimport { memo } from 'react';\n\nimport clsx from 'clsx';\n\nimport { ${m.shell} } from '../${m.shell}';\n\nimport styles from '../../styles/variant/type-classic.module.scss';\n\nfunction ClassicTypeStrategyComponent({ menu, config }: ${m.propsType}) {\n  return (\n    <div className={clsx(styles.root)} data-type-strategy="classic">\n      <${m.shell} menu={menu} config={config} />\n    </div>\n  );\n}\n\nexport const ClassicTypeStrategy = memo(ClassicTypeStrategyComponent);\nClassicTypeStrategy.displayName = 'ClassicTypeStrategy';\n`,
+      'ui/type/classic/Strategy.tsx',
+      `import type { ${m.propsType} } from '../../../types';\n\nimport { memo } from 'react';\n\nimport clsx from 'clsx';\n\nimport { ${m.shell} } from '../../${m.shell}';\n\nimport styles from '../../../styles/variant/type-classic.module.scss';\n\nfunction ClassicStrategyComponent({ menu, config }: ${m.propsType}) {\n  return (\n    <div className={clsx(styles.root)} data-type-strategy="classic">\n      <${m.shell} menu={menu} config={config} />\n    </div>\n  );\n}\n\nexport const ClassicStrategy = memo(ClassicStrategyComponent);\nClassicStrategy.displayName = '${m.Pascal}ClassicTypeStrategy';\n`,
     ),
     file(
       'styles/_layers.scss',
@@ -295,10 +295,7 @@ export function buildFileTree(meta) {
       'styles/blocks/DefaultBlock.module.scss',
       `@layer widget.blocks {\n  .root {\n    min-width: 0;\n  }\n}\n`,
     ),
-    file(
-      'styles/variant/index.scss',
-      `@forward 'type-default';\n`,
-    ),
+    file('styles/variant/index.scss', `@forward 'type-default';\n`),
     file(
       'styles/variant/type-default.scss',
       `@layer widget.variant {\n  .root[data-type='default'] {\n    --${m.cssPrefix}-surface-bg: var(--${m.cssPrefix}-surface-bg, transparent);\n  }\n\n  // Example overrides:\n  // .root[data-type='classic'] {\n  //   --${m.cssPrefix}-surface-bg: var(--color-bg-body, #0f172a);\n  //   --${m.cssPrefix}-surface-border-color: var(--color-border, #1e293b);\n  //   --${m.cssPrefix}-surface-border-width: 1px;\n  // }\n}\n`,
@@ -310,9 +307,15 @@ export function buildFileTree(meta) {
   ];
 }
 
-export async function writeModule(baseDir, meta, { force = false, projectRoot = process.cwd() } = {}) {
+export async function writeModule(
+  baseDir,
+  meta,
+  { force = false, projectRoot = process.cwd() } = {},
+) {
   const files = buildFileTree(meta);
-  const themeFiles = isWidgetModuleDir(baseDir) ? await writeThemeTokens(projectRoot, meta, { force }) : [];
+  const themeFiles = isWidgetModuleDir(baseDir)
+    ? await writeThemeTokens(projectRoot, meta, { force })
+    : [];
   const m = meta;
   const c = m.camel;
   const testRelativePath = `test/widgets/${m.kebab}/resolve.test.ts`;

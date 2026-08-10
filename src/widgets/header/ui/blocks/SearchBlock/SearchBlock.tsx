@@ -4,17 +4,21 @@ import { createElement, memo, useMemo } from 'react';
 
 import { TextInput } from '@mantine/core';
 
+import {
+  AdapterBoundary,
+  preloadAdapters,
+  useAdapter,
+  useWrapper,
+} from '@/shared/lib/widgetAdapter';
 import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useConfig } from '../../../context';
 import { resolveItemLabel } from '../../../lib';
-import { pluginRegistry } from '../../../plugins';
-import { HeaderAdapterBoundary, preloadPlugin, useAdapter, useWrapper } from '../../../runtime';
+import { SEARCH_ADAPTERS } from './adapters';
 
 function SearchBlockComponent({ item }: BlockProps) {
   const { blockVariants, wrappers, capabilities } = useConfig();
-  const plugin = pluginRegistry.search;
-  const Adapter = useAdapter(plugin, blockVariants.search);
+  const Adapter = useAdapter(SEARCH_ADAPTERS, blockVariants.search, ['compact', 'input']);
   const wrapperMode = wrappers.search;
   const Wrapper = useWrapper(wrapperMode);
   const label = useMemo(() => resolveItemLabel(item), [item]);
@@ -26,26 +30,26 @@ function SearchBlockComponent({ item }: BlockProps) {
 
   if (!wrapperMode || wrapperMode === 'none') {
     return (
-      <HeaderAdapterBoundary>
+      <AdapterBoundary>
         <span
           onPointerEnter={() => {
-            preloadPlugin(plugin);
+            preloadAdapters(SEARCH_ADAPTERS, 'compact');
           }}
         >
           {adapterNode}
         </span>
-      </HeaderAdapterBoundary>
+      </AdapterBoundary>
     );
   }
 
   return (
-    <HeaderAdapterBoundary>
+    <AdapterBoundary>
       {createElement(Wrapper, {
         target: adapterNode,
         title: label,
         children: <TextInput placeholder={label} aria-label={label} />,
       })}
-    </HeaderAdapterBoundary>
+    </AdapterBoundary>
   );
 }
 

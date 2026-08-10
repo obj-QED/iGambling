@@ -4,17 +4,21 @@ import { createElement, memo, useMemo } from 'react';
 
 import { Text } from '@mantine/core';
 
+import {
+  AdapterBoundary,
+  preloadAdapters,
+  useAdapter,
+  useWrapper,
+} from '@/shared/lib/widgetAdapter';
 import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useConfig } from '../../../context';
 import { resolveItemLabel } from '../../../lib';
-import { pluginRegistry } from '../../../plugins';
-import { HeaderAdapterBoundary, preloadPlugin, useAdapter, useWrapper } from '../../../runtime';
+import { WALLET_ADAPTERS } from './adapters';
 
 function WalletBlockComponent({ item }: BlockProps) {
   const { blockVariants, wrappers, capabilities } = useConfig();
-  const plugin = pluginRegistry.wallet;
-  const Adapter = useAdapter(plugin, blockVariants.wallet);
+  const Adapter = useAdapter(WALLET_ADAPTERS, blockVariants.wallet, ['compact', 'full']);
   const wrapperMode = wrappers.wallet;
   const Wrapper = useWrapper(wrapperMode);
   const label = useMemo(() => resolveItemLabel(item), [item]);
@@ -26,26 +30,26 @@ function WalletBlockComponent({ item }: BlockProps) {
 
   if (!wrapperMode || wrapperMode === 'none') {
     return (
-      <HeaderAdapterBoundary>
+      <AdapterBoundary>
         <span
           onPointerEnter={() => {
-            preloadPlugin(plugin);
+            preloadAdapters(WALLET_ADAPTERS, 'compact');
           }}
         >
           {adapterNode}
         </span>
-      </HeaderAdapterBoundary>
+      </AdapterBoundary>
     );
   }
 
   return (
-    <HeaderAdapterBoundary>
+    <AdapterBoundary>
       {createElement(Wrapper, {
         target: adapterNode,
         title: label,
         children: <Text size="sm">{label}</Text>,
       })}
-    </HeaderAdapterBoundary>
+    </AdapterBoundary>
   );
 }
 

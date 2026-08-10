@@ -3,13 +3,14 @@ import type { ChevronProps } from '../../../types';
 import { memo } from 'react';
 
 import { IconChevronDown } from '@tabler/icons-react';
+import clsx from 'clsx';
 
 import styles from '../../../styles/items/Chevron.module.scss';
 
 function ChevronComponent({ opened }: ChevronProps) {
   return (
     <IconChevronDown
-      className={styles.root}
+      className={clsx(styles.root, 'cmf-Button-chevron')}
       size={12}
       stroke={1.75}
       aria-hidden

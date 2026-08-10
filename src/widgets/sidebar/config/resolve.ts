@@ -12,6 +12,7 @@ import {
   type HeaderCustomBlockConfig,
   type HeaderCustomBlockInput,
   type HeaderCustomBlockSettings,
+  resolveCmfActiveConfig,
 } from '@/shared/config';
 import { pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
@@ -150,6 +151,32 @@ function resolveBehavior(
   };
 }
 
+function mergeBlockVariants(
+  base: SidebarSchema['blockVariants'],
+  overlay: SidebarSchemaLayer['blockVariants'] | undefined,
+): SidebarSchema['blockVariants'] {
+  if (!overlay) return { ...base };
+  return { ...base, ...overlay };
+}
+
+/**
+ * Derive adapter variants from type when unset: compact → icon, else row.
+ * Cascade: pack/type derive → legacy `aside.blockVariants` → `aside.types[type].blockVariants`.
+ */
+function resolveBlockVariants(
+  aside: SidebarSchemaLayer,
+  type: string,
+): SidebarSchema['blockVariants'] {
+  const adapter = type === 'compact' ? 'icon' : 'row';
+  const derived: SidebarSchema['blockVariants'] = {
+    ...DEFAULT_SIDEBAR_CONFIG.blockVariants,
+    search: adapter,
+    promo: adapter,
+  };
+  const withLegacy = mergeBlockVariants(derived, aside.blockVariants);
+  return mergeBlockVariants(withLegacy, aside.types?.[type]?.blockVariants);
+}
+
 function coerceSidebarSchema(
   merged: SidebarSchema & SidebarSchemaLayer,
   settingsOverlay: {
@@ -167,11 +194,13 @@ function coerceSidebarSchema(
     ...(width && { width }),
     layout: readSettingsKey(merged.layout, DEFAULT_SIDEBAR_CONFIG.layout),
     type,
+    blockVariants: resolveBlockVariants(merged, type),
     openedDropdowns: resolveOpenedDropdowns(merged),
     customBlocks: resolveCustomBlocks(merged, type),
     regions: resolveRegions(packDefaults.regions, typeTunables?.regions),
     scrollArea: resolveScrollArea(settingsOverlay.scrollArea, packDefaults.scrollArea),
     tooltip: resolveTooltipConfig(packDefaults.tooltip, settingsOverlay.tooltip),
+    active: resolveCmfActiveConfig(merged.active, DEFAULT_SIDEBAR_CONFIG.active),
     wrappers: resolveWrappers(merged.wrappers),
     behavior: resolveBehavior(merged.behavior),
     capabilities: {

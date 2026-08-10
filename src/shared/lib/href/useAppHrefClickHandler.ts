@@ -1,13 +1,11 @@
 import { useCallback } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { navigateAppHref } from '@/shared/lib/routing';
 
 import { getAppHrefKind, isValidAppHref } from './resolveAppHref';
 
 /** Navigate on click — always keep `<button>` in DOM (no `AppLink` / `<a>`). */
 export function useAppHrefClickHandler(href: string | undefined, enabled = true) {
-  const navigate = useNavigate();
-
   return useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
       if (!enabled || href === undefined || !isValidAppHref(href)) return;
@@ -16,7 +14,7 @@ export function useAppHrefClickHandler(href: string | undefined, enabled = true)
 
       if (kind === 'internal') {
         event.preventDefault();
-        navigate(href);
+        navigateAppHref(href);
         return;
       }
 
@@ -33,6 +31,6 @@ export function useAppHrefClickHandler(href: string | undefined, enabled = true)
         document.getElementById(fragment)?.scrollIntoView({ behavior: 'smooth' });
       }
     },
-    [enabled, href, navigate],
+    [enabled, href],
   );
 }

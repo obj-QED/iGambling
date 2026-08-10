@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client';
 
 import { App } from '@/app/bootstrap/App';
 import { Providers } from '@/app/providers/Providers';
+import { bindPathnameStore } from '@/app/routing/bindPathnameStore';
 import { setInitialPath } from '@/app/routing/state/initialPath';
 
 import { prefetchInitData, setLobbySessionDevToken } from '@api/lobby';
@@ -26,6 +27,7 @@ const root = createRoot(document.getElementById('root')!);
         : '/'
       : '/';
   setInitialPath(initialPath);
+  bindPathnameStore();
   initDeviceBodyClasses();
 
   if (import.meta.env.DEV) {

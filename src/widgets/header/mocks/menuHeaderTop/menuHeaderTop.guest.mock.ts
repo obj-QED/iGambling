@@ -60,14 +60,14 @@ export const MENU_HEADER_TOP_GUEST_MOCK: MenuHeaderTopBlockMock = {
       type: 'link',
       items: [
         {
-          url: '/signIn',
+          url: '/auth',
           name: 'Sign In',
           key: 'sign_in',
           img: '',
           type: 'button',
         },
         {
-          url: '/signUp',
+          url: '/register',
           name: 'Sign Up',
           key: 'sign_up',
           img: '',
