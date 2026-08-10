@@ -88,16 +88,16 @@ jobs:
 
       - name: Configure GitHub Pages
         if: github.event_name == 'push'
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload Pages artifact
         if: github.event_name == 'push'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: storybook-static
 
       - name: Upload Storybook artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: storybook-static
           path: storybook-static
@@ -105,7 +105,7 @@ jobs:
 
       - name: Upload CI reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: storybook-reports
           path: reports/
@@ -124,7 +124,7 @@ jobs:
 
       - uses: ./.github/actions/setup-yarn
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: storybook-static
           path: storybook-static
@@ -137,7 +137,7 @@ jobs:
 
       - name: Upload a11y report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: storybook-a11y-report
           path: reports/a11y.json
@@ -156,7 +156,7 @@ jobs:
 
       - uses: ./.github/actions/setup-yarn
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: storybook-static
           path: storybook-static
@@ -181,7 +181,7 @@ jobs:
 
       - uses: ./.github/actions/setup-yarn
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: storybook-static
           path: storybook-static
@@ -198,7 +198,7 @@ jobs:
 
       - name: Upload AI review
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: storybook-ai-review
           path: reports/storybook-ai-review.txt
@@ -216,7 +216,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   report:
     name: PR report
@@ -231,7 +231,7 @@ jobs:
         (needs.build-storybook.result == 'success' && needs.a11y.result == 'success')
       )
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v9
         env:
           PAGES_URL: https://obj-qed.github.io/iGambling/
           STORYBOOK_ENABLED: ${{ needs.storybook-gate.outputs.enabled }}
