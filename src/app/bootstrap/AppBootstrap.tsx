@@ -18,7 +18,15 @@ function AppBootstrapComponent() {
   }
 
   if (bootstrapRouteState.status === 'error') {
-    return <ServerErrorPage />;
+    return (
+      <ServerErrorPage
+        detail={
+          import.meta.env.DEV && bootstrapRouteState.error instanceof Error
+            ? bootstrapRouteState.error.message
+            : undefined
+        }
+      />
+    );
   }
 
   return (

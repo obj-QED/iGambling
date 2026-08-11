@@ -16,8 +16,7 @@ export const DEVELOP_SRC_TREE = `src/
 ├── widgets/       header · sidebar · banner · footer
 ├── features/      user workflows (public.ts boundary)
 ├── entities/      domain content + mapping
-├── elements/      AppButton, AppActionIcon — Mantine wrappers
-├── shared/        ui kit, config, schema, lib, types
+├── shared/        ui kit (AppButton, AppLink, CmfIcon, overlays), config, schema, lib, types
 ├── api/           axios clients, queries, mutations, keys
 ├── store/         Redux — auth / flags only (no API cache)
 ├── assets/        theme tokens (SoT), settings stub, global SCSS
@@ -28,7 +27,7 @@ test/              Vitest — mirror of src/ (never colocated under src/)`;
 
 export const DEVELOP_IMPORT_RULE = `Import only downward:
 
-  app → pages → widgets → features → entities → elements / shared
+  app → pages → widgets → features → entities → shared
 
 Cross-feature / cross-widget imports ONLY via public.ts (or index.ts).
 Widgets must NOT call useQuery / getSettings() inside ui/ — schema + menu via props.`;

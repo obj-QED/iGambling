@@ -5,8 +5,8 @@ import { memo, useCallback, useState } from 'react';
 import { Drawer, Text } from '@mantine/core';
 import { IconWallet } from '@tabler/icons-react';
 
-import { AppActionIcon } from '@/elements';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppActionIcon } from '@/shared/ui';
 
 import { useHeaderMenuSizes } from '../../../../context';
 import {

@@ -1,13 +1,13 @@
 import type { BlockProps } from '../../../types';
 
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { Badge } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 
-import { AppButton } from '@/elements';
-import { useMediaState, useNavActive } from '@/shared/hooks';
+import { useMediaState } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppButton } from '@/shared/ui';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import { resolveItemHref, resolveItemLabel, resolveMenuItemButtonVariant } from '../../../lib';
@@ -22,7 +22,6 @@ function hasAccountSubtitle(subtitle: string | undefined): subtitle is string {
 /** Default-type header row. Compact overrides via typePack.HeaderLink. */
 function SidebarHeaderLinkComponent({ item }: BlockProps) {
   const { onImgError, showItemImg } = useMediaState(item);
-  const { activeAttrs } = useNavActive(item);
   const size = useAsideMenuButtonSize();
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
@@ -30,14 +29,18 @@ function SidebarHeaderLinkComponent({ item }: BlockProps) {
   const subtitle = item.subtitle;
   const badge = item.badge;
   const isAccountProfile = hasAccountSubtitle(subtitle);
-  const avatar = showItemImg ? (
-    <ItemMedia
-      item={item}
-      alt={label}
-      onImgError={onImgError}
-      className={isAccountProfile ? styles.mainLinkAvatar : styles.mainLinkIcon}
-    />
-  ) : undefined;
+  const avatar = useMemo(
+    () =>
+      showItemImg ? (
+        <ItemMedia
+          item={item}
+          alt={label}
+          onImgError={onImgError}
+          className={isAccountProfile ? styles.mainLinkAvatar : styles.mainLinkIcon}
+        />
+      ) : undefined,
+    [showItemImg, item, label, onImgError, isAccountProfile],
+  );
 
   const labelContent = isAccountProfile ? (
     <div className={styles.mainLinkText}>
@@ -67,8 +70,10 @@ function SidebarHeaderLinkComponent({ item }: BlockProps) {
       className={styles.mainLink}
       leftSection={avatar}
       rightSection={rightSection}
+      active={item.active}
+      matchRoute={item.matchRoute}
+      activeMatch={item.activeMatch}
       {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar', chrome: 'header' }))}
-      {...activeAttrs}
     />
   );
 }

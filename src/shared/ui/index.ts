@@ -1,3 +1,5 @@
+export { AppActionIcon, type AppActionIconProps } from './AppActionIcon';
+export { AppButton, type AppButtonProps } from './AppButton';
 export { AppLink, type AppLinkProps } from './AppLink';
 export { AppLogo, type AppLogoProps } from './AppLogo';
 export { AppTooltip, type AppTooltipProps } from './AppTooltip';

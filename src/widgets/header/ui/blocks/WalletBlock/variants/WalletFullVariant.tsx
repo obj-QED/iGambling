@@ -4,7 +4,6 @@ import { memo, useRef } from 'react';
 
 import { IconWallet } from '@tabler/icons-react';
 
-import { AppButton } from '@/elements';
 import { useCmfIconStyle, useMediaState } from '@/shared/hooks';
 import {
   controlAttrs,
@@ -12,6 +11,7 @@ import {
   resolveCmfIconShape,
   resolveCmfScope,
 } from '@/shared/lib';
+import { AppButton } from '@/shared/ui';
 
 import { useHeaderMenuSizes } from '../../../../context';
 import {

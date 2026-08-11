@@ -4,7 +4,7 @@ import { memo, useState } from 'react';
 
 import clsx from 'clsx';
 
-import { AppButton } from '@/elements';
+import { AppButton } from '../AppButton';
 
 import styles from './styles.module.scss';
 

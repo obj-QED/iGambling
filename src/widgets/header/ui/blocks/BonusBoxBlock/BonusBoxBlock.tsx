@@ -2,7 +2,6 @@ import type { BlockProps } from '../../../types';
 
 import { memo, useRef, useState } from 'react';
 
-import { AppButton } from '@/elements';
 import { useCmfIconStyle } from '@/shared/hooks';
 import {
   controlAttrs,
@@ -10,6 +9,7 @@ import {
   resolveCmfIconShape,
   resolveCmfScope,
 } from '@/shared/lib';
+import { AppButton } from '@/shared/ui';
 
 import {
   hasItemImg,

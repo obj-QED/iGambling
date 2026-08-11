@@ -134,7 +134,7 @@ export default tseslint.config(
        *  2. value imports from react / react-dom
        *  3. value imports from other external packages
        *  4. @/app - bootstrap, routing, providers
-       *  5. @pages, @elements
+       *  5. @pages
        *  6. @components, @ui
        *  7. @AppBanner, @AppFooter, @AppHeader, @AppSidebar, …
        *  8. @shared, @entities, @api, @store, @hooks, @schemas
@@ -154,8 +154,8 @@ export default tseslint.config(
             ['^@?\\w'],
             // 4. @/app
             ['^@/app(/.*|$)'],
-            // 5. @pages, @elements
-            ['^@(pages|elements)(/|$)'],
+            // 5. @pages
+            ['^@pages(/|$)'],
             // 6. @components, @ui (design-system barrel under src/shared/ui)
             ['^@(components|ui)(/|$)'],
             // 7. @AppBanner, @AppHeader, …
@@ -186,8 +186,8 @@ export default tseslint.config(
               message: "Import hooks from '@/shared/hooks' (barrel).",
             },
             {
-              group: ['@/elements/*', '@elements/*'],
-              message: "Import from '@/elements' or '@elements' (barrel).",
+              group: ['@/elements/*', '@elements/*', '@/elements', '@elements'],
+              message: "elements/ was moved to shared/ui — import from '@/shared/ui' (or '@ui').",
             },
             {
               group: [

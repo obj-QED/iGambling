@@ -72,7 +72,7 @@ export const baseApi = axios.create({
 
 attachSecurityInterceptors(baseApi, baseURL);
 
-/** Client for apiLobby.php. Relative URL → same-site cookies; no cross-site credentialed calls. */
+/** Client for /apiLobby.php. Root-absolute path → same-site cookies; no cross-site credentialed calls. */
 export const lobbyApiClient = axios.create({
   baseURL: lobbyBaseURL,
   timeout: 30000,

@@ -26,6 +26,12 @@ export type HeaderMenuItem = {
   variant?: string;
   badge?: string | number;
   subtitle?: string;
+  /** Explicit active from API/schema — overrides URL matching. */
+  active?: boolean;
+  /** When `false`, skip route active matching. Default: `true`. */
+  matchRoute?: boolean;
+  /** Internal route match mode. Default: `exact`. */
+  activeMatch?: 'exact' | 'prefix';
   items?: HeaderMenuItem[];
 };
 

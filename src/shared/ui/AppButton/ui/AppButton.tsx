@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 
 import { Button } from '@mantine/core';
 
+import { useNavActive } from '@/shared/hooks';
 import { resolveAppButtonHrefState, useAppHrefClickHandler } from '@/shared/lib';
 import {
   CmfActiveLine,
@@ -25,6 +26,9 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
     type = 'button',
     justify,
     fullscreen = false,
+    active,
+    matchRoute,
+    activeMatch,
     ...buttonProps
   },
   ref,
@@ -34,6 +38,12 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
   const navigateHref = useAppHrefClickHandler(href, hrefNavigationEnabled);
   const resolvedDisabled = disabled ?? disabledForHref;
   const { type: activeType } = useCmfActiveIndicator();
+  const { activeAttrs } = useNavActive({
+    url: hrefProp,
+    active,
+    matchRoute,
+    activeMatch,
+  });
 
   if (!hasAppButtonContent(label, leftSection, rightSection)) return null;
 
@@ -47,6 +57,7 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
 
   const showActiveLine = shouldRenderCmfActiveLine({
     ...buttonProps,
+    ...activeAttrs,
     disabled: resolvedDisabled,
     activeType,
   });
@@ -55,6 +66,7 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
     <Button
       ref={ref}
       {...buttonProps}
+      {...activeAttrs}
       type={type}
       disabled={resolvedDisabled}
       leftSection={leftSection}

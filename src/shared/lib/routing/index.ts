@@ -6,3 +6,4 @@ export {
   setPathname,
   subscribePathname,
 } from './pathnameStore';
+export { resolveLobbyInitPage } from './resolveLobbyInitPage';

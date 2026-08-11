@@ -1,10 +1,10 @@
 import type { ItemActionIconProps } from '../../../types';
 
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
-import { AppActionIcon } from '@/elements';
-import { useMediaState, useNavActive } from '@/shared/hooks';
+import { useMediaState } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppActionIcon } from '@/shared/ui';
 
 import { useHeaderMenuSizes } from '../../../context';
 import {
@@ -19,19 +19,22 @@ import { ItemImage } from '../ItemImage/ItemImage';
 
 function ItemActionIconComponent({ item }: ItemActionIconProps) {
   const menuSizes = useHeaderMenuSizes();
-  const { activeAttrs } = useNavActive(item);
   const { onImgError, hideImageControl, iconControlAttrs } = useMediaState(item);
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
-  const content = hasItemImg(item) ? (
-    <ItemImage
-      className="cmf-ActionIcon-icon-svg"
-      item={item}
-      alt={label}
-      onImgFailed={onImgError}
-    />
-  ) : (
-    label.slice(0, 1).toUpperCase()
+  const content = useMemo(
+    () =>
+      hasItemImg(item) ? (
+        <ItemImage
+          className="cmf-ActionIcon-icon-svg"
+          item={item}
+          alt={label}
+          onImgFailed={onImgError}
+        />
+      ) : (
+        label.slice(0, 1).toUpperCase()
+      ),
+    [item, label, onImgError],
   );
 
   return (
@@ -44,8 +47,10 @@ function ItemActionIconComponent({ item }: ItemActionIconProps) {
         variant={resolveMenuItemActionIconVariant(item)}
         size={resolveHeaderMenuActionIconSize(menuSizes)}
         aria-label={label}
+        active={item.active}
+        matchRoute={item.matchRoute}
+        activeMatch={item.activeMatch}
         {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
-        {...activeAttrs}
         {...iconControlAttrs}
       >
         {content}

@@ -1,13 +1,13 @@
 import { memo } from 'react';
 
-import { Link } from 'react-router-dom';
+import { AppLink } from '@/shared/ui';
 
 function NotFoundPageComponent() {
   return (
     <main>
       <h1>404</h1>
       <p>Page not found.</p>
-      <Link to="/auth">Sign in</Link>
+      <AppLink href="/auth">Sign in</AppLink>
     </main>
   );
 }

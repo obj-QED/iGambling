@@ -1,4 +1,4 @@
-import type { WidgetAdapterLoader } from '@/shared/lib/widgetAdapter';
+import type { WidgetAdapterLoader } from '@/shared/lib';
 
 export const SEARCH_ADAPTER_KEYS = ['row', 'icon'] as const;
 export type SearchAdapterKey = (typeof SEARCH_ADAPTER_KEYS)[number];

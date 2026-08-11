@@ -35,7 +35,6 @@ const STATIC_PATHS = {
   '@hooks/*': ['src/hooks/*'],
   '@pages': ['src/pages/index.ts'],
   '@pages/*': ['src/pages/*'],
-  '@elements/*': ['src/elements/*'],
 };
 
 const componentNames = readdirSync(COMPONENTS_DIR).filter((name) => {

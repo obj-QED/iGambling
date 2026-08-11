@@ -72,8 +72,7 @@ src/
 ├── widgets/       header · sidebar · banner · footer
 ├── features/      user workflows (public.ts boundary)
 ├── entities/      domain content + mapping
-├── elements/      AppButton, AppActionIcon — Mantine wrappers
-├── shared/        ui kit, config, lib, schemas, types
+├── shared/        ui kit (AppButton, AppLink, CmfIcon, overlays), config, lib, schemas, types
 ├── api/           axios clients, queries, mutations, keys
 ├── store/         Redux — auth / flags only (no API cache)
 ├── assets/        theme tokens (SoT), settings stub, global SCSS
@@ -84,7 +83,7 @@ test/              Vitest suites — mirror of src/ (not colocated)
 ```
 
 **Import rule:** only downward  
-`app → pages → widgets → features → entities → elements / shared`
+`app → pages → widgets → features → entities → shared`
 
 Cross-feature / cross-widget imports only through `public.ts` (or `index.ts`).
 
@@ -94,19 +93,18 @@ Cross-feature / cross-widget imports only through `public.ts` (or `index.ts`).
 
 ### Layer roles
 
-| Layer       | Responsibility                                           | Must not                           |
-| ----------- | -------------------------------------------------------- | ---------------------------------- |
-| `app/`      | Providers, routes, layout data hooks                     | Widget internals, business UI      |
-| `pages/`    | Route composition                                        | Heavy logic, API calls             |
-| `widgets/`  | Shell composition (header, aside, …)                     | `useQuery`, Redux for server cache |
-| `features/` | User actions / workflows                                 | Cross-feature deep imports         |
-| `entities/` | Domain content + mapping                                 | Layout / overlays / variants       |
-| `elements/` | Thin Mantine wrappers (`AppButton`, `AppActionIcon`)     | Business rules                     |
-| `shared/`   | Primitives (`AppLink`, `CmfIcon`, overlays), lib, config | Domain knowledge                   |
+| Layer       | Responsibility                                                                     | Must not                           |
+| ----------- | ---------------------------------------------------------------------------------- | ---------------------------------- |
+| `app/`      | Providers, routes, layout data hooks                                               | Widget internals, business UI      |
+| `pages/`    | Route composition                                                                  | Heavy logic, API calls             |
+| `widgets/`  | Shell composition (header, aside, …)                                               | `useQuery`, Redux for server cache |
+| `features/` | User actions / workflows                                                           | Cross-feature deep imports         |
+| `entities/` | Domain content + mapping                                                           | Layout / overlays / variants       |
+| `shared/`   | UI kit (`AppButton`, `AppActionIcon`, `AppLink`, `CmfIcon`, overlays), lib, config | Domain knowledge                   |
 
 ### Shared vs widget
 
-| Put in **shared** / **elements**   | Put in **widget**                      |
+| Put in **shared**                  | Put in **widget**                      |
 | ---------------------------------- | -------------------------------------- |
 | Used in ≥2 places or generic infra | Menu orchestration, registries, config |
 | Zero menu/domain knowledge         | Knows menu keys, blocks, layout shell  |
@@ -195,7 +193,7 @@ src/assets/theme/tokens/     ← CSS variables (edit here)
         ↓
 mantineTheme.ts              ← thin Mantine theme bridge
         ↓
-elements (AppButton / …) + widgets
+shared/ui (AppButton / …) + widgets
 ```
 
 | Path                      | Role                                  |

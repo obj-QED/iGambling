@@ -1,4 +1,4 @@
-import type { WidgetAdapterLoader } from '@/shared/lib/widgetAdapter';
+import type { WidgetAdapterLoader } from '@/shared/lib';
 
 export const WALLET_ADAPTER_KEYS = ['compact', 'full'] as const;
 export type WalletAdapterKey = (typeof WALLET_ADAPTER_KEYS)[number];

@@ -48,8 +48,9 @@ export const CmfIcon = memo(
         className={rootClassName}
         src={src}
         alt={alt}
-        loading="lazy"
+        loading="eager"
         decoding="async"
+        fetchPriority="high"
         onError={handleError}
         {...dataAttrs}
       />

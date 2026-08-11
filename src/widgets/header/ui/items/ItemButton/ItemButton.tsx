@@ -1,10 +1,10 @@
 import type { ItemButtonProps } from '../../../types';
 
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
-import { AppButton } from '@/elements';
-import { useMediaState, useNavActive } from '@/shared/hooks';
+import { useMediaState } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppButton } from '@/shared/ui';
 
 import { useHeaderMenuSizes } from '../../../context';
 import {
@@ -19,13 +19,14 @@ import styles from '../../../styles/items/ItemButton.module.scss';
 
 function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
   const menuSizes = useHeaderMenuSizes();
-  const { activeAttrs } = useNavActive(item);
   const { onImgError, showItemImg, iconControlAttrs } = useMediaState(item);
   const href = resolveItemHref(item.url);
   const label = resolveItemLabel(item);
-  const leftSection = showItemImg ? (
-    <ItemImage item={item} alt={label} onImgFailed={onImgError} />
-  ) : undefined;
+  const leftSection = useMemo(
+    () =>
+      showItemImg ? <ItemImage item={item} alt={label} onImgFailed={onImgError} /> : undefined,
+    [showItemImg, item, label, onImgError],
+  );
 
   return (
     <AppButton
@@ -37,8 +38,10 @@ function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
       justify="flex-start"
       leftSection={leftSection}
       rightSection={rightSection}
+      active={item.active}
+      matchRoute={item.matchRoute}
+      activeMatch={item.activeMatch}
       {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
-      {...activeAttrs}
       {...iconControlAttrs}
     />
   );

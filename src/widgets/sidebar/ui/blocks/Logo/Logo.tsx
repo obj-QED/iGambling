@@ -7,8 +7,8 @@ import { Group } from '@mantine/core';
 import { IconMenu2 } from '@tabler/icons-react';
 import clsx from 'clsx';
 
-import { AppActionIcon } from '@/elements';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppActionIcon } from '@/shared/ui';
 import { AppLogo, AppTooltip } from '@/shared/ui';
 
 import { useSidebarConfig } from '../../../context';

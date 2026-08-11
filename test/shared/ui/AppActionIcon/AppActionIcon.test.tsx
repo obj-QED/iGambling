@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
-import { AppActionIcon } from '@/elements';
+import { AppActionIcon } from '@/shared/ui';
 
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {

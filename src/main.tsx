@@ -15,17 +15,20 @@ import { queryClient } from '@api/queryClient';
 import { getBrowserLanguage } from '@hooks/useLanguage';
 
 import { initDeviceBodyClasses } from '@/shared/lib/device';
+import { resolveLobbyInitPage } from '@/shared/lib/routing';
 
 const root = createRoot(document.getElementById('root')!);
 
 (async function bootstrap() {
   const language = getBrowserLanguage();
-  const initialPath =
+  const pathname =
     typeof window !== 'undefined'
       ? window.location.pathname.length > 0
         ? window.location.pathname
         : '/'
       : '/';
+  // Auth / activation / error shells are not lobby pages — init with `/` so bootstrap can mount Router.
+  const initialPath = resolveLobbyInitPage(pathname);
   setInitialPath(initialPath);
   bindPathnameStore();
   initDeviceBodyClasses();

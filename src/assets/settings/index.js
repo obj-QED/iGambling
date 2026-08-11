@@ -28,8 +28,8 @@
        * Unknown / omitted → `compact`.
        */
       blockVariants: {
-        search: 'compact',
-        wallet: 'compact',
+        search: 'compact', // compact | icon | input | modal
+        wallet: 'compact', // compact | full | drawer
       },
 
       tooltip: {
@@ -56,7 +56,7 @@
 
     aside: {
       width: 'calc(2.625rem * var(--mantine-scale) + 1.25rem)',
-      type: 'compact', // 'default' | 'compact'
+      type: 'default', // 'default' | 'compact'
       layout: 'aside',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: false,

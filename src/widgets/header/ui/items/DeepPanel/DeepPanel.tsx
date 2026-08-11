@@ -5,7 +5,7 @@ import { Fragment, memo } from 'react';
 import { Menu } from '@mantine/core';
 import { IconMenu2 } from '@tabler/icons-react';
 
-import { AppActionIcon } from '@/elements';
+import { AppActionIcon } from '@/shared/ui';
 
 import { HEADER_DROPDOWN_CMF_COMPONENT } from '../../../lib';
 import { HEADER_TABLER_ICON_PROPS } from '../icons/iconProps';

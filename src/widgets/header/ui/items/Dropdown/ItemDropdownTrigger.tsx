@@ -1,10 +1,10 @@
 import type { ItemDropdownTriggerProps } from '../../../types';
 
-import { forwardRef } from 'react';
+import { forwardRef, useMemo } from 'react';
 
-import { AppActionIcon, AppButton } from '@/elements';
-import { useMediaState, useNavActive } from '@/shared/hooks';
+import { useMediaState } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppActionIcon, AppButton } from '@/shared/ui';
 
 import { useHeaderMenuSizes } from '../../../context';
 import {
@@ -22,17 +22,28 @@ import { ItemImage } from '../ItemImage/ItemImage';
 const ItemDropdownTriggerComponent = forwardRef<HTMLButtonElement, ItemDropdownTriggerProps>(
   function ItemDropdownTriggerComponent({ item, rightSection, ...rest }, ref) {
     const menuSizes = useHeaderMenuSizes();
-    const { activeAttrs } = useNavActive(item);
     const { onImgError, showItemImg, hideImageControl, iconControlAttrs } = useMediaState(item);
-
-    if (!isRenderableItem(item)) return null;
-
     const label = resolveItemLabel(item);
     const actionIconSize = resolveHeaderMenuActionIconSize(menuSizes);
     const buttonSize = resolveHeaderMenuButtonSize(item, menuSizes);
-    const leftSection = showItemImg ? (
-      <ItemImage item={item} alt={label} onImgFailed={onImgError} />
-    ) : undefined;
+    const leftSection = useMemo(
+      () =>
+        showItemImg ? <ItemImage item={item} alt={label} onImgFailed={onImgError} /> : undefined,
+      [showItemImg, item, label, onImgError],
+    );
+    const actionIconMedia = useMemo(
+      () => (
+        <ItemImage
+          className="cmf-ActionIcon-icon-svg"
+          item={item}
+          alt={label}
+          onImgFailed={onImgError}
+        />
+      ),
+      [item, label, onImgError],
+    );
+
+    if (!isRenderableItem(item)) return null;
 
     if (isIconOnlyItem(item) && hasItemImg(item) && rightSection === undefined) {
       return (
@@ -47,16 +58,13 @@ const ItemDropdownTriggerComponent = forwardRef<HTMLButtonElement, ItemDropdownT
           size={actionIconSize}
           aria-label={label}
           aria-haspopup="menu"
+          active={item.active}
+          matchRoute={item.matchRoute}
+          activeMatch={item.activeMatch}
           {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
-          {...activeAttrs}
           {...iconControlAttrs}
         >
-          <ItemImage
-            className="cmf-ActionIcon-icon-svg"
-            item={item}
-            alt={label}
-            onImgFailed={onImgError}
-          />
+          {actionIconMedia}
         </AppActionIcon>
       );
     }
@@ -73,8 +81,10 @@ const ItemDropdownTriggerComponent = forwardRef<HTMLButtonElement, ItemDropdownT
         rightSection={rightSection}
         aria-label={label}
         aria-haspopup="menu"
+        active={item.active}
+        matchRoute={item.matchRoute}
+        activeMatch={item.activeMatch}
         {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
-        {...activeAttrs}
         {...iconControlAttrs}
       />
     );

@@ -5,9 +5,8 @@ import { memo } from 'react';
 
 import clsx from 'clsx';
 
-import { AppButton } from '@/elements';
-import { useNavActive } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppButton } from '@/shared/ui';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import { resolveItemHref, resolveMenuItemButtonVariant } from '../../../lib';
@@ -28,7 +27,6 @@ function SidebarExceptionButtonComponent({
   className,
 }: SidebarExceptionButtonProps) {
   const href = resolveItemHref(item.url);
-  const { activeAttrs } = useNavActive(item);
   const size = useAsideMenuButtonSize();
 
   return (
@@ -41,8 +39,10 @@ function SidebarExceptionButtonComponent({
       justify="flex-start"
       className={clsx(styles.root, className)}
       leftSection={leftSection}
+      active={item.active}
+      matchRoute={item.matchRoute}
+      activeMatch={item.activeMatch}
       {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar' }))}
-      {...activeAttrs}
     />
   );
 }

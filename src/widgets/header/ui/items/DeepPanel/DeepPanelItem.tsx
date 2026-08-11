@@ -1,12 +1,12 @@
 import type { HeaderMenuItem } from '../../../types';
 
-import { forwardRef, memo } from 'react';
+import { forwardRef, memo, useMemo } from 'react';
 
 import { Menu } from '@mantine/core';
 
-import { AppButton, type AppButtonProps } from '@/elements';
-import { useMediaState, useNavActive } from '@/shared/hooks';
+import { useMediaState } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppButton, type AppButtonProps } from '@/shared/ui';
 
 import { hasItemName, resolveItemHref, resolveItemLabel } from '../../../lib';
 import { ItemImage } from '../ItemImage/ItemImage';
@@ -32,9 +32,13 @@ const DeepPanelItemButton = forwardRef<HTMLButtonElement, DeepPanelItemButtonPro
     { item, named, showItemImg, labelText, onImgError, ...buttonProps },
     ref,
   ) {
-    const leftSection = showItemImg ? (
-      <ItemImage item={item} alt={labelText} onImgFailed={onImgError} />
-    ) : undefined;
+    const leftSection = useMemo(
+      () =>
+        showItemImg ? (
+          <ItemImage item={item} alt={labelText} onImgFailed={onImgError} />
+        ) : undefined,
+      [showItemImg, item, labelText, onImgError],
+    );
 
     return (
       <AppButton
@@ -43,6 +47,9 @@ const DeepPanelItemButton = forwardRef<HTMLButtonElement, DeepPanelItemButtonPro
         label={named ? (item.name ?? labelText) : undefined}
         aria-label={named ? undefined : labelText}
         leftSection={leftSection}
+        active={item.active}
+        matchRoute={item.matchRoute}
+        activeMatch={item.activeMatch}
       />
     );
   },
@@ -51,7 +58,6 @@ const DeepPanelItemButton = forwardRef<HTMLButtonElement, DeepPanelItemButtonPro
 DeepPanelItemButton.displayName = 'DeepPanelItemButton';
 
 function DeepPanelItemComponent({ item }: DeepPanelItemProps) {
-  const { activeAttrs } = useNavActive(item);
   const { onImgError, showItemImg, iconControlAttrs } = useMediaState(item);
   const named = hasItemName(item);
 
@@ -75,7 +81,6 @@ function DeepPanelItemComponent({ item }: DeepPanelItemProps) {
       fullscreen
       justify="flex-start"
       {...controlAttrs(item, resolveCmfScope(item, { widget: 'header', chrome: 'dropdown' }))}
-      {...activeAttrs}
       {...iconControlAttrs}
     />
   );

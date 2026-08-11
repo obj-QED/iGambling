@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
-import { AppButton } from '@/elements';
+import { AppButton } from '@/shared/ui';
 import { CmfActiveIndicatorProvider } from '@/shared/ui/CmfActiveLine';
 
 beforeAll(() => {

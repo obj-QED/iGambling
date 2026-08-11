@@ -32,21 +32,31 @@ function resolveIsAuthenticated(options?: GetHeaderMenuMockOptions): boolean {
   return true;
 }
 
+const mockMenuByAuth = new Map<string, HeaderMenuModel | null>();
+
 /** Returns mock header menu when `window.__SETTINGS__.header.mockMenu === true`. */
 export function getHeaderMenuMock(options?: GetHeaderMenuMockOptions): HeaderMenuModel | null {
   if (getSettings().header?.mockMenu !== true) return null;
 
-  const block = resolveIsAuthenticated(options)
-    ? MENU_HEADER_TOP_AUTHENTICATED_MOCK
-    : MENU_HEADER_TOP_GUEST_MOCK;
+  const authKey = resolveIsAuthenticated(options) ? 'auth' : 'guest';
+  if (mockMenuByAuth.has(authKey)) {
+    return mockMenuByAuth.get(authKey) ?? null;
+  }
+
+  const block =
+    authKey === 'auth' ? MENU_HEADER_TOP_AUTHENTICATED_MOCK : MENU_HEADER_TOP_GUEST_MOCK;
 
   const items = parseMockMenuItems(block);
-  if (items.length === 0) return null;
+  const menu =
+    items.length === 0
+      ? null
+      : mapRoot({
+          key: 'menuHeaderTop',
+          name: '',
+          url: '',
+          items,
+        });
 
-  return mapRoot({
-    key: 'menuHeaderTop',
-    name: '',
-    url: '',
-    items,
-  });
+  mockMenuByAuth.set(authKey, menu);
+  return menu;
 }

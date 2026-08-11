@@ -1,18 +1,16 @@
 import type { ItemButtonProps } from '../../../types';
-import type { NavActiveSource } from '@/shared/lib/menu';
 
 import { memo, useMemo } from 'react';
 
 import clsx from 'clsx';
 
-import { AppButton } from '@/elements';
-import { useNavActive } from '@/shared/hooks';
 import {
   CMF_DROPDOWN_ROLE_CHILD,
   CMF_DROPDOWN_ROLE_PARENT,
   controlAttrs,
   resolveCmfScope,
 } from '@/shared/lib';
+import { AppButton } from '@/shared/ui';
 
 import { useAsideMenuButtonSize, useMenuItemRenderable } from '../../../hooks';
 import {
@@ -39,23 +37,19 @@ function ItemButtonComponent({
   'aria-haspopup': ariaHaspopup,
 }: ItemButtonProps) {
   const { visible, onImgError, showItemImg, iconControlAttrs } = useMenuItemRenderable(item);
-  // Parent is toggle-only — never URL-active from `item.url`.
-  const navSource = useMemo<NavActiveSource>(
-    () => (dropdownTrigger ? { ...item, matchRoute: false } : item),
-    [dropdownTrigger, item],
-  );
-  const { activeAttrs } = useNavActive(navSource);
   const size = useAsideMenuButtonSize();
-
-  if (!isRenderableItem(item) || !visible) return null;
 
   const iconOnly = isIconOnlyItem(item);
   const displayLabel = hasItemName(item) ? item.name : undefined;
   const ariaLabel = resolveItemLabel(item);
-  const leftSection = showItemImg ? (
-    <ItemMedia item={item} alt={ariaLabel} onImgError={onImgError} />
-  ) : undefined;
+  const leftSection = useMemo(
+    () =>
+      showItemImg ? <ItemMedia item={item} alt={ariaLabel} onImgError={onImgError} /> : undefined,
+    [showItemImg, item, ariaLabel, onImgError],
+  );
   const justify: 'flex-start' | 'space-between' = dropdownTrigger ? 'space-between' : 'flex-start';
+
+  if (!isRenderableItem(item) || !visible) return null;
 
   return (
     <AppButton
@@ -68,6 +62,10 @@ function ItemButtonComponent({
       justify={justify}
       leftSection={leftSection}
       rightSection={rightSection}
+      active={item.active}
+      // Parent is toggle-only — never URL-active from `item.url`.
+      matchRoute={dropdownTrigger ? false : item.matchRoute}
+      activeMatch={item.activeMatch}
       {...(dropdownItem && { 'data-sidebar-dropdown-item': true })}
       {...(dropdownTrigger && { 'data-sidebar-dropdown-trigger': true })}
       {...controlAttrs(
@@ -83,7 +81,6 @@ function ItemButtonComponent({
                 : {}),
         }),
       )}
-      {...activeAttrs}
       {...iconControlAttrs}
       {...(dropdownTrigger
         ? {

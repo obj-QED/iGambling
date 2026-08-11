@@ -2,12 +2,7 @@ import type { BlockProps } from '../../../types';
 
 import { createElement, memo } from 'react';
 
-import {
-  AdapterBoundary,
-  preloadAdapters,
-  useAdapter,
-  useWrapper,
-} from '@/shared/lib/widgetAdapter';
+import { AdapterBoundary, preloadAdapters, useAdapter, useWrapper } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useSidebarConfig } from '../../../context';

@@ -1,18 +1,17 @@
 import type { ItemActionIconProps } from '../../../types';
-import type { NavActiveSource } from '@/shared/lib/menu';
 
 import { memo, useMemo } from 'react';
 
 import clsx from 'clsx';
 
-import { AppActionIcon } from '@/elements';
-import { useMediaState, useNavActive } from '@/shared/hooks';
+import { useMediaState } from '@/shared/hooks';
 import {
   CMF_DROPDOWN_ROLE_CHILD,
   CMF_DROPDOWN_ROLE_PARENT,
   controlAttrs,
   resolveCmfScope,
 } from '@/shared/lib';
+import { AppActionIcon } from '@/shared/ui';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {
@@ -55,16 +54,13 @@ function ItemActionIconComponent({
   'aria-expanded': ariaExpanded,
   'aria-haspopup': ariaHaspopup,
 }: ItemActionIconProps) {
-  // Parent is toggle-only — never URL-active from `item.url`.
-  const navSource = useMemo<NavActiveSource>(
-    () => (dropdownTrigger ? { ...item, matchRoute: false } : item),
-    [dropdownTrigger, item],
-  );
-  const { activeAttrs } = useNavActive(navSource);
   const { onImgError, iconControlAttrs, showItemImg } = useMediaState(item);
   const size = useAsideMenuButtonSize();
   const label = resolveItemLabel(item);
-  const content = resolveActionIconContent(item, label, showItemImg, onImgError);
+  const content = useMemo(
+    () => resolveActionIconContent(item, label, showItemImg, onImgError),
+    [item, label, showItemImg, onImgError],
+  );
 
   return (
     <AppActionIcon
@@ -75,6 +71,10 @@ function ItemActionIconComponent({
       variant={resolveMenuItemActionIconVariant(item)}
       size={size}
       aria-label={label}
+      active={item.active}
+      // Parent is toggle-only — never URL-active from `item.url`.
+      matchRoute={dropdownTrigger ? false : item.matchRoute}
+      activeMatch={item.activeMatch}
       {...(dropdownTrigger && { 'data-sidebar-dropdown-trigger': true })}
       {...(dropdownItem && { 'data-sidebar-dropdown-item': true })}
       {...controlAttrs(
@@ -90,7 +90,6 @@ function ItemActionIconComponent({
                 : {}),
         }),
       )}
-      {...activeAttrs}
       {...iconControlAttrs}
       {...(dropdownTrigger
         ? {

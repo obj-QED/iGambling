@@ -28,8 +28,7 @@ const LAYER_ROWS: readonly [string, string][] = [
   ['widgets/', 'Shell composition (header, aside, banner, footer)'],
   ['features/', 'User workflows — public.ts boundary'],
   ['entities/', 'Domain content + mapping — no overlays/layout'],
-  ['elements/', 'Thin Mantine wrappers (AppButton, AppActionIcon)'],
-  ['shared/', 'UI kit, config, schema, lib — no domain knowledge'],
+  ['shared/', 'UI kit (AppButton, AppLink, CmfIcon, overlays), config, lib — no domain'],
   ['api/', 'Axios + TanStack Query keys / queries / mutations'],
   ['store/', 'Redux auth/session/flags only'],
   ['assets/', 'Theme tokens SoT + settings stub + global SCSS'],
@@ -68,9 +67,8 @@ export const Overview: Story = {
               </Text>
               <DevelopKvTable
                 rows={[
-                  ['shared/ui', 'Zero menu/domain knowledge; props in → JSX out'],
+                  ['shared/ui', 'AppButton, AppLink, CmfIcon, overlays — zero menu/domain'],
                   ['widgets/*', 'Knows menu keys, blocks, layout shell; menu + schema props'],
-                  ['elements/', 'Mantine control wrappers + CMF classNames bridge'],
                 ]}
                 columns={['Place', 'Rule']}
               />

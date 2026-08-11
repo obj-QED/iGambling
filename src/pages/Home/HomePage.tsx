@@ -13,8 +13,8 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 
-import { AppButton } from '@/elements';
 import { getAppHrefKind } from '@/shared/lib';
+import { AppButton } from '@/shared/ui';
 import { AppLink } from '@/shared/ui';
 
 const HEADING_ORDERS = [1, 2, 3, 4, 5, 6] as const;

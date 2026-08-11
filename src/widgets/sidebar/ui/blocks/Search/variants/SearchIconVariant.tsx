@@ -1,13 +1,12 @@
 import type { BlockProps } from '../../../../types';
 
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
 
-import { AppActionIcon } from '@/elements';
-import { useNavActive } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppActionIcon } from '@/shared/ui';
 import { AppTooltip } from '@/shared/ui';
 
 import { useSidebarConfig } from '../../../../context';
@@ -29,7 +28,10 @@ import itemActionIconStyles from '../../../../styles/items/ItemActionIcon.module
 function SearchIconVariantComponent({ item, className }: BlockProps) {
   const { tooltip } = useSidebarConfig();
   const size = useAsideMenuButtonSize();
-  const { activeAttrs } = useNavActive(item);
+  const searchGlyph = useMemo(
+    () => <IconSearch className="cmf-ActionIcon-icon-svg" stroke={1.75} aria-hidden />,
+    [],
+  );
 
   if (!isRenderableItem(item)) return null;
 
@@ -47,10 +49,12 @@ function SearchIconVariantComponent({ item, className }: BlockProps) {
       variant={resolveMenuItemActionIconVariant(item)}
       size={size}
       aria-label={ariaLabel}
+      active={item.active}
+      matchRoute={item.matchRoute}
+      activeMatch={item.activeMatch}
       {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar' }))}
-      {...activeAttrs}
     >
-      <IconSearch className="cmf-ActionIcon-icon-svg" stroke={1.75} aria-hidden />
+      {searchGlyph}
     </AppActionIcon>
   );
 

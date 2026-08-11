@@ -29,8 +29,6 @@
       "@store": ["src/store/index.ts"],
       "@store/*": ["src/store/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@elements": ["src/elements/index.ts"],
-      "@elements/*": ["src/elements/*"],
       "@pages": ["src/pages/index.ts"],
       "@pages/*": ["src/pages/*"]
     }

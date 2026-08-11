@@ -2,9 +2,9 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { AppButton } from '@/elements';
 import { useMediaState } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppButton } from '@/shared/ui';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {

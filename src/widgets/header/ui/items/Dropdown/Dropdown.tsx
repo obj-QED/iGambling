@@ -1,8 +1,10 @@
 import type { DropdownProps } from '../../../types';
 
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 import { Menu } from '@mantine/core';
+
+import { preloadMenuItemIcons } from '@/shared/lib';
 
 import { isRenderableItem } from '../../../lib';
 import { Chevron } from '../Chevron/Chevron';
@@ -17,10 +19,19 @@ function DropdownComponent({ item }: DropdownProps) {
   const children = item.items ?? [];
   if (children.length === 0) return null;
 
+  const warmChildIcons = useCallback(() => {
+    preloadMenuItemIcons(children);
+  }, [children]);
+
   return (
     <Menu withinPortal position="bottom-start" offset={4} loop={false} trapFocus={false}>
       <Menu.Target>
-        <ItemDropdownTrigger item={item} rightSection={<Chevron />} />
+        <ItemDropdownTrigger
+          item={item}
+          rightSection={<Chevron />}
+          onPointerEnter={warmChildIcons}
+          onFocus={warmChildIcons}
+        />
       </Menu.Target>
       <Menu.Dropdown className={styles.dropdown}>
         {children.map((child) => (

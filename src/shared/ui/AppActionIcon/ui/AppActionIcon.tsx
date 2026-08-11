@@ -4,6 +4,7 @@ import { forwardRef, isValidElement, type ReactNode } from 'react';
 
 import { ActionIcon } from '@mantine/core';
 
+import { useNavActive } from '@/shared/hooks';
 import { resolveAppButtonHrefState, useAppHrefClickHandler } from '@/shared/lib';
 import {
   CmfActiveLine,
@@ -33,6 +34,9 @@ export const AppActionIcon = forwardRef<HTMLButtonElement, AppActionIconProps>(
       disabled,
       onClick,
       type = 'button',
+      active,
+      matchRoute,
+      activeMatch,
       ...actionIconProps
     },
     ref,
@@ -42,6 +46,12 @@ export const AppActionIcon = forwardRef<HTMLButtonElement, AppActionIconProps>(
     const navigateHref = useAppHrefClickHandler(href, hrefNavigationEnabled);
     const resolvedDisabled = disabled ?? disabledForHref;
     const { type: activeType } = useCmfActiveIndicator();
+    const { activeAttrs } = useNavActive({
+      url: hrefProp,
+      active,
+      matchRoute,
+      activeMatch,
+    });
 
     if (hidden === true || hasActionIconContent(name, img, children) === false) return null;
 
@@ -55,6 +65,7 @@ export const AppActionIcon = forwardRef<HTMLButtonElement, AppActionIconProps>(
 
     const showActiveLine = shouldRenderCmfActiveLine({
       ...actionIconProps,
+      ...activeAttrs,
       disabled: resolvedDisabled,
       activeType,
     });
@@ -63,6 +74,7 @@ export const AppActionIcon = forwardRef<HTMLButtonElement, AppActionIconProps>(
       <ActionIcon
         ref={ref}
         {...actionIconProps}
+        {...activeAttrs}
         type={type}
         disabled={resolvedDisabled}
         onClick={handleClick}

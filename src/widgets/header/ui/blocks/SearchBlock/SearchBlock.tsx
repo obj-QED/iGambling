@@ -4,12 +4,7 @@ import { createElement, memo, useMemo } from 'react';
 
 import { TextInput } from '@mantine/core';
 
-import {
-  AdapterBoundary,
-  preloadAdapters,
-  useAdapter,
-  useWrapper,
-} from '@/shared/lib/widgetAdapter';
+import { AdapterBoundary, preloadAdapters, useAdapter, useWrapper } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useConfig } from '../../../context';

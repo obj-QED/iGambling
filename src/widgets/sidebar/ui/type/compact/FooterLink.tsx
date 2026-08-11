@@ -2,8 +2,8 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { AppActionIcon } from '@/elements';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { AppActionIcon } from '@/shared/ui';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {
