@@ -20,6 +20,8 @@ export type ItemImageProps = {
 export type ItemDropdownTriggerProps = {
   item: HeaderMenuItem;
   rightSection?: ReactNode;
+  onPointerEnter?: (e: React.PointerEvent<HTMLButtonElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLButtonElement>) => void;
 };
 
 export type DropdownProps = {

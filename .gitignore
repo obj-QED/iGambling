@@ -69,3 +69,5 @@ vitest.*.temp.config.ts
 *.zip
 PROJECT_CONTEXT.md
 .claude/*
+*.vsix
+ts_errors.txt

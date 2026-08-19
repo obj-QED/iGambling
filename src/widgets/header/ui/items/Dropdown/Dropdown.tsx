@@ -1,6 +1,6 @@
 import type { DropdownProps } from '../../../types';
 
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import { Menu } from '@mantine/core';
 
@@ -14,14 +14,13 @@ import { ItemDropdownTrigger } from './ItemDropdownTrigger';
 import styles from '../../../styles/items/Dropdown.module.scss';
 
 function DropdownComponent({ item }: DropdownProps) {
-  if (!isRenderableItem(item)) return null;
-
-  const children = item.items ?? [];
-  if (children.length === 0) return null;
-
+  const children = useMemo(() => item.items ?? [], [item.items]);
   const warmChildIcons = useCallback(() => {
     preloadMenuItemIcons(children);
   }, [children]);
+
+  if (!isRenderableItem(item)) return null;
+  if (children.length === 0) return null;
 
   return (
     <Menu withinPortal position="bottom-start" offset={4} loop={false} trapFocus={false}>
