@@ -1,15 +1,10 @@
-import type { WidgetAdapterLoader } from '@/shared/lib';
+import type { BlockProps } from '../../../types';
+import type { AdapterRegistry } from '@/shared/lib';
 
 export const SEARCH_ADAPTER_KEYS = ['row', 'icon'] as const;
 export type SearchAdapterKey = (typeof SEARCH_ADAPTER_KEYS)[number];
 
-export const SEARCH_ADAPTERS: Record<SearchAdapterKey, WidgetAdapterLoader> = {
-  row: () =>
-    import('./variants/SearchRowVariant').then((m) => ({
-      default: m.SearchRowVariant,
-    })),
-  icon: () =>
-    import('./variants/SearchIconVariant').then((m) => ({
-      default: m.SearchIconVariant,
-    })),
-};
+export const SEARCH_ADAPTERS = {
+  row: () => import('./variants/SearchRowVariant'),
+  icon: () => import('./variants/SearchIconVariant'),
+} as const satisfies AdapterRegistry<SearchAdapterKey, BlockProps>;

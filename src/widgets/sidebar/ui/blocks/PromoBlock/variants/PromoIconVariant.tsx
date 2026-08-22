@@ -21,3 +21,4 @@ function PromoIconVariantComponent({ item, className }: BlockProps) {
 
 export const PromoIconVariant = memo(PromoIconVariantComponent);
 PromoIconVariant.displayName = 'SidebarPromoIconVariant';
+export default PromoIconVariant;

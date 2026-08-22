@@ -1,12 +1,15 @@
 import { ErrorBoundary } from '@/app/ErrorBoundary';
+import { AppProfiler } from '@/app/performance';
 
 import { AppBootstrap } from './AppBootstrap';
 
 export function App() {
   return (
-    <ErrorBoundary>
-      <AppBootstrap />
-    </ErrorBoundary>
+    <AppProfiler id="App">
+      <ErrorBoundary>
+        <AppBootstrap />
+      </ErrorBoundary>
+    </AppProfiler>
   );
 }
 

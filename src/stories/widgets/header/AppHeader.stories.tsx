@@ -2,6 +2,7 @@ import type { HeaderConfig } from '@/widgets/header/types';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { HEADER_LAYOUT_KEYS, HEADER_TYPE_KEYS } from '@/shared/config/headerSettings';
+import { pickOptionalUnionValue } from '@/shared/lib/coercion';
 import {
   mantineSelectArgType,
   omitStorybookNone,
@@ -9,12 +10,7 @@ import {
 } from '@/storybook/helpers/mantineArgTypes';
 import { resolveStorybookHeaderProps } from '@/storybook/helpers/resolveStorybookHeaderProps';
 import { StoryLabFrame } from '@/storybook/helpers/StoryLabFrame';
-import { AppHeader } from '@/widgets/header';
-import { SEARCH_VARIANT_REGISTRY } from '@/widgets/header/ui/blocks/SearchBlock/registry';
-import { WALLET_VARIANT_REGISTRY } from '@/widgets/header/ui/blocks/WalletBlock/registry';
-
-const SEARCH_VARIANTS = Object.keys(SEARCH_VARIANT_REGISTRY);
-const WALLET_VARIANTS = Object.keys(WALLET_VARIANT_REGISTRY);
+import { AppHeader, SEARCH_ADAPTER_KEYS, WALLET_ADAPTER_KEYS } from '@/widgets/header';
 
 type AppHeaderStoryArgs = {
   layout?: string;
@@ -33,10 +29,12 @@ function renderAppHeader(args: AppHeaderStoryArgs) {
   if (typeof cleaned.layout === 'string') patch.layout = cleaned.layout;
   if (typeof cleaned.type === 'string') patch.type = cleaned.type;
   if (typeof cleaned.searchVariant === 'string') {
-    patch.blockVariants = { ...patch.blockVariants, search: cleaned.searchVariant };
+    const search = pickOptionalUnionValue(SEARCH_ADAPTER_KEYS, cleaned.searchVariant);
+    if (search) patch.blockVariants = { ...patch.blockVariants, search };
   }
   if (typeof cleaned.walletVariant === 'string') {
-    patch.blockVariants = { ...patch.blockVariants, wallet: cleaned.walletVariant };
+    const wallet = pickOptionalUnionValue(WALLET_ADAPTER_KEYS, cleaned.walletVariant);
+    if (wallet) patch.blockVariants = { ...patch.blockVariants, wallet };
   }
 
   return (
@@ -64,11 +62,11 @@ const meta = {
   argTypes: {
     layout: mantineSelectArgType(HEADER_LAYOUT_KEYS, { category: 'Config', allowNone: true }),
     type: mantineSelectArgType(HEADER_TYPE_KEYS, { category: 'Config', allowNone: true }),
-    searchVariant: mantineSelectArgType(SEARCH_VARIANTS, {
+    searchVariant: mantineSelectArgType(SEARCH_ADAPTER_KEYS, {
       category: 'blockVariants',
       allowNone: true,
     }),
-    walletVariant: mantineSelectArgType(WALLET_VARIANTS, {
+    walletVariant: mantineSelectArgType(WALLET_ADAPTER_KEYS, {
       category: 'blockVariants',
       allowNone: true,
     }),

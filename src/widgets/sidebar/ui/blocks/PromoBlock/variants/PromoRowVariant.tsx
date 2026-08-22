@@ -31,3 +31,4 @@ function PromoRowVariantComponent({ item, className }: BlockProps) {
 
 export const PromoRowVariant = memo(PromoRowVariantComponent);
 PromoRowVariant.displayName = 'SidebarPromoRowVariant';
+export default PromoRowVariant;

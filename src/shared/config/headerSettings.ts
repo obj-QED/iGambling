@@ -70,9 +70,8 @@ export type HeaderCustomBlockSettings = {
 };
 
 /**
- * Adapter variant per special block key (`search`, `wallet`, …).
- * Open strings — resolved against each block’s variant registry;
- * unknown / omitted → `compact` at render.
+ * Raw adapter variants from settings (`window.__SETTINGS__`).
+ * Open strings at the boundary — coerced to `HeaderBlockVariants` unions in resolve.
  */
 export type HeaderBlockVariantSettings = Partial<Record<string, string>>;
 

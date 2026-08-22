@@ -1,1 +1,1 @@
-export { PopoverWrapper } from './PopoverWrapper';
+export { PopoverWrapper as default, PopoverWrapper } from './PopoverWrapper';

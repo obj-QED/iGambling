@@ -13,7 +13,9 @@ function ProfileActivationPageComponent() {
 
   useEffect(() => {
     const timer = setTimeout(redirectToAuth, REDIRECT_TIMEOUT_MS);
-    return () => { clearTimeout(timer); };
+    return () => {
+      clearTimeout(timer);
+    };
   }, [redirectToAuth]);
 
   return (
@@ -26,3 +28,4 @@ function ProfileActivationPageComponent() {
 
 export const ProfileActivationPage = memo(ProfileActivationPageComponent);
 ProfileActivationPage.displayName = 'ProfileActivationPage';
+export default ProfileActivationPage;

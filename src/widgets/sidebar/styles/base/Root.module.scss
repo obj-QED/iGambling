@@ -1,5 +1,6 @@
 @layer widget.base {
   .root {
+    @include adapter-fallback-from-button-size;
     display: flex;
     flex-direction: column;
     width: var(--app-layout-sidebar-width, 400px);

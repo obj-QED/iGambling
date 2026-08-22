@@ -6,16 +6,14 @@ import { ServerErrorPage } from '@pages/eager';
 
 import { useLanguage } from '@hooks/useLanguage';
 
-import { GlobalPreloader } from './GlobalPreloader';
+import { AdapterPendingProvider } from '@/shared/lib';
+
+import { BootGate } from './BootGate';
 import { useAppBootstrap } from './useAppBootstrap';
 
 function AppBootstrapComponent() {
   const language = useLanguage();
   const { bootstrapRouteState } = useAppBootstrap(language);
-
-  if (bootstrapRouteState.status === 'pending') {
-    return <GlobalPreloader />;
-  }
 
   if (bootstrapRouteState.status === 'error') {
     return (
@@ -29,10 +27,16 @@ function AppBootstrapComponent() {
     );
   }
 
+  const bootstrapPending = bootstrapRouteState.status === 'pending';
+
   return (
-    <Suspense fallback={<GlobalPreloader />}>
-      <AppRoutes />
-    </Suspense>
+    <AdapterPendingProvider>
+      <BootGate bootstrapPending={bootstrapPending}>
+        <Suspense fallback={null}>
+          <AppRoutes />
+        </Suspense>
+      </BootGate>
+    </AdapterPendingProvider>
   );
 }
 

@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Group, Stack, Text } from '@mantine/core';
 
+import { pickOptionalUnionValue } from '@/shared/lib/coercion';
 import { getHeaderMenuControlItems } from '@/storybook/helpers/getHeaderMenuControlItems';
 import { HeaderMenuControlsShell } from '@/storybook/helpers/headerMenuControls';
 import {
@@ -22,17 +23,13 @@ import {
   STORYBOOK_TABLER_SEARCH,
   STORYBOOK_TABLER_WALLET,
 } from '@/storybook/lib';
+import { SEARCH_ADAPTER_KEYS, WALLET_ADAPTER_KEYS } from '@/widgets/header';
 import { BonusBoxBlock } from '@/widgets/header/ui/blocks/BonusBoxBlock/BonusBoxBlock';
 import { ColorSchemeBlock } from '@/widgets/header/ui/blocks/ColorSchemeBlock/ColorSchemeBlock';
 import { LogoBlock } from '@/widgets/header/ui/blocks/LogoBlock/LogoBlock';
 import { NotificationBlock } from '@/widgets/header/ui/blocks/NotificationBlock/NotificationBlock';
-import { SEARCH_VARIANT_REGISTRY } from '@/widgets/header/ui/blocks/SearchBlock/registry';
 import { SearchBlock } from '@/widgets/header/ui/blocks/SearchBlock/SearchBlock';
-import { WALLET_VARIANT_REGISTRY } from '@/widgets/header/ui/blocks/WalletBlock/registry';
 import { WalletBlock } from '@/widgets/header/ui/blocks/WalletBlock/WalletBlock';
-
-const SEARCH_VARIANTS = Object.keys(SEARCH_VARIANT_REGISTRY);
-const WALLET_VARIANTS = Object.keys(WALLET_VARIANT_REGISTRY);
 
 const MENU_ITEM_TYPES = ['link', 'button'] as const;
 const MENU_VARIANTS = [
@@ -116,8 +113,8 @@ export const Overview: Story = {
         title="Header special blocks"
         summary="Open the sibling stories (Search, Wallet, …) for per-block dropdowns. Overview shows default adapters side by side."
         capabilities={[
-          'search → blockVariants.search: compact | input | modal',
-          'wallet → blockVariants.wallet: compact | full | drawer',
+          'search → blockVariants.search: compact | input',
+          'wallet → blockVariants.wallet: compact | full',
           'logo / notification / bonus_box / color_scheme — dedicated UI (no menu type rules)',
           'Toolbar: Color scheme, Primary color, Header session / layout / type',
         ]}
@@ -157,7 +154,7 @@ export const Overview: Story = {
 
 export const Search: Story = {
   argTypes: {
-    blockVariant: mantineSelectArgType(SEARCH_VARIANTS, { category: 'Adapter' }),
+    blockVariant: mantineSelectArgType(SEARCH_ADAPTER_KEYS, { category: 'Adapter' }),
     ...sharedItemArgTypes,
   },
   args: {
@@ -178,9 +175,15 @@ export const Search: Story = {
       <StoryLabFrame
         title="Search"
         summary="Adapter from `header.blockVariants.search`. Item fields map to the menu DTO."
-        capabilities={SEARCH_VARIANTS.map((v) => `variant: ${v}`)}
+        capabilities={SEARCH_ADAPTER_KEYS.map((v) => `variant: ${v}`)}
       >
-        <HeaderMenuControlsShell configPatch={{ blockVariants: { search: args.blockVariant } }}>
+        <HeaderMenuControlsShell
+          configPatch={{
+            blockVariants: {
+              search: pickOptionalUnionValue(SEARCH_ADAPTER_KEYS, args.blockVariant),
+            },
+          }}
+        >
           <SearchBlock item={item} />
         </HeaderMenuControlsShell>
       </StoryLabFrame>
@@ -190,7 +193,7 @@ export const Search: Story = {
 
 export const Wallet: Story = {
   argTypes: {
-    blockVariant: mantineSelectArgType(WALLET_VARIANTS, { category: 'Adapter' }),
+    blockVariant: mantineSelectArgType(WALLET_ADAPTER_KEYS, { category: 'Adapter' }),
     ...sharedItemArgTypes,
   },
   args: {
@@ -211,9 +214,15 @@ export const Wallet: Story = {
       <StoryLabFrame
         title="Wallet"
         summary="Adapter from `header.blockVariants.wallet`."
-        capabilities={WALLET_VARIANTS.map((v) => `variant: ${v}`)}
+        capabilities={WALLET_ADAPTER_KEYS.map((v) => `variant: ${v}`)}
       >
-        <HeaderMenuControlsShell configPatch={{ blockVariants: { wallet: args.blockVariant } }}>
+        <HeaderMenuControlsShell
+          configPatch={{
+            blockVariants: {
+              wallet: pickOptionalUnionValue(WALLET_ADAPTER_KEYS, args.blockVariant),
+            },
+          }}
+        >
           <WalletBlock item={item} />
         </HeaderMenuControlsShell>
       </StoryLabFrame>

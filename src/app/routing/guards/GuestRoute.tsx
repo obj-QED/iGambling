@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { useAuthSession } from '@hooks/useAuthSession';
+import { useAuthSession } from '@hooks/auth';
 
 function GuestRouteComponent({ children }: GuestRouteProps) {
   const { isAuthenticated } = useAuthSession();

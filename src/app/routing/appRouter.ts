@@ -1,7 +1,5 @@
 import type { RouteObject } from 'react-router-dom';
 
-import { createElement } from 'react';
-
 import { createBrowserRouter } from 'react-router-dom';
 
 import { AppLayout } from '@/app/layouts/AppLayout';
@@ -28,29 +26,29 @@ import {
  */
 const appRouteObjects: RouteObject[] = [
   {
-    element: createElement(AppLayout),
+    Component: AppLayout,
     children: [
       {
-        element: createElement(DefaultPageLayout),
+        Component: DefaultPageLayout,
         handle: DEFAULT_PAGE_LAYOUT_HANDLE,
         children: [
-          { path: '/', element: createElement(HomePage) },
-          { path: '/404', element: createElement(NotFoundPage) },
-          { path: '/500', element: createElement(ServerErrorPage) },
+          { path: '/', Component: HomePage },
+          { path: '/404', Component: NotFoundPage },
+          { path: '/500', Component: ServerErrorPage },
           {
-            element: createElement(GuestRoute),
+            Component: GuestRoute,
             children: [
-              { path: '/auth', element: createElement(LoginPage) },
-              { path: '/register', element: createElement(RegisterPage) },
+              { path: '/auth', Component: LoginPage },
+              { path: '/register', Component: RegisterPage },
             ],
           },
-          { path: '*', element: createElement(NotFoundPage) },
+          { path: '*', Component: NotFoundPage },
         ],
       },
       {
-        element: createElement(InfoPageLayout),
+        Component: InfoPageLayout,
         handle: INFO_PAGE_LAYOUT_HANDLE,
-        children: [{ path: '/profile/activation', element: createElement(ProfileActivationPage) }],
+        children: [{ path: '/profile/activation', Component: ProfileActivationPage }],
       },
     ],
   },

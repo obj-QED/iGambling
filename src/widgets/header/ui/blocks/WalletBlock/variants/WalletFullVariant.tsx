@@ -62,3 +62,4 @@ function WalletFullVariantComponent({ item }: BlockProps) {
 
 export const WalletFullVariant = memo(WalletFullVariantComponent);
 WalletFullVariant.displayName = 'WalletFullVariant';
+export default WalletFullVariant;

@@ -57,3 +57,4 @@ function WalletDrawerVariantComponent({ item }: BlockProps) {
 
 export const WalletDrawerVariant = memo(WalletDrawerVariantComponent);
 WalletDrawerVariant.displayName = 'WalletDrawerVariant';
+export default WalletDrawerVariant;

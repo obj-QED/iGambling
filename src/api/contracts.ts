@@ -11,7 +11,13 @@ export function toApiEnvelope<TContent>(
   normalize: (value: unknown) => TContent,
 ): ApiEnvelope<TContent> {
   if (isRecord(payload) && 'content' in payload) {
-    return { ...payload, content: normalize(payload.content) };
+    const envelope: ApiEnvelope<TContent> = {
+      content: normalize(payload.content),
+    };
+    if ('error' in payload) envelope.error = payload.error;
+    if ('meta' in payload) envelope.meta = payload.meta;
+    if ('mt' in payload) envelope.mt = payload.mt;
+    return envelope;
   }
   return { content: normalize(payload) };
 }

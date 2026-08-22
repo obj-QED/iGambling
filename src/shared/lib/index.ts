@@ -6,4 +6,5 @@ export * from './href';
 export * from './mantine';
 export * from './menu';
 export * from './routing';
+export * from './shellSkeleton';
 export * from './widgetAdapter';

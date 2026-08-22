@@ -49,8 +49,7 @@ export const HEADER_CONFIG_ONLY_BLOCK_KEYS = ['color_scheme'] as const;
 export type HeaderConfigOnlyBlockKey = (typeof HEADER_CONFIG_ONLY_BLOCK_KEYS)[number];
 
 /**
- * Special-block adapter keys from settings (`blockVariants`).
- * Values are open strings — must match a block registry entry to render;
- * unknown / missing → `compact` at the block resolver.
+ * Adapter variants from settings. Keys/values are open — new special blocks and
+ * unregistered strings pass through; `useAdapter` falls back per block registry.
  */
 export type HeaderBlockVariants = Partial<Record<string, string>>;

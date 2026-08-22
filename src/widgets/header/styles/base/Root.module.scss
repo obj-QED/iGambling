@@ -1,5 +1,9 @@
 @layer widget.base {
   .root {
+    /* Lazy special blocks are ActionIcons — track the same size token as live chrome. */
+    @include adapter-fallback-box(
+      var(--cmf-action-icon-header-size, var(--button-height-md, 42px))
+    );
     width: 100%;
     background: var(--header-surface-bg, transparent);
     border-bottom: var(--header-surface-border-width, 0) solid

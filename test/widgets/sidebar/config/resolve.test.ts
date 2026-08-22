@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { DEFAULT_SIDEBAR_CONFIG, resolveSidebarConfig } from '@/widgets/sidebar/config';
-import { resolveSidebarWidth, toSidebarWidthCss } from '@/widgets/sidebar/lib/sidebarWidth';
+import { resolveSidebarWidth, toSidebarWidthCss } from '@/widgets/sidebar/lib';
 import { SIDEBAR_TYPE_TUNABLE_DEFAULTS } from '@/widgets/sidebar/ui/type/tunableDefaults';
 
 describe('resolveSidebarConfig', () => {
@@ -39,6 +39,20 @@ describe('resolveSidebarConfig', () => {
         },
       }).blockVariants.search,
     ).toBe('icon');
+  });
+
+  it('keeps extra blockVariant keys from settings', () => {
+    expect(
+      resolveSidebarConfig({
+        aside: {
+          blockVariants: { search: 'row', timer: 'compact' },
+        },
+      }).blockVariants,
+    ).toEqual({
+      search: 'row',
+      promo: 'row',
+      timer: 'compact',
+    });
   });
 
   it('defaults aside.active to element when omitted', () => {

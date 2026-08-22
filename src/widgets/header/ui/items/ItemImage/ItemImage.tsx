@@ -11,16 +11,16 @@ import { ItemIcon } from '../ItemIcon/ItemIcon';
 function ItemImageComponent({ item, alt, className, onImgFailed }: ItemImageProps) {
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
   const cmfStyle = useCmfIconStyle(iconRef);
-  const [imgFailed, setImgFailed] = useState(false);
+  const imgSrc = item.img ?? '';
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const imgFailed = failedSrc !== null && failedSrc === imgSrc && imgSrc.length > 0;
 
   const handleError = useCallback(() => {
-    setImgFailed(true);
+    setFailedSrc(imgSrc);
     onImgFailed?.();
-  }, [onImgFailed]);
+  }, [imgSrc, onImgFailed]);
 
-  if (!hasItemImg(item)) return null;
-
-  if (imgFailed) return null;
+  if (!hasItemImg(item) || imgFailed) return null;
 
   return (
     <ItemIcon

@@ -287,3 +287,4 @@ function HomePageComponent() {
 
 export const HomePage = memo(HomePageComponent);
 HomePage.displayName = 'HomePage';
+export default HomePage;

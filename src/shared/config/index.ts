@@ -78,6 +78,7 @@ export {
   type AppSettings,
   getSettings,
   isScrollFullscreenEnabled,
+  isShellSkeletonEnabled,
 } from './settings';
 export type { TooltipConfig, TooltipPosition, TooltipSettings } from './tooltipSettings';
 export { DEFAULT_TOOLTIP_CONFIG, TOOLTIP_POSITIONS } from './tooltipSettings';

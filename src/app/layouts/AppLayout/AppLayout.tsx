@@ -1,21 +1,14 @@
 import { memo } from 'react';
 
-import { useIsMobile } from '@hooks/useIsMobile';
+import { AppProfiler } from '@/app/performance';
+
 import { useLanguage } from '@hooks/useLanguage';
 
-import { AppBanner } from '@/widgets/banner';
-import { AppFooter } from '@/widgets/footer';
-import { AppHeader } from '@/widgets/header';
-import { AppSidebar } from '@/widgets/sidebar';
+import { AppLayoutChrome } from './AppLayoutChrome';
+import { useAppLayout, type UseAppLayoutResult } from './useAppLayout';
+import { useShellReveal } from './useShellSkeleton';
 
-import { AppLayoutMain } from './AppLayoutMain';
-import { useAppLayout } from './useAppLayout';
-
-import styles from './AppLayout.module.scss';
-
-function AppLayoutComponent() {
-  const language = useLanguage();
-  const isMobile = useIsMobile();
+function AppLayoutReady(layout: UseAppLayoutResult) {
   const {
     headerMenu,
     headerConfig,
@@ -25,30 +18,40 @@ function AppLayoutComponent() {
     sidebarConfig,
     banner,
     bannerSchema,
-  } = useAppLayout(language);
+    isReady,
+  } = layout;
+  const { skeleton } = useShellReveal(isReady);
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
-    <div className={styles.root}>
-      {!isMobile && (
-        <AppSidebar menu={sidebarMenu} config={sidebarConfig} className={styles.aside} />
-      )}
+    <AppLayoutChrome
+      headerMenu={headerMenu}
+      headerConfig={headerConfig}
+      footerMenu={footerMenu}
+      footerSchema={footerSchema}
+      sidebarMenu={sidebarMenu}
+      sidebarConfig={sidebarConfig}
+      banner={banner}
+      bannerSchema={bannerSchema}
+      skeleton={skeleton}
+    />
+  );
+}
 
-      <div className={styles.content}>
-        {headerMenu && (
-          <AppHeader menu={headerMenu} config={headerConfig} className={styles.header} />
-        )}
+function AppLayoutComponent() {
+  const language = useLanguage();
+  const layout = useAppLayout(language);
 
-        {banner && <AppBanner banner={banner} schema={bannerSchema} className={styles.banner} />}
-
-        <AppLayoutMain />
-
-        {footerMenu && (
-          <AppFooter menu={footerMenu} schema={footerSchema} className={styles.footer} />
-        )}
-      </div>
-    </div>
+  return (
+    <AppProfiler id="AppLayout">
+      <AppLayoutReady {...layout} />
+    </AppProfiler>
   );
 }
 
 export const AppLayout = memo(AppLayoutComponent);
 AppLayout.displayName = 'AppLayout';
+export default AppLayout;

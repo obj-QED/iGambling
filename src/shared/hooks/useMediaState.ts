@@ -9,15 +9,16 @@ export type MediaSource = {
 
 /** Tracks optional image load + derived visibility for any img/name media. */
 export function useMediaState(item: MediaSource) {
-  const [imgFailed, setImgFailed] = useState(false);
-  const onImgError = useCallback(() => {
-    setImgFailed(true);
-  }, []);
-
   const img = item.img ?? '';
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const onImgError = useCallback(() => {
+    setFailedSrc(img);
+  }, [img]);
+
   const name = item.name ?? '';
   const hasImg = img.length > 0;
   const hasName = name.length > 0;
+  const imgFailed = failedSrc !== null && failedSrc === img && hasImg;
   const isIconOnly = hasName === false && hasImg === true;
   const showItemImg = hasImg === true && imgFailed === false;
 

@@ -5,7 +5,7 @@ export const DEVELOP_STACK_ROWS: readonly [string, string][] = [
   ['Build', 'Vite · Yarn 4 · Node ≥ 22'],
   ['Server state', 'TanStack Query (`src/api`)'],
   ['Client state', 'Redux Toolkit — auth / session / flags only'],
-  ['Routing', 'React Router 6'],
+  ['Routing', 'React Router 7'],
   ['Quality', 'ESLint · Stylelint · Vitest · Storybook · Playwright a11y'],
   ['Architecture', 'FSD layers + FDD (`public.ts` boundaries)'],
 ];

@@ -11,12 +11,14 @@ import { hasItemImg } from '../../../lib';
 function ItemMediaComponent({ item, alt, className, onImgError }: ItemMediaProps) {
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
   const cmfStyle = useCmfIconStyle(iconRef);
-  const [imgFailed, setImgFailed] = useState(false);
+  const imgSrc = item.img ?? '';
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const imgFailed = failedSrc !== null && failedSrc === imgSrc && imgSrc.length > 0;
 
   const handleError = useCallback(() => {
-    setImgFailed(true);
+    setFailedSrc(imgSrc);
     onImgError?.();
-  }, [onImgError]);
+  }, [imgSrc, onImgError]);
 
   if (!hasItemImg(item) || imgFailed) return null;
 

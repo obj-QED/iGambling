@@ -10,6 +10,10 @@
     params: {
       /** Mobile/tablet: enter browser fullscreen on first scroll. Set `false` to disable. */
       fullscreen: true,
+      preloader: {
+        /** Global: false → no skeleton on shell/adapters/page. true / omit → on. */
+        skeleton: true,
+      },
     },
     header: {
       layout: 'container',
@@ -55,7 +59,8 @@
     },
 
     aside: {
-      width: 'calc(2.625rem * var(--mantine-scale) + 1.25rem)',
+      /** Shell width is fixed — do not pair a compact calc with `type: 'default'` (labels need room). */
+      width: '15rem',
       type: 'default', // 'default' | 'compact'
       layout: 'aside',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */

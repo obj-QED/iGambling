@@ -1,39 +1,47 @@
-import type { WidgetAdapterLoader, WidgetAdapters } from './types';
-import type { ComponentType } from 'react';
+import type { AdapterRegistry, WidgetAdapterLoader } from './types';
+import type { ComponentType, LazyExoticComponent } from 'react';
 
-import { lazy, useMemo } from 'react';
+import { useMemo } from 'react';
+
+import { getLazyAdapter } from './lazyAdapter';
 
 /**
- * Resolve a lazy adapter by variant key.
+ * Resolve a stable lazy adapter by variant key.
  * Unknown / empty → first matching `fallbackKeys`, else first adapter key.
  */
-export function useAdapter(
-  adapters: WidgetAdapters,
-  variant: string | undefined,
-  fallbackKeys: readonly string[] = ['compact', 'row'],
-): ComponentType<Record<string, unknown>> | null {
+export function useAdapter<TVariant extends string, TProps>(
+  adapters: AdapterRegistry<TVariant, TProps>,
+  variant: TVariant | string | undefined,
+  fallbackKeys: readonly TVariant[] = [],
+): LazyExoticComponent<ComponentType<TProps>> | null {
   return useMemo(() => {
-    const keys = Object.keys(adapters);
+    const keys = Object.keys(adapters) as TVariant[];
     if (keys.length === 0) return null;
 
     const requested = variant?.trim() ?? '';
-    let key = requested.length > 0 && Object.hasOwn(adapters, requested) ? requested : undefined;
+    let key =
+      requested.length > 0 && Object.hasOwn(adapters, requested)
+        ? (requested as TVariant)
+        : undefined;
 
     if (!key) {
       key = fallbackKeys.find((candidate) => Object.hasOwn(adapters, candidate)) ?? keys[0];
     }
 
-    const loader = adapters[key as string] as WidgetAdapterLoader | undefined;
+    const loader = adapters[key] as WidgetAdapterLoader<TProps> | undefined;
     if (!loader) return null;
-    return lazy(loader) as ComponentType<Record<string, unknown>>;
+    return getLazyAdapter(loader);
   }, [adapters, variant, fallbackKeys]);
 }
 
-export function preloadAdapters(adapters: WidgetAdapters, key?: string): void {
+export function preloadAdapters<TVariant extends string, TProps>(
+  adapters: AdapterRegistry<TVariant, TProps>,
+  key?: TVariant | string,
+): void {
   if (key && Object.hasOwn(adapters, key)) {
-    void adapters[key]!();
+    void adapters[key as TVariant]();
     return;
   }
-  const first = Object.values(adapters)[0];
+  const first = Object.values(adapters)[0] as WidgetAdapterLoader<TProps> | undefined;
   if (first) void first();
 }

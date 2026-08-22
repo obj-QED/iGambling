@@ -1,4 +1,10 @@
-export { resolveSidebarWidth, type SidebarWidth, toSidebarWidthCss } from './sidebarWidth';
+export {
+  resolveSidebarWidth,
+  type SidebarRootWidthStyle,
+  type SidebarWidth,
+  toSidebarRootWidthStyle,
+  toSidebarWidthCss,
+} from './sidebarWidth';
 export {
   hasSidebarLayoutContent,
   type SidebarLayoutModel,

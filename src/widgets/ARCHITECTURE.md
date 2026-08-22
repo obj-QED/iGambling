@@ -49,13 +49,13 @@ useAppLayout → resolveHeaderSchema → AppHeader(menu, config/schema)
 
 **Current migration state**
 
-| Layer                                            | Status               |
-| ------------------------------------------------ | -------------------- |
-| `shared/schema` + overlay wrappers               | shipped              |
-| `resolveHeaderSchema` / HeaderSchema fields      | shipped              |
-| `ui/type` (layout strategy packs)                | active               |
-| Block `adapters.ts` + `shared/lib/widgetAdapter` | wallet/search seeded |
-| Full Header Engine v4 (`engine/` singleton)      | deferred (optional)  |
+| Layer                                            | Status                |
+| ------------------------------------------------ | --------------------- |
+| `shared/schema` + overlay wrappers               | shipped               |
+| `resolveHeaderSchema` / HeaderSchema fields      | shipped               |
+| `ui/type` (layout strategy packs)                | active                |
+| Block `adapters.ts` + `shared/lib/widgetAdapter` | wallet/search seeded  |
+| Full plugin/engine folders (`engine/` singleton) | deferred (do not add) |
 
 Blocks must not call `getSettings()` — only resolved schema via props/context.
 

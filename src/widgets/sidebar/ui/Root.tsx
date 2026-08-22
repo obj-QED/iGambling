@@ -1,5 +1,4 @@
 import type { RootProps } from '../types';
-import type { CSSProperties } from 'react';
 
 import { createElement, memo, useMemo, useState } from 'react';
 
@@ -19,7 +18,7 @@ import {
   filterRenderableMenu,
   hasSidebarLayoutContent,
   splitSidebarMenu,
-  toSidebarWidthCss,
+  toSidebarRootWidthStyle,
 } from '../lib';
 import { resolveSidebarLayout } from '../registry/layouts';
 import { resolveSidebarTypePack } from './type';
@@ -30,7 +29,7 @@ import '../registry/registerBlocks';
 
 function RootComponent({ menu, config, className }: RootProps) {
   const [sidebarEl, setSidebarEl] = useState<HTMLElement | null>(null);
-  const menuButtonSize = useAsideMenuButtonSizeFromElement(sidebarEl);
+  const menuButtonSize = useAsideMenuButtonSizeFromElement(sidebarEl, config.type);
   const typePack = resolveSidebarTypePack(config.type);
   const { Strategy, styles: typeStyles } = typePack;
   const chromeLayout = useMemo(() => {
@@ -47,13 +46,7 @@ function RootComponent({ menu, config, className }: RootProps) {
 
   if (!chromeLayout || !hasSidebarLayoutContent(chromeLayout)) return null;
 
-  const widthCss = toSidebarWidthCss(config.width);
-  const rootStyle =
-    widthCss &&
-    ({
-      '--app-layout-sidebar-width': widthCss,
-      ...(config.type !== 'compact' && { minWidth: 'max-content' }),
-    } as CSSProperties);
+  const rootStyle = toSidebarRootWidthStyle(config.width, config.type);
 
   return (
     <SidebarConfigProvider config={config}>
@@ -68,6 +61,7 @@ function RootComponent({ menu, config, className }: RootProps) {
                 data-cmf-component="sidebar"
                 data-layout={config.layout}
                 data-type={config.type}
+                data-control-size={menuButtonSize}
                 data-cmf-active-type={config.active.type}
                 data-cmf-active-position={config.active.position}
                 aria-label="Sidebar menu"

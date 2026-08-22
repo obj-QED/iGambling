@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import { useAuthSession } from '@hooks/useAuthSession';
+import { useAuthSession } from '@hooks/auth';
 
 /**
  * При отсутствии токена (isAuthenticated === false) редирект на /auth.

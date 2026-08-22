@@ -9,11 +9,11 @@ import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useConfig } from '../../../context';
 import { resolveItemLabel } from '../../../lib';
-import { WALLET_ADAPTERS } from './adapters';
+import { WALLET_ADAPTER_KEYS, WALLET_ADAPTERS } from './adapters';
 
 function WalletBlockComponent({ item }: BlockProps) {
   const { blockVariants, wrappers, capabilities } = useConfig();
-  const Adapter = useAdapter(WALLET_ADAPTERS, blockVariants.wallet, ['compact', 'full']);
+  const Adapter = useAdapter(WALLET_ADAPTERS, blockVariants.wallet, WALLET_ADAPTER_KEYS);
   const wrapperMode = wrappers.wallet;
   const Wrapper = useWrapper(wrapperMode);
   const label = useMemo(() => resolveItemLabel(item), [item]);

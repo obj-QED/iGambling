@@ -30,7 +30,7 @@ describe('resolveHeaderConfig / resolveHeaderSchema', () => {
     });
   });
 
-  it('remaps legacy wallet drawer / search modal onto wrappers', () => {
+  it('remaps legacy wallet drawer / search modal onto wrappers and keeps extra variant keys', () => {
     const schema = resolveHeaderConfig({
       header: {
         blockVariants: { search: 'mega', wallet: 'drawer', promo: 'card' },

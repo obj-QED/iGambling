@@ -1,0 +1,43 @@
+/// Adapter Suspense fallback sizing — keep in sync with live controls.
+///
+/// Contract for any widget / block host:
+/// 1. On the widget root (or a block host), set:
+///    - `--adapter-fallback-height`
+///    - `--adapter-fallback-width` (optional; default `100%` in AdapterBoundary)
+/// 2. Wrap lazy UX in `AdapterBoundary` (uses those vars on the Skeleton).
+/// 3. Prefer deriving height from the **same** token as the live control.
+///
+/// Button-sized chrome (sidebar rows, etc.):
+///   `<aside data-control-size={size}>` + `@include adapter-fallback-from-button-size;`
+///   Changing `--aside-size-button` / Mantine `size` → update `data-control-size` only.
+///
+/// Square / ActionIcon chrome (header tools):
+///   `@include adapter-fallback-box(var(--cmf-action-icon-header-size));`
+///
+/// Custom block: set the two vars on `[data-widget='…']` or `[data-adapter-track]`.
+
+$adapter-fallback-button-heights: (
+  xs: var(--button-height-xs, 30px),
+  sm: var(--button-height-sm, 36px),
+  md: var(--button-height-md, 42px),
+  lg: var(--button-height-lg, 50px),
+  xl: var(--button-height-xl, 60px),
+);
+
+/// Maps `[data-control-size='sm'|…]` → `--adapter-fallback-height` from Mantine size table.
+@mixin adapter-fallback-from-button-size {
+  --adapter-fallback-width: 100%;
+  --adapter-fallback-height: var(--button-height-md, 42px);
+
+  @each $size, $height in $adapter-fallback-button-heights {
+    &[data-control-size='#{$size}'] {
+      --adapter-fallback-height: #{$height};
+    }
+  }
+}
+
+/// Square (or explicit) box — ActionIcon / logo tools.
+@mixin adapter-fallback-box($size, $width: $size) {
+  --adapter-fallback-height: #{$size};
+  --adapter-fallback-width: #{$width};
+}

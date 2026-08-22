@@ -3,11 +3,9 @@ export type {
   SidebarBlockVariants,
   SidebarCapabilitiesConfig,
   SidebarConfig,
-  SidebarPromoAdapterVariant,
   SidebarRegionsConfig,
   SidebarSchema,
   SidebarScrollAreaConfig,
-  SidebarSearchAdapterVariant,
 } from './config.types';
 export type { SidebarConfigProviderProps, SidebarDropdownProviderProps } from './context.types';
 export type {

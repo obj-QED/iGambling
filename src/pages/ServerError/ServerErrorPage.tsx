@@ -47,3 +47,4 @@ function ServerErrorPageComponent({ detail }: ServerErrorPageProps) {
 
 export const ServerErrorPage = memo(ServerErrorPageComponent);
 ServerErrorPage.displayName = 'ServerErrorPage';
+export default ServerErrorPage;

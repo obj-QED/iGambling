@@ -19,3 +19,4 @@ function WalletCompactVariantComponent({ item }: BlockProps) {
 
 export const WalletCompactVariant = memo(WalletCompactVariantComponent);
 WalletCompactVariant.displayName = 'WalletCompactVariant';
+export default WalletCompactVariant;

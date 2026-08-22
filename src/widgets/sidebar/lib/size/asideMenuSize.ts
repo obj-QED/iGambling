@@ -4,7 +4,16 @@ import { CMF_BUTTON_SIZES } from '@/assets/theme';
 
 export const ASIDE_SIZE_BUTTON_VAR = '--aside-size-button';
 
-export const DEFAULT_ASIDE_MENU_BUTTON_SIZE: CmfButtonSize = 'md';
+/** Matches `[data-widget='sidebar']` token `--aside-size-button: sm` (not compact). */
+export const DEFAULT_ASIDE_MENU_BUTTON_SIZE: CmfButtonSize = 'sm';
+
+/** First-paint size before the sidebar node exists — same as theme tokens. */
+export function asideMenuButtonSizeForType(type: string): CmfButtonSize {
+  if (type === 'compact') {
+    return 'md';
+  }
+  return DEFAULT_ASIDE_MENU_BUTTON_SIZE;
+}
 
 function parseButtonSize(value: string): CmfButtonSize | undefined {
   if ((CMF_BUTTON_SIZES as readonly string[]).includes(value)) {

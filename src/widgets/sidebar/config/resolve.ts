@@ -155,8 +155,53 @@ function mergeBlockVariants(
   base: SidebarSchema['blockVariants'],
   overlay: SidebarSchemaLayer['blockVariants'] | undefined,
 ): SidebarSchema['blockVariants'] {
-  if (!overlay) return { ...base };
+  if (overlay === undefined) return { ...base };
   return { ...base, ...overlay };
+}
+
+function adapterForType(type: string): string {
+  if (type === 'compact') {
+    return 'icon';
+  }
+  return 'row';
+}
+
+function typePackBlockVariants(
+  aside: SidebarSchemaLayer,
+  type: string,
+): SidebarSchemaLayer['blockVariants'] | undefined {
+  const types = aside.types;
+  if (types === undefined) {
+    return undefined;
+  }
+  const pack = types[type];
+  if (pack === undefined) {
+    return undefined;
+  }
+  return pack.blockVariants;
+}
+
+function mergeBlockVariantLayers(
+  base: SidebarSchema['blockVariants'],
+  overlays: ReadonlyArray<SidebarSchemaLayer['blockVariants'] | undefined>,
+): SidebarSchema['blockVariants'] {
+  if (overlays.length === 0) {
+    return { ...base };
+  }
+  const [head, ...tail] = overlays;
+  if (head === undefined) {
+    return mergeBlockVariantLayers(base, tail);
+  }
+  return mergeBlockVariantLayers(mergeBlockVariants(base, head), tail);
+}
+
+function layerBlockVariants(
+  layer: SidebarSchemaLayer | undefined,
+): SidebarSchemaLayer['blockVariants'] | undefined {
+  if (layer === undefined) {
+    return undefined;
+  }
+  return layer.blockVariants;
 }
 
 /**
@@ -166,15 +211,22 @@ function mergeBlockVariants(
 function resolveBlockVariants(
   aside: SidebarSchemaLayer,
   type: string,
+  layers: SchemaLayers<SidebarSchemaLayer>,
 ): SidebarSchema['blockVariants'] {
-  const adapter = type === 'compact' ? 'icon' : 'row';
-  const derived: SidebarSchema['blockVariants'] = {
-    ...DEFAULT_SIDEBAR_CONFIG.blockVariants,
-    search: adapter,
-    promo: adapter,
-  };
-  const withLegacy = mergeBlockVariants(derived, aside.blockVariants);
-  return mergeBlockVariants(withLegacy, aside.types?.[type]?.blockVariants);
+  const adapter = adapterForType(type);
+  return mergeBlockVariantLayers(
+    {
+      search: adapter,
+      promo: adapter,
+    },
+    [
+      layerBlockVariants(layers.global),
+      layerBlockVariants(layers.brand),
+      layerBlockVariants(layers.page),
+      layerBlockVariants(layers.props),
+      typePackBlockVariants(aside, type),
+    ],
+  );
 }
 
 function coerceSidebarSchema(
@@ -183,6 +235,7 @@ function coerceSidebarSchema(
     tooltip?: SidebarSchemaLayer['tooltip'];
     scrollArea?: SidebarSchemaLayer['scrollArea'];
   },
+  layers: SchemaLayers<SidebarSchemaLayer>,
 ): SidebarSchema {
   const width = resolveSidebarWidth(merged.width);
   const type = readSettingsKey(merged.type, DEFAULT_SIDEBAR_CONFIG.type);
@@ -194,7 +247,7 @@ function coerceSidebarSchema(
     ...(width && { width }),
     layout: readSettingsKey(merged.layout, DEFAULT_SIDEBAR_CONFIG.layout),
     type,
-    blockVariants: resolveBlockVariants(merged, type),
+    blockVariants: resolveBlockVariants(merged, type, layers),
     openedDropdowns: resolveOpenedDropdowns(merged),
     customBlocks: resolveCustomBlocks(merged, type),
     regions: resolveRegions(packDefaults.regions, typeTunables?.regions),
@@ -237,7 +290,11 @@ export function resolveSidebarSchema(layers: SchemaLayers<SidebarSchema> = {}): 
   return resolveWidgetSchema(DEFAULT_SIDEBAR_CONFIG, layers, {
     supportedVersions: [1, 2],
     coerce: (merged) =>
-      coerceSidebarSchema(merged as SidebarSchema & SidebarSchemaLayer, settingsOverlay),
+      coerceSidebarSchema(
+        merged as SidebarSchema & SidebarSchemaLayer,
+        settingsOverlay,
+        layers as SchemaLayers<SidebarSchemaLayer>,
+      ),
   });
 }
 

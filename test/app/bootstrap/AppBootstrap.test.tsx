@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { MantineProvider } from '@mantine/core';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider as ReactReduxProvider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -7,6 +8,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import '@testing-library/jest-dom';
 
 import { AppBootstrap } from '@/app/bootstrap/AppBootstrap';
+import { mantineTheme } from '@/assets/theme';
 
 const useAppBootstrapMock = vi.fn();
 
@@ -21,10 +23,6 @@ vi.mock('@hooks/useLanguage', () => ({
 
 vi.mock('@/app/routing/routes', () => ({
   AppRoutes: () => <div>routes-ready</div>,
-}));
-
-vi.mock('./GlobalPreloader', () => ({
-  GlobalPreloader: () => <div>loading</div>,
 }));
 
 // Mock useInitData hook to prevent it from trying to use react-query
@@ -56,11 +54,13 @@ function renderBootstrap() {
   return render(
     <ReactReduxProvider store={mockStore}>
       <QueryClientProvider client={new QueryClient()}>
-        <MemoryRouter>
-          <AppBootstrap />
-        </MemoryRouter>
+        <MantineProvider theme={mantineTheme} defaultColorScheme="light">
+          <MemoryRouter>
+            <AppBootstrap />
+          </MemoryRouter>
+        </MantineProvider>
       </QueryClientProvider>
-    </ReactReduxProvider>
+    </ReactReduxProvider>,
   );
 }
 
@@ -76,7 +76,7 @@ describe('AppBootstrap', () => {
 
     renderBootstrap();
 
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    expect(screen.getByRole('status', { name: /loading/i })).toBeInTheDocument();
   });
 
   it('shows server error page when bootstrap fails', () => {

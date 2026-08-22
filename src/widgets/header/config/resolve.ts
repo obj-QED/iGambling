@@ -79,20 +79,8 @@ function mergeBlockVariants(
   base: HeaderSchema['blockVariants'],
   layer: HeaderBlockVariantSettings | undefined,
 ): HeaderSchema['blockVariants'] {
-  if (!layer) return base;
+  if (!layer) return { ...base };
   return { ...base, ...layer };
-}
-
-/**
- * pack defaults → legacy `header.blockVariants` → `header.types[type].blockVariants` (nested wins).
- */
-function resolveActiveBlockVariants(
-  header: HeaderSchemaLayer,
-  type: string,
-  packVariants: HeaderSchema['blockVariants'],
-): HeaderSchema['blockVariants'] {
-  const withLegacy = mergeBlockVariants(packVariants, header.blockVariants);
-  return mergeBlockVariants(withLegacy, header.types?.[type]?.blockVariants);
 }
 
 function resolveWrapperMode(raw: unknown, fallback: WrapperMode = 'none'): WrapperMode {
@@ -105,12 +93,15 @@ function resolveWrapperMode(raw: unknown, fallback: WrapperMode = 'none'): Wrapp
 
 /**
  * Legacy blockVariants `drawer` / `modal` → wrappers + compact content variant.
+ * Other keys/values stay as given in settings.
  */
 function remapLegacyOverlayVariants(
-  blockVariants: HeaderSchema['blockVariants'],
+  overlay: HeaderBlockVariantSettings | undefined,
   wrappers: HeaderSchema['wrappers'],
-): { blockVariants: HeaderSchema['blockVariants']; wrappers: HeaderSchema['wrappers'] } {
-  const nextVariants = { ...blockVariants };
+): { overlay: HeaderBlockVariantSettings | undefined; wrappers: HeaderSchema['wrappers'] } {
+  if (!overlay) return { overlay, wrappers };
+
+  const nextVariants = { ...overlay };
   const nextWrappers = { ...wrappers };
 
   if (nextVariants.wallet === 'drawer') {
@@ -123,7 +114,7 @@ function remapLegacyOverlayVariants(
     nextVariants.search = 'compact';
   }
 
-  return { blockVariants: nextVariants, wrappers: nextWrappers };
+  return { overlay: nextVariants, wrappers: nextWrappers };
 }
 
 function resolveWrappers(raw: HeaderSchemaLayer['wrappers'] | undefined): HeaderSchema['wrappers'] {
@@ -156,16 +147,21 @@ function resolveCapabilities(
 function coerceHeaderSchema(merged: HeaderSchema & HeaderSchemaLayer): HeaderSchema {
   const type = readSettingsKey(merged.type, DEFAULT_HEADER_CONFIG.type);
   const packDefaults = resolveHeaderTypeTunableDefaults(type);
-  const activeVariants = resolveActiveBlockVariants(merged, type, packDefaults.blockVariants);
-  const wrappers = resolveWrappers(merged.wrappers);
-  const remapped = remapLegacyOverlayVariants(activeVariants, wrappers);
+  const wrappersFromSettings = resolveWrappers(merged.wrappers);
+  const remappedLegacy = remapLegacyOverlayVariants(merged.blockVariants, wrappersFromSettings);
+  const remappedNested = remapLegacyOverlayVariants(
+    merged.types?.[type]?.blockVariants,
+    remappedLegacy.wrappers,
+  );
+  const withLegacy = mergeBlockVariants(packDefaults.blockVariants, remappedLegacy.overlay);
+  const blockVariants = mergeBlockVariants(withLegacy, remappedNested.overlay);
 
   return {
     version: merged.version === 2 ? 2 : 1,
     layout: readSettingsKey(merged.layout, DEFAULT_HEADER_CONFIG.layout),
     type,
-    blockVariants: remapped.blockVariants,
-    wrappers: remapped.wrappers,
+    blockVariants,
+    wrappers: remappedNested.wrappers,
     behavior: resolveBehavior(merged.behavior),
     capabilities: resolveCapabilities(merged.capabilities),
     customBlocks: resolveCustomBlocks(merged),

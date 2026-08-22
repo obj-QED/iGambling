@@ -62,3 +62,4 @@ function SearchModalVariantComponent({ item }: BlockProps) {
 
 export const SearchModalVariant = memo(SearchModalVariantComponent);
 SearchModalVariant.displayName = 'SearchModalVariant';
+export default SearchModalVariant;

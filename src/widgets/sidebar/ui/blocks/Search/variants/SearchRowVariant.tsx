@@ -26,3 +26,4 @@ function SearchRowVariantComponent({ item, className }: BlockProps) {
 
 export const SearchRowVariant = memo(SearchRowVariantComponent);
 SearchRowVariant.displayName = 'SidebarSearchRowVariant';
+export default SearchRowVariant;

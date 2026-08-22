@@ -1,4 +1,15 @@
 @layer page {
+  @keyframes shell-skel-fade {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+
+    50% {
+      opacity: 1;
+    }
+  }
+
   .root {
     display: flex;
     flex-direction: row;
@@ -26,15 +37,115 @@
   }
 
   .header,
-  .banner,
   .footer {
     flex-shrink: 0;
   }
 
+  .banner {
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .root[data-shell-skeleton] {
+    pointer-events: none;
+  }
+
+  .root
+    :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
+    :where(a, button, [role='button']) {
+    position: relative;
+  }
+
+  .root[data-shell-skeleton]
+    :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
+    :where(a, button, [role='button'])::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    animation: shell-skel-fade 1500ms linear infinite;
+  }
+
+  .root[data-shell-skeleton]
+    :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
+    :where(a, button, [role='button'])
+    > * {
+    opacity: 0;
+  }
+
+  .root[data-shell-skeleton] [data-widget='banner']::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    animation: shell-skel-fade 1500ms linear infinite;
+  }
+
+  .root[data-shell-skeleton] [data-widget='banner'] > * {
+    opacity: 0;
+  }
+
+  .root [data-widget='sidebar'] [data-adapter-fallback] {
+    display: block;
+    width: 100%;
+    --skeleton-width: 100%;
+  }
+
+  .root [data-widget='header'] [data-adapter-fallback] {
+    flex-shrink: 0;
+    width: var(--adapter-fallback-width, var(--cmf-action-icon-header-size, 2.625rem));
+    --skeleton-width: var(--adapter-fallback-width, var(--cmf-action-icon-header-size, 2.625rem));
+  }
+
+  .root[data-shell-skeleton] .page {
+    /* Flex fills leftover viewport; live Outlet must not stretch the overlay. */
+    overflow: hidden;
+  }
+
+  .root[data-shell-skeleton] .page::after {
+    content: '';
+    position: absolute;
+
+    /* Match Container padding-inline + .page padding-block — not flush to chrome. */
+    inset: var(--page-padding-block, var(--spacing-lg, 1.5rem))
+      var(--page-padding-inline, var(--mantine-spacing-md, 1rem));
+    z-index: 1;
+    border-radius: var(--radius-md, 0.5rem);
+    background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    animation: shell-skel-fade 1500ms linear infinite;
+  }
+
+  .root[data-shell-skeleton] .page > * {
+    /* Keep mounted for warm load, but out of flow so ::after stays viewport-sized. */
+    display: none;
+  }
+
+  .skelLine {
+    width: 72%;
+    height: var(--mantine-font-size-md, 1rem);
+    border-radius: var(--radius-xl, 2rem);
+  }
+
+  .skelLineShort {
+    width: 48%;
+  }
+
+  .pageSkeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md, 1rem);
+  }
+
   .page {
+    --page-padding-block: var(--spacing-lg, 1.5rem);
+    --page-padding-inline: var(--mantine-spacing-md, 1rem);
+    position: relative;
     width: 100%;
     flex: 1 1 auto;
-    padding-block: var(--spacing-lg, 1.5rem);
+    padding-block: var(--page-padding-block);
   }
 
   .infoPageContent {

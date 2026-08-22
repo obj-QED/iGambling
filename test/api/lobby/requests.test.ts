@@ -14,21 +14,25 @@ describe('lobby response normalizers', () => {
     expect(words).toEqual({ home: 'Главная' });
   });
 
-  it('keeps full init payload without dropping unknown fields', () => {
+  it('keeps extra init and nested page keys', () => {
     const content = toInitV2Content({
-      auth: { status: 'guest' },
+      token: 'abc',
       page: { info: { title: 'Lobby' }, menu: [{ key: 'home' }], custom: { foo: 'bar' } },
       featureFlags: ['a', 'b'],
     });
 
     expect(content).toEqual({
-      auth: { status: 'guest' },
-      page: { info: { title: 'Lobby' }, menu: [{ key: 'home' }], custom: { foo: 'bar' } },
+      token: 'abc',
+      page: {
+        info: { title: 'Lobby' },
+        menu: [{ key: 'home' }],
+        custom: { foo: 'bar' },
+      },
       featureFlags: ['a', 'b'],
     });
   });
 
-  it('keeps full getPage payload and nested page fields', () => {
+  it('keeps extra getPage and nested page keys', () => {
     const content = toGetPageContent({
       page: {
         blocks: [{ type: 'slider' }],

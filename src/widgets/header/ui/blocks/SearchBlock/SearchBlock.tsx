@@ -9,11 +9,11 @@ import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useConfig } from '../../../context';
 import { resolveItemLabel } from '../../../lib';
-import { SEARCH_ADAPTERS } from './adapters';
+import { SEARCH_ADAPTER_KEYS, SEARCH_ADAPTERS } from './adapters';
 
 function SearchBlockComponent({ item }: BlockProps) {
   const { blockVariants, wrappers, capabilities } = useConfig();
-  const Adapter = useAdapter(SEARCH_ADAPTERS, blockVariants.search, ['compact', 'input']);
+  const Adapter = useAdapter(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
   const wrapperMode = wrappers.search;
   const Wrapper = useWrapper(wrapperMode);
   const label = useMemo(() => resolveItemLabel(item), [item]);

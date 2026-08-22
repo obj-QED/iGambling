@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
     viteAppUrl.length > 0 ? viteAppUrl : lobbyApiUrl.length > 0 ? lobbyApiUrl : 'http://localhost';
   const isProd = mode === 'production';
   const shouldAnalyze = env.VITE_ANALYZE === 'true';
+  const profilerEnabled = env.PROFILER_ENABLED === 'true';
   return {
     plugins: [
       react(),
@@ -43,6 +44,9 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
         },
       },
+    },
+    define: {
+      'import.meta.env.PROFILER_ENABLED': JSON.stringify(profilerEnabled),
     },
     resolve: {
       alias: {

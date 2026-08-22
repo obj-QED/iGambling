@@ -1,6 +1,21 @@
 import { describe, expect, it } from 'vitest';
 
-import { DEFAULT_ASIDE_MENU_BUTTON_SIZE, readAsideMenuButtonSize } from '@/widgets/sidebar/lib';
+import {
+  asideMenuButtonSizeForType,
+  DEFAULT_ASIDE_MENU_BUTTON_SIZE,
+  readAsideMenuButtonSize,
+} from '@/widgets/sidebar/lib';
+
+describe('asideMenuButtonSizeForType', () => {
+  it('matches default sidebar token sm', () => {
+    expect(DEFAULT_ASIDE_MENU_BUTTON_SIZE).toBe('sm');
+    expect(asideMenuButtonSizeForType('default')).toBe('sm');
+  });
+
+  it('matches compact sidebar token md', () => {
+    expect(asideMenuButtonSizeForType('compact')).toBe('md');
+  });
+});
 
 describe('readAsideMenuButtonSize', () => {
   it('returns default when element is null', () => {

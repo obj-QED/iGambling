@@ -1,1 +1,1 @@
-export { TooltipWrapper } from './TooltipWrapper';
+export { TooltipWrapper as default, TooltipWrapper } from './TooltipWrapper';

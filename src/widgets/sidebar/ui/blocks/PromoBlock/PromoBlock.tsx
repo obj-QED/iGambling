@@ -7,7 +7,9 @@ import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useSidebarConfig } from '../../../context';
 import { resolveItemLabel } from '../../../lib';
-import { PROMO_ADAPTERS } from './adapters';
+import { PROMO_ADAPTER_KEYS, PROMO_ADAPTERS } from './adapters';
+
+import hostStyles from '../../../styles/base/Host.module.scss';
 
 /**
  * Sync promo block router (`timer` / `wheel_mdl`).
@@ -15,7 +17,7 @@ import { PROMO_ADAPTERS } from './adapters';
  */
 function PromoBlockComponent({ item, className }: BlockProps) {
   const { blockVariants, wrappers, capabilities } = useSidebarConfig();
-  const Adapter = useAdapter(PROMO_ADAPTERS, blockVariants.promo ?? 'row', ['row', 'icon']);
+  const Adapter = useAdapter(PROMO_ADAPTERS, blockVariants.promo, PROMO_ADAPTER_KEYS);
   const wrapperMode = wrappers.promo;
   const Wrapper = useWrapper(wrapperMode);
   const label = resolveItemLabel(item);
@@ -29,6 +31,7 @@ function PromoBlockComponent({ item, className }: BlockProps) {
     return (
       <AdapterBoundary>
         <span
+          className={hostStyles.root}
           onPointerEnter={() => {
             preloadAdapters(PROMO_ADAPTERS, 'row');
           }}

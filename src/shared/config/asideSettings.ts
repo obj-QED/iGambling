@@ -47,7 +47,7 @@ export type AsideRegionsSettings = {
   footer?: boolean;
 };
 
-/** Adapter variant keys per domain (`search` → `row` | `icon`). Open strings from settings. */
+/** Adapter variant keys per domain (`search` → `row` | `icon`). Open strings from settings boundary. */
 export type AsideBlockVariantSettings = Partial<Record<string, string>>;
 
 /** Per-type layout/blocks only — do not duplicate scrollArea/tooltip here. */

@@ -14,3 +14,4 @@ function NotFoundPageComponent() {
 
 export const NotFoundPage = memo(NotFoundPageComponent);
 NotFoundPage.displayName = 'NotFoundPage';
+export default NotFoundPage;

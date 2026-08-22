@@ -34,3 +34,4 @@ function SearchInputVariantComponent({ item }: BlockProps) {
 
 export const SearchInputVariant = memo(SearchInputVariantComponent);
 SearchInputVariant.displayName = 'SearchInputVariant';
+export default SearchInputVariant;

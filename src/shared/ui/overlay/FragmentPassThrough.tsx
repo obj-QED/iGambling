@@ -9,3 +9,4 @@ function FragmentPassThroughComponent({ target }: OverlayTargetProps) {
 
 export const FragmentPassThrough = memo(FragmentPassThroughComponent);
 FragmentPassThrough.displayName = 'FragmentPassThrough';
+export default FragmentPassThrough;

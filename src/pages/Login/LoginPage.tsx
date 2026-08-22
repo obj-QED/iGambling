@@ -11,3 +11,4 @@ function LoginPageComponent() {
 
 export const LoginPage = memo(LoginPageComponent);
 LoginPage.displayName = 'LoginPage';
+export default LoginPage;

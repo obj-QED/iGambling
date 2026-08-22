@@ -12,6 +12,9 @@ export const STORYBOOK_APP_SETTINGS_DEFAULTS: AppSettings = {
   version: '1.0.0',
   params: {
     fullscreen: true,
+    preloader: {
+      skeleton: true,
+    },
   },
   header: {
     layout: 'container',

@@ -75,3 +75,4 @@ function SearchIconVariantComponent({ item, className }: BlockProps) {
 
 export const SearchIconVariant = memo(SearchIconVariantComponent);
 SearchIconVariant.displayName = 'SidebarSearchIconVariant';
+export default SearchIconVariant;

@@ -6,14 +6,11 @@ export type WrapperLoader = () => Promise<{ default: ComponentType<OverlayTarget
 
 /** Sync registry of lazy loaders — selected mode only is imported. */
 export const WRAPPER_REGISTRY = {
-  popover: () => import('./PopoverWrapper').then((m) => ({ default: m.PopoverWrapper })),
-  drawer: () => import('./DrawerWrapper').then((m) => ({ default: m.DrawerWrapper })),
-  tooltip: () => import('./TooltipWrapper').then((m) => ({ default: m.TooltipWrapper })),
-  modal: () => import('./ModalWrapper').then((m) => ({ default: m.ModalWrapper })),
-  none: async () => {
-    const { FragmentPassThrough } = await import('./FragmentPassThrough');
-    return { default: FragmentPassThrough };
-  },
+  popover: () => import('./PopoverWrapper'),
+  drawer: () => import('./DrawerWrapper'),
+  tooltip: () => import('./TooltipWrapper'),
+  modal: () => import('./ModalWrapper'),
+  none: () => import('./FragmentPassThrough'),
 } as const satisfies Record<WrapperMode, WrapperLoader>;
 
 export function resolveWrapperLoader(mode: WrapperMode | undefined): WrapperLoader {

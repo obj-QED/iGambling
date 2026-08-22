@@ -5,7 +5,6 @@ import type {
   InitV2Content,
   InitV2Params,
   InitV2Response,
-  PageData,
   TranslationResponse,
   Words,
 } from './types';
@@ -14,6 +13,8 @@ import { lobbyApiClient } from '@api/baseApi';
 import { API_LOBBY_PATH } from '@api/constants';
 import { toApiEnvelope } from '@api/contracts';
 import { assertLobbyCommand } from '@api/security';
+
+import { toPageData } from './sanitize';
 
 function isWords(value: unknown): value is Words {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
@@ -41,9 +42,15 @@ export function toWords(value: unknown): Words {
   return normalized;
 }
 
-function toPageData(value: unknown): PageData | undefined {
-  if (!isRecord(value)) return undefined;
-  return { ...value };
+function toInitPayload(value: unknown): InitV2Content {
+  if (!isRecord(value)) return {};
+  if (!Object.hasOwn(value, 'page')) {
+    return { ...value };
+  }
+  return {
+    ...value,
+    page: toPageData(value.page),
+  };
 }
 
 /** Include `token` in lobby JSON only when it is a non-empty string. */
@@ -54,21 +61,11 @@ function normalizedLobbyToken(token: string | null | undefined): string | undefi
 }
 
 export function toInitV2Content(value: unknown): InitV2Content {
-  if (!isRecord(value)) return {};
-  const nextPayload: InitV2Content = { ...value };
-  if ('page' in value) {
-    nextPayload.page = toPageData(value.page);
-  }
-  return nextPayload;
+  return toInitPayload(value);
 }
 
 export function toGetPageContent(value: unknown): GetPageContent {
-  if (!isRecord(value)) return {};
-  const nextPayload: GetPageContent = { ...value };
-  if ('page' in value) {
-    nextPayload.page = toPageData(value.page);
-  }
-  return nextPayload;
+  return toInitPayload(value);
 }
 
 /** GET apiLobby.php?translation=<lang>. Вызывать перед initV2. */

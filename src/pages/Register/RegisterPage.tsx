@@ -11,3 +11,4 @@ function RegisterPageComponent() {
 
 export const RegisterPage = memo(RegisterPageComponent);
 RegisterPage.displayName = 'RegisterPage';
+export default RegisterPage;

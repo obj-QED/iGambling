@@ -31,3 +31,4 @@ function SearchIconVariantComponent({ item }: BlockProps) {
 
 export const SearchIconVariant = memo(SearchIconVariantComponent);
 SearchIconVariant.displayName = 'SearchIconVariant';
+export default SearchIconVariant;

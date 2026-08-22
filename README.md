@@ -14,7 +14,7 @@ Built for long-term scale: strict layers, registry-based UI, token-driven theme,
 | Build        | Vite · Yarn **4** · Node **≥ 22**                         |
 | Server state | TanStack Query                                            |
 | Client state | Redux Toolkit (auth / session / flags only)               |
-| Routing      | React Router 6                                            |
+| Routing      | React Router 7                                            |
 | Quality      | ESLint · Stylelint · Vitest · Storybook · Playwright a11y |
 
 Architecture: **FSD** (layers) + **FDD** (feature boundaries via `public.ts`).

@@ -37,13 +37,10 @@ export type SidebarWrappersConfig = Partial<Record<string, WrapperMode>>;
 export type SidebarCapabilitiesConfig = Record<string, boolean>;
 
 /**
- * Special-block adapter keys from settings (`blockVariants`).
- * Values are open strings — must match a plugin adapter key; unknown → runtime fallback.
+ * Adapter variants from settings. Keys/values are open — custom blocks and
+ * unregistered strings pass through; `useAdapter` falls back per block registry.
  */
 export type SidebarBlockVariants = Partial<Record<string, string>>;
-
-export type SidebarSearchAdapterVariant = 'row' | 'icon';
-export type SidebarPromoAdapterVariant = 'row' | 'icon';
 
 /**
  * Resolved sidebar schema — components receive this; they do not read settings.
@@ -55,7 +52,7 @@ export type SidebarSchema = {
   width?: number | string;
   layout: AsideLayoutKey;
   type: AsideTypeKey;
-  /** Adapter variants per domain plugin (`search` | `promo` → `row` | `icon`). */
+  /** Adapter variants from settings (`search` / `promo` / custom keys). Open strings. */
   blockVariants: SidebarBlockVariants;
   /** Default open dropdown keys — first visit only; then localStorage. */
   openedDropdowns: readonly string[];

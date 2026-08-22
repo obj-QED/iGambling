@@ -19,3 +19,21 @@ export function toSidebarWidthCss(width: SidebarWidth | undefined): string | nul
   const value = `${width}`.trim();
   return value.length > 0 ? value : null;
 }
+
+/**
+ * Live sidebar Root: settings width is the shell contract (no `max-content` growth).
+ */
+export type SidebarRootWidthStyle = {
+  readonly '--app-layout-sidebar-width': string;
+};
+
+export function toSidebarRootWidthStyle(
+  width: SidebarWidth | undefined,
+  _type: string,
+): SidebarRootWidthStyle | undefined {
+  const widthCss = toSidebarWidthCss(width);
+  if (widthCss == null) {
+    return undefined;
+  }
+  return { '--app-layout-sidebar-width': widthCss };
+}

@@ -1,4 +1,4 @@
-export { AppLayout } from './AppLayout';
+export { AppLayout, AppLayout as default } from './AppLayout';
 export {
   useAppLayout,
   type UseAppLayoutResult,

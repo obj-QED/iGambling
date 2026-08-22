@@ -7,7 +7,9 @@ import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useSidebarConfig } from '../../../context';
 import { resolveItemLabel } from '../../../lib';
-import { SEARCH_ADAPTERS } from './adapters';
+import { SEARCH_ADAPTER_KEYS, SEARCH_ADAPTERS } from './adapters';
+
+import hostStyles from '../../../styles/base/Host.module.scss';
 
 /**
  * Sync search block router.
@@ -15,7 +17,7 @@ import { SEARCH_ADAPTERS } from './adapters';
  */
 function SearchComponent({ item, className }: BlockProps) {
   const { blockVariants, wrappers, capabilities } = useSidebarConfig();
-  const Adapter = useAdapter(SEARCH_ADAPTERS, blockVariants.search ?? 'row', ['row', 'icon']);
+  const Adapter = useAdapter(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
   const wrapperMode = wrappers.search;
   const Wrapper = useWrapper(wrapperMode);
   const label = resolveItemLabel(item);
@@ -29,6 +31,7 @@ function SearchComponent({ item, className }: BlockProps) {
     return (
       <AdapterBoundary>
         <span
+          className={hostStyles.root}
           onPointerEnter={() => {
             preloadAdapters(SEARCH_ADAPTERS, 'row');
           }}

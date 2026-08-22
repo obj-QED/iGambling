@@ -1,5 +1,6 @@
 export { cmfIconControlAttrs } from './controlAttrs';
 export { cmfIconDataAttrs, isSvgMediaSrc, resolveCmfIconRadius, resolveCmfIconShape } from './icon';
+export { htmlImageNaturalSizeIsReliable, isBrokenHtmlImage } from './imageLoad';
 export {
   collectMenuItemImgSrcs,
   preloadCmfIconSrc,
