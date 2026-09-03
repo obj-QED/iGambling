@@ -92,10 +92,6 @@
 
   /* Region component paints (attrs on controls: sidebar / sidebar-header / sidebar-footer) */
   --cmf-button-sidebar-bg: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-6));
-  --cmf-button-sidebar-footer-bg: light-dark(
-    var(--mantine-color-gray-8),
-    var(--mantine-color-dark-7)
-  );
 
   /*
    * Icons: --cmf-button|action-icon-sidebar-{key?}-icon-{scale|aspect|width|height}
@@ -195,4 +191,13 @@
     --aside-shell-padding-top: var(--mantine-spacing-xs);
     --aside-shell-padding-bottom: var(--mantine-spacing-xs);
   }
+
+  /*
+   * Aside widget look by viewport — use media (attrs are on the widget, not the drawer portal).
+   * Drawer shell tokens (`--drawer-*`) → `tokens/theme.scss` panel selectors / `:root`.
+   *
+   * @media (max-width: $mobile) {
+   *   --aside-shell-padding-top: 0;
+   * }
+   */
 }

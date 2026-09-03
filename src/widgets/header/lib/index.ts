@@ -34,3 +34,4 @@ export {
   isHeaderDropdownOutsideKey,
   splitHeaderDropdownMenu,
 } from './splitHeaderDropdownMenu';
+export { filterCustomBlocksByView } from './filterCustomBlocksByView';

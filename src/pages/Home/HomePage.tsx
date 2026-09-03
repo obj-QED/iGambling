@@ -14,8 +14,14 @@ import {
 } from '@mantine/core';
 
 import { getAppHrefKind } from '@/shared/lib';
-import { AppButton } from '@/shared/ui';
-import { AppLink } from '@/shared/ui';
+import {
+  AppButton,
+  AppLink,
+  DrawerWrapper,
+  ModalWrapper,
+  PopoverWrapper,
+  TooltipWrapper,
+} from '@/shared/ui';
 
 const HEADING_ORDERS = [1, 2, 3, 4, 5, 6] as const;
 
@@ -133,10 +139,76 @@ function LinkDemoRow({ href, label }: { href: string; label: string }) {
   );
 }
 
+function OverlayDemoBlock() {
+  return (
+    <Stack gap="md">
+      <Title order={3}>Overlay wrappers (`shared/ui/overlay`)</Title>
+      <Text size="sm" c="dimmed">
+        Общий контракт: <Code>target</Code> (триггер) + <Code>children</Code> (контент). Режим
+        выбирает схема через <Code>WRAPPER_REGISTRY</Code> (<Code>popover</Code> /{' '}
+        <Code>drawer</Code> / <Code>modal</Code> / <Code>tooltip</Code> / <Code>none</Code>).
+        Uncontrolled: клик по target открывает; controlled: <Code>opened</Code> +{' '}
+        <Code>onClose</Code>.
+      </Text>
+
+      <Stack gap="xs">
+        <Title order={5}>PopoverWrapper — клик → dropdown рядом с target</Title>
+        <Group gap="sm">
+          <PopoverWrapper target={<Button variant="filled">Open popover</Button>}>
+            <Text size="sm">Контент popover. Клик по target снова закрывает.</Text>
+          </PopoverWrapper>
+        </Group>
+      </Stack>
+
+      <Stack gap="xs">
+        <Title order={5}>DrawerWrapper — клик → панель справа (Mantine Drawer)</Title>
+        <Group gap="sm">
+          <DrawerWrapper
+            target={<Button variant="outline">Open drawer</Button>}
+            title="Drawer title"
+          >
+            <Text size="sm">Контент drawer. Закрытие: overlay / Escape / крестик.</Text>
+          </DrawerWrapper>
+        </Group>
+      </Stack>
+
+      <Stack gap="xs">
+        <Title order={5}>ModalWrapper — клик → центрированный Modal</Title>
+        <Group gap="sm">
+          <ModalWrapper target={<Button variant="light">Open modal</Button>} title="Modal title">
+            <Text size="sm">Контент modal. Тот же API, что у Drawer/Popover.</Text>
+          </ModalWrapper>
+        </Group>
+      </Stack>
+
+      <Stack gap="xs">
+        <Title order={5}>TooltipWrapper — hover → label (`title` или children)</Title>
+        <Group gap="sm">
+          <TooltipWrapper
+            target={<Button variant="default">Hover me</Button>}
+            title="Tooltip label"
+          >
+            <Text size="sm">fallback label if title omitted</Text>
+          </TooltipWrapper>
+        </Group>
+      </Stack>
+
+      <Text size="sm" c="dimmed">
+        <Code>FragmentPassThrough</Code> (<Code>none</Code>) рендерит только target — без overlay. В
+        виджетах режим приходит из schema, не из <Code>isMobile</Code> в JSX.
+      </Text>
+    </Stack>
+  );
+}
+
 function HomePageComponent() {
   return (
     <>
-      <Stack gap="xs" className={'container'}>
+      <Stack gap="md" mt="lg" className="container">
+        <OverlayDemoBlock />
+      </Stack>
+
+      <Stack gap="xs" className={'container'} mt="xl">
         {HEADING_ORDERS.map((order) => (
           <Title key={order} order={order}>
             Заголовок h{order}

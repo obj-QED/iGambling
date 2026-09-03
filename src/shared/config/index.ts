@@ -54,6 +54,7 @@ export type {
   HeaderBlockVariantSettings,
   HeaderCapabilitiesSettings,
   HeaderCustomBlockConfig,
+  HeaderCustomBlockView,
   HeaderCustomBlockInput,
   HeaderCustomBlockPlacement,
   HeaderCustomBlockSettings,

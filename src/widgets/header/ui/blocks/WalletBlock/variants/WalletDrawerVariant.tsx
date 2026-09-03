@@ -2,11 +2,11 @@ import type { BlockProps } from '../../../../types';
 
 import { memo, useCallback, useState } from 'react';
 
-import { Drawer, Text } from '@mantine/core';
+import { Text } from '@mantine/core';
 import { IconWallet } from '@tabler/icons-react';
 
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
-import { AppActionIcon } from '@/shared/ui';
+import { AppActionIcon, AppDrawer } from '@/shared/ui';
 
 import { useHeaderMenuSizes } from '../../../../context';
 import {
@@ -48,9 +48,9 @@ function WalletDrawerVariantComponent({ item }: BlockProps) {
           <IconWallet {...HEADER_TABLER_ICON_PROPS} />
         </AppActionIcon>
       </HeaderActionIconTooltip>
-      <Drawer opened={opened} onClose={close} title={label} position="right">
+      <AppDrawer opened={opened} onClose={close} title={label} position="right">
         <Text size="sm">{label}</Text>
-      </Drawer>
+      </AppDrawer>
     </>
   );
 }

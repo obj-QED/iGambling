@@ -6,6 +6,7 @@ import { ColorSchemeBlock } from '../ui/blocks/ColorSchemeBlock/ColorSchemeBlock
 import { DefaultItemBlock } from '../ui/blocks/DefaultItemBlock/DefaultItemBlock';
 import { DropdownBlock } from '../ui/blocks/DropdownBlock/DropdownBlock';
 import { LogoBlock } from '../ui/blocks/LogoBlock/LogoBlock';
+import { MenuToggleBlock } from '../ui/blocks/MenuToggleBlock/MenuToggleBlock';
 import { NotificationBlock } from '../ui/blocks/NotificationBlock/NotificationBlock';
 import { SearchBlock } from '../ui/blocks/SearchBlock/SearchBlock';
 import { WalletBlock } from '../ui/blocks/WalletBlock/WalletBlock';
@@ -24,6 +25,7 @@ export const BLOCK_REGISTRY: Partial<Record<BlockRegistryKey, ComponentType<Bloc
   wallet: WalletBlock,
   notification: NotificationBlock,
   color_scheme: ColorSchemeBlock,
+  menu_toggle: MenuToggleBlock,
 };
 
 /** Runtime overlay (tests / type-packs). Prefer static `BLOCK_REGISTRY` entries for app blocks. */

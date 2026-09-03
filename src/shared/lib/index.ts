@@ -7,4 +7,5 @@ export * from './mantine';
 export * from './menu';
 export * from './routing';
 export * from './shellSkeleton';
+export * from './sidebarDrawer';
 export * from './widgetAdapter';

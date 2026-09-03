@@ -16,6 +16,10 @@
 
     @media (max-width: $tablet) {
       width: 100%;
+
+      /* Inside AppDrawer body — fill panel instead of viewport sticky shell. */
+      height: 100%;
+      max-height: 100%;
     }
   }
 

@@ -2,13 +2,15 @@ import type { RootProps } from '../types';
 
 import { memo, useMemo, useState } from 'react';
 
+import { useIsMobile } from '@hooks/useIsMobile';
+
 import clsx from 'clsx';
 
 import { CmfActiveIndicatorProvider } from '@/shared/ui/CmfActiveLine';
 
 import { ConfigProvider, HeaderMenuSizesContext } from '../context';
 import { useHeaderMenuSizesFromElement } from '../hooks';
-import { filterRenderableMenu, mergeCustomBlocks } from '../lib';
+import { filterCustomBlocksByView, filterRenderableMenu, mergeCustomBlocks } from '../lib';
 import { resolveHeaderTypePack } from './type';
 
 import styles from '../styles/base/Root.module.scss';
@@ -20,10 +22,12 @@ function RootComponent({ menu, config, className }: RootProps) {
   const menuSizes = useHeaderMenuSizesFromElement(headerEl);
   const typePack = resolveHeaderTypePack(config.type);
   const { Strategy, styles: typeStyles } = typePack;
+  const isMobile = useIsMobile();
   const menuModel = useMemo(() => {
-    const merged = mergeCustomBlocks(menu, config.customBlocks);
+    const customBlocks = filterCustomBlocksByView(config.customBlocks, isMobile);
+    const merged = mergeCustomBlocks(menu, customBlocks);
     return filterRenderableMenu(merged);
-  }, [menu, config.customBlocks]);
+  }, [menu, config.customBlocks, isMobile]);
 
   if (!menuModel.sections.length) return null;
 

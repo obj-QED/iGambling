@@ -44,7 +44,7 @@ export type HeaderMenuModel = {
   sections: HeaderSection[];
 };
 
-export const HEADER_CONFIG_ONLY_BLOCK_KEYS = ['color_scheme'] as const;
+export const HEADER_CONFIG_ONLY_BLOCK_KEYS = ['color_scheme', 'menu_toggle'] as const;
 
 export type HeaderConfigOnlyBlockKey = (typeof HEADER_CONFIG_ONLY_BLOCK_KEYS)[number];
 

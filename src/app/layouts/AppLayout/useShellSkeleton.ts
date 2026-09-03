@@ -17,13 +17,24 @@ export type ShellReveal = {
  * Element skeleton on live chrome after bootstrap.
  * When `params.preloader.skeleton: false`, always `{ skeleton: false }` —
  * adapter warmup is held by `BootGate` (single GlobalPreloader).
+ *
+ * After the first successful reveal, late adapter mounts (e.g. opening the
+ * mobile sidebar drawer) must NOT re-arm the full-page shell skeleton —
+ * those slots already have local `AdapterBoundary` fallbacks.
  */
 export function useShellReveal(isReady: boolean): ShellReveal {
   const enabled = isShellSkeletonEnabled();
   const adapterPending = useAdapterPending();
-  const blocked = !isReady || adapterPending;
 
+  const [revealed, setRevealed] = useState(false);
   const [skeletonHold, setSkeletonHold] = useState(enabled);
+
+  // Re-arm only when chrome itself is not ready — not for post-reveal adapters.
+  if (!isReady && revealed) {
+    setRevealed(false);
+  }
+
+  const blocked = !isReady || (adapterPending && !revealed);
 
   if (enabled && blocked && !skeletonHold) {
     setSkeletonHold(true);
@@ -50,6 +61,7 @@ export function useShellReveal(isReady: boolean): ShellReveal {
       frame = requestAnimationFrame(() => {
         innerFrame = requestAnimationFrame(() => {
           setSkeletonHold(false);
+          setRevealed(true);
         });
       });
     };

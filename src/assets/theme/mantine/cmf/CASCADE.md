@@ -70,6 +70,40 @@ Tooltip (portal → tokens on `:root`):
 
 Props: `bg` | `color` | `radius` | `max-width`.
 
+Drawer (portal → tokens on `:root`, via `AppDrawer` + `data-cmf-*` / `data-viewport`):
+
+```txt
+1. --drawer-{component}-{key}-{prop}
+2. --drawer-{component}-{prop}
+3. engine base (then optional --drawer-{prop} aliases on :root)
+```
+
+Props: `bg` | `color` | `radius` | `padding` | `shadow` | `overlay-opacity` | `overlay-blur`.  
+Optional size / float: `--drawer-size`, `--drawer-size-{mobile|tablet|laptop|pc}`, `--drawer-inset`.
+
+**Where to override by viewport / instance** — `tokens/theme.scss` (not `AppDrawer` SCSS):
+
+```scss
+[data-cmf-component='layout'][data-cmf-key='sidebar'][data-viewport='mobile'] {
+  /* key layer — CMF cascade reads `--drawer-layout-sidebar-*`, not bare `--drawer-*` */
+  --drawer-layout-sidebar-radius: 0;
+  --drawer-layout-sidebar-padding: 0;
+  --drawer-inset: 0;
+}
+
+/* or global breakpoint */
+@media (max-width: $mobile) {
+  :root {
+    --drawer-radius: 0;
+    --drawer-padding: 0;
+  }
+}
+```
+
+Aside _widget_ tokens (`--aside-*`) stay in `tokens/widgets/sidebar/tokens.scss` and use `@media ($mobile)` — `data-viewport` is on the drawer portal, not `[data-widget='sidebar']`.
+
+Components / keys used with the CSS cascade maps: register in `_cmf-drawer-cascade.scss` (`$cmf-drawer-components` / `$cmf-drawer-keys`). Theme can still set base `--drawer-*` on any `[data-cmf-*]` selector without a map entry.
+
 ---
 
 ## Copy-paste examples

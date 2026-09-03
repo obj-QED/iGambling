@@ -6,6 +6,7 @@ export const HEADER_SPECIAL_BLOCK_KEYS = [
   'wallet',
   'notification',
   'color_scheme',
+  'menu_toggle',
 ] as const;
 
 export type HeaderSpecialBlockKey = (typeof HEADER_SPECIAL_BLOCK_KEYS)[number];

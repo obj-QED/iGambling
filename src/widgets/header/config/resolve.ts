@@ -60,10 +60,14 @@ function resolveOneCustomBlock(raw: HeaderCustomBlockSettings): HeaderCustomBloc
   const items = parseCustomBlockItems(raw.items);
   if (items.length === 0) return null;
 
+  const viewRaw = readString(raw.view).trim();
+  const view = viewRaw === 'mobile' || viewRaw === 'desktop' ? viewRaw : undefined;
+
   return {
     key,
     placement: raw.placement,
     items,
+    ...(view !== undefined ? { view } : {}),
   };
 }
 

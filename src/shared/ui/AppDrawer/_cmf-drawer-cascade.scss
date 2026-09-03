@@ -1,0 +1,91 @@
+// =============================================================================
+// Drawer CMF cascade (portal → tokens MUST be on `:root`)
+// =============================================================================
+//
+// HOW TO CHANGE STYLES → tokens/theme.scss `:root`:
+//   Panel:  --drawer-layout-sidebar-{bg|color|radius|padding|shadow}
+//           --drawer-layout-{…}  →  --drawer-{…}
+//   Scrim:  --drawer-layout-sidebar-overlay-{opacity|blur}
+//           --drawer-layout-overlay-{opacity|blur}  →  --drawer-overlay-{opacity|blur}
+//
+// Winner: key → component → base (engine). Guide: mantine/cmf/CASCADE.md
+// New key: add to `$cmf-drawer-keys` below.
+// Never `--drawer-bg: var(--token, var(--drawer-bg))` on the same node.
+// No `header` component — header has no drawer surface.
+// Overlay is a sibling of Content — put the same data-cmf-* on Overlay too.
+// =============================================================================
+
+$cmf-drawer-components: layout;
+$cmf-drawer-keys: sidebar;
+$cmf-drawer-props: bg, color, radius, padding, shadow;
+$cmf-drawer-overlay-props: opacity, blur;
+
+/// Resolve into a private paint var — never clobber `--drawer-*` on this node.
+/// `:root` aliases like `--drawer-layout-bg: var(--drawer-bg)` must keep resolving
+/// to the document token; rewriting `--drawer-bg` here creates a cycle → transparent panel.
+@mixin cmf-drawer-resolve($prop) {
+  --_cmf-drawer-#{$prop}: var(
+    --_cmf-drawer-#{$prop}-key,
+    var(--_cmf-drawer-#{$prop}-comp, var(--_cmf-drawer-#{$prop}-base))
+  );
+}
+
+@mixin cmf-drawer-bind-layers($props) {
+  @each $component in $cmf-drawer-components {
+    &:where([data-cmf-component='#{$component}']) {
+      @each $prop in $props {
+        --_cmf-drawer-#{$prop}-comp: var(--drawer-#{$component}-#{$prop});
+      }
+
+      @each $key in $cmf-drawer-keys {
+        &:where([data-cmf-key='#{$key}']) {
+          @each $prop in $props {
+            --_cmf-drawer-#{$prop}-key: var(--drawer-#{$component}-#{$key}-#{$prop});
+          }
+        }
+      }
+    }
+  }
+}
+
+/// Call inside `.content { }` (Mantine Drawer panel).
+@mixin cmf-drawer-cascade {
+  /* Engine base reads `:root` SoT — change `--drawer-*` in theme.scss to restyle defaults. */
+  --_cmf-drawer-bg-base: var(
+    --drawer-bg,
+    light-dark(var(--mantine-color-body), var(--mantine-color-dark-7))
+  );
+  --_cmf-drawer-color-base: var(--drawer-color, var(--mantine-color-text));
+  --_cmf-drawer-radius-base: var(--drawer-radius, 0);
+  --_cmf-drawer-padding-base: var(--drawer-padding, 0);
+  --_cmf-drawer-shadow-base: var(--drawer-shadow, var(--mantine-shadow-md));
+
+  @each $prop in $cmf-drawer-props {
+    @include cmf-drawer-resolve($prop);
+  }
+  background: var(--_cmf-drawer-bg);
+  color: var(--_cmf-drawer-color);
+  border-radius: var(--_cmf-drawer-radius);
+  box-shadow: var(--_cmf-drawer-shadow);
+  padding: var(--_cmf-drawer-padding);
+
+  @include cmf-drawer-bind-layers($cmf-drawer-props);
+}
+
+/// Call inside `.overlay { }`. Same data-cmf-* as Content (sibling under Root).
+@mixin cmf-drawer-overlay-cascade {
+  --_cmf-drawer-overlay-opacity-base: var(--drawer-overlay-opacity, 0.35);
+  --_cmf-drawer-overlay-blur-base: var(--drawer-overlay-blur, 4px);
+
+  @each $prop in $cmf-drawer-overlay-props {
+    @include cmf-drawer-resolve(overlay-#{$prop});
+  }
+
+  /* rgba() — avoid Sass rewriting modern `rgb(a / α)` into an invalid legacy form */
+  --overlay-bg: rgb(0 0 0 / var(--_cmf-drawer-overlay-opacity));
+  background: rgb(0 0 0 / var(--_cmf-drawer-overlay-opacity));
+  -webkit-backdrop-filter: blur(var(--_cmf-drawer-overlay-blur));
+  backdrop-filter: blur(var(--_cmf-drawer-overlay-blur));
+
+  @include cmf-drawer-bind-layers((overlay-opacity, overlay-blur));
+}

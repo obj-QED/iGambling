@@ -112,6 +112,62 @@
     --tooltip-sidebar-radius: var(--mantine-radius-default);
     --tooltip-sidebar-max-width: 16rem;
 
+    /*
+     * Drawer SoT on :root (portaled panel inherits from html).
+     * Cascade: key → component → base. Guide: mantine/cmf/CASCADE.md
+     *
+     * Size: `--drawer-size` / `--drawer-size-{mobile|tablet|laptop|pc}`
+     * Float gap (optional): `--drawer-inset` (AppDrawer margin; default 0)
+     *
+     * Viewport / instance overrides → attribute selectors BELOW (not AppDrawer SCSS).
+     * Use `--drawer-layout-sidebar-*` when `data-cmf-component` + `data-cmf-key` are set
+     * (key layer wins in `_cmf-drawer-cascade.scss`). Bare `--drawer-*` only for generic drawers.
+     * Prefer on the panel:
+     *   [data-viewport='mobile'] { --drawer-layout-sidebar-radius: 0; }
+     * or global:
+     *   @media (max-width: $mobile) { :root { --drawer-radius: 0; } }
+     */
+    /* 1) Default panel (wallet / generic) */
+    --drawer-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-7));
+    --drawer-color: var(--mantine-color-text);
+    --drawer-radius: var(--radius-md);
+    --drawer-padding: var(--spacing-xs);
+    --drawer-shadow: var(--mantine-shadow-md);
+    --drawer-inset: 0px;
+    --drawer-size: auto;
+    --drawer-size-mobile: 100%;
+    --drawer-size-tablet: 35vw;
+    --drawer-size-laptop: auto;
+    --drawer-size-pc: auto;
+
+    /** Backdrop dim — lower = more transparent. Light blur keeps page readable. */
+    --drawer-overlay-opacity: 0.35;
+    --drawer-overlay-blur: 4px;
+    --drawer-z-index: var(--z-index-modal);
+
+    /* 2) Layout component (optional layer — only if data-cmf-component="layout") */
+    --drawer-layout-bg: var(--drawer-bg);
+    --drawer-layout-color: var(--drawer-color);
+    --drawer-layout-radius: var(--drawer-radius);
+    --drawer-layout-padding: var(--drawer-padding);
+    --drawer-layout-shadow: var(--drawer-shadow);
+    --drawer-layout-overlay-opacity: var(--drawer-overlay-opacity);
+    --drawer-layout-overlay-blur: var(--drawer-overlay-blur);
+
+    /* 3) layout + key=sidebar — defaults (chrome may set data-cmf-*) */
+    --drawer-layout-sidebar-bg: var(--drawer-layout-bg);
+    --drawer-layout-sidebar-color: var(--drawer-layout-color);
+    --drawer-layout-sidebar-radius: var(--drawer-layout-radius);
+    --drawer-layout-sidebar-padding: var(--drawer-layout-padding);
+    --drawer-layout-sidebar-shadow: var(--drawer-layout-shadow);
+    --drawer-layout-sidebar-overlay-opacity: var(--drawer-layout-overlay-opacity);
+    --drawer-layout-sidebar-overlay-blur: var(--drawer-layout-overlay-blur);
+    --drawer-layout-sidebar-size: 35vw;
+    --drawer-layout-sidebar-size-mobile: 100%;
+
+    /* float gap for chrome aside drawer (separate from paint padding) */
+    --drawer-layout-sidebar-inset: var(--spacing-xs);
+
     --cmf-button-hero-bg: light-dark(
       color-mix(in srgb, #059669 100%, transparent),
       color-mix(in srgb, #059669 100%, transparent)
@@ -132,6 +188,41 @@
     --cmf-button-link-hover: var(--mantine-primary-color-light-hover);
     --cmf-button-link-hover-color: var(--mantine-primary-color-contrast);
   }
+
+  /*
+   * AppDrawer panel overrides — attrs live on the portaled panel (not [data-widget]).
+   * Add a block per product instance (any cmfComponent / cmfKey). Keep AppDrawer SCSS generic.
+   *
+   * Mobile: either `[data-viewport='mobile']` on the panel, or `@media (max-width: $mobile)`.
+   */
+  [data-cmf-component='layout'][data-cmf-key='sidebar'] {
+    --drawer-size: var(--drawer-layout-sidebar-size, 35vw);
+    --drawer-size-mobile: var(--drawer-layout-sidebar-size-mobile, 100%);
+    --drawer-size-tablet: var(--drawer-layout-sidebar-size, 35vw);
+    --drawer-inset: var(--drawer-layout-sidebar-inset, 0px);
+
+    /* CMF cascade: key layer wins over `--drawer-padding` / `--drawer-radius` base. */
+    --drawer-layout-sidebar-padding: 0;
+  }
+
+  [data-cmf-component='layout'][data-cmf-key='sidebar'][data-viewport='mobile'] {
+    --drawer-layout-sidebar-radius: 0;
+    --drawer-layout-sidebar-padding: 50px;
+    --drawer-inset: 0;
+  }
+
+  /* Example — all drawers on phone (uncomment / narrow as needed):
+  [data-viewport='mobile'] {
+    --drawer-radius: 0;
+    --drawer-padding: 0;
+  }
+  @media (max-width: $mobile) {
+    :root {
+      --drawer-radius: 0;
+      --drawer-padding: 0;
+    }
+  }
+  */
 
   [data-widget='header'] {
     @include header.header-root-tokens;

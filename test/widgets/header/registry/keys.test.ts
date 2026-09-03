@@ -5,6 +5,7 @@ import { isBlockRegistryKey, resolveBlockRegistryKey } from '@/widgets/header/re
 describe('block registry keys', () => {
   it('accepts known routing and special keys', () => {
     expect(isBlockRegistryKey('search')).toBe(true);
+    expect(isBlockRegistryKey('menu_toggle')).toBe(true);
     expect(isBlockRegistryKey('menuDropdown')).toBe(true);
     expect(isBlockRegistryKey('default')).toBe(true);
   });

@@ -51,6 +51,12 @@
         //   { beforeSection: 'block1' } | { afterSection: 'block3' }
         // Legacy: 'prepend' | 'append' | { sectionKey, position }
         {
+          view: 'mobile',
+          key: 'block_menu_toggle',
+          placement: { section: 'block3', at: 'start' },
+          items: [{ key: 'menu_toggle', name: 'Menu' }],
+        },
+        {
           key: 'block3-tools',
           placement: { section: 'block3', at: 'end' },
           items: [{ key: 'color_scheme', label: 'Color scheme' }],

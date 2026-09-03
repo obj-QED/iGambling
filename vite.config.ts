@@ -8,13 +8,42 @@ import { themeBuildPlugin } from './vite-plugin-assets-build.ts';
 import { cssCascadeFullReloadPlugin } from './vite-plugin-css-cascade-full-reload.ts';
 import { fontsStylesheetPlugin } from './vite-plugin-fonts-stylesheet.ts';
 
+/** Non-empty trim; CI / missing keys stay safe. */
+function envUrl(env: Record<string, string>, key: string): string {
+  const raw = env[key];
+  return typeof raw === 'string' ? raw.trim() : '';
+}
+
+/**
+ * Proxy target for /apiLobby.php + /api.php.
+ * Prod often sets `VITE_APP_URL=` (same-origin) which overrides `.env.local` under
+ * `vite preview` → without a fallback the proxy hits `http://localhost` (ECONNREFUSED).
+ * Client bundle still uses mode env; only the Node proxy needs a reachable origin locally.
+ */
+function resolveApiProxyTarget(modeEnv: Record<string, string>, cwd: string): string {
+  const fromMode = envUrl(modeEnv, 'VITE_APP_URL') || envUrl(modeEnv, 'VITE_LOBBY_API_URL');
+  if (fromMode) return fromMode;
+
+  const devEnv = loadEnv('development', cwd, '');
+  return (
+    envUrl(devEnv, 'VITE_APP_URL') || envUrl(devEnv, 'VITE_LOBBY_API_URL') || 'http://localhost'
+  );
+}
+
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
-  // CI often has no .env — never call .length on undefined.
-  const viteAppUrl = typeof env.VITE_APP_URL === 'string' ? env.VITE_APP_URL : '';
-  const lobbyApiUrl = typeof env.VITE_LOBBY_API_URL === 'string' ? env.VITE_LOBBY_API_URL : '';
-  const apiTarget =
-    viteAppUrl.length > 0 ? viteAppUrl : lobbyApiUrl.length > 0 ? lobbyApiUrl : 'http://localhost';
+  const cwd = process.cwd();
+  const env = loadEnv(mode, cwd, '');
+  const apiTarget = resolveApiProxyTarget(env, cwd);
+  const apiProxy = {
+    '/apiLobby.php': {
+      target: apiTarget,
+      changeOrigin: true,
+    },
+    '/api.php': {
+      target: apiTarget,
+      changeOrigin: true,
+    },
+  } as const;
   const isProd = mode === 'production';
   const shouldAnalyze = env.VITE_ANALYZE === 'true';
   const profilerEnabled = env.PROFILER_ENABLED === 'true';
@@ -34,16 +63,10 @@ export default defineConfig(({ mode }) => {
         : null,
     ].filter(Boolean),
     server: {
-      proxy: {
-        '/apiLobby.php': {
-          target: apiTarget,
-          changeOrigin: true,
-        },
-        '/api.php': {
-          target: apiTarget,
-          changeOrigin: true,
-        },
-      },
+      proxy: { ...apiProxy },
+    },
+    preview: {
+      proxy: { ...apiProxy },
     },
     define: {
       'import.meta.env.PROFILER_ENABLED': JSON.stringify(profilerEnabled),

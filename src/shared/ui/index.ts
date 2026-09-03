@@ -1,5 +1,11 @@
 export { AppActionIcon, type AppActionIconProps } from './AppActionIcon';
 export { AppButton, type AppButtonProps } from './AppButton';
+export {
+  AppDrawer,
+  type AppDrawerClassNames,
+  type AppDrawerProps,
+  type AppDrawerViewport,
+} from './AppDrawer';
 export { AppLink, type AppLinkProps } from './AppLink';
 export { AppLogo, type AppLogoProps } from './AppLogo';
 export { AppTooltip, type AppTooltipProps } from './AppTooltip';
@@ -13,6 +19,7 @@ export {
   useCmfActiveIndicator,
 } from './CmfActiveLine';
 export { CmfIcon, type CmfIconProps } from './CmfIcon';
+export { MenuToggle, type MenuToggleProps } from './MenuToggle';
 export {
   DrawerWrapper,
   ModalWrapper,

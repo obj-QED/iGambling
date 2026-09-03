@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { renderHook, waitFor } from '@testing-library/react';
+import { useState } from 'react';
+
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { useShellReveal, useShellSkeleton } from '@/app/layouts/AppLayout/useShellSkeleton';
@@ -29,7 +31,7 @@ describe('useShellReveal', () => {
     expect(result.current.skeleton).toBe(true);
   });
 
-  it('stays on while an adapter fallback is mounted', () => {
+  it('stays on while an adapter fallback is mounted before reveal', () => {
     function wrapper({ children }: { children: ReactNode }) {
       return (
         <AdapterPendingProvider>
@@ -56,6 +58,38 @@ describe('useShellReveal', () => {
     await waitFor(() => {
       expect(result.current.skeleton).toBe(false);
     });
+  });
+
+  it('does not re-arm shell skeleton after reveal when a late adapter mounts', async () => {
+    let setLatePending: ((value: boolean) => void) | undefined;
+
+    function wrapper({ children }: { children: ReactNode }) {
+      const [latePending, setLate] = useState(false);
+      setLatePending = setLate;
+
+      return (
+        <AdapterPendingProvider>
+          {latePending ? (
+            <AdapterPendingFallback>
+              <span>drawer adapter</span>
+            </AdapterPendingFallback>
+          ) : null}
+          {children}
+        </AdapterPendingProvider>
+      );
+    }
+
+    const { result } = renderHook(() => useShellReveal(true), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.skeleton).toBe(false);
+    });
+
+    act(() => {
+      setLatePending?.(true);
+    });
+
+    expect(result.current.skeleton).toBe(false);
   });
 
   it('never paints element skeleton when disabled in settings', () => {

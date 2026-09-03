@@ -1,0 +1,79 @@
+@use './cmf-drawer-cascade' as drawer;
+
+@layer components {
+  /*
+   * Mantine left/right Drawer defaults `--drawer-align: flex-start`, so the panel
+   * shrinks to content height. Stretch + height → full viewport shell.
+   * (NativeScrollArea is a Fragment and ignores Mantine's inline 100vh style.)
+   */
+  .inner {
+    --drawer-align: stretch;
+    --drawer-height: 100%;
+    align-items: stretch;
+  }
+
+  /*
+   * Paint: CMF cascade (`_cmf-drawer-cascade.scss`) — reads `--drawer-*` on this node / `:root`.
+   * Size / inset: generic tokens only. Instance + viewport overrides live in `tokens/theme.scss`
+   * (e.g. `[data-cmf-component][data-cmf-key][data-viewport]` or `@media ($mobile)`).
+   * Do NOT hardcode product cmfComponent / cmfKey here — AppDrawer is reusable.
+   */
+  .content {
+    @include drawer.cmf-drawer-cascade;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+
+    --_drawer-width: var(--_drawer-size, var(--drawer-size, auto));
+    --_drawer-inset: var(--drawer-inset, 0px);
+    flex: 0 0 auto;
+    margin: var(--_drawer-inset);
+    width: calc(var(--_drawer-width) - var(--_drawer-inset) * 2);
+    max-width: calc(100% - var(--_drawer-inset) * 2);
+    height: calc(var(--drawer-height, 100dvh) - var(--_drawer-inset) * 2);
+    max-height: calc(100dvh - var(--_drawer-inset) * 2);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Viewport bands (`data-viewport` = BREAKPOINTS_PX keys) → `--drawer-size-*`. */
+  .content:where([data-viewport='mobile']) {
+    --_drawer-size: var(--drawer-size-mobile, var(--drawer-size, 100%));
+  }
+
+  .content:where([data-viewport='tablet']) {
+    --_drawer-size: var(--drawer-size-tablet, var(--drawer-size, 35vw));
+  }
+
+  .content:where([data-viewport='laptop']) {
+    --_drawer-size: var(--drawer-size-laptop, var(--drawer-size, auto));
+  }
+
+  .content:where([data-viewport='pc']) {
+    --_drawer-size: var(--drawer-size-pc, var(--drawer-size, auto));
+  }
+
+  .body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+    padding: 0;
+
+    > * {
+      flex: 1 1 auto;
+      min-height: 0;
+      height: 100%;
+    }
+  }
+}
+
+/*
+ * Overlay — UNLAYERED so paint beats `@layer mantine` defaults (0.6 black).
+ */
+.overlay {
+  @include drawer.cmf-drawer-overlay-cascade;
+}

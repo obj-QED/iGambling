@@ -56,10 +56,14 @@ export type HeaderCustomBlockInput = {
   items?: unknown;
 };
 
+export type HeaderCustomBlockView = 'mobile' | 'desktop';
+
 export type HeaderCustomBlockConfig = {
   key: string;
   placement: HeaderCustomBlockPlacement;
   items: MenuItemDto[];
+  /** When set, block only on matching viewport (`mobile` = ≤ tablet). */
+  view?: HeaderCustomBlockView;
 };
 
 /** Raw custom block from `window.__SETTINGS__`. */
@@ -67,6 +71,7 @@ export type HeaderCustomBlockSettings = {
   key?: unknown;
   placement: HeaderCustomBlockPlacement;
   items: HeaderCustomBlockInput[];
+  view?: unknown;
 };
 
 /**

@@ -2,7 +2,7 @@ import type { OverlayTargetProps } from '../types';
 
 import { Children, cloneElement, isValidElement, memo, useState } from 'react';
 
-import { Drawer } from '@mantine/core';
+import { AppDrawer } from '@/shared/ui/AppDrawer';
 
 function DrawerWrapperComponent({
   target,
@@ -26,26 +26,32 @@ function DrawerWrapperComponent({
   };
 
   const trigger =
-    isValidElement(target) && Children.count(target) === 1
-      ? cloneElement(target as React.ReactElement<{ onClick?: () => void }>, {
-          onClick: () => {
-            const prev = (target as React.ReactElement<{ onClick?: () => void }>).props.onClick;
-            prev?.();
-            open();
-          },
-        })
-      : (
-          <button type="button" onClick={open}>
-            {target}
-          </button>
-        );
+    isValidElement(target) && Children.count(target) === 1 ? (
+      cloneElement(target as React.ReactElement<{ onClick?: () => void }>, {
+        onClick: () => {
+          const prev = (target as React.ReactElement<{ onClick?: () => void }>).props.onClick;
+          prev?.();
+          open();
+        },
+      })
+    ) : (
+      <button type="button" onClick={open}>
+        {target}
+      </button>
+    );
 
   return (
     <>
       {trigger}
-      <Drawer opened={opened} onClose={close} title={title} position="right" className={className}>
+      <AppDrawer
+        opened={opened}
+        onClose={close}
+        title={title}
+        position="right"
+        className={className}
+      >
         {children}
-      </Drawer>
+      </AppDrawer>
     </>
   );
 }
