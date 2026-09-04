@@ -5,6 +5,7 @@ import {
   Container,
   Group,
   type MantineThemeComponents,
+  Modal,
   Title,
 } from '@mantine/core';
 import cx from 'clsx';
@@ -14,6 +15,7 @@ import { MANTINE_BUTTON_VARIANTS } from '../cmf/cmfButtonVars';
 import { resolveActionIconRootVars } from '../vars/actionIconVars';
 import { resolveButtonCustomVariantPaintVars, resolveButtonRootVars } from '../vars/buttonVars';
 import { CLEAR_GROUP_INLINE_VARS, resolveGroupRootVars } from '../vars/groupVars';
+import { CLEAR_MODAL_INLINE_VARS, resolveModalRootVars } from '../vars/modalVars';
 
 import classes from '../styles/components.module.scss';
 
@@ -59,7 +61,10 @@ const CLEAR_ACTION_ICON_INLINE_VARS = {
 
 function hasCmfScope(props: Record<string, unknown>): boolean {
   return (
-    typeof props['data-cmf-component'] === 'string' || typeof props['data-cmf-key'] === 'string'
+    typeof props['data-cmf-component'] === 'string' ||
+    typeof props['data-cmf-key'] === 'string' ||
+    typeof props.cmfComponent === 'string' ||
+    typeof props.cmfKey === 'string'
   );
 }
 
@@ -180,6 +185,36 @@ export const themeComponents: MantineThemeComponents = {
         root: {
           ...CLEAR_GROUP_INLINE_VARS,
           ...resolveGroupRootVars(record),
+        },
+      } as never;
+    },
+  }),
+
+  /**
+   * Modal — CMF cascade when `data-cmf-*` / `cmfComponent` is set:
+   * key → component → `--cmf-modal-{radius|size|y-offset|x-offset|bg|color|padding|shadow}`.
+   * Paint classNames only under CMF scope (plain Modal stays native Mantine).
+   */
+  Modal: Modal.extend({
+    classNames: (_theme, props) => {
+      if (!hasCmfScope(props as unknown as Record<string, unknown>)) {
+        return {};
+      }
+      return {
+        content: classes.modalContent,
+        body: classes.modalBody,
+        header: classes.modalHeader,
+      };
+    },
+    vars: (_theme, props) => {
+      const record = props as unknown as Record<string, unknown>;
+      if (!hasCmfScope(record)) {
+        return { root: {} } as never;
+      }
+      return {
+        root: {
+          ...CLEAR_MODAL_INLINE_VARS,
+          ...resolveModalRootVars(record),
         },
       } as never;
     },

@@ -70,6 +70,20 @@ Group layout (`data-cmf-*` on Mantine `Group`):
 ```
 
 → `--group-gap` / `--group-align` / `--group-justify` / `--group-wrap`
+
+Modal (`data-cmf-*` / `cmfComponent` on Mantine `Modal` — `themeComponents` + `modalVars`):
+
+```txt
+1. --cmf-modal-{component}-{key}-{prop}
+2. --cmf-modal-{component}-{prop}
+3. --cmf-modal-{prop}
+4. Mantine / theme fallback
+```
+
+Props: `radius` | `size` | `y-offset` | `x-offset` | `bg` | `color` | `padding` | `shadow`.  
+→ `--modal-radius` / `--modal-size` / `--modal-y-offset` / `--modal-x-offset` / `--modal-bg` / …  
+Paint (`bg` | `color` | `padding` | `shadow`) applied only when CMF scope is set (`.modalContent` / `.modalBody` / `.modalHeader`).
+
 Tooltip (portal → tokens on `:root`):
 
 ```txt

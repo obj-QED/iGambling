@@ -33,6 +33,10 @@ declare module '@mantine/core' {
     cmfComponent?: string;
     cmfKey?: string;
   }
+  export interface ModalProps {
+    cmfComponent?: string;
+    cmfKey?: string;
+  }
   export interface SegmentedControlProps {
     cmfComponent?: string;
     cmfKey?: string;

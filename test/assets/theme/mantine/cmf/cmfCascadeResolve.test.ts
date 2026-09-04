@@ -4,6 +4,7 @@ import {
   buildCmfActionIconPropToken,
   buildCmfButtonPropToken,
   buildCmfGroupPropToken,
+  buildCmfModalPropToken,
   resolveCmfScope,
 } from '@/assets/theme/mantine/cmf/cmfCascadeResolve';
 
@@ -73,6 +74,16 @@ describe('cmfCascadeResolve', () => {
 
     expect(token).toBe(
       'var(--cmf-group-sidebar-header-logo-justify, var(--cmf-group-sidebar-header-justify, var(--cmf-group-justify, flex-start)))',
+    );
+  });
+
+  it('builds Modal cascade key → component → shared', () => {
+    const token = buildCmfModalPropToken('bg', 'var(--mantine-color-body)', {
+      scope: { component: 'layout', key: 'search' },
+    });
+
+    expect(token).toBe(
+      'var(--cmf-modal-layout-search-bg, var(--cmf-modal-layout-bg, var(--cmf-modal-bg, var(--mantine-color-body))))',
     );
   });
 

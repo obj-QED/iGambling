@@ -11,6 +11,9 @@ function ModalWrapperComponent({
   onClose,
   title,
   className,
+  cmfComponent,
+  cmfKey,
+  portalTarget,
 }: OverlayTargetProps) {
   const [uncontrolled, setUncontrolled] = useState(false);
   const controlled = openedProp !== undefined;
@@ -26,24 +29,37 @@ function ModalWrapperComponent({
   };
 
   const trigger =
-    isValidElement(target) && Children.count(target) === 1
-      ? cloneElement(target as React.ReactElement<{ onClick?: () => void }>, {
-          onClick: () => {
-            const prev = (target as React.ReactElement<{ onClick?: () => void }>).props.onClick;
-            prev?.();
-            open();
-          },
-        })
-      : (
-          <button type="button" onClick={open}>
-            {target}
-          </button>
-        );
+    isValidElement(target) && Children.count(target) === 1 ? (
+      cloneElement(target as React.ReactElement<{ onClick?: () => void }>, {
+        onClick: () => {
+          const prev = (target as React.ReactElement<{ onClick?: () => void }>).props.onClick;
+          prev?.();
+          open();
+        },
+      })
+    ) : (
+      <button type="button" onClick={open}>
+        {target}
+      </button>
+    );
+
+  const cmfAttrs = {
+    ...(cmfComponent ? { 'data-cmf-component': cmfComponent } : {}),
+    ...(cmfKey ? { 'data-cmf-key': cmfKey } : {}),
+  };
 
   return (
     <>
       {trigger}
-      <Modal opened={opened} onClose={close} title={title} centered className={className}>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={title}
+        centered
+        className={className}
+        portalProps={portalTarget != null ? { target: portalTarget } : undefined}
+        {...cmfAttrs}
+      >
         {children}
       </Modal>
     </>

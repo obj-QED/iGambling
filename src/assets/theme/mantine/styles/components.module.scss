@@ -53,6 +53,25 @@
   }
 
   /*
+   * Modal paint — only when theme `Modal.extend` attaches these under CMF scope.
+   * Vars come from `resolveModalRootVars` (`--modal-*` ← `--cmf-modal-*` nest).
+   */
+  .modalContent {
+    background: var(--modal-bg);
+    color: var(--modal-color);
+    box-shadow: var(--modal-shadow);
+  }
+
+  .modalBody {
+    padding: var(--modal-padding);
+  }
+
+  .modalHeader {
+    background: var(--modal-bg);
+    color: var(--modal-color);
+  }
+
+  /*
    * Mantine Button label uses `text-box-trim: trim-both` + `overflow: hidden` with
    * `line-height: 1` on root — clips glyph ink (esp. md+ / IBM Plex). Reset trim.
    */

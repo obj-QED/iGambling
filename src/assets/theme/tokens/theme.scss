@@ -102,6 +102,23 @@
     --cmf-scrollbar-radius: 999px;
 
     /*
+     * Modal CMF SoT on :root (portaled panel inherits from html).
+     * Cascade via `themeComponents` Modal + `buildCmfModalPropToken`:
+     *   --cmf-modal-{component}-{key}-{radius|size|y-offset|x-offset|bg|color|padding|shadow}
+     *   --cmf-modal-{component}-{…}
+     *   --cmf-modal-{…}
+     * Only active when Modal has `data-cmf-*` / `cmfComponent`. Guide: mantine/cmf/CASCADE.md
+     */
+    --cmf-modal-radius: var(--mantine-radius-default);
+    --cmf-modal-size: var(--modal-size-md, 37.5rem);
+    --cmf-modal-y-offset: 5dvh;
+    --cmf-modal-x-offset: 5vw;
+    --cmf-modal-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-7));
+    --cmf-modal-color: var(--mantine-color-text);
+    --cmf-modal-padding: var(--mantine-spacing-md);
+    --cmf-modal-shadow: var(--mantine-shadow-md);
+
+    /*
      * Tooltip SoT on :root (portaled floating inherits from html).
      * Edit here — cascade: key → component → base. Guide: mantine/cmf/CASCADE.md
      *   --tooltip-{header|sidebar}-{key}-{bg|color|radius|max-width}
