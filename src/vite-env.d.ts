@@ -8,11 +8,6 @@ interface ImportMetaEnv {
   readonly VITE_DEV_LOBBY_TOKEN?: string;
   /** Set by Storybook Vite config — no backend bootstrap in stories. */
   readonly STORYBOOK?: string;
-  /**
-   * Injected from `PROFILER_ENABLED` in `.env.local` (Vite `define`).
-   * `true` only — React `<Profiler>` stays off otherwise.
-   */
-  readonly PROFILER_ENABLED?: boolean;
 }
 
 declare module '*.module.scss' {

@@ -283,6 +283,16 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       variant,
       tail: 'variant',
     }),
+    '--button-active-overflow': buildCmfButtonPropToken('active-overflow', 'visible', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-active-clip-margin': buildCmfButtonPropToken('active-clip-margin', 'unset', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
     '--button-active-width': buildCmfButtonPropToken('active-width', '100%', {
       scope,
       variant,

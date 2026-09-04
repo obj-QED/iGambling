@@ -1,15 +1,23 @@
-/** Sidebar blocks with dedicated UI — menu `type` does not apply. */
-export const SIDEBAR_SPECIAL_BLOCK_KEYS = [
+/** Default special block keys when `aside.specialBlockKeys` is omitted. */
+export const DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS = [
   'search_leftmenu',
   'timer',
   'wheel_mdl',
   'aside_header_logo',
 ] as const;
 
-export type SidebarSpecialBlockKey = (typeof SIDEBAR_SPECIAL_BLOCK_KEYS)[number];
+/** @deprecated Use `DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS`. */
+export const SIDEBAR_SPECIAL_BLOCK_KEYS = DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS;
 
-const SIDEBAR_SPECIAL_BLOCK_KEY_SET = new Set<string>(SIDEBAR_SPECIAL_BLOCK_KEYS);
+export type SidebarSpecialBlockKey = (typeof DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS)[number];
 
-export function isSidebarSpecialBlockKey(key: string): boolean {
-  return SIDEBAR_SPECIAL_BLOCK_KEY_SET.has(key);
+/**
+ * Whether `key` is in the special-block allowlist.
+ * Pass resolved schema keys at runtime; omit → pack defaults.
+ */
+export function isSidebarSpecialBlockKey(
+  key: string,
+  specialBlockKeys: readonly string[] = DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS,
+): boolean {
+  return specialBlockKeys.includes(key);
 }

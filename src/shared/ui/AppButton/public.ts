@@ -1,2 +1,2 @@
-export type { AppButtonProps } from './types';
+export type { AppButtonProps, AppButtonSectionClassNames } from './types';
 export { AppButton } from './ui/AppButton';

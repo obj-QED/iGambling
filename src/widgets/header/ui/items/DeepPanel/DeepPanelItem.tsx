@@ -11,6 +11,9 @@ import { AppButton, type AppButtonProps } from '@/shared/ui';
 import { hasItemName, resolveItemHref, resolveItemLabel } from '../../../lib';
 import { ItemImage } from '../ItemImage/ItemImage';
 
+const CMF_BUTTON_SECTION_ICON = 'cmf-Button-section-icon';
+const CMF_BUTTON_ICON = 'cmf-Button-icon';
+
 type DeepPanelItemProps = {
   item: HeaderMenuItem;
 };
@@ -35,7 +38,12 @@ const DeepPanelItemButton = forwardRef<HTMLButtonElement, DeepPanelItemButtonPro
     const leftSection = useMemo(
       () =>
         showItemImg ? (
-          <ItemImage item={item} alt={labelText} onImgFailed={onImgError} />
+          <ItemImage
+            item={item}
+            alt={labelText}
+            className={CMF_BUTTON_ICON}
+            onImgFailed={onImgError}
+          />
         ) : undefined,
       [showItemImg, item, labelText, onImgError],
     );
@@ -47,6 +55,9 @@ const DeepPanelItemButton = forwardRef<HTMLButtonElement, DeepPanelItemButtonPro
         label={named ? (item.name ?? labelText) : undefined}
         aria-label={named ? undefined : labelText}
         leftSection={leftSection}
+        sectionClassNames={{
+          left: leftSection !== undefined ? CMF_BUTTON_SECTION_ICON : undefined,
+        }}
         active={item.active}
         matchRoute={item.matchRoute}
         activeMatch={item.activeMatch}

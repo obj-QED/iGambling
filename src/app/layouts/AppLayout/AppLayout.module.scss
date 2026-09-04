@@ -22,7 +22,7 @@
     align-self: flex-start;
     position: sticky;
     top: 0;
-    z-index: var(--z-index-sticky, 300);
+    z-index: var(--z-index-block, 1);
     height: var(--aside-shell-height, 100vh);
     max-height: var(--aside-shell-max-height, 100vh);
     min-height: 0;

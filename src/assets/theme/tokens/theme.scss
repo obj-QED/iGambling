@@ -44,6 +44,7 @@
     --shadow-md: 0 4px 12px rgb(15 23 42 / 12%);
     --shadow-lg: 0 12px 32px rgb(15 23 42 / 16%);
 
+    --z-index-block: 1;
     --z-index-dropdown: 200;
     --z-index-sticky: 300;
     --z-index-overlay: 400;
@@ -58,6 +59,16 @@
     --h4-font-size: 1.125rem;
     --h5-font-size: 1rem;
     --h6-font-size: 0.875rem;
+
+    /*
+     * Viewport bands (max-width, px) — runtime JS SoT via `readBreakpointsPx()`.
+     * Fallback / SCSS `@media` / Mantine: `assets/theme/breakpoints.ts` (keep aligned).
+     * Note: CSS vars cannot drive `@media` queries; `$mobile/$tablet` stay build-injected.
+     */
+    --breakpoint-mobile: 767px;
+    --breakpoint-tablet: 1024px;
+    --breakpoint-laptop: 1440px;
+    --breakpoint-pc: 1441px;
 
     --container-max-mobile: 100%;
     --container-max-tablet: 768px;
@@ -131,7 +142,9 @@
     --drawer-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-7));
     --drawer-color: var(--mantine-color-text);
     --drawer-radius: var(--radius-md);
-    --drawer-padding: var(--spacing-xs);
+
+    /* Generic drawer body inset (no data-cmf). Sidebar zeros via key layer. */
+    --drawer-padding: var(--spacing-md);
     --drawer-shadow: var(--mantine-shadow-md);
     --drawer-inset: 0px;
     --drawer-size: auto;
@@ -207,8 +220,10 @@
 
   [data-cmf-component='layout'][data-cmf-key='sidebar'][data-viewport='mobile'] {
     --drawer-layout-sidebar-radius: 0;
-    --drawer-layout-sidebar-padding: 50px;
-    --drawer-inset: 0;
+    --drawer-layout-sidebar-padding: 0;
+
+    /* Length unit required — unitless `0` makes `width: calc(100% - var(--inset) * 2)` IACVT. */
+    --drawer-inset: 0px;
   }
 
   /* Example — all drawers on phone (uncomment / narrow as needed):

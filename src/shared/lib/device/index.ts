@@ -15,6 +15,7 @@ export {
   subscribeFullscreenChange,
 } from './fullscreen';
 export {
+  getIsMobileMediaQuery,
   IS_MOBILE_MEDIA_QUERY,
   isMobileOnlyViewport,
   isMobileViewport,

@@ -17,6 +17,12 @@ import { ItemImage } from '../ItemImage/ItemImage';
 
 import styles from '../../../styles/items/ItemButton.module.scss';
 
+/** On `.cmf-Button-section` (slot). */
+const CMF_BUTTON_SECTION_ICON = 'cmf-Button-section-icon';
+const CMF_BUTTON_SECTION_CHEVRON = 'cmf-Button-section-chevron';
+/** On media / SVG inside the section. */
+const CMF_BUTTON_ICON = 'cmf-Button-icon';
+
 function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
   const menuSizes = useHeaderMenuSizes();
   const { onImgError, showItemImg, iconControlAttrs } = useMediaState(item);
@@ -24,7 +30,9 @@ function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
   const label = resolveItemLabel(item);
   const leftSection = useMemo(
     () =>
-      showItemImg ? <ItemImage item={item} alt={label} onImgFailed={onImgError} /> : undefined,
+      showItemImg ? (
+        <ItemImage item={item} alt={label} className={CMF_BUTTON_ICON} onImgFailed={onImgError} />
+      ) : undefined,
     [showItemImg, item, label, onImgError],
   );
 
@@ -38,6 +46,10 @@ function ItemButtonComponent({ item, rightSection }: ItemButtonProps) {
       justify="flex-start"
       leftSection={leftSection}
       rightSection={rightSection}
+      sectionClassNames={{
+        left: leftSection !== undefined ? CMF_BUTTON_SECTION_ICON : undefined,
+        right: rightSection !== undefined ? CMF_BUTTON_SECTION_CHEVRON : undefined,
+      }}
       active={item.active}
       matchRoute={item.matchRoute}
       activeMatch={item.activeMatch}

@@ -21,14 +21,14 @@ Readable sidebar component surface:
 
 ## Decisions (locked)
 
-| Topic | Choice |
-| --- | --- |
-| Data ownership | Hybrid (C): props override; else cache |
-| Type chrome | Explicit Strategy JSX (header / scroll / footer) |
-| Loading / error | Inside Sidebar (B) |
-| Approach | Single `Sidebar` + `useSidebar` (1), not container/dumb split |
-| Block routing | Explicit switch / early returns with JSX (A) |
-| Layout in Root | `const Layout = …; return <Layout>…</Layout>` — **no** `createElement` |
+| Topic           | Choice                                                                 |
+| --------------- | ---------------------------------------------------------------------- |
+| Data ownership  | Hybrid (C): props override; else cache                                 |
+| Type chrome     | Explicit Strategy JSX (header / scroll / footer)                       |
+| Loading / error | Inside Sidebar (B)                                                     |
+| Approach        | Single `Sidebar` + `useSidebar` (1), not container/dumb split          |
+| Block routing   | Explicit switch / early returns with JSX (A)                           |
+| Layout in Root  | `const Layout = …; return <Layout>…</Layout>` — **no** `createElement` |
 
 ## Public API
 
@@ -67,9 +67,9 @@ type UseSidebarResult = {
 
 ### Modes
 
-| Mode | Condition | Behavior |
-| --- | --- | --- |
-| Props | `menu !== undefined` | `data = menu`, `loading = false`, `error = null`. Config from props or `resolveSidebarSchema`. |
+| Mode  | Condition            | Behavior                                                                                                                                                                |
+| ----- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Props | `menu !== undefined` | `data = menu`, `loading = false`, `error = null`. Config from props or `resolveSidebarSchema`.                                                                          |
 | Cache | `menu === undefined` | `useInitData(language, getInitialPath())` — **same queryKey** as bootstrap. `data = resolveSidebarMenu(init.content)`. `fnMutation` = `useInvalidateInit().fnMutation`. |
 
 Rules:
@@ -113,10 +113,12 @@ function Sidebar({ menu, config: configProp, className }: AppSidebarProps) {
 **Before (forbidden after change):**
 
 ```tsx
-{createElement(resolveSidebarLayout(config.layout), {
-  layout: config.layout,
-  children: <Strategy layout={chromeLayout} config={config} />,
-})}
+{
+  createElement(resolveSidebarLayout(config.layout), {
+    layout: config.layout,
+    children: <Strategy layout={chromeLayout} config={config} />,
+  });
+}
 ```
 
 **After:**
@@ -126,7 +128,7 @@ const Layout = resolveSidebarLayout(config.layout);
 // …
 <Layout layout={config.layout}>
   <Strategy layout={chromeLayout} config={config} />
-</Layout>
+</Layout>;
 ```
 
 `resolveSidebarLayout` stays a sync lookup returning a component; render is JSX only.
@@ -190,13 +192,13 @@ Target:
 
 Row variants (`SearchRowVariant`, `PromoRowVariant`) keep using `SidebarExceptionButton`. Documented in the block table; not a separate registry.
 
-| Condition | Block | Compact overlay | Exception |
-| --- | --- | --- | --- |
-| `item.items.length > 0` | `DropdownBlock` | — | — |
-| `search_leftmenu` | `Search` | `SearchIconVariant` | `SearchRowVariant` → `SidebarExceptionButton` |
-| `timer` / `wheel_mdl` | `PromoBlock` | `PromoIconVariant` | `PromoRowVariant` → `SidebarExceptionButton` |
-| `aside_header_logo` | `Logo` | `Logo` | — |
-| else | `DefaultItemBlock` → pack `Item` | compact ActionIcon Item | — |
+| Condition               | Block                            | Compact overlay         | Exception                                     |
+| ----------------------- | -------------------------------- | ----------------------- | --------------------------------------------- |
+| `item.items.length > 0` | `DropdownBlock`                  | —                       | —                                             |
+| `search_leftmenu`       | `Search`                         | `SearchIconVariant`     | `SearchRowVariant` → `SidebarExceptionButton` |
+| `timer` / `wheel_mdl`   | `PromoBlock`                     | `PromoIconVariant`      | `PromoRowVariant` → `SidebarExceptionButton`  |
+| `aside_header_logo`     | `Logo`                           | `Logo`                  | —                                             |
+| else                    | `DefaultItemBlock` → pack `Item` | compact ActionIcon Item | —                                             |
 
 Unknown API keys → default. New special keys → new `case` + table row.
 
@@ -225,19 +227,19 @@ Overlay wrappers (`wrappers.search` / `wrappers.promo`) stay inside Search/Promo
 
 ## File touch list (expected)
 
-| Area | Change |
-| --- | --- |
-| `hooks/useSidebar.ts` | new |
-| `lib/resolveSidebarMenu.ts` (or similar) | move from app |
-| `ui/Root.tsx` → `Sidebar` | hybrid + JSX Layout; no `createElement` |
-| `ui/Block.tsx` | explicit switch; no `createElement` |
-| `ui/type/*/Strategy.tsx` | keep/clarify explicit trees |
-| `registry/layouts.ts` | lookup only; consumers use `<Layout>` |
-| `registry/blocks.ts` | slim or keep for tests; not render via `createElement` |
-| `public.ts` | export hook/types if needed; `AppSidebar` |
-| `app/layouts/AppLayout/*` | stop passing sidebar menu/config |
-| `test/widgets/sidebar/**` | new contract tests |
-| docs: `ARCHITECTURE.md` / Develop stories | pipeline note if already documenting sidebar |
+| Area                                      | Change                                                 |
+| ----------------------------------------- | ------------------------------------------------------ |
+| `hooks/useSidebar.ts`                     | new                                                    |
+| `lib/resolveSidebarMenu.ts` (or similar)  | move from app                                          |
+| `ui/Root.tsx` → `Sidebar`                 | hybrid + JSX Layout; no `createElement`                |
+| `ui/Block.tsx`                            | explicit switch; no `createElement`                    |
+| `ui/type/*/Strategy.tsx`                  | keep/clarify explicit trees                            |
+| `registry/layouts.ts`                     | lookup only; consumers use `<Layout>`                  |
+| `registry/blocks.ts`                      | slim or keep for tests; not render via `createElement` |
+| `public.ts`                               | export hook/types if needed; `AppSidebar`              |
+| `app/layouts/AppLayout/*`                 | stop passing sidebar menu/config                       |
+| `test/widgets/sidebar/**`                 | new contract tests                                     |
+| docs: `ARCHITECTURE.md` / Develop stories | pipeline note if already documenting sidebar           |
 
 ## Risks
 

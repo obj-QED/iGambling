@@ -2,14 +2,12 @@ import type { HeaderMenuModel } from '@/widgets/header';
 
 import { Activity, memo, useEffect, useLayoutEffect, useRef } from 'react';
 
+import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
-
-import { AppProfiler } from '@/app/performance';
 
 import { useIsMobile } from '@hooks/useIsMobile';
 
-import { SidebarDrawerProvider, useSidebarDrawer } from '@/shared/lib';
-import { AppDrawer } from '@/shared/ui';
+import { AppDrawer, AppDrawerProvider, useAppDrawerContext } from '@/shared/ui';
 import { AppBanner } from '@/widgets/banner';
 import { AppFooter } from '@/widgets/footer';
 import { AppHeader } from '@/widgets/header';
@@ -49,7 +47,7 @@ type SidebarSlotProps = {
 };
 
 function SidebarSlot({ sidebarMenu, sidebarConfig, isMobile }: SidebarSlotProps) {
-  const { opened, close } = useSidebarDrawer();
+  const { opened, close } = useAppDrawerContext();
   const location = useLocation();
 
   useEffect(() => {
@@ -67,29 +65,27 @@ function SidebarSlot({ sidebarMenu, sidebarConfig, isMobile }: SidebarSlotProps)
     .join(' ');
 
   const sidebar = (
-    <AppProfiler id="Sidebar">
-      <AppSidebar menu={sidebarMenu} config={sidebarConfig} className={asideClassName} />
-    </AppProfiler>
+    <AppSidebar
+      menu={sidebarMenu}
+      config={sidebarConfig}
+      className={clsx(asideClassName, 'cmf-Sidebar')}
+    />
   );
 
-  return (
-    <Activity mode={activityMode(true)}>
-      {isMobile ? (
-        <AppDrawer
-          opened={opened}
-          onClose={close}
-          position="left"
-          withCloseButton={false}
-          keepMounted
-          cmfComponent="layout"
-          cmfKey="sidebar"
-        >
-          {sidebar}
-        </AppDrawer>
-      ) : (
-        sidebar
-      )}
-    </Activity>
+  return isMobile ? (
+    <AppDrawer
+      opened={opened}
+      onClose={close}
+      position="left"
+      withCloseButton={false}
+      keepMounted
+      cmfComponent="layout"
+      cmfKey="sidebar"
+    >
+      {sidebar}
+    </AppDrawer>
+  ) : (
+    sidebar
   );
 }
 
@@ -115,10 +111,11 @@ function AppLayoutChromeComponent({
   }, [skeleton, sidebarMenu, isMobile]);
 
   return (
-    <SidebarDrawerProvider>
+    <AppDrawerProvider>
       <div
         ref={rootRef}
-        className={styles.root}
+        className={clsx(styles.root, 'cmf-Layout')}
+        data-cmf-component="layout"
         {...(skeleton
           ? {
               'data-shell-skeleton': '',
@@ -130,37 +127,31 @@ function AppLayoutChromeComponent({
       >
         <SidebarSlot sidebarMenu={sidebarMenu} sidebarConfig={sidebarConfig} isMobile={isMobile} />
 
-        <div className={styles.content}>
+        <div className={clsx(styles.content, 'cmf-Layout-content')}>
           <Activity mode={activityMode(headerMenu !== null)}>
-            <AppProfiler id="Header">
-              <AppHeader
-                menu={resolvedMenu(headerMenu)}
-                config={headerConfig}
-                className={styles.header}
-              />
-            </AppProfiler>
+            <AppHeader
+              menu={resolvedMenu(headerMenu)}
+              config={headerConfig}
+              className={styles.header}
+            />
           </Activity>
 
           {banner && <AppBanner banner={banner} schema={bannerSchema} className={styles.banner} />}
 
-          <AppProfiler id="Content">
-            <AppLayoutMain />
-          </AppProfiler>
+          <AppLayoutMain />
 
           {/* Keep footer out of the first viewport during skeleton — short page → bottom
               footer would teleport below the fold when Home commits. */}
           <Activity mode={activityMode(footerMenu !== null && !skeleton)}>
-            <AppProfiler id="Footer">
-              <AppFooter
-                menu={resolvedMenu(footerMenu)}
-                schema={footerSchema}
-                className={styles.footer}
-              />
-            </AppProfiler>
+            <AppFooter
+              menu={resolvedMenu(footerMenu)}
+              schema={footerSchema}
+              className={styles.footer}
+            />
           </Activity>
         </div>
       </div>
-    </SidebarDrawerProvider>
+    </AppDrawerProvider>
   );
 }
 

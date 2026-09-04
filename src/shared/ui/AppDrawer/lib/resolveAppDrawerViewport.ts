@@ -1,19 +1,20 @@
 import type { AppDrawerViewport } from '../types/props.types';
 
-import { BREAKPOINTS_PX } from '@/assets/theme/breakpoints';
+import { readBreakpointsPx } from '@/assets/theme/readBreakpointsPx';
 
 /**
  * Map viewport width → breakpoint band for `data-viewport`.
- * SoT: `BREAKPOINTS_PX` (mobile ≤767, tablet ≤1024, laptop ≤1440, else pc).
+ * SoT: theme `--breakpoint-*` via `readBreakpointsPx()`, else `BREAKPOINTS_PX`.
  */
 export function resolveAppDrawerViewport(width: number): AppDrawerViewport {
-  if (width <= BREAKPOINTS_PX.mobile) {
+  const { mobile, tablet, laptop } = readBreakpointsPx();
+  if (width <= mobile) {
     return 'mobile';
   }
-  if (width <= BREAKPOINTS_PX.tablet) {
+  if (width <= tablet) {
     return 'tablet';
   }
-  if (width <= BREAKPOINTS_PX.laptop) {
+  if (width <= laptop) {
     return 'laptop';
   }
   return 'pc';

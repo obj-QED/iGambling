@@ -1,8 +1,9 @@
-import type { AppButtonProps } from '../types';
+import type { AppButtonProps, AppButtonSectionClassNames } from '../types';
 
-import { forwardRef } from 'react';
+import { forwardRef, type RefObject, useLayoutEffect, useRef } from 'react';
 
 import { Button } from '@mantine/core';
+import { useMergedRef } from '@mantine/hooks';
 
 import { useNavActive } from '@/shared/hooks';
 import { resolveAppButtonHrefState, useAppHrefClickHandler } from '@/shared/lib';
@@ -14,6 +15,47 @@ import {
 
 import { hasAppButtonContent } from '../types/props.types';
 
+const SECTION_SELECTOR = '.cmf-Button-section';
+
+function syncSectionClass(
+  root: HTMLElement,
+  position: 'left' | 'right',
+  next: string | undefined,
+  prev: string | undefined,
+): string | undefined {
+  const el = root.querySelector(`${SECTION_SELECTOR}[data-position="${position}"]`);
+  if (el !== null && prev !== undefined && prev.length > 0) {
+    for (const token of prev.split(/\s+/)) {
+      if (token.length > 0) el.classList.remove(token);
+    }
+  }
+  if (el !== null && next !== undefined && next.length > 0) {
+    for (const token of next.split(/\s+/)) {
+      if (token.length > 0) el.classList.add(token);
+    }
+  }
+  return next;
+}
+
+function useButtonSectionClassNames(
+  rootRef: RefObject<HTMLButtonElement | null>,
+  sectionClassNames: AppButtonSectionClassNames | undefined,
+  leftSection: AppButtonProps['leftSection'],
+  rightSection: AppButtonProps['rightSection'],
+): void {
+  const appliedRef = useRef<AppButtonSectionClassNames>({});
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (root === null) return;
+
+    appliedRef.current = {
+      left: syncSectionClass(root, 'left', sectionClassNames?.left, appliedRef.current.left),
+      right: syncSectionClass(root, 'right', sectionClassNames?.right, appliedRef.current.right),
+    };
+  }, [rootRef, sectionClassNames?.left, sectionClassNames?.right, leftSection, rightSection]);
+}
+
 export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function AppButton(
   {
     label,
@@ -22,6 +64,7 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
     disabled,
     leftSection,
     rightSection,
+    sectionClassNames,
     onClick,
     type = 'button',
     justify,
@@ -33,6 +76,8 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
   },
   ref,
 ) {
+  const localRef = useRef<HTMLButtonElement>(null);
+  const mergedRef = useMergedRef(ref, localRef);
   const { href, disabledForHref } = resolveAppButtonHrefState(hrefProp, native);
   const hrefNavigationEnabled = href !== undefined;
   const navigateHref = useAppHrefClickHandler(href, hrefNavigationEnabled);
@@ -44,6 +89,8 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
     matchRoute,
     activeMatch,
   });
+
+  useButtonSectionClassNames(localRef, sectionClassNames, leftSection, rightSection);
 
   if (!hasAppButtonContent(label, leftSection, rightSection)) return null;
 
@@ -64,7 +111,7 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function 
 
   return (
     <Button
-      ref={ref}
+      ref={mergedRef}
       {...buttonProps}
       {...activeAttrs}
       type={type}

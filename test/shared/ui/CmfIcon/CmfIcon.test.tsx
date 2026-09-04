@@ -4,9 +4,14 @@ import { describe, expect, it, vi } from 'vitest';
 import { CmfIcon } from '@/shared/ui/CmfIcon';
 
 vi.mock('react-inlinesvg', () => ({
-  default: ({ src, onError }: { src: string; onError?: () => void }) => (
-    <svg data-testid="inline-svg" data-src={src} onError={onError} />
-  ),
+  default: ({
+    src,
+    onError,
+    ...rest
+  }: {
+    src: string;
+    onError?: () => void;
+  } & Record<string, unknown>) => <svg data-testid="inline-svg" onError={onError} {...rest} />,
 }));
 
 describe('CmfIcon', () => {
@@ -32,12 +37,12 @@ describe('CmfIcon', () => {
     expect(onError).toHaveBeenCalledTimes(1);
   });
 
-  it('renders inline SVG for .svg sources with data-src', () => {
+  it('renders inline SVG for .svg sources with data-cmf-icon-src', () => {
     const { getByTestId, getByRole } = render(
       <CmfIcon src="/uploads/web.svg" alt="Web" shape="square" radius="round" />,
     );
 
-    expect(getByTestId('inline-svg')).toHaveAttribute('data-src', '/uploads/web.svg');
+    expect(getByTestId('inline-svg')).toHaveAttribute('data-cmf-icon-src', '/uploads/web.svg');
     expect(getByRole('img', { name: 'Web' })).toHaveAttribute(
       'data-cmf-icon-src',
       '/uploads/web.svg',

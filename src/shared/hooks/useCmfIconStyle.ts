@@ -4,7 +4,7 @@ import { useLayoutEffect, useState } from 'react';
 
 import { type CmfIconStyle, findCmfIconScope, readCmfIconStyle } from '@/shared/lib/cmfIcon';
 
-export function useCmfIconStyle(ref: RefObject<HTMLElement | null>): CmfIconStyle {
+export function useCmfIconStyle(ref: RefObject<Element | null>): CmfIconStyle {
   const [style, setStyle] = useState<CmfIconStyle>({});
 
   useLayoutEffect(() => {

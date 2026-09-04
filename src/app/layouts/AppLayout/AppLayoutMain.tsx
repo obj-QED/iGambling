@@ -3,6 +3,7 @@ import type { PageLayoutMatch } from '../lib/resolvePageLayout';
 import { memo, Suspense } from 'react';
 
 import { Container } from '@mantine/core';
+import clsx from 'clsx';
 import { Outlet, useMatches } from 'react-router-dom';
 
 import { resolvePageLayoutFromMatches } from '../lib/resolvePageLayout';
@@ -27,7 +28,7 @@ function AppLayoutMainComponent() {
 
   return (
     <Container
-      className={styles.page}
+      className={clsx(styles.page, 'cmf-Main-page')}
       component="main"
       size={pageLayout === 'info' ? 'md' : 'responsive'}
     >

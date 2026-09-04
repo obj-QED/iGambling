@@ -1,4 +1,8 @@
 @layer widget.component {
+  .root {
+    position: relative;
+  }
+
   .mark {
     display: block;
     width: 70%;

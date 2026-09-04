@@ -1,7 +1,7 @@
 /**
  * Sidebar React contexts — grouped by concern.
  *
- * - `config/`   — resolved SidebarConfig
+ * - `config/`   — resolved SidebarSchema
  * - `dropdown/` — open-key set for nested rows
  * - `size/`     — Mantine button size from CSS var
  * - `typePack/` — default vs compact presentation pack

@@ -19,6 +19,12 @@ import {
 } from '../../../lib';
 import { ItemImage } from '../ItemImage/ItemImage';
 
+/** On `.cmf-Button-section` (slot). */
+const CMF_BUTTON_SECTION_ICON = 'cmf-Button-section-icon';
+const CMF_BUTTON_SECTION_CHEVRON = 'cmf-Button-section-chevron';
+/** On media / SVG inside the section. */
+const CMF_BUTTON_ICON = 'cmf-Button-icon';
+
 const ItemDropdownTriggerComponent = forwardRef<HTMLButtonElement, ItemDropdownTriggerProps>(
   function ItemDropdownTriggerComponent({ item, rightSection, ...rest }, ref) {
     const menuSizes = useHeaderMenuSizes();
@@ -28,7 +34,9 @@ const ItemDropdownTriggerComponent = forwardRef<HTMLButtonElement, ItemDropdownT
     const buttonSize = resolveHeaderMenuButtonSize(item, menuSizes);
     const leftSection = useMemo(
       () =>
-        showItemImg ? <ItemImage item={item} alt={label} onImgFailed={onImgError} /> : undefined,
+        showItemImg ? (
+          <ItemImage item={item} alt={label} className={CMF_BUTTON_ICON} onImgFailed={onImgError} />
+        ) : undefined,
       [showItemImg, item, label, onImgError],
     );
     const actionIconMedia = useMemo(
@@ -79,6 +87,10 @@ const ItemDropdownTriggerComponent = forwardRef<HTMLButtonElement, ItemDropdownT
         size={buttonSize}
         leftSection={leftSection}
         rightSection={rightSection}
+        sectionClassNames={{
+          left: leftSection !== undefined ? CMF_BUTTON_SECTION_ICON : undefined,
+          right: rightSection !== undefined ? CMF_BUTTON_SECTION_CHEVRON : undefined,
+        }}
         aria-label={label}
         aria-haspopup="menu"
         active={item.active}

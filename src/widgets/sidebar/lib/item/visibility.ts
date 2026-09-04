@@ -1,10 +1,17 @@
 import type { HeaderMenuItem } from '@/widgets/header';
 
-import { isSidebarSpecialBlockKey } from '../../config/sidebarSpecialBlockKeys';
+import {
+  DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS,
+  isSidebarSpecialBlockKey,
+} from '../../config/sidebarSpecialBlockKeys';
 import { itemImg, itemName } from './key';
 
-export function isSpecialBlockKey(key: string | undefined): boolean {
-  return isSidebarSpecialBlockKey(key ?? '');
+/** Pass resolved `schema.specialBlockKeys` when available; omit → pack defaults. */
+export function isSpecialBlockKey(
+  key: string | undefined,
+  specialBlockKeys: readonly string[] = DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS,
+): boolean {
+  return isSidebarSpecialBlockKey(key ?? '', specialBlockKeys);
 }
 
 export function hasItemName(item: HeaderMenuItem): boolean {

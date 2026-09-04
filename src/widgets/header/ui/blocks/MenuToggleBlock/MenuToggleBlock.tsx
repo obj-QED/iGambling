@@ -2,8 +2,8 @@ import type { BlockProps } from '../../../types';
 
 import { memo, useCallback } from 'react';
 
-import { controlAttrs, resolveCmfScope, useSidebarDrawer } from '@/shared/lib';
-import { MenuToggle } from '@/shared/ui';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { MenuToggle, useAppDrawerContext } from '@/shared/ui';
 
 import { useHeaderMenuSizes } from '../../../context';
 import { resolveHeaderMenuActionIconSize, resolveMenuItemActionIconVariant } from '../../../lib';
@@ -11,7 +11,7 @@ import { HeaderActionIconTooltip } from '../../shared/HeaderActionIconTooltip';
 
 function MenuToggleBlockComponent({ item }: BlockProps) {
   const menuSizes = useHeaderMenuSizes();
-  const { opened, toggle } = useSidebarDrawer();
+  const { opened, toggle } = useAppDrawerContext();
 
   const handleClick = useCallback(() => {
     toggle();

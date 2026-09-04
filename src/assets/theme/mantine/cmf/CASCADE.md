@@ -60,6 +60,16 @@ vars(): CLEAR_* (null)  →  resolve*RootVars (nestCssVars)
 6. built-in paint / Mantine size table
 ```
 
+Group layout (`data-cmf-*` on Mantine `Group`):
+
+```txt
+1. --cmf-group-{component}-{key}-{gap|align|justify|wrap}
+2. --cmf-group-{component}-{gap|align|justify|wrap}
+3. --cmf-group-{gap|align|justify|wrap}
+4. Mantine defaults (sm / center / flex-start / wrap)
+```
+
+→ `--group-gap` / `--group-align` / `--group-justify` / `--group-wrap`
 Tooltip (portal → tokens on `:root`):
 
 ```txt

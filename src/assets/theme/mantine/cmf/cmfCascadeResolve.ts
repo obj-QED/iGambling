@@ -61,7 +61,7 @@ export function nestCssVars(names: string[], fallback: string): string {
   return names.reduceRight((inner, name) => `var(${name}, ${inner})`, fallback);
 }
 
-type CmfControlName = 'button' | 'action-icon';
+type CmfControlName = 'button' | 'action-icon' | 'group';
 
 function cmfControlName(control: CmfControlName, ...parts: string[]): string {
   return `--cmf-${control}-${parts.join('-')}`;
@@ -145,4 +145,19 @@ export function buildCmfActionIconPropToken(
   options: BuildCmfPropTokenOptions = {},
 ): string {
   return buildCmfControlPropToken('action-icon', prop, fallback, options);
+}
+
+/**
+ * Group layout cascade (no variant/role):
+ * key → component → shared `--cmf-group-{prop}` → fallback
+ */
+export function buildCmfGroupPropToken(
+  prop: string,
+  fallback: string,
+  options: Pick<BuildCmfPropTokenOptions, 'scope'> = {},
+): string {
+  return buildCmfControlPropToken('group', prop, fallback, {
+    scope: options.scope,
+    tail: 'shared',
+  });
 }

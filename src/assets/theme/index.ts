@@ -1,4 +1,6 @@
 /** Public theme surface. Import the Mantine theme/config from here. */
+export type { BreakpointName } from './breakpoints';
+export { BREAKPOINTS_PX, breakpointsEm, pxToEm } from './breakpoints';
 export type {
   CmfActionIconCustomVariant,
   CmfActionIconSize,
@@ -19,3 +21,4 @@ export {
   mantineCssVariablesResolver,
   mantineTheme,
 } from './mantine';
+export { BREAKPOINT_CSS_VARS, parseBreakpointPx, readBreakpointsPx } from './readBreakpointsPx';

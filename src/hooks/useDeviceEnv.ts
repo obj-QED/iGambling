@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import {
   type DeviceEnv,
-  IS_MOBILE_MEDIA_QUERY,
+  getIsMobileMediaQuery,
   readDeviceEnv,
   subscribeFullscreenChange,
   syncDeviceBodyClasses,
@@ -16,7 +16,7 @@ export function useDeviceEnv(): DeviceEnv {
   const [env, setEnv] = useState(readDeviceEnv);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(IS_MOBILE_MEDIA_QUERY);
+    const mediaQuery = window.matchMedia(getIsMobileMediaQuery());
 
     const sync = (): void => {
       const next = readDeviceEnv();

@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-
 import { render, screen } from '@testing-library/react';
 import { MantineProvider } from '@mantine/core';
 import { describe, expect, it, vi } from 'vitest';
@@ -17,10 +15,6 @@ vi.mock('@hooks/useIsMobile', () => ({
 
 vi.mock('@/app/layouts/AppLayout/AppLayoutMain', () => ({
   AppLayoutMain: () => <main>page</main>,
-}));
-
-vi.mock('@/app/performance', () => ({
-  AppProfiler: ({ children }: { children: ReactNode }) => children,
 }));
 
 vi.mock('@/widgets/header', async (importOriginal) => {

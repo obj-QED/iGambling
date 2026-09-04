@@ -2,14 +2,12 @@ import type { BlockProps } from '../../../types';
 
 import { createElement, memo } from 'react';
 
-import { AdapterBoundary, preloadAdapters, useAdapter, useWrapper } from '@/shared/lib';
+import { AdapterBoundary, useAdapter, useWrapper } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useSidebarConfig } from '../../../context';
 import { resolveItemLabel } from '../../../lib';
 import { SEARCH_ADAPTER_KEYS, SEARCH_ADAPTERS } from './adapters';
-
-import hostStyles from '../../../styles/base/Host.module.scss';
 
 /**
  * Sync search block router.
@@ -28,18 +26,7 @@ function SearchComponent({ item, className }: BlockProps) {
   const adapterNode = createElement(Adapter, { item, className });
 
   if (!wrapperMode || wrapperMode === 'none') {
-    return (
-      <AdapterBoundary>
-        <span
-          className={hostStyles.root}
-          onPointerEnter={() => {
-            preloadAdapters(SEARCH_ADAPTERS, 'row');
-          }}
-        >
-          {adapterNode}
-        </span>
-      </AdapterBoundary>
-    );
+    return <AdapterBoundary>{adapterNode}</AdapterBoundary>;
   }
 
   return (

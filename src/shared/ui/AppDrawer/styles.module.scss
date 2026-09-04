@@ -61,7 +61,9 @@
     height: 100%;
     overflow: hidden;
     border-radius: inherit;
-    padding: 0;
+
+    /* Inherits `--_cmf-drawer-padding` from `.content` cascade (base / component / key). */
+    padding: var(--_cmf-drawer-padding, var(--drawer-padding, 0));
 
     > * {
       flex: 1 1 auto;

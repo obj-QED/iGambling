@@ -71,3 +71,4 @@ PROJECT_CONTEXT.md
 .claude/*
 *.vsix
 ts_errors.txt
+.worktrees/

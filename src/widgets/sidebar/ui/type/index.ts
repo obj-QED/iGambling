@@ -12,4 +12,4 @@ export type {
   SidebarTypeStyles,
 } from './types';
 /** Re-export — implementation lives next to `SidebarTypePackContext`. */
-export { useSidebarTypePack } from '../../context/typePack';
+export { useSidebarTypePack } from '../../context';

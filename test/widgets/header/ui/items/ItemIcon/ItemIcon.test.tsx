@@ -6,9 +6,12 @@ import { ConfigProvider } from '@/widgets/header/context/provider';
 import { ItemIcon } from '@/widgets/header/ui/items/ItemIcon/ItemIcon';
 
 vi.mock('react-inlinesvg', () => ({
-  default: ({ src, onError }: { src: string; onError?: () => void }) => (
-    <svg data-testid="inline-svg" data-src={src} onError={onError} />
-  ),
+  default: ({
+    onError,
+    ...rest
+  }: {
+    onError?: () => void;
+  } & Record<string, unknown>) => <svg data-testid="inline-svg" onError={onError} {...rest} />,
 }));
 
 describe('ItemIcon', () => {
@@ -32,7 +35,7 @@ describe('ItemIcon', () => {
       </ConfigProvider>,
     );
 
-    expect(getByTestId('inline-svg')).toHaveAttribute('data-src', '/uploads/web.svg');
+    expect(getByTestId('inline-svg')).toHaveAttribute('data-cmf-icon-src', '/uploads/web.svg');
     expect(getByRole('img', { name: 'Web' })).toHaveAttribute(
       'data-cmf-icon-src',
       '/uploads/web.svg',

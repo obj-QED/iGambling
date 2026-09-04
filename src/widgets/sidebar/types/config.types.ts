@@ -56,6 +56,11 @@ export type SidebarSchema = {
   blockVariants: SidebarBlockVariants;
   /** Default open dropdown keys — first visit only; then localStorage. */
   openedDropdowns: readonly string[];
+  /**
+   * Keys with dedicated block UI (Search / Promo / Logo / …).
+   * From `aside.specialBlockKeys`; omit in settings → defaults.
+   */
+  specialBlockKeys: readonly string[];
   customBlocks?: HeaderCustomBlockConfig[];
   /** Which chrome regions Strategy may render. */
   regions: SidebarRegionsConfig;

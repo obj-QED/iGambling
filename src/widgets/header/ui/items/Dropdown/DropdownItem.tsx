@@ -12,6 +12,9 @@ import { useHeaderMenuSizes } from '../../../context';
 import { resolveHeaderMenuButtonSize, resolveItemHref, resolveItemLabel } from '../../../lib';
 import { ItemImage } from '../ItemImage/ItemImage';
 
+const CMF_BUTTON_SECTION_ICON = 'cmf-Button-section-icon';
+const CMF_BUTTON_ICON = 'cmf-Button-icon';
+
 function DropdownItemComponent({ item }: DropdownItemProps) {
   const menuSizes = useHeaderMenuSizes();
   const { onImgError, showItemImg, iconControlAttrs } = useMediaState(item);
@@ -19,7 +22,9 @@ function DropdownItemComponent({ item }: DropdownItemProps) {
   const label = resolveItemLabel(item);
   const leftSection = useMemo(
     () =>
-      showItemImg ? <ItemImage item={item} alt={label} onImgFailed={onImgError} /> : undefined,
+      showItemImg ? (
+        <ItemImage item={item} alt={label} className={CMF_BUTTON_ICON} onImgFailed={onImgError} />
+      ) : undefined,
     [showItemImg, item, label, onImgError],
   );
   const content = item.name ?? label;
@@ -30,6 +35,9 @@ function DropdownItemComponent({ item }: DropdownItemProps) {
       href={href}
       label={content}
       leftSection={leftSection}
+      sectionClassNames={{
+        left: leftSection !== undefined ? CMF_BUTTON_SECTION_ICON : undefined,
+      }}
       variant="outline"
       size={resolveHeaderMenuButtonSize(item, menuSizes)}
       fullscreen

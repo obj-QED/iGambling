@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { ItemMedia } from '@/widgets/sidebar/ui/items/ItemMedia/ItemMedia';
 
 vi.mock('react-inlinesvg', () => ({
-  default: ({ src }: { src: string }) => <svg data-testid="inline-svg" data-src={src} />,
+  default: ({ ...rest }: Record<string, unknown>) => <svg data-testid="inline-svg" {...rest} />,
 }));
 
 describe('ItemMedia', () => {
@@ -27,10 +27,7 @@ describe('ItemMedia', () => {
 
   it('hides image on error even without onImgError callback', () => {
     render(
-      <ItemMedia
-        item={{ key: 'home', name: 'Home', url: '/', img: '/missing.png' }}
-        alt="Home"
-      />,
+      <ItemMedia item={{ key: 'home', name: 'Home', url: '/', img: '/missing.png' }} alt="Home" />,
     );
 
     fireEvent.error(screen.getByRole('img', { name: 'Home' }));
@@ -46,7 +43,10 @@ describe('ItemMedia', () => {
       />,
     );
 
-    expect(screen.getByTestId('inline-svg')).toHaveAttribute('data-src', '/uploads/web.svg');
+    expect(screen.getByTestId('inline-svg')).toHaveAttribute(
+      'data-cmf-icon-src',
+      '/uploads/web.svg',
+    );
     expect(screen.getByRole('img', { name: 'Home' })).toHaveAttribute(
       'data-cmf-icon-src',
       '/uploads/web.svg',

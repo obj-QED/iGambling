@@ -1,10 +1,10 @@
-import type { SidebarConfig } from '../../types';
+import type { SidebarSchema } from '../../types';
 
 import { useContext } from 'react';
 
 import { SidebarConfigContext } from './context';
 
-export function useSidebarConfig(): SidebarConfig {
+export function useSidebarConfig(): SidebarSchema {
   const config = useContext(SidebarConfigContext);
   if (config === null) {
     throw new Error('useSidebarConfig must be used within SidebarConfigProvider');

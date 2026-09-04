@@ -5,3 +5,9 @@ export {
   SIDEBAR_TYPE_TUNABLE_DEFAULTS,
 } from './defaults';
 export { resolveSidebarConfig, resolveSidebarSchema, type SidebarSchemaLayer } from './resolve';
+export {
+  DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS,
+  isSidebarSpecialBlockKey,
+  SIDEBAR_SPECIAL_BLOCK_KEYS,
+  type SidebarSpecialBlockKey,
+} from './sidebarSpecialBlockKeys';

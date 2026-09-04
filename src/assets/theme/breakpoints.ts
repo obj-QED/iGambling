@@ -1,10 +1,13 @@
 /**
- * Breakpoints — single source of truth (px).
+ * Breakpoint fallbacks (px) + build-time SoT for SCSS / Mantine.
  *
- * - Mantine theme consumes the `em` values (see breakpointsEm).
- * - SCSS gets `$mobile/$tablet/$laptop/$pc` (px) injected into every file via
- *   vite.config `css.preprocessorOptions.scss.additionalData`, so any *.scss /
- *   *.module.scss can use `@media (max-width: $tablet) { ... }`.
+ * Runtime chrome (`useIsMobile`, drawer `data-viewport`) prefers CSS vars from
+ * `tokens/theme.scss` (`--breakpoint-*`) via `readBreakpointsPx()` — then this map.
+ *
+ * Keep numbers aligned with theme.scss so `@media ($tablet)` and JS stay in sync.
+ *
+ * - SCSS: `$mobile/$tablet/$laptop/$pc` via `build/scss-config.ts`
+ * - Mantine: `breakpointsEm` in `mantineTheme.ts`
  */
 export const BREAKPOINTS_PX = {
   mobile: 767,

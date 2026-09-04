@@ -7,7 +7,9 @@ import { Group } from '@mantine/core';
 import { IconMenu2 } from '@tabler/icons-react';
 import clsx from 'clsx';
 
-import { controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { useIsMobile } from '@hooks/useIsMobile';
+
+import { cmfControlAttrs, controlAttrs, resolveCmfScope } from '@/shared/lib';
 import { AppActionIcon } from '@/shared/ui';
 import { AppLogo, AppTooltip } from '@/shared/ui';
 
@@ -76,9 +78,11 @@ function LogoComponent({ item, className }: BlockProps) {
   const { tooltip } = useSidebarConfig();
   const { itemKind } = useSidebarTypePack();
   const size = useAsideMenuButtonSize();
+  const isMobile = useIsMobile();
   const { visible, onImgError, showItemImg } = useMenuItemRenderable(item);
   const isCompact = itemKind === 'actionIcon';
-  const showTrigger = item.menuIcon === true;
+  /** Burger opens chrome elsewhere on ≤ tablet; drawer close lives in SidebarHeader. */
+  const showTrigger = item.menuIcon === true && !isMobile;
 
   if (!showTrigger && !visible) return null;
 
@@ -156,7 +160,10 @@ function LogoComponent({ item, className }: BlockProps) {
     );
 
   return (
-    <Group gap="sm" className={className} justify={isCompact ? 'center' : 'flex-start'}>
+    <Group
+      className={clsx(styles.root, className)}
+      {...cmfControlAttrs({ component: 'sidebar-header', key: LOGO_CMF_KEY })}
+    >
       {trigger}
       {logoNode}
     </Group>

@@ -2,6 +2,13 @@ import type { NavActiveMatch } from '@/shared/lib';
 import type { ButtonProps } from '@mantine/core';
 import type { MouseEventHandler, ReactNode } from 'react';
 
+export type AppButtonSectionClassNames = {
+  /** Extra classes on `.cmf-Button-section[data-position=left]`. */
+  left?: string;
+  /** Extra classes on `.cmf-Button-section[data-position=right]`. */
+  right?: string;
+};
+
 export type AppButtonProps = Omit<ButtonProps, 'children' | 'fullWidth'> & {
   label?: ReactNode;
   href?: string;
@@ -15,6 +22,11 @@ export type AppButtonProps = Omit<ButtonProps, 'children' | 'fullWidth'> & {
   matchRoute?: boolean;
   /** Internal route match mode. Default: `exact`. */
   activeMatch?: NavActiveMatch;
+  /**
+   * Extra class names on Mantine section slots (left / right).
+   * Applied on the `.cmf-Button-section` element itself (Mantine has one class for both).
+   */
+  sectionClassNames?: AppButtonSectionClassNames;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: 'button' | 'submit' | 'reset';
 };

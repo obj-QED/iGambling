@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildCmfActionIconPropToken,
   buildCmfButtonPropToken,
+  buildCmfGroupPropToken,
   resolveCmfScope,
 } from '@/assets/theme/mantine/cmf/cmfCascadeResolve';
 
@@ -62,6 +63,16 @@ describe('cmfCascadeResolve', () => {
 
     expect(token).toBe(
       'var(--cmf-button-header-sign_up-radius, var(--cmf-button-header-radius, var(--cmf-button-radius, var(--mantine-radius-md))))',
+    );
+  });
+
+  it('builds Group layout cascade key → component → shared', () => {
+    const token = buildCmfGroupPropToken('justify', 'flex-start', {
+      scope: { component: 'sidebar-header', key: 'logo' },
+    });
+
+    expect(token).toBe(
+      'var(--cmf-group-sidebar-header-logo-justify, var(--cmf-group-sidebar-header-justify, var(--cmf-group-justify, flex-start)))',
     );
   });
 

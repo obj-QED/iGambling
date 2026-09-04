@@ -1,12 +1,12 @@
 import type { BlockProps } from '../../../../types';
 
-import { memo, useCallback, useState } from 'react';
+import { memo } from 'react';
 
 import { Text } from '@mantine/core';
 import { IconWallet } from '@tabler/icons-react';
 
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
-import { AppActionIcon, AppDrawer } from '@/shared/ui';
+import { AppActionIcon, AppDrawer, useAppDrawer } from '@/shared/ui';
 
 import { useHeaderMenuSizes } from '../../../../context';
 import {
@@ -20,15 +20,8 @@ import { HeaderActionIconTooltip } from '../../../shared/HeaderActionIconTooltip
 
 function WalletDrawerVariantComponent({ item }: BlockProps) {
   const menuSizes = useHeaderMenuSizes();
-  const [opened, setOpened] = useState(false);
+  const { opened, open, close } = useAppDrawer();
   const label = resolveItemLabel(item);
-
-  const open = useCallback(() => {
-    setOpened(true);
-  }, []);
-  const close = useCallback(() => {
-    setOpened(false);
-  }, []);
 
   if (!isRenderableItem(item)) return null;
 

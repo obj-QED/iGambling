@@ -2,14 +2,12 @@ import type { BlockProps } from '../../../types';
 
 import { createElement, memo } from 'react';
 
-import { AdapterBoundary, preloadAdapters, useAdapter, useWrapper } from '@/shared/lib';
+import { AdapterBoundary, useAdapter, useWrapper } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useSidebarConfig } from '../../../context';
 import { resolveItemLabel } from '../../../lib';
 import { PROMO_ADAPTER_KEYS, PROMO_ADAPTERS } from './adapters';
-
-import hostStyles from '../../../styles/base/Host.module.scss';
 
 /**
  * Sync promo block router (`timer` / `wheel_mdl`).
@@ -28,18 +26,7 @@ function PromoBlockComponent({ item, className }: BlockProps) {
   const adapterNode = createElement(Adapter, { item, className });
 
   if (!wrapperMode || wrapperMode === 'none') {
-    return (
-      <AdapterBoundary>
-        <span
-          className={hostStyles.root}
-          onPointerEnter={() => {
-            preloadAdapters(PROMO_ADAPTERS, 'row');
-          }}
-        >
-          {adapterNode}
-        </span>
-      </AdapterBoundary>
-    );
+    return <AdapterBoundary>{adapterNode}</AdapterBoundary>;
   }
 
   return (

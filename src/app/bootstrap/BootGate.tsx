@@ -49,11 +49,14 @@ export function BootGate({ bootstrapPending, children }: BootGateProps) {
   return (
     <>
       {showPreloader && <GlobalPreloader />}
-      {!bootstrapPending && (
-        <div className={warmup ? styles.warmup : undefined} aria-hidden={warmup || undefined}>
-          {children}
-        </div>
-      )}
+      {!bootstrapPending &&
+        (warmup ? (
+          <div className={styles.warmup} aria-hidden>
+            {children}
+          </div>
+        ) : (
+          children
+        ))}
     </>
   );
 }

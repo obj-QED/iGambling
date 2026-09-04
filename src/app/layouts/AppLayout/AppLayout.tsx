@@ -1,7 +1,5 @@
 import { memo } from 'react';
 
-import { AppProfiler } from '@/app/performance';
-
 import { useLanguage } from '@hooks/useLanguage';
 
 import { AppLayoutChrome } from './AppLayoutChrome';
@@ -45,11 +43,7 @@ function AppLayoutComponent() {
   const language = useLanguage();
   const layout = useAppLayout(language);
 
-  return (
-    <AppProfiler id="AppLayout">
-      <AppLayoutReady {...layout} />
-    </AppProfiler>
-  );
+  return <AppLayoutReady {...layout} />;
 }
 
 export const AppLayout = memo(AppLayoutComponent);

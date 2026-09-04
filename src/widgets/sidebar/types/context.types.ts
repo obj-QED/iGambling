@@ -1,8 +1,8 @@
-import type { SidebarConfig } from './config.types';
+import type { SidebarSchema } from './config.types';
 import type { ReactNode } from 'react';
 
 export type SidebarConfigProviderProps = {
-  config: SidebarConfig;
+  config: SidebarSchema;
   children: ReactNode;
 };
 

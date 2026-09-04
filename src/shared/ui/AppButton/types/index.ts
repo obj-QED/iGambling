@@ -1,1 +1,2 @@
-export type { AppButtonProps } from './props.types';
+export type { AppButtonProps, AppButtonSectionClassNames } from './props.types';
+export { hasAppButtonContent } from './props.types';

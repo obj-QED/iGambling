@@ -1,6 +1,6 @@
 import type { RootProps } from '../types';
 
-import { createElement, memo, useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
 
@@ -47,6 +47,8 @@ function RootComponent({ menu, config, className }: RootProps) {
   if (!chromeLayout || !hasSidebarLayoutContent(chromeLayout)) return null;
 
   const rootStyle = toSidebarRootWidthStyle(config.width, config.type);
+  const Layout = resolveSidebarLayout(config.layout);
+  const strategyNode = <Strategy layout={chromeLayout} config={config} />;
 
   return (
     <SidebarConfigProvider config={config}>
@@ -67,10 +69,8 @@ function RootComponent({ menu, config, className }: RootProps) {
                 aria-label="Sidebar menu"
                 {...(config.width && rootStyle && { style: rootStyle })}
               >
-                {createElement(resolveSidebarLayout(config.layout), {
-                  layout: config.layout,
-                  children: <Strategy layout={chromeLayout} config={config} />,
-                })}
+                {/* eslint-disable-next-line react-hooks/static-components -- registry returns stable layout components */}
+                <Layout layout={config.layout}>{strategyNode}</Layout>
               </aside>
             </SidebarDropdownProvider>
           </AsideMenuSizeContext.Provider>

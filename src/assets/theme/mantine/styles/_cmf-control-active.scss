@@ -5,6 +5,9 @@
 //   - `element` (default, omit in settings) → CSS `::after` bar (cascade tokens)
 //   - `line` → DOM `CmfActiveLine` + host only (no `::after`)
 //
+// Placement (element): `active-inset` / width / height — sidebar shifts left via
+// negative inset and height `100% + 2×bd` (see sidebar tokens).
+//
 // Prefer unlayered compound selectors (see components.module.scss) so CSS Modules
 // does not emit an empty `.actionIcon {}` / `.button {}` shell.
 
@@ -58,10 +61,13 @@
   }
 }
 
-/// `element` mode: CSS `::after` bar (aside default when `active` omitted).
+/// `element` mode: CSS `::after` bar.
 @mixin cmf-control-active-after-body($prefix, $position: null) {
   position: relative;
-  overflow: visible; // Mantine clips; needed for negative active-inset (e.g. -6px)
+  overflow: var(--#{$prefix}-active-overflow, visible);
+
+  /* When overflow is `clip`/`hidden`, keep rail inside the border-box (no past-edge bleed). */
+  overflow-clip-margin: var(--#{$prefix}-active-clip-margin, unset);
 
   @include cmf-control-active-radius-cascade($prefix, $position);
 
@@ -70,10 +76,12 @@
     position: absolute;
     pointer-events: none;
     z-index: 1;
-    background-color: var(--#{$prefix}-active-color, var(--brand-color-5));
+    box-sizing: border-box;
+    border: 0;
     inset: var(--#{$prefix}-active-inset, auto 0 0 0);
     width: var(--#{$prefix}-active-width, 100%);
     height: var(--#{$prefix}-active-height, 2px);
+    background-color: var(--#{$prefix}-active-color, var(--brand-color-5));
   }
 }
 

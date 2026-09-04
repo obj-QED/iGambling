@@ -3,6 +3,7 @@ import type { ChevronProps } from '../../../types';
 import { memo } from 'react';
 
 import { IconChevronDown } from '@tabler/icons-react';
+import clsx from 'clsx';
 
 import { HEADER_TABLER_ICON_PROPS } from '../icons/iconProps';
 
@@ -12,7 +13,7 @@ function ChevronComponent({ open = false }: ChevronProps) {
   return (
     <IconChevronDown
       {...HEADER_TABLER_ICON_PROPS}
-      className={styles.root}
+      className={clsx(styles.root, 'cmf-Button-chevron')}
       data-menu-chevron
       data-open={open || undefined}
     />

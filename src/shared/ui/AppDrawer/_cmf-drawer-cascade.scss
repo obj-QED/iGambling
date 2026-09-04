@@ -67,7 +67,8 @@ $cmf-drawer-overlay-props: opacity, blur;
   color: var(--_cmf-drawer-color);
   border-radius: var(--_cmf-drawer-radius);
   box-shadow: var(--_cmf-drawer-shadow);
-  padding: var(--_cmf-drawer-padding);
+
+  /* Padding applied on `.body` — panel shell stays flush (header / chrome). */
 
   @include cmf-drawer-bind-layers($cmf-drawer-props);
 }

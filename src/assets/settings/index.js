@@ -12,7 +12,7 @@
       fullscreen: true,
       preloader: {
         /** Global: false → no skeleton on shell/adapters/page. true / omit → on. */
-        skeleton: true,
+        skeleton: false,
       },
     },
     header: {
@@ -72,6 +72,11 @@
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: false,
       openedDropdowns: ['category', 'providers', 'live_games', 'casino', 'betting'],
+      /**
+       * Menu keys with dedicated block UI (not default row / HeaderLink).
+       * Omit → widget defaults. Component map stays in `ui/Block` switch.
+       */
+      specialBlockKeys: ['search_leftmenu', 'timer', 'wheel_mdl', 'aside_header_logo'],
       /**
        * Active route chrome. Omit → `element` (CSS `::after` via tokens, e.g. left bar).
        * `type: 'line'` → DOM `CmfActiveLine` (same contract as `header.active`).

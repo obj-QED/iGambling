@@ -3,6 +3,7 @@ import type { SidebarSchema } from '../types';
 import { DEFAULT_SIDEBAR_CMF_ACTIVE_CONFIG } from '@/shared/config';
 
 import { SIDEBAR_TYPE_TUNABLE_DEFAULTS } from '../ui/type/tunableDefaults';
+import { DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS } from './sidebarSpecialBlockKeys';
 
 export {
   DEFAULT_SIDEBAR_REGIONS,
@@ -20,6 +21,7 @@ export const DEFAULT_SIDEBAR_CONFIG: SidebarSchema = {
     promo: 'row',
   },
   openedDropdowns: [],
+  specialBlockKeys: [...DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS],
   regions: SIDEBAR_TYPE_TUNABLE_DEFAULTS.default.regions,
   scrollArea: SIDEBAR_TYPE_TUNABLE_DEFAULTS.default.scrollArea,
   tooltip: SIDEBAR_TYPE_TUNABLE_DEFAULTS.default.tooltip,

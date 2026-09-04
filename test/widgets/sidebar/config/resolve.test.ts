@@ -9,6 +9,22 @@ describe('resolveSidebarConfig', () => {
     expect(resolveSidebarConfig({})).toEqual(DEFAULT_SIDEBAR_CONFIG);
   });
 
+  it('uses aside.specialBlockKeys when provided', () => {
+    expect(
+      resolveSidebarConfig({
+        aside: { specialBlockKeys: ['search_leftmenu', 'custom_promo'] },
+      }).specialBlockKeys,
+    ).toEqual(['search_leftmenu', 'custom_promo']);
+  });
+
+  it('falls back to default specialBlockKeys when aside list is empty', () => {
+    expect(
+      resolveSidebarConfig({
+        aside: { specialBlockKeys: [] },
+      }).specialBlockKeys,
+    ).toEqual(DEFAULT_SIDEBAR_CONFIG.specialBlockKeys);
+  });
+
   it('derives blockVariants.search from type when omitted', () => {
     expect(resolveSidebarConfig({ aside: {} }).blockVariants).toEqual({
       search: 'row',

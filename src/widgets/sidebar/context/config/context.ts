@@ -1,5 +1,5 @@
-import type { SidebarConfig } from '../../types';
+import type { SidebarSchema } from '../../types';
 
 import { createContext } from 'react';
 
-export const SidebarConfigContext = createContext<SidebarConfig | null>(null);
+export const SidebarConfigContext = createContext<SidebarSchema | null>(null);

@@ -238,6 +238,16 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
       variant,
       tail: 'variant',
     }),
+    '--ai-active-overflow': buildCmfActionIconPropToken('active-overflow', 'visible', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-active-clip-margin': buildCmfActionIconPropToken('active-clip-margin', 'unset', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
     '--ai-active-width': buildCmfActionIconPropToken('active-width', '100%', {
       scope,
       variant,

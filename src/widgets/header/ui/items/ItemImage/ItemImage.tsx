@@ -9,7 +9,7 @@ import { hasItemImg } from '../../../lib';
 import { ItemIcon } from '../ItemIcon/ItemIcon';
 
 function ItemImageComponent({ item, alt, className, onImgFailed }: ItemImageProps) {
-  const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
+  const iconRef = useRef<HTMLImageElement | SVGSVGElement>(null);
   const cmfStyle = useCmfIconStyle(iconRef);
   const imgSrc = item.img ?? '';
   const [failedSrc, setFailedSrc] = useState<string | null>(null);

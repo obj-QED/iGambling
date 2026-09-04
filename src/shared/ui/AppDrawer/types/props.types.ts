@@ -3,7 +3,7 @@ import type { DrawerProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 
 /**
- * `data-viewport` values — same bands as `BREAKPOINTS_PX`
+ * `data-viewport` values — same bands as theme `--breakpoint-*` / `BREAKPOINTS_PX`
  * (`mobile` | `tablet` | `laptop` | `pc`).
  */
 export type AppDrawerViewport = BreakpointName;
@@ -33,7 +33,7 @@ export type AppDrawerProps = {
   /** Keep panel mounted while closed (warm lazy adapters; avoid remount flash). */
   keepMounted?: boolean;
   /**
-   * Override auto viewport from `BREAKPOINTS_PX`.
+   * Override auto viewport from theme `--breakpoint-*` / `BREAKPOINTS_PX`.
    * Written as `data-viewport` for CSS token selection.
    */
   viewport?: AppDrawerViewport;

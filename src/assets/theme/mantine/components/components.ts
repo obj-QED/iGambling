@@ -3,6 +3,7 @@ import {
   Anchor,
   Button,
   Container,
+  Group,
   type MantineThemeComponents,
   Title,
 } from '@mantine/core';
@@ -12,6 +13,7 @@ import { MANTINE_ACTION_ICON_VARIANTS } from '../cmf/cmfActionIconVars';
 import { MANTINE_BUTTON_VARIANTS } from '../cmf/cmfButtonVars';
 import { resolveActionIconRootVars } from '../vars/actionIconVars';
 import { resolveButtonCustomVariantPaintVars, resolveButtonRootVars } from '../vars/buttonVars';
+import { CLEAR_GROUP_INLINE_VARS, resolveGroupRootVars } from '../vars/groupVars';
 
 import classes from '../styles/components.module.scss';
 
@@ -106,6 +108,7 @@ export const themeComponents: MantineThemeComponents = {
   Button: Button.extend({
     classNames: {
       root: classes.button,
+      inner: classes.buttonInner,
       label: classes.buttonLabel,
     },
     vars: (_theme, props) => {
@@ -160,6 +163,25 @@ export const themeComponents: MantineThemeComponents = {
       }
 
       return { root: {} } as never;
+    },
+  }),
+
+  /**
+   * Group — layout row with CMF cascade when `data-cmf-*` is set:
+   * key → component → `--cmf-group-{gap|align|justify|wrap}` → Mantine defaults.
+   */
+  Group: Group.extend({
+    vars: (_theme, props) => {
+      const record = props as Record<string, unknown>;
+      if (!hasCmfScope(record)) {
+        return { root: {} } as never;
+      }
+      return {
+        root: {
+          ...CLEAR_GROUP_INLINE_VARS,
+          ...resolveGroupRootVars(record),
+        },
+      } as never;
     },
   }),
 

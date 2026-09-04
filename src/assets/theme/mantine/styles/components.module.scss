@@ -90,9 +90,35 @@
     }
   }
 
+  /*
+   * Mantine always emits `.cmf-Button-inner`. Collapse it so the only layout wrappers
+   * inside the control are `.cmf-Button-section` / `.cmf-Button-label` (flex on root).
+   */
+  .buttonInner {
+    display: contents;
+  }
+
   .button {
     /* `Button component={AppLink}` — no browser underline on the `<a>` root. */
     text-decoration: none;
+
+    /* Own flex row — was on `.cmf-Button-inner` before `display: contents`. */
+    display: inline-flex;
+    align-items: center;
+    justify-content: var(--button-justify, center);
+
+    &:where([data-block]) {
+      display: flex;
+      width: 100%;
+    }
+
+    /* Loading used to fade `.inner`; with `contents` hide real children instead. */
+    &:where([data-loading]) {
+      :global(.cmf-Button-section),
+      :global(.cmf-Button-label) {
+        opacity: 0;
+      }
+    }
 
     /*
      * Widget scope: shadow / disabled radius consume runtime `--button-*` from JS cascade.

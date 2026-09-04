@@ -29,12 +29,14 @@ export function readCmfIconStyle(scopeEl: HTMLElement | null): CmfIconStyle {
   };
 }
 
-export function findCmfIconScope(fromEl: HTMLElement | null): HTMLElement | null {
+/** Walk up from icon node (img / svg) to the nearest CMF / widget scope. */
+export function findCmfIconScope(fromEl: Element | null): HTMLElement | null {
   if (fromEl === null) return null;
 
-  return (
+  const scope =
     fromEl.closest('[data-cmf-key]') ??
     fromEl.closest('[data-widget="header"]') ??
-    fromEl.closest('[data-widget="sidebar"]')
-  );
+    fromEl.closest('[data-widget="sidebar"]');
+
+  return scope instanceof HTMLElement ? scope : null;
 }

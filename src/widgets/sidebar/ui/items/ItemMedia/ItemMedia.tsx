@@ -9,7 +9,7 @@ import { CmfIcon } from '@/shared/ui/CmfIcon';
 import { hasItemImg } from '../../../lib';
 
 function ItemMediaComponent({ item, alt, className, onImgError }: ItemMediaProps) {
-  const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
+  const iconRef = useRef<HTMLImageElement | SVGSVGElement>(null);
   const cmfStyle = useCmfIconStyle(iconRef);
   const imgSrc = item.img ?? '';
   const [failedSrc, setFailedSrc] = useState<string | null>(null);

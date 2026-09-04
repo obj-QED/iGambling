@@ -28,7 +28,7 @@ function assignRef<T>(ref: Ref<T> | undefined, node: T | null): void {
 }
 
 export const CmfIcon = memo(
-  forwardRef<HTMLImageElement | HTMLSpanElement, CmfIconProps>(function CmfIcon(
+  forwardRef<HTMLImageElement | HTMLSpanElement | SVGSVGElement, CmfIconProps>(function CmfIcon(
     { src, alt, shape = 'square', radius = 'sm', className, onError },
     ref,
   ) {
@@ -62,7 +62,7 @@ export const CmfIcon = memo(
     const setImgRef = useCallback(
       (node: HTMLImageElement | null) => {
         imgNodeRef.current = node;
-        assignRef(ref as Ref<HTMLImageElement | HTMLSpanElement> | undefined, node);
+        assignRef(ref as Ref<HTMLImageElement | HTMLSpanElement | SVGSVGElement> | undefined, node);
         if (node && htmlImageNaturalSizeIsReliable() && isBrokenHtmlImage(node)) {
           handleError();
         }
@@ -76,15 +76,15 @@ export const CmfIcon = memo(
 
     if (isSvgMediaSrc(src) === true) {
       return (
-        <span
-          ref={ref as Ref<HTMLSpanElement>}
+        <SVG
+          src={src}
+          innerRef={ref as Ref<SVGElement>}
           className={rootClassName}
           role="img"
           aria-label={alt}
+          onError={handleError}
           {...dataAttrs}
-        >
-          <SVG src={src} data-src={src} onError={handleError} aria-hidden />
-        </span>
+        />
       );
     }
 

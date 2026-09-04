@@ -1,2 +1,10 @@
 export { AppDrawer } from './AppDrawer';
-export type { AppDrawerClassNames, AppDrawerProps, AppDrawerViewport } from './types';
+export { AppDrawerProvider } from './AppDrawerProvider';
+export { useAppDrawer } from './lib/useAppDrawer';
+export { useAppDrawerContext } from './lib/useAppDrawerContext';
+export type {
+  AppDrawerClassNames,
+  AppDrawerProps,
+  AppDrawerState,
+  AppDrawerViewport,
+} from './types';

@@ -80,6 +80,11 @@ export type AsideSettings = {
   mockMenu?: boolean;
   /** Menu keys open on first visit; user toggles persist in localStorage. */
   openedDropdowns?: readonly string[];
+  /**
+   * Menu item keys with dedicated block UI (not default row / HeaderLink).
+   * Omit → widget defaults (`search_leftmenu`, `timer`, `wheel_mdl`, `aside_header_logo`).
+   */
+  specialBlockKeys?: readonly string[];
   customBlocks?: HeaderCustomBlockSettings[];
   /** Global ScrollArea tunables for aside (all types). Omit → pack defaults. */
   scrollArea?: AsideScrollAreaSettings;

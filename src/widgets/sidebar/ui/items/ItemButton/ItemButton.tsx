@@ -25,6 +25,13 @@ import { ItemMedia } from '../ItemMedia/ItemMedia';
 
 import styles from '../../../styles/items/ItemButton.module.scss';
 
+/** On `.cmf-Button-section` (slot). */
+const CMF_BUTTON_SECTION_ICON = 'cmf-Button-section-icon';
+const CMF_BUTTON_SECTION_CHEVRON = 'cmf-Button-section-chevron';
+/** On media / SVG inside the section. */
+const CMF_BUTTON_ICON = 'cmf-Button-icon';
+const CMF_BUTTON_CHEVRON = 'cmf-Button-chevron';
+
 function ItemButtonComponent({
   item,
   rightSection,
@@ -44,7 +51,14 @@ function ItemButtonComponent({
   const ariaLabel = resolveItemLabel(item);
   const leftSection = useMemo(
     () =>
-      showItemImg ? <ItemMedia item={item} alt={ariaLabel} onImgError={onImgError} /> : undefined,
+      showItemImg ? (
+        <ItemMedia
+          item={item}
+          alt={ariaLabel}
+          onImgError={onImgError}
+          className={CMF_BUTTON_ICON}
+        />
+      ) : undefined,
     [showItemImg, item, ariaLabel, onImgError],
   );
   const justify: 'flex-start' | 'space-between' = dropdownTrigger ? 'space-between' : 'flex-start';
@@ -62,6 +76,10 @@ function ItemButtonComponent({
       justify={justify}
       leftSection={leftSection}
       rightSection={rightSection}
+      sectionClassNames={{
+        left: leftSection !== undefined ? CMF_BUTTON_SECTION_ICON : undefined,
+        right: dropdownTrigger ? CMF_BUTTON_SECTION_CHEVRON : undefined,
+      }}
       active={item.active}
       // Parent is toggle-only — never URL-active from `item.url`.
       matchRoute={dropdownTrigger ? false : item.matchRoute}

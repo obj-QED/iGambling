@@ -46,7 +46,6 @@ export default defineConfig(({ mode }) => {
   } as const;
   const isProd = mode === 'production';
   const shouldAnalyze = env.VITE_ANALYZE === 'true';
-  const profilerEnabled = env.PROFILER_ENABLED === 'true';
   return {
     plugins: [
       react(),
@@ -67,9 +66,6 @@ export default defineConfig(({ mode }) => {
     },
     preview: {
       proxy: { ...apiProxy },
-    },
-    define: {
-      'import.meta.env.PROFILER_ENABLED': JSON.stringify(profilerEnabled),
     },
     resolve: {
       alias: {

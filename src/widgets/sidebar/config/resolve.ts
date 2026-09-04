@@ -105,6 +105,16 @@ function resolveOpenedDropdowns(aside: SidebarSchemaLayer): readonly string[] {
   return raw.filter((key): key is string => typeof key === 'string' && key.trim().length > 0);
 }
 
+function resolveSpecialBlockKeys(aside: SidebarSchemaLayer): readonly string[] {
+  const raw = aside.specialBlockKeys;
+  if (!raw || !Array.isArray(raw)) {
+    return DEFAULT_SIDEBAR_CONFIG.specialBlockKeys;
+  }
+
+  const keys = raw.filter((key): key is string => typeof key === 'string' && key.trim().length > 0);
+  return keys.length > 0 ? keys : DEFAULT_SIDEBAR_CONFIG.specialBlockKeys;
+}
+
 function resolveScrollArea(
   raw: AsideScrollAreaSettings | undefined,
   defaults: SidebarScrollAreaConfig,
@@ -249,6 +259,7 @@ function coerceSidebarSchema(
     type,
     blockVariants: resolveBlockVariants(merged, type, layers),
     openedDropdowns: resolveOpenedDropdowns(merged),
+    specialBlockKeys: resolveSpecialBlockKeys(merged),
     customBlocks: resolveCustomBlocks(merged, type),
     regions: resolveRegions(packDefaults.regions, typeTunables?.regions),
     scrollArea: resolveScrollArea(settingsOverlay.scrollArea, packDefaults.scrollArea),
