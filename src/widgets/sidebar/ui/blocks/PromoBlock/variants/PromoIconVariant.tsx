@@ -2,9 +2,9 @@ import type { BlockProps } from '../../../../types';
 
 import { memo } from 'react';
 
+import { useSidebarTypePack } from '../../../../context';
 import { useMenuItemRenderable } from '../../../../hooks';
 import { isRenderableItem } from '../../../../lib';
-import { useSidebarTypePack } from '../../../type';
 
 /**
  * Compact / icon promo — same ActionIcon template as other compact rows

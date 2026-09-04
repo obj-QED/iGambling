@@ -12,7 +12,7 @@
       fullscreen: true,
       preloader: {
         /** Global: false → no skeleton on shell/adapters/page. true / omit → on. */
-        skeleton: false,
+        skeleton: true,
       },
     },
     header: {

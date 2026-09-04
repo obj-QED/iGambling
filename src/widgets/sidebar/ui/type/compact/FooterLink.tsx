@@ -5,6 +5,7 @@ import { memo } from 'react';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 import { AppActionIcon } from '@/shared/ui';
 
+import { useSidebarTypePack } from '../../../context';
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {
   hasItemImg,
@@ -13,7 +14,6 @@ import {
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
 } from '../../../lib';
-import { useSidebarTypePack } from '../../type';
 
 function CompactFooterLinkComponent({ item }: BlockProps) {
   const { Item } = useSidebarTypePack();

@@ -13,10 +13,9 @@ import { cmfControlAttrs, controlAttrs, resolveCmfScope } from '@/shared/lib';
 import { AppActionIcon } from '@/shared/ui';
 import { AppLogo, AppTooltip } from '@/shared/ui';
 
-import { useSidebarConfig } from '../../../context';
+import { useSidebarConfig, useSidebarTypePack } from '../../../context';
 import { useAsideMenuButtonSize, useMenuItemRenderable } from '../../../hooks';
 import { itemKey, resolveItemHref, resolveLogoControlVariant } from '../../../lib';
-import { useSidebarTypePack } from '../../type';
 
 import styles from './styles.module.scss';
 

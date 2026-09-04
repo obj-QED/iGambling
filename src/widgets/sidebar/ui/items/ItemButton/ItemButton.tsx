@@ -30,7 +30,6 @@ const CMF_BUTTON_SECTION_ICON = 'cmf-Button-section-icon';
 const CMF_BUTTON_SECTION_CHEVRON = 'cmf-Button-section-chevron';
 /** On media / SVG inside the section. */
 const CMF_BUTTON_ICON = 'cmf-Button-icon';
-const CMF_BUTTON_CHEVRON = 'cmf-Button-chevron';
 
 function ItemButtonComponent({
   item,
