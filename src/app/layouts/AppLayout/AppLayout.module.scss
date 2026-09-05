@@ -1,15 +1,4 @@
 @layer page {
-  @keyframes shell-skel-fade {
-    0%,
-    100% {
-      opacity: 0.4;
-    }
-
-    50% {
-      opacity: 1;
-    }
-  }
-
   .root {
     display: flex;
     flex-direction: row;
@@ -59,46 +48,10 @@
     position: relative;
   }
 
-  .root[data-shell-skeleton] {
-    pointer-events: none;
-  }
-
   .root
     :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
     :where(a, button, [role='button']) {
     position: relative;
-  }
-
-  .root[data-shell-skeleton]
-    :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
-    :where(a, button, [role='button'])::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    border-radius: inherit;
-    background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-    animation: shell-skel-fade 1500ms linear infinite;
-  }
-
-  .root[data-shell-skeleton]
-    :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
-    :where(a, button, [role='button'])
-    > * {
-    opacity: 0;
-  }
-
-  .root[data-shell-skeleton] [data-widget='banner']::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-    animation: shell-skel-fade 1500ms linear infinite;
-  }
-
-  .root[data-shell-skeleton] [data-widget='banner'] > * {
-    opacity: 0;
   }
 
   .root [data-widget='sidebar'] [data-adapter-fallback] {
@@ -116,19 +69,6 @@
   .root[data-shell-skeleton] .page {
     /* Flex fills leftover viewport; live Outlet must not stretch the overlay. */
     overflow: hidden;
-  }
-
-  .root[data-shell-skeleton] .page::after {
-    content: '';
-    position: absolute;
-
-    /* Match Container padding-inline + .page padding-block — not flush to chrome. */
-    inset: var(--page-padding-block, var(--spacing-lg, 1.5rem))
-      var(--page-padding-inline, var(--mantine-spacing-md, 1rem));
-    z-index: 1;
-    border-radius: var(--radius-md, 0.5rem);
-    background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-    animation: shell-skel-fade 1500ms linear infinite;
   }
 
   .root[data-shell-skeleton] .page > * {
@@ -166,4 +106,84 @@
     margin-inline: auto;
     line-height: 1.6;
   }
+}
+
+/*
+ * Shell skeleton cover — UNLAYERED (`@layer page` loses to widget + CMF active).
+ * Do not paint on control `::before` (Mantine Button shine: opacity 0 + translateY(-100%))
+ * or `::after` (CMF active rail). Pulse the host background; hide descendants.
+ */
+@keyframes shell-skel-pulse {
+  0%,
+  100% {
+    background-color: var(--shell-skel-from);
+  }
+
+  50% {
+    background-color: var(--shell-skel-to);
+  }
+}
+
+.root[data-shell-skeleton] {
+  --shell-skel-from: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  --shell-skel-to: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-3));
+  pointer-events: none;
+}
+
+.root[data-shell-skeleton]
+  :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
+  :where(a, button, [role='button']) {
+  overflow: hidden;
+  color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  background-image: none;
+  background-color: var(--shell-skel-from);
+  animation: shell-skel-pulse 1500ms linear infinite;
+}
+
+.root[data-shell-skeleton]
+  :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
+  :where(a, button, [role='button'])
+  * {
+  visibility: hidden;
+}
+
+.root[data-shell-skeleton]
+  :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
+  :where(a, button, [role='button'])[data-active]::after,
+.root[data-shell-skeleton]
+  :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
+  :where(a, button, [role='button'])::after {
+  content: none;
+}
+
+.root[data-shell-skeleton] [data-cmf-active-line] {
+  visibility: hidden;
+}
+
+.root[data-shell-skeleton] [data-widget='banner']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--shell-skel-from);
+  animation: shell-skel-pulse 1500ms linear infinite;
+}
+
+.root[data-shell-skeleton] [data-widget='banner'] > * {
+  visibility: hidden;
+}
+
+.root[data-shell-skeleton] .page::after {
+  content: '';
+  position: absolute;
+
+  /* Match Container padding-inline + .page padding-block — not flush to chrome. */
+  inset: var(--page-padding-block, var(--spacing-lg, 1.5rem))
+    var(--page-padding-inline, var(--mantine-spacing-md, 1rem));
+  z-index: 1;
+  border-radius: var(--radius-md, 0.5rem);
+  background-color: var(--shell-skel-from);
+  animation: shell-skel-pulse 1500ms linear infinite;
 }

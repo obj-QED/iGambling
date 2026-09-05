@@ -67,7 +67,7 @@
     aside: {
       /** Shell width is fixed — do not pair a compact calc with `type: 'default'` (labels need room). */
       width: '15rem',
-      type: 'default', // 'default' | 'compact'
+      type: 'default', // 'default' | 'compact' | 'slideout'
       layout: 'aside',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: false,
