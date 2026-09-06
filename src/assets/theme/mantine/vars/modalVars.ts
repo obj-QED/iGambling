@@ -11,9 +11,10 @@ export const CLEAR_MODAL_INLINE_VARS = {
 } as const;
 
 /**
- * Modal CSS vars via CMF nest when `data-cmf-*` / `cmfComponent` is set.
+ * Modal CSS vars via CMF nest (always — default + optional `data-cmf-*`).
  * Native Mantine: radius | size | y-offset | x-offset.
- * Extra paint (consumed by theme `.modal*` SCSS): bg | color | padding | shadow.
+ * Extra paint (theme `.modal*` SCSS): bg | color | padding | shadow.
+ * Nest: key → component → `--cmf-modal-{prop}` → fallback.
  */
 export function resolveModalRootVars(props: Record<string, unknown>): Record<string, string> {
   const scope: CmfScope = resolveCmfScope(props);

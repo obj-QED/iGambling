@@ -3,12 +3,14 @@
  * Prod theme is flat CSS vars only (`--cmf-button-{component}-active-*`).
  * Prefer editing those vars in header/sidebar tokens or dist theme.css.
  */
-@mixin cmf-active-bar-tokens($control,
+@mixin cmf-active-bar-tokens(
+  $control,
   $variant,
   $position,
   $size: 2px,
-  $color: var(--brand-color-5),
-  $radius: 0px) {
+  $color: var(--brand-color-6),
+  $radius: 0px
+) {
   --cmf-#{$control}-#{$variant}-active-position: #{$position};
   --cmf-#{$control}-#{$variant}-active-size: #{$size};
   --cmf-#{$control}-#{$variant}-active-color: #{$color};

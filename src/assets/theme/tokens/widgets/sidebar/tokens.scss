@@ -3,11 +3,11 @@
  * Flat CSS vars only (edit here / prod theme.css — no Sass mixins).
  *
  * CMF Button / ActionIcon — change look HERE:
- *   --cmf-button-sidebar-{key?}-{prop}              menu body (`data-cmf-component="sidebar"`)
- *   --cmf-button-sidebar-header-{key?}-{prop}       header strip
- *   --cmf-button-sidebar-footer-{key?}-{prop}       footer strip
- *   --cmf-*-sidebar-dropdown-{key|role}-{prop}      nested menu
- * Winner: key → role → component → data-variant → shared → base
+ *   --cmf-button-sidebar-{key?}-{prop}              menu body (+ chrome fallback)
+ *   --cmf-button-sidebar-header-{key?}-{prop}       header strip override
+ *   --cmf-button-sidebar-footer-{key?}-{prop}       footer strip override
+ *   --cmf-*-sidebar-dropdown-{key|role}-{prop}      nested menu override
+ * Winner: key → role → chrome → widget → data-variant → shared → base
  * Logo (header chrome): `data-cmf-component="sidebar-header"` + keys `logo` / `logo-trigger`
  *   → `--cmf-*-sidebar-header-logo*` / `--cmf-*-sidebar-header-logo-trigger-*`
  *   (not API `aside_header_logo*`)
@@ -19,133 +19,32 @@
 @use 'assets/theme/breakpoints' as *;
 
 @mixin sidebar-root-tokens {
-  /* Mantine size key (useAsideMenuButtonSizeFromElement) */
-  --aside-size-button: sm;
-  --aside-size-button-logo: md;
+  --app-layout-sidebar-width: 15rem;
+  --aside-shell-bg: #000;
 
   /* Header region chrome */
   --aside-header-gap: var(--spacing-xs, 0.375rem);
   --aside-header-color: inherit;
-  --aside-header-border-color: var(--mantine-color-dark-4);
   --aside-header-avatar-size: 1.5rem;
   --cmf-button-sidebar-header-account-height: 3.5rem;
   --cmf-button-sidebar-header-account-padding-x: 10px;
 
-  /*
-   * Header Group rows — cascade: key → component → `--cmf-group-*` → Mantine defaults.
-   * Props: gap | align | justify | wrap
-   */
-  --cmf-group-sidebar-header-gap: var(--mantine-spacing-sm);
-  --cmf-group-sidebar-header-align: center;
-  --cmf-group-sidebar-header-justify: flex-start;
-  --cmf-group-sidebar-header-wrap: wrap;
-  --cmf-group-sidebar-header-drawer-close-justify: flex-end;
-  --cmf-button-sidebar-header-account-hover: light-dark(
-    var(--mantine-color-gray-2),
-    var(--mantine-color-dark-4)
-  );
-
-  /* Footer strip */
-  --aside-footer-gap: var(--spacing-xs, 0.5rem);
-  --aside-footer-border-color: var(--mantine-color-dark-4);
-
-  /* Menu */
-  --aside-menu-gap: var(--spacing-xs, 0.375rem);
-  --aside-menu-radius: var(--radius-sm, 0.5rem);
-  --aside-menu-fz: var(--mantine-font-size-sm, 0.875rem);
-  --aside-menu-dropdown-indent: var(--spacing-sm, 0.5rem);
-
-  /* Chevron */
-  --aside-menu-chevron-size: var(--mantine-font-size-md);
-  --aside-menu-chevron-transition: 200ms ease;
+  --aside-shell-border-color: #111;
+  --aside-footer-border-color: #111;
+  --aside-header-border-color: #111;
 
   /*
-   * Scrollbar — set concrete colors here (do NOT wrap `--cmf-scrollbar-*`:
-   * globals are always defined on :root, so aliases never reach these fallbacks).
-   * Mixin reads: --aside-scrollbar-* → --cmf-scrollbar-* → brand.
-   */
-  --aside-scrollbar-track: var(--brand-color-9);
-  --aside-scrollbar-thumb: var(--brand-color-6);
-  --aside-scrollbar-thumb-hover: var(--brand-color-6);
-  --aside-scrollbar-size: 4px;
-  --aside-scrollbar-radius: 999px;
-
-  /* Readable labels for default/transparent — do NOT set bare `--cmf-button-sidebar-color`
-   * (comp layer wins over key paints). Special CTAs: key tokens below. */
-  --cmf-button-sidebar-search_leftmenu-bg: #b45309;
-  --cmf-button-sidebar-search_leftmenu-color: #fff;
-  --cmf-button-sidebar-search_leftmenu-bd: transparent;
-  --cmf-button-sidebar-search_leftmenu-hover: #92400e;
-  --cmf-button-sidebar-search_leftmenu-hover-color: #fff;
-  --cmf-button-sidebar-timer-bg: #b45309;
-  --cmf-button-sidebar-timer-color: #fff;
-  --cmf-button-sidebar-timer-bd: transparent;
-  --cmf-button-sidebar-timer-hover: #92400e;
-  --cmf-button-sidebar-timer-hover-color: #fff;
-  --cmf-button-sidebar-wheel_mdl-bg: #b45309;
-  --cmf-button-sidebar-wheel_mdl-color: #fff;
-  --cmf-button-sidebar-wheel_mdl-bd: transparent;
-  --cmf-button-sidebar-wheel_mdl-hover: #92400e;
-  --cmf-button-sidebar-wheel_mdl-hover-color: #fff;
-
-  /* ActionIcon CMF (component scope) */
-  --cmf-action-icon-sidebar-radius: var(--cmf-action-icon-radius, var(--mantine-radius-md));
-
-  /*
-   * Dropdown: data-cmf-role (trigger→parent, nested→child). Token layers:
-   *   --cmf-*-sidebar-dropdown-{key|role|}-{prop} then variant / shared
-   */
-  --cmf-button-sidebar-dropdown-parent-bg: light-dark(var(--mantine-color-gray-4), transparent);
-  --cmf-button-sidebar-dropdown-parent-hover: light-dark(var(--mantine-color-gray-5), transparent);
-
-  --cmf-button-sidebar-dropdown-child-bg: light-dark(
-    var(--mantine-color-gray-3),
-    var(--mantine-color-dark-6)
-  );
-
-  --cmf-button-sidebar-dropdown-child-hover: light-dark(
-    var(--mantine-color-gray-4),
-    var(--mantine-color-dark-8)
-  );
-
-  /* Region component paints (attrs on controls: sidebar / sidebar-header / sidebar-footer) */
-  --cmf-button-sidebar-bg: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-6));
-
-  /*
-   * Icons: --cmf-button|action-icon-sidebar-{key?}-icon-{scale|aspect|width|height}
-   * Avoid bare % on Button icons. Full order in CASCADE.md.
-   */
-  --cmf-icon-shape: rect;
-  --cmf-button-sidebar-icon-scale: 0.7;
-  --cmf-button-sidebar-icon-aspect: 1.5;
-  --cmf-action-icon-sidebar-icon-scale: 0.7;
-  --cmf-action-icon-sidebar-icon-aspect: 1.5;
-
-  /*
-   * Elements Sidebar 
-   */
-  --cmf-button-sidebar-hover: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-8));
-
-  /*
-   * Active bar — public: position + size (+ color).
-   * Placement: top/bottom/left −bd, height auto (stretch), width = size.
+   * Active bar — public: position + size (+ color + radius).
+   * Base `--cmf-*-sidebar-active-*` applies to body, header, footer, dropdown
+   * (cascade: chrome → widget). Optional chrome overrides below.
+   * Corner radius on the bar itself (`::after` / CmfActiveLine).
    */
   --cmf-button-sidebar-active-position: left;
   --cmf-button-sidebar-active-size: 2px;
-  --cmf-button-sidebar-active-color: var(--brand-color-5);
-  --cmf-button-sidebar-active-radius-tl: 0px;
-  --cmf-button-sidebar-active-radius-bl: 0px;
-
-  /*
-   * SoT for border width (CMF `bd-width` cascade on the control).
-   * Plaque inset reads runtime `--button-bd-width` so key/component layers win:
-   *   --cmf-button-sidebar-tournaments-bd-width
-   *   → --cmf-button-sidebar-bd-width  (this token)
-   *   → transparent / mantine default
-   */
-  --cmf-button-sidebar-bd-width: calc(0.0625rem * var(--mantine-scale));
-
-  --cmf-button-sidebar-active-overflow: visible;
+  --cmf-button-sidebar-active-color: var(--brand-color-6);
+  --cmf-button-sidebar-active-radius: var(--button-radius, var(--mantine-radius-default));
+  --cmf-button-sidebar-active-radius-tl: var(--cmf-button-sidebar-active-radius);
+  --cmf-button-sidebar-active-radius-bl: var(--cmf-button-sidebar-active-radius);
 
   /* inset = top right bottom left — uses control `--button-bd-width` (see HTML vars). */
   --cmf-button-sidebar-active-inset: calc(-1 * var(--button-bd-width)) auto
@@ -153,62 +52,18 @@
   --cmf-button-sidebar-active-width: var(--cmf-button-sidebar-active-size);
   --cmf-button-sidebar-active-height: 100%;
 
-  --cmf-button-sidebar-dropdown-active-position: var(--cmf-button-sidebar-active-position);
-  --cmf-button-sidebar-dropdown-active-size: var(--cmf-button-sidebar-active-size);
-  --cmf-button-sidebar-dropdown-active-color: var(--cmf-button-sidebar-active-color);
-  --cmf-button-sidebar-dropdown-active-overflow: var(--cmf-button-sidebar-active-overflow);
-  --cmf-button-sidebar-dropdown-active-inset: var(--cmf-button-sidebar-active-inset);
-  --cmf-button-sidebar-dropdown-active-width: var(--cmf-button-sidebar-active-width);
-  --cmf-button-sidebar-dropdown-active-height: var(--cmf-button-sidebar-active-height);
-  --cmf-button-sidebar-dropdown-active-radius-tl: var(--cmf-button-sidebar-active-radius-tl);
-  --cmf-button-sidebar-dropdown-active-radius-bl: var(--cmf-button-sidebar-active-radius-bl);
-
-  --cmf-action-icon-sidebar-active-position: left;
-  --cmf-action-icon-sidebar-active-size: 2px;
-  --cmf-action-icon-sidebar-active-color: var(--brand-color-5);
-  --cmf-action-icon-sidebar-active-radius-tl: 0px;
-  --cmf-action-icon-sidebar-active-radius-bl: 0px;
-
-  --cmf-action-icon-sidebar-bd-width: calc(0.0625rem * var(--mantine-scale));
-  --cmf-action-icon-sidebar-active-overflow: visible;
-  --cmf-action-icon-sidebar-active-inset: calc(-1 * var(--ai-bd-width)) auto
-    calc(-1 * var(--ai-bd-width)) calc(-1 * var(--ai-bd-width));
-  --cmf-action-icon-sidebar-active-width: var(--cmf-action-icon-sidebar-active-size);
-  --cmf-action-icon-sidebar-active-height: auto;
-
-  --cmf-action-icon-sidebar-dropdown-active-position: var(
-    --cmf-action-icon-sidebar-active-position
-  );
-  --cmf-action-icon-sidebar-dropdown-active-size: var(--cmf-action-icon-sidebar-active-size);
-  --cmf-action-icon-sidebar-dropdown-active-color: var(--cmf-action-icon-sidebar-active-color);
-  --cmf-action-icon-sidebar-dropdown-active-overflow: var(
-    --cmf-action-icon-sidebar-active-overflow
-  );
-  --cmf-action-icon-sidebar-dropdown-active-clip-margin: var(
-    --cmf-action-icon-sidebar-active-clip-margin
-  );
-  --cmf-action-icon-sidebar-dropdown-active-inset: var(--cmf-action-icon-sidebar-active-inset);
-  --cmf-action-icon-sidebar-dropdown-active-width: var(--cmf-action-icon-sidebar-active-width);
-  --cmf-action-icon-sidebar-dropdown-active-height: var(--cmf-action-icon-sidebar-active-height);
-  --cmf-action-icon-sidebar-dropdown-active-radius-tl: var(
-    --cmf-action-icon-sidebar-active-radius-tl
-  );
-  --cmf-action-icon-sidebar-dropdown-active-radius-bl: var(
-    --cmf-action-icon-sidebar-active-radius-bl
-  );
-
-  --cmf-action-icon-sidebar-header-logo-trigger-size: calc(2.25rem * var(--mantine-scale));
-  --cmf-button-sidebar-header-logo-padding-x: 0;
-  --cmf-button-sidebar-header-logo-height: calc(2.25rem * var(--mantine-scale));
+  /* Optional chrome overrides (omit → inherit `--cmf-*-sidebar-active-*`). */
+  --cmf-button-sidebar-header-padding-x: 0;
 
   --cmf-action-icon-sidebar-header-logo-trigger-icon-scale: 1.25;
   --header-logo-width: 120px;
+
+  --cmf-group-sidebar-header-drawer-close-justify: flex-end;
 
   --tooltip-sidebar-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-7));
   --tooltip-sidebar-color: var(--mantine-color-white);
   --tooltip-sidebar-radius: var(--mantine-radius-default);
   --tooltip-sidebar-max-width: 10rem;
-  --aside-shell-padding: 10px;
   --cmf-action-icon-sidebar-header-drawer-close-icon-scale: 1;
   --cmf-action-icon-sidebar-header-drawer-close-icon-bg: transparent;
   --cmf-action-icon-sidebar-header-drawer-close-color: light-dark(
@@ -216,11 +71,17 @@
     var(--mantine-color-gray-0)
   );
 
+  [data-cmf-component='sidebar-header'][data-cmf-key='account'] {
+    --mantine-color-dimmed: var(--mantine-primary-color-contrast);
+  }
+
   /*
    * `type: compact` — ActionIcon-only rail (edit here).
    * Applied when `[data-widget='sidebar'][data-type='compact']`.
    */
   &[data-type='compact'] {
+    --app-layout-sidebar-width: calc(var(--ai-size-md) + var(--aside-shell-padding) * 2);
+
     --aside-size-button: md;
     --aside-shell-padding: var(--mantine-spacing-xs);
     --aside-menu-gap: var(
@@ -234,41 +95,26 @@
     --cmf-action-icon-sidebar-header-size: calc(2.625rem * var(--mantine-scale));
     --cmf-action-icon-sidebar-footer-size: calc(2.625rem * var(--mantine-scale));
 
-    /* Square media — was 0.7 → −15% ≈ 0.595; dropdown parent (role) smaller. */
+    --aside-menu-dropdown-indicator-position: relative;
+    --aside-menu-dropdown-indicator-inset: auto 0 auto auto;
+
+    --cmf-action-icon-sidebar-active-position: var(--cmf-button-sidebar-active-position);
+    --cmf-action-icon-sidebar-active-size: var(--cmf-button-sidebar-active-size);
+    --cmf-action-icon-sidebar-active-color: var(--cmf-button-sidebar-active-color);
+    --cmf-action-icon-sidebar-active-radius: var(--cmf-button-sidebar-active-radius);
+    --cmf-action-icon-sidebar-active-radius-tl: var(--cmf-button-sidebar-active-radius-tl);
+    --cmf-action-icon-sidebar-active-radius-bl: var(--cmf-button-sidebar-active-radius-bl);
+    --cmf-action-icon-sidebar-active-inset: var(--cmf-button-sidebar-active-inset);
+    --cmf-action-icon-sidebar-active-width: var(--cmf-button-sidebar-active-width);
+    --cmf-action-icon-sidebar-active-height: var(--cmf-button-sidebar-active-height);
+
     --cmf-action-icon-sidebar-icon-aspect: 1;
-    --cmf-action-icon-sidebar-icon-scale: 0.595;
-    --cmf-action-icon-sidebar-dropdown-icon-aspect: 1;
-    --cmf-action-icon-sidebar-dropdown-icon-scale: 0.595;
-    --cmf-action-icon-sidebar-dropdown-parent-icon-scale: 0.5;
-    --cmf-action-icon-sidebar-header-icon-aspect: 1;
-    --cmf-action-icon-sidebar-header-icon-scale: 0.595;
-    --cmf-action-icon-sidebar-footer-icon-aspect: 1;
-    --cmf-action-icon-sidebar-footer-icon-scale: 0.595;
-    --cmf-action-icon-sidebar-bg: var(--mantine-color-default);
-    --cmf-action-icon-sidebar-color: var(--mantine-color-default-color);
-    --cmf-action-icon-sidebar-hover: var(--mantine-color-default-hover);
-    --cmf-action-icon-sidebar-hover-color: var(--mantine-color-text);
-    --cmf-action-icon-sidebar-dropdown-bg: var(--mantine-color-default);
-    --cmf-action-icon-sidebar-dropdown-color: var(--mantine-color-default-color);
-    --cmf-action-icon-sidebar-dropdown-hover: var(--mantine-color-default-hover);
-    --cmf-action-icon-sidebar-dropdown-hover-color: var(--mantine-color-text);
-    --cmf-action-icon-sidebar-header-bg: var(--mantine-color-default);
-    --cmf-action-icon-sidebar-header-color: var(--mantine-color-default-color);
-    --cmf-action-icon-sidebar-header-hover: var(--mantine-color-default-hover);
-    --cmf-action-icon-sidebar-header-hover-color: var(--mantine-color-text);
-    --cmf-action-icon-sidebar-footer-bg: var(--mantine-color-default);
-    --cmf-action-icon-sidebar-footer-color: var(--mantine-color-default-color);
-    --cmf-action-icon-sidebar-footer-hover: var(--mantine-color-default-hover);
-    --cmf-action-icon-sidebar-footer-hover-color: var(--mantine-color-text);
+    --cmf-action-icon-sidebar-icon-scale: 0.5;
 
     /* Compact dropdown chevron — corner badge on ActionIcon (no horizontal shift). */
     --aside-menu-chevron-size: 0.75rem;
     --aside-menu-compact-dropdown-trigger-margin-left: 0;
-    --aside-menu-dropdown-indicator-position: absolute;
-    --cmf-action-icon-sidebar-header-logo-trigger-bg: transparent;
-    --cmf-action-icon-sidebar-header-logo-trigger-hover: transparent;
-    --aside-shell-padding-top: var(--mantine-spacing-xs);
-    --aside-shell-padding-bottom: var(--mantine-spacing-xs);
+    --cmf-action-icon-sidebar-header-logo-bg: var(--mantine-color-brand-light-hover);
   }
 
   /*
@@ -277,7 +123,5 @@
    */
   @media (max-width: $tablet) {
     --cmf-button-sidebar-header-logo-padding-x: 10px;
-    --cmf-button-sidebar-header-logo-bg: light-dark(var(--mantine-color-gray-4), transparent);
-    --cmf-button-sidebar-header-logo-hover: light-dark(var(--mantine-color-gray-5), transparent);
   }
 }

@@ -1,3 +1,4 @@
+import type { CmfControlAttrs } from '@/shared/lib/cmf/types/scopeAttrs.types';
 import type { ReactNode } from 'react';
 
 export type OverlayTargetProps = {
@@ -8,9 +9,6 @@ export type OverlayTargetProps = {
   onClose?: () => void;
   title?: ReactNode;
   className?: string;
-  /** CMF scope → Modal `themeComponents` cascade (`--cmf-modal-*`). */
-  cmfComponent?: string;
-  cmfKey?: string;
   /** Portal mount node (e.g. `.cmf-Layout-content`). Default: `document.body`. */
   portalTarget?: HTMLElement | string | null;
-};
+} & CmfControlAttrs;

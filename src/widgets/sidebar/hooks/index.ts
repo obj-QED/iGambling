@@ -3,5 +3,7 @@ export { useAsideMenuButtonSizeFromElement } from './useAsideMenuButtonSizeFromE
 export { useMenuItemRenderable } from './useMenuItemRenderable';
 export {
   type SidebarDropdownOpenKeysState,
+  type SidebarDropdownOpenKeysStore,
   useSidebarDropdownOpenKeys,
+  useSidebarDropdownOpenKeysStore,
 } from './useSidebarDropdownOpenKeys';

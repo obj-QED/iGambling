@@ -11,6 +11,9 @@ function DrawerWrapperComponent({
   onClose,
   title,
   className,
+  'data-cmf-component': dataCmfComponent,
+  'data-cmf-key': dataCmfKey,
+  'data-cmf-role': dataCmfRole,
 }: OverlayTargetProps) {
   const [uncontrolled, setUncontrolled] = useState(false);
   const controlled = openedProp !== undefined;
@@ -40,6 +43,12 @@ function DrawerWrapperComponent({
       </button>
     );
 
+  const cmfAttrs = {
+    ...(dataCmfComponent ? { 'data-cmf-component': dataCmfComponent } : {}),
+    ...(dataCmfKey ? { 'data-cmf-key': dataCmfKey } : {}),
+    ...(dataCmfRole ? { 'data-cmf-role': dataCmfRole } : {}),
+  };
+
   return (
     <>
       {trigger}
@@ -49,6 +58,7 @@ function DrawerWrapperComponent({
         title={title}
         position="right"
         className={className}
+        {...cmfAttrs}
       >
         {children}
       </AppDrawer>

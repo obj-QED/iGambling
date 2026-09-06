@@ -2,46 +2,11 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { controlAttrs, resolveCmfScope } from '@/shared/lib';
-import { AppActionIcon } from '@/shared/ui';
-
 import { useSidebarTypePack } from '../../../context';
-import { useAsideMenuButtonSize } from '../../../hooks';
-import {
-  hasItemImg,
-  renderSidebarFooterIcon,
-  resolveItemHref,
-  resolveItemLabel,
-  resolveMenuItemActionIconVariant,
-} from '../../../lib';
 
+/** Compact footer row — same path as HeaderLink: pack Item (tooltip + ActionIcon). */
 function CompactFooterLinkComponent({ item }: BlockProps) {
   const { Item } = useSidebarTypePack();
-  const size = useAsideMenuButtonSize();
-  const href = resolveItemHref(item.url);
-  const label = resolveItemLabel(item);
-  const fallbackIcon = renderSidebarFooterIcon(item, {
-    className: 'cmf-ActionIcon-icon-svg',
-    stroke: 1.5,
-    'aria-hidden': true,
-  });
-
-  if (!hasItemImg(item) && fallbackIcon) {
-    return (
-      <AppActionIcon
-        name={item.name}
-        img={item.img}
-        href={href}
-        variant={resolveMenuItemActionIconVariant(item)}
-        size={size}
-        aria-label={label}
-        {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar', chrome: 'footer' }))}
-      >
-        {fallbackIcon}
-      </AppActionIcon>
-    );
-  }
-
   return <Item item={item} chrome="footer" />;
 }
 

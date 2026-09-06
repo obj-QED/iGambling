@@ -38,10 +38,10 @@ function CompactItemComponent({
       label={item.label}
       name={item.name}
       config={tooltip}
-      cmfComponent={
+      data-cmf-component={
         chrome === 'header' ? 'sidebar-header' : chrome === 'footer' ? 'sidebar-footer' : 'sidebar'
       }
-      cmfKey="item"
+      data-cmf-key="item"
     >
       {control}
     </AppTooltip>

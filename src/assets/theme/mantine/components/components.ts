@@ -2,10 +2,13 @@ import {
   ActionIcon,
   Anchor,
   Button,
+  Code,
   Container,
+  Drawer,
   Group,
   type MantineThemeComponents,
   Modal,
+  Text,
   Title,
 } from '@mantine/core';
 import cx from 'clsx';
@@ -14,8 +17,11 @@ import { MANTINE_ACTION_ICON_VARIANTS } from '../cmf/cmfActionIconVars';
 import { MANTINE_BUTTON_VARIANTS } from '../cmf/cmfButtonVars';
 import { resolveActionIconRootVars } from '../vars/actionIconVars';
 import { resolveButtonCustomVariantPaintVars, resolveButtonRootVars } from '../vars/buttonVars';
+import { CLEAR_CODE_INLINE_VARS, resolveCodeRootVars } from '../vars/codeVars';
+import { resolveDrawerRootVars } from '../vars/drawerVars';
 import { CLEAR_GROUP_INLINE_VARS, resolveGroupRootVars } from '../vars/groupVars';
 import { CLEAR_MODAL_INLINE_VARS, resolveModalRootVars } from '../vars/modalVars';
+import { CLEAR_TEXT_INLINE_VARS, resolveTextRootVars } from '../vars/textVars';
 
 import classes from '../styles/components.module.scss';
 
@@ -59,12 +65,30 @@ const CLEAR_ACTION_ICON_INLINE_VARS = {
   '--ai-hover-color': null,
 } as const;
 
+/** Paint-only clear — size stays native Mantine (plain gradient/white bridge). */
+const CLEAR_ACTION_ICON_PAINT_INLINE_VARS = {
+  '--ai-bg': null,
+  '--ai-hover': null,
+  '--ai-color': null,
+  '--ai-bd': null,
+  '--ai-hover-color': null,
+} as const;
+
+function pickActionIconPaintVars(root: Record<string, string>): Record<string, string> {
+  return {
+    '--ai-bg': root['--ai-bg'],
+    '--ai-color': root['--ai-color'],
+    '--ai-bd': root['--ai-bd'],
+    '--ai-bd-color': root['--ai-bd-color'],
+    '--ai-bd-width': root['--ai-bd-width'],
+    '--ai-hover': root['--ai-hover'],
+    '--ai-hover-color': root['--ai-hover-color'],
+  };
+}
+
 function hasCmfScope(props: Record<string, unknown>): boolean {
   return (
-    typeof props['data-cmf-component'] === 'string' ||
-    typeof props['data-cmf-key'] === 'string' ||
-    typeof props.cmfComponent === 'string' ||
-    typeof props.cmfKey === 'string'
+    typeof props['data-cmf-component'] === 'string' || typeof props['data-cmf-key'] === 'string'
   );
 }
 
@@ -82,6 +106,13 @@ function isCustomActionIconVariant(variant: unknown): variant is string {
     variant.trim().length > 0 &&
     (MANTINE_ACTION_ICON_VARIANTS as readonly string[]).includes(variant) === false
   );
+}
+
+/** Native Mantine paint is wrong/weak for these — bridge theme tokens without CMF scope. */
+const THEME_PAINT_BRIDGE_VARIANTS = new Set(['gradient', 'white']);
+
+function needsThemePaintBridge(variant: unknown): boolean {
+  return typeof variant === 'string' && THEME_PAINT_BRIDGE_VARIANTS.has(variant);
 }
 
 export const themeComponents: MantineThemeComponents = {
@@ -108,7 +139,8 @@ export const themeComponents: MantineThemeComponents = {
    * Button:
    * - `data-cmf-*` → clear Mantine inline → `resolveButtonRootVars` (nestCssVars)
    * - custom `variant` (`hero`, `button-link`, …) → clear paints + paint-only token bridge
-   * - plain Mantine variants → keep native `color` / variant paints
+   * - `gradient` / `white` (no CMF) → theme paint bridge (Mantine hover≈bg / wrong white colors)
+   * - other plain Mantine variants → keep native paints
    */
   Button: Button.extend({
     classNames: {
@@ -133,6 +165,16 @@ export const themeComponents: MantineThemeComponents = {
           root: {
             ...CLEAR_BUTTON_INLINE_VARS,
             ...resolveButtonRootVars(record),
+          },
+        } as never;
+      }
+
+      // Native Mantine `gradient` sets hover===bg; `white` uses black text — bridge theme paints.
+      if (needsThemePaintBridge(props.variant)) {
+        return {
+          root: {
+            ...CLEAR_BUTTON_PAINT_INLINE_VARS,
+            ...resolveButtonCustomVariantPaintVars(record),
           },
         } as never;
       }
@@ -167,6 +209,15 @@ export const themeComponents: MantineThemeComponents = {
         } as never;
       }
 
+      if (needsThemePaintBridge(props.variant)) {
+        return {
+          root: {
+            ...CLEAR_ACTION_ICON_PAINT_INLINE_VARS,
+            ...pickActionIconPaintVars(resolveActionIconRootVars(record)),
+          },
+        } as never;
+      }
+
       return { root: {} } as never;
     },
   }),
@@ -191,20 +242,84 @@ export const themeComponents: MantineThemeComponents = {
   }),
 
   /**
-   * Modal — CMF cascade when `data-cmf-*` / `cmfComponent` is set:
-   * key → component → `--cmf-modal-{radius|size|y-offset|x-offset|bg|color|padding|shadow}`.
-   * Paint classNames only under CMF scope (plain Modal stays native Mantine).
+   * Modal — always theme paint bridge (default `:root --cmf-modal-*`).
+   * With `data-cmf-*`: key → component → shared → fallback.
+   * Header must not keep Mantine `--mantine-color-body` (same sticky header as Drawer).
    */
   Modal: Modal.extend({
+    classNames: {
+      content: classes.modalContent,
+      body: classes.modalBody,
+      header: classes.modalHeader,
+    },
+    vars: (_theme, props) => {
+      const record = props as unknown as Record<string, unknown>;
+      return {
+        root: {
+          ...CLEAR_MODAL_INLINE_VARS,
+          ...resolveModalRootVars(record),
+        },
+      } as never;
+    },
+  }),
+
+  /**
+   * Drawer — always theme paint bridge (default `:root --drawer-*`).
+   * With `data-cmf-*`: key → component → `--drawer-*` (portal SoT).
+   * Runtime private `--_cmf-drawer-*` (no cycle). AppDrawer compound also applies vars in JS.
+   */
+  Drawer: Drawer.extend({
+    classNames: {
+      content: classes.drawerContent,
+      header: classes.drawerHeader,
+      body: classes.drawerBody,
+      overlay: classes.drawerOverlay,
+    },
+    vars: (_theme, props) => {
+      const record = props as unknown as Record<string, unknown>;
+      return {
+        root: {
+          ...resolveDrawerRootVars(record),
+        },
+      } as never;
+    },
+  }),
+
+  /**
+   * Text — always theme bridge (fz / lh / color).
+   * With `data-cmf-*`: key → component → default|dimmed|bright → parent → fallback.
+   * Without: `--cmf-text-default-*` → size / `--color-text`.
+   * Anchor is Text-based — skip body `--text-color` (link paint via `.anchor`).
+   */
+  Text: Text.extend({
+    classNames: {
+      root: classes.text,
+    },
+    vars: (_theme, props) => {
+      const record = props as unknown as Record<string, unknown>;
+      const root = {
+        ...CLEAR_TEXT_INLINE_VARS,
+        ...resolveTextRootVars(record),
+      };
+      // Mantine Anchor extends Text and passes `underline` — don't stamp body text color.
+      if (record.underline !== undefined) {
+        Reflect.deleteProperty(root, '--text-color');
+      }
+      return { root } as never;
+    },
+  }),
+
+  /**
+   * Code — CMF when `data-cmf-*`:
+   * key → component → `--cmf-code-default-*` → parent → Mantine defaults.
+   * Plain Code stays native.
+   */
+  Code: Code.extend({
     classNames: (_theme, props) => {
       if (!hasCmfScope(props as unknown as Record<string, unknown>)) {
         return {};
       }
-      return {
-        content: classes.modalContent,
-        body: classes.modalBody,
-        header: classes.modalHeader,
-      };
+      return { root: classes.code };
     },
     vars: (_theme, props) => {
       const record = props as unknown as Record<string, unknown>;
@@ -213,8 +328,8 @@ export const themeComponents: MantineThemeComponents = {
       }
       return {
         root: {
-          ...CLEAR_MODAL_INLINE_VARS,
-          ...resolveModalRootVars(record),
+          ...CLEAR_CODE_INLINE_VARS,
+          ...resolveCodeRootVars(record),
         },
       } as never;
     },

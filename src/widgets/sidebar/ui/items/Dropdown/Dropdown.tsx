@@ -15,14 +15,12 @@ import styles from '../../../styles/items/Dropdown.module.scss';
 
 function DropdownComponent({ item, className }: DropdownProps) {
   const menuKey = itemKey(item);
-  const { isOpen, toggle } = useSidebarDropdown();
-  const opened = isOpen(menuKey);
-
+  const { opened, toggle } = useSidebarDropdown(menuKey);
   const { visible } = useMenuItemRenderable(item);
 
   const onToggle = useCallback(() => {
-    toggle(menuKey);
-  }, [menuKey, toggle]);
+    toggle();
+  }, [toggle]);
 
   if (!isRenderableItem(item) || !visible) return null;
 

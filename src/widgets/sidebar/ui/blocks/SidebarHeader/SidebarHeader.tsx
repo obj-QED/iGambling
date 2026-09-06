@@ -24,18 +24,18 @@ const LOGO_ITEM_KEY = 'aside_header_logo';
 const LOGO_CMF_KEY = 'logo';
 
 function HeaderRow({
-  cmfKey,
+  cascadeKey,
   className,
   children,
 }: {
-  cmfKey: string;
+  cascadeKey: string;
   className?: string;
   children: ReactNode;
 }) {
   return (
     <Group
       className={className}
-      {...cmfControlAttrs({ component: HEADER_CMF_COMPONENT, key: cmfKey })}
+      {...cmfControlAttrs({ component: HEADER_CMF_COMPONENT, key: cascadeKey })}
     >
       {children}
     </Group>
@@ -60,7 +60,7 @@ function SidebarHeaderComponent({ section }: SectionProps) {
   return (
     <div className={styles.root} data-sidebar-region="header">
       {isMobile && (
-        <HeaderRow cmfKey="drawer-close" className={styles.row}>
+        <HeaderRow cascadeKey="drawer-close" className={styles.row}>
           <AppActionIcon
             variant="transparent"
             aria-label="Close"
@@ -75,12 +75,12 @@ function SidebarHeaderComponent({ section }: SectionProps) {
 
       {items.map((item) => {
         const rowKey = item.key ?? item.name;
-        const cmfKey =
+        const cascadeKey =
           item.key === LOGO_ITEM_KEY ? LOGO_CMF_KEY : (item.key ?? String(rowKey ?? 'row'));
 
         if (item.items !== undefined && item.items.length > 0) {
           return (
-            <HeaderRow key={rowKey} cmfKey={cmfKey}>
+            <HeaderRow key={rowKey} cascadeKey={cascadeKey}>
               <Block item={item} />
             </HeaderRow>
           );
@@ -92,14 +92,14 @@ function SidebarHeaderComponent({ section }: SectionProps) {
             return <Block key={rowKey} item={item} />;
           }
           return (
-            <HeaderRow key={rowKey} cmfKey={cmfKey}>
+            <HeaderRow key={rowKey} cascadeKey={cascadeKey}>
               <Block item={item} />
             </HeaderRow>
           );
         }
 
         return (
-          <HeaderRow key={rowKey} cmfKey={cmfKey}>
+          <HeaderRow key={rowKey} cascadeKey={cascadeKey}>
             <PackLink item={item} />
           </HeaderRow>
         );

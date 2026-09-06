@@ -3,10 +3,10 @@ import type { HeaderMenuModel } from '@/widgets/header';
 import { Activity, memo, useEffect, useLayoutEffect, useRef } from 'react';
 
 import clsx from 'clsx';
-import { useLocation } from 'react-router-dom';
 
 import { useIsMobile } from '@hooks/useIsMobile';
 
+import { useCloseOnPathnameChange } from '@/shared/hooks';
 import { AppDrawer, AppDrawerProvider, useAppDrawerContext } from '@/shared/ui';
 import { AppBanner } from '@/widgets/banner';
 import { AppFooter } from '@/widgets/footer';
@@ -48,11 +48,9 @@ type SidebarSlotProps = {
 
 function SidebarSlot({ sidebarMenu, sidebarConfig, isMobile }: SidebarSlotProps) {
   const { opened, close } = useAppDrawerContext();
-  const location = useLocation();
 
-  useEffect(() => {
-    close();
-  }, [location.pathname, close]);
+  // Pathname store — not `useLocation` — so this slot stays off the RR re-render path.
+  useCloseOnPathnameChange(close);
 
   useEffect(() => {
     if (!isMobile) {
@@ -79,8 +77,8 @@ function SidebarSlot({ sidebarMenu, sidebarConfig, isMobile }: SidebarSlotProps)
       position="left"
       withCloseButton={false}
       keepMounted
-      cmfComponent="layout"
-      cmfKey="sidebar"
+      data-cmf-component="layout"
+      data-cmf-key="sidebar"
     >
       {sidebar}
     </AppDrawer>

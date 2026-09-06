@@ -1,8 +1,12 @@
 import type { AppDrawerProps, AppDrawerViewport } from './types/props.types';
 
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 
 import { Drawer } from '@mantine/core';
+import clsx from 'clsx';
+
+import themeClasses from '@/assets/theme/mantine/styles/components.module.scss';
+import { resolveDrawerRootVars } from '@/assets/theme/mantine/vars/drawerVars';
 
 import { readAppDrawerViewport } from './lib/resolveAppDrawerViewport';
 
@@ -40,25 +44,38 @@ function AppDrawerComponent({
   withCloseButton = true,
   keepMounted = false,
   viewport: viewportProp,
-  cmfComponent,
-  cmfKey,
   className,
   classNames,
+  'data-cmf-component': dataCmfComponent,
+  'data-cmf-key': dataCmfKey,
+  'data-cmf-role': dataCmfRole,
 }: AppDrawerProps) {
   const viewport = useDrawerViewport(viewportProp);
   const showHeader = (title !== undefined && title !== null && title !== false) || withCloseButton;
 
-  const innerClass = [styles.inner, classNames?.inner].filter(Boolean).join(' ') || undefined;
-  // Prefer classNames.content — Content's `className` is also forwarded onto `inner` by Mantine.
-  const contentClass =
-    [styles.content, className, classNames?.content].filter(Boolean).join(' ') ||
-    undefined;
-
   const panelAttrs = {
     'data-viewport': viewport,
-    ...(cmfComponent && { 'data-cmf-component': cmfComponent }),
-    ...(cmfKey && { 'data-cmf-key': cmfKey }),
+    ...(dataCmfComponent ? { 'data-cmf-component': dataCmfComponent } : {}),
+    ...(dataCmfKey ? { 'data-cmf-key': dataCmfKey } : {}),
+    ...(dataCmfRole ? { 'data-cmf-role': dataCmfRole } : {}),
   };
+
+  const drawerVars = useMemo(
+    () =>
+      resolveDrawerRootVars({
+        ...(dataCmfComponent ? { 'data-cmf-component': dataCmfComponent } : {}),
+        ...(dataCmfKey ? { 'data-cmf-key': dataCmfKey } : {}),
+        ...(dataCmfRole ? { 'data-cmf-role': dataCmfRole } : {}),
+      }),
+    [dataCmfComponent, dataCmfKey, dataCmfRole],
+  );
+
+  const innerClass = clsx(styles.inner, classNames?.inner) || undefined;
+  const contentClass =
+    clsx(styles.content, themeClasses.drawerContent, className, classNames?.content) || undefined;
+  const headerClass = clsx(themeClasses.drawerHeader, classNames?.header) || undefined;
+  const bodyClass = clsx(styles.body, themeClasses.drawerBody, classNames?.body) || undefined;
+  const overlayClass = clsx(themeClasses.drawerOverlay, classNames?.overlay);
 
   return (
     <Drawer.Root
@@ -69,36 +86,31 @@ function AppDrawerComponent({
       keepMounted={keepMounted}
       zIndex="var(--drawer-z-index, var(--z-index-modal, 500))"
       classNames={{
-        // `inner` belongs on Content (DrawerContentStylesNames), not Root.
         content: contentClass,
-        header: classNames?.header,
-        body: classNames?.body,
-        overlay: classNames?.overlay,
+        header: headerClass,
+        body: bodyClass,
+        overlay: overlayClass,
       }}
     >
-      {/* Overlay is a sibling of Content — same data-* for scrim + viewport tokens. */}
-      <Drawer.Overlay
-        className={[styles.overlay, classNames?.overlay].filter(Boolean).join(' ')}
-        {...panelAttrs}
-      />
+      {/* Overlay is a sibling of Content — same data-* + paint vars for scrim. */}
+      <Drawer.Overlay className={overlayClass} style={drawerVars} {...panelAttrs} />
       <Drawer.Content
         classNames={{
           inner: innerClass,
           content: contentClass,
         }}
+        style={drawerVars}
         {...panelAttrs}
       >
         {showHeader && (
-          <Drawer.Header className={classNames?.header}>
+          <Drawer.Header className={headerClass}>
             {title !== undefined && title !== null && title !== false && (
               <Drawer.Title className={classNames?.title}>{title}</Drawer.Title>
             )}
             {withCloseButton && <Drawer.CloseButton />}
           </Drawer.Header>
         )}
-        <Drawer.Body className={[styles.body, classNames?.body].filter(Boolean).join(' ')}>
-          {children}
-        </Drawer.Body>
+        <Drawer.Body className={bodyClass}>{children}</Drawer.Body>
       </Drawer.Content>
     </Drawer.Root>
   );

@@ -9,7 +9,7 @@ import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from '../theme/gradi
 const MANTINE_BUTTON_BD_TRANSPARENT = 'transparent';
 const MANTINE_BUTTON_BD_DEFAULT = 'var(--color-border)';
 const MANTINE_BUTTON_BD_OUTLINE =
-  'color-mix(in srgb, var(--brand-color-7) 55%, var(--mantine-color-default-border))';
+  'color-mix(in srgb, var(--brand-color-6) 55%, var(--mantine-color-default-border))';
 const MANTINE_BUTTON_BD_WIDTH = 'calc(0.0625rem * var(--mantine-scale))';
 
 /** Compose Mantine `--button-bd` from width token + color. */
@@ -34,25 +34,25 @@ type VariantPaint = {
  */
 const MANTINE_VARIANT_FALLBACKS = {
   filled: {
-    bg: 'light-dark(var(--brand-color-7), var(--brand-color-8))',
+    bg: 'light-dark(var(--brand-color-6), var(--brand-color-6))',
     color: '#fff',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
-    hover: 'light-dark(var(--brand-color-6), var(--brand-color-7))',
+    hover: 'light-dark(var(--brand-color-7), var(--brand-color-7))',
     'hover-color': '#fff',
   },
   outline: {
     bg: 'transparent',
-    color: 'light-dark(var(--brand-color-7), var(--brand-color-3))',
+    color: 'light-dark(var(--brand-color-6), var(--brand-color-6))',
     bd: MANTINE_BUTTON_BD_OUTLINE,
     hover: 'var(--mantine-color-brand-light-hover)',
     'hover-color': 'var(--color-text)',
   },
   light: {
     bg: 'var(--mantine-color-brand-light)',
-    color: 'light-dark(var(--brand-color-8), var(--brand-color-2))',
+    color: 'light-dark(var(--brand-color-6), var(--brand-color-6))',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'var(--mantine-color-brand-light-hover)',
-    'hover-color': 'light-dark(var(--brand-color-8), var(--brand-color-2))',
+    'hover-color': 'light-dark(var(--brand-color-7), var(--brand-color-7))',
   },
   subtle: {
     bg: 'transparent',
@@ -77,10 +77,10 @@ const MANTINE_VARIANT_FALLBACKS = {
   },
   white: {
     bg: 'var(--mantine-color-white)',
-    color: 'var(--mantine-color-black)',
+    color: 'var(--mantine-color-brand-filled)',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
     hover: 'var(--mantine-color-white)',
-    'hover-color': 'var(--mantine-color-black)',
+    'hover-color': 'var(--mantine-color-brand-filled)',
   },
   gradient: {
     bg: `var(--app-gradient-default, ${APP_GRADIENT_DEFAULT})`,
@@ -150,9 +150,6 @@ type ButtonVarsProps = {
   radius?: unknown;
   variant?: string;
   justify?: CSSProperties['justifyContent'];
-  cmfComponent?: string;
-  cmfKey?: string;
-  cmfRole?: string;
   'data-cmf-component'?: string;
   'data-cmf-key'?: string;
   'data-cmf-role'?: string;
@@ -273,7 +270,7 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       variant,
       tail: 'variant',
     }),
-    '--button-active-color': buildCmfButtonPropToken('active-color', 'var(--brand-color-5)', {
+    '--button-active-color': buildCmfButtonPropToken('active-color', 'var(--brand-color-6)', {
       scope,
       variant,
       tail: 'variant',

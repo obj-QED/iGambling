@@ -37,6 +37,9 @@ function SidebarFooterLinkComponent({ item }: BlockProps) {
       fullscreen
       justify="flex-start"
       leftSection={leftSection}
+      active={item.active}
+      matchRoute={item.matchRoute}
+      activeMatch={item.activeMatch}
       {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar', chrome: 'footer' }))}
     />
   );

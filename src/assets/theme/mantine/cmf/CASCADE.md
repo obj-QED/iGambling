@@ -5,6 +5,8 @@ Runtime SoT for widget controls (`data-cmf-*`): theme `vars()` **clear** Mantine
 
 Custom `data-variant` (not a Mantine built-in) uses the same paint bridge (`resolveButtonCustomVariantPaintVars`).
 
+Plain Mantine `gradient` / `white` (no `data-cmf-*`) also use that paint bridge — native Mantine sets gradient hover≈bg and white text to black.
+
 ---
 
 ## Where to change what
@@ -56,22 +58,29 @@ vars(): CLEAR_* (null)  →  resolve*RootVars (nestCssVars)
 2. --cmf-{button|action-icon}-{component}-{role}-{prop}
 3. --cmf-{button|action-icon}-{component}-{prop}
 4. --cmf-{button|action-icon}-{variant}-{prop}     (paint / size props)
-5. --cmf-{button|action-icon}-{prop}               (shared: radius, justify, icon-*)
-6. built-in paint / Mantine size table
+5. --cmf-{button|action-icon}-{parent}-{prop}   when component is `{widget}-{chrome}`
+   (sidebar-header|footer|dropdown → sidebar; header-dropdown → header)
+6. --cmf-{button|action-icon}-{prop}               (shared: radius, justify, icon-*)
+7. built-in paint / Mantine size table
 ```
+
+So `--cmf-button-sidebar-active-*` paints **all** aside controls; override with
+`--cmf-button-sidebar-header-active-*` / `…-footer-…` / `…-dropdown-…` when needed.
+Variant paint (`white` / `gradient`) wins over widget `--cmf-button-sidebar-bg`.
 
 Group layout (`data-cmf-*` on Mantine `Group`):
 
 ```txt
 1. --cmf-group-{component}-{key}-{gap|align|justify|wrap}
 2. --cmf-group-{component}-{gap|align|justify|wrap}
-3. --cmf-group-{gap|align|justify|wrap}
-4. Mantine defaults (sm / center / flex-start / wrap)
+3. --cmf-group-{parent}-{gap|align|justify|wrap}   when `{widget}-{chrome}`
+4. --cmf-group-{gap|align|justify|wrap}
+5. Mantine defaults (sm / center / flex-start / wrap)
 ```
 
 → `--group-gap` / `--group-align` / `--group-justify` / `--group-wrap`
 
-Modal (`data-cmf-*` / `cmfComponent` on Mantine `Modal` — `themeComponents` + `modalVars`):
+Modal (always — `themeComponents` + `modalVars`; optional `data-cmf-*`):
 
 ```txt
 1. --cmf-modal-{component}-{key}-{prop}
@@ -82,7 +91,23 @@ Modal (`data-cmf-*` / `cmfComponent` on Mantine `Modal` — `themeComponents` + 
 
 Props: `radius` | `size` | `y-offset` | `x-offset` | `bg` | `color` | `padding` | `shadow`.  
 → `--modal-radius` / `--modal-size` / `--modal-y-offset` / `--modal-x-offset` / `--modal-bg` / …  
-Paint (`bg` | `color` | `padding` | `shadow`) applied only when CMF scope is set (`.modalContent` / `.modalBody` / `.modalHeader`).
+Paint always via `.modalContent` / `.modalBody` / `.modalHeader` (default `:root --cmf-modal-*`).
+
+Text / Code (`data-cmf-*` on Mantine `Text` / `Code` — `themeComponents` + `textVars` / `codeVars`):
+
+```txt
+1. --cmf-{text|code}-{component}-{key}-{prop}
+2. --cmf-{text|code}-{component}-{prop}
+3. --cmf-{text|code}-default-{prop}   (or `--cmf-text-dimmed|bright-color` when `c` is set)
+4. --cmf-{text|code}-{parent}-{prop}   when `{widget}-{chrome}`
+5. Mantine / theme fallback
+```
+
+Text props: `fz` | `lh` | `color` → `--text-fz` / `--text-lh` / `--text-color`.  
+`c="dimmed"` / `c="bright"` → color cascade segment + fallback `var(--mantine-color-dimmed|bright)` (CMF class does not wipe Mantine dimmed).  
+`size="sm"` → last-resort `var(--mantine-font-size-sm)` / `var(--mantine-line-height-sm)` (CMF does **not** use `--cmf-text-sm-*`; per-size SoT is `--font-size-*` in `tokens/theme.scss`).  
+Code props: `bg` | `color` | `fz` | `radius` | `padding` → `--code-*`.  
+Extra paint only under CMF scope (`.text` / `.code`). Plain controls stay native Mantine.
 
 Tooltip (portal → tokens on `:root`):
 
@@ -94,16 +119,21 @@ Tooltip (portal → tokens on `:root`):
 
 Props: `bg` | `color` | `radius` | `max-width`.
 
-Drawer (portal → tokens on `:root`, via `AppDrawer` + `data-cmf-*` / `data-viewport`):
+Drawer (portal → `:root --drawer-*`, via `themeComponents` + `AppDrawer` + `data-cmf-*`):
 
 ```txt
 1. --drawer-{component}-{key}-{prop}
 2. --drawer-{component}-{prop}
-3. engine base (then optional --drawer-{prop} aliases on :root)
+3. --drawer-{prop}
+4. theme fallback
 ```
 
+Runtime private `--_cmf-drawer-*` (no cycle with `:root`).  
 Props: `bg` | `color` | `radius` | `padding` | `shadow` | `overlay-opacity` | `overlay-blur`.  
+Header / content / body / overlay paint: `.drawerHeader` etc. in `components.module.scss`.  
 Optional size / float: `--drawer-size`, `--drawer-size-{mobile|tablet|laptop|pc}`, `--drawer-inset`.
+
+Tokens live on `:root` in `tokens/theme.scss`. Scope attrs: `data-cmf-component` / `data-cmf-key` / `data-cmf-role` (via `cmfControlAttrs` or spread).
 
 **Where to override by viewport / instance** — `tokens/theme.scss` (not `AppDrawer` SCSS):
 
@@ -125,8 +155,6 @@ Optional size / float: `--drawer-size`, `--drawer-size-{mobile|tablet|laptop|pc}
 ```
 
 Aside _widget_ tokens (`--aside-*`) stay in `tokens/widgets/sidebar/tokens.scss` and use `@media ($mobile)` — `data-viewport` is on the drawer portal, not `[data-widget='sidebar']`.
-
-Components / keys used with the CSS cascade maps: register in `_cmf-drawer-cascade.scss` (`$cmf-drawer-components` / `$cmf-drawer-keys`). Theme can still set base `--drawer-*` on any `[data-cmf-*]` selector without a map entry.
 
 ---
 

@@ -14,18 +14,18 @@ $palette-light: (
   9: #042f2e,
 );
 
-// Dark: cyan — readable on slate body
+// Dark: amber/orange — keep in sync with BRAND_PALETTE_DARK_FALLBACK in brandPalette.ts
 $palette-dark: (
-  0: #ecfeff,
-  1: #cffafe,
-  2: #a5f3fc,
-  3: #67e8f9,
-  4: #22d3ee,
-  5: #06b6d4,
-  6: #0891b2,
-  7: #0e7490,
-  8: #155e75,
-  9: #164e63,
+  0: #fff5e1,
+  1: #ffeacb,
+  2: #ffd49a,
+  3: #ffbd64,
+  4: #ffa937,
+  5: #ff9c1b,
+  6: #ff9200,
+  7: #e38200,
+  8: #cb7300,
+  9: #915201,
 );
 
 @mixin apply-palette($palette) {

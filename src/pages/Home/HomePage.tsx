@@ -143,13 +143,19 @@ function OverlayDemoBlock() {
   return (
     <Stack gap="md">
       <Title order={3}>Overlay wrappers (`shared/ui/overlay`)</Title>
-      <Text size="sm" c="dimmed">
+      <Text size="xs" c="dimmed">
         Общий контракт: <Code>target</Code> (триггер) + <Code>children</Code> (контент). Режим
         выбирает схема через <Code>WRAPPER_REGISTRY</Code> (<Code>popover</Code> /{' '}
         <Code>drawer</Code> / <Code>modal</Code> / <Code>tooltip</Code> / <Code>none</Code>).
         Uncontrolled: клик по target открывает; controlled: <Code>opened</Code> +{' '}
         <Code>onClose</Code>.
       </Text>
+      <Text size="sm">
+        <AppLink href="/">AppLink</AppLink>
+      </Text>
+      <AppLink href="/">
+        <Text size="sm">AppLink</Text>
+      </AppLink>
 
       <Stack gap="xs">
         <Title order={5}>PopoverWrapper — клик → dropdown рядом с target</Title>
@@ -175,7 +181,11 @@ function OverlayDemoBlock() {
       <Stack gap="xs">
         <Title order={5}>ModalWrapper — клик → центрированный Modal</Title>
         <Group gap="sm">
-          <ModalWrapper target={<Button variant="light">Open modal</Button>} title="Modal title">
+          <ModalWrapper
+            data-cmf-component="modal-home"
+            target={<Button variant="light">Open modal</Button>}
+            title="Modal title"
+          >
             <Text size="sm">Контент modal. Тот же API, что у Drawer/Popover.</Text>
           </ModalWrapper>
         </Group>

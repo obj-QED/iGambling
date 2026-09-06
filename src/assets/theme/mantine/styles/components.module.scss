@@ -53,8 +53,8 @@
   }
 
   /*
-   * Modal paint — only when theme `Modal.extend` attaches these under CMF scope.
-   * Vars come from `resolveModalRootVars` (`--modal-*` ← `--cmf-modal-*` nest).
+   * Modal paint — always via theme `Modal.extend` + `resolveModalRootVars`.
+   * Vars: `--modal-*` ← nest `--cmf-modal-*` (default + component/key).
    */
   .modalContent {
     background: var(--modal-bg);
@@ -67,8 +67,66 @@
   }
 
   .modalHeader {
-    background: var(--modal-bg);
+    /* Override Mantine ModalBase sticky header (`background-color: var(--mantine-color-body)`). */
+    background-color: var(--modal-bg);
     color: var(--modal-color);
+  }
+
+  /*
+   * Drawer paint — theme `Drawer.extend` + AppDrawer compound (inherits `--_cmf-drawer-*`).
+   * Header must not keep Mantine `--mantine-color-body` (opaque over panel tokens).
+   */
+  .drawerContent {
+    background: var(--_cmf-drawer-bg, var(--drawer-bg));
+    color: var(--_cmf-drawer-color, var(--drawer-color));
+    border-radius: var(--_cmf-drawer-radius, var(--drawer-radius, 0));
+    box-shadow: var(--_cmf-drawer-shadow, var(--drawer-shadow, var(--mantine-shadow-md)));
+  }
+
+  .drawerHeader {
+    /* Override Mantine ModalBase sticky header (`background-color: var(--mantine-color-body)`). */
+    background-color: var(--_cmf-drawer-bg, var(--drawer-bg, var(--mantine-color-body)));
+    color: var(--_cmf-drawer-color, var(--drawer-color, var(--mantine-color-text)));
+  }
+
+  .drawerBody {
+    padding: var(--_cmf-drawer-padding, var(--drawer-padding, var(--mantine-spacing-md)));
+  }
+
+  .drawerOverlay {
+    --overlay-bg: rgb(
+      0 0 0 / var(--_cmf-drawer-overlay-opacity, var(--drawer-overlay-opacity, 0.35))
+    );
+    background: rgb(
+      0 0 0 / var(--_cmf-drawer-overlay-opacity, var(--drawer-overlay-opacity, 0.35))
+    );
+    -webkit-backdrop-filter: blur(var(--_cmf-drawer-overlay-blur, var(--drawer-overlay-blur, 4px)));
+    backdrop-filter: blur(var(--_cmf-drawer-overlay-blur, var(--drawer-overlay-blur, 4px)));
+  }
+
+  /*
+   * Text paint — theme `Text.extend`.
+   * Skip when the same node is Anchor (Mantine Anchor = Text-based) — link owns color.
+   * Nested Text inside AppLink/Anchor inherits link color.
+   */
+  .text:where(:not(.anchor)) {
+    color: var(--text-color, var(--color-text, var(--mantine-color-text)));
+  }
+
+  .anchor :where(.text) {
+    color: inherit;
+  }
+
+  /*
+   * Code paint — only when theme `Code.extend` attaches under CMF scope.
+   * Vars from `resolveCodeRootVars`.
+   */
+  .code {
+    color: var(--code-color);
+    font-size: var(--code-fz);
+    border-radius: var(--code-radius);
+    padding: var(--code-padding);
+    background-color: var(--code-bg);
   }
 
   /*
@@ -84,10 +142,13 @@
    * Anchor token cascade (hero-style):
    * color → `--mantine-color-anchor` / `--cmf-anchor`
    * underline → `--root-anchor-underline` via Anchor.extend styles
+   * Mantine Anchor is Text-based — reset body `--text-color` so link paint wins.
    */
   .anchor {
+    --text-color: var(--mantine-color-anchor);
     --text-fz: var(--cmf-anchor-font-size, var(--mantine-font-size-md));
     --text-lh: var(--cmf-anchor-line-height, var(--mantine-line-height-md));
+    color: var(--mantine-color-anchor);
 
     /* Avoid fighting Anchor.extend inline `text-decoration` — active = border. */
     border-bottom: 1px solid transparent;
@@ -105,7 +166,8 @@
     }
 
     &:where(:hover:not([data-invalid-href], [aria-disabled='true'])) {
-      color: var(--cmf-anchor-hover);
+      color: var(--mantine-color-anchor-hover);
+      --text-color: var(--mantine-color-anchor-hover);
     }
   }
 

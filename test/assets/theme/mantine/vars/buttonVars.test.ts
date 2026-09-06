@@ -124,6 +124,23 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-hover']).toContain('--app-gradient-default-hover');
   });
 
+  it('paint-only bridge for plain gradient differs hover from bg', () => {
+    const paint = resolveButtonCustomVariantPaintVars({ variant: 'gradient' });
+
+    expect(paint['--button-bg']).toContain('--app-gradient-default');
+    expect(paint['--button-hover']).toContain('--app-gradient-default-hover');
+    expect(paint['--button-hover']).not.toBe(paint['--button-bg']);
+    expect(paint['--button-height']).toBeUndefined();
+  });
+
+  it('paint-only bridge for plain white uses brand text + light hover', () => {
+    const paint = resolveButtonCustomVariantPaintVars({ variant: 'white' });
+
+    expect(paint['--button-color']).toContain('--mantine-color-brand-filled');
+    expect(paint['--button-hover']).toContain('color-mix');
+    expect(paint['--button-height']).toBeUndefined();
+  });
+
   it('cascades arbitrary custom variant by name with Mantine default paint fallback', () => {
     const custom = resolveButtonRootVars({ variant: 'promo-cta' });
 

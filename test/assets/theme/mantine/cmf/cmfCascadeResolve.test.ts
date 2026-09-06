@@ -3,8 +3,11 @@ import { describe, expect, it } from 'vitest';
 import {
   buildCmfActionIconPropToken,
   buildCmfButtonPropToken,
+  buildCmfCodePropToken,
   buildCmfGroupPropToken,
   buildCmfModalPropToken,
+  buildCmfTextPropToken,
+  parentCmfComponent,
   resolveCmfScope,
 } from '@/assets/theme/mantine/cmf/cmfCascadeResolve';
 
@@ -21,7 +24,7 @@ describe('cmfCascadeResolve', () => {
     );
   });
 
-  it('builds component+key → component+role → component → variant', () => {
+  it('builds component+key → role → component → variant → parent widget', () => {
     const token = buildCmfActionIconPropToken('bd', 'transparent', {
       scope: { component: 'sidebar-dropdown', key: 'casino', role: 'parent' },
       variant: 'transparent',
@@ -29,7 +32,7 @@ describe('cmfCascadeResolve', () => {
     });
 
     expect(token).toBe(
-      'var(--cmf-action-icon-sidebar-dropdown-casino-bd, var(--cmf-action-icon-sidebar-dropdown-parent-bd, var(--cmf-action-icon-sidebar-dropdown-bd, var(--cmf-action-icon-transparent-bd, transparent))))',
+      'var(--cmf-action-icon-sidebar-dropdown-casino-bd, var(--cmf-action-icon-sidebar-dropdown-parent-bd, var(--cmf-action-icon-sidebar-dropdown-bd, var(--cmf-action-icon-transparent-bd, var(--cmf-action-icon-sidebar-bd, transparent)))))',
     );
   });
 
@@ -37,11 +40,10 @@ describe('cmfCascadeResolve', () => {
     const token = buildCmfActionIconPropToken('bd', 'transparent', {
       scope: { component: 'sidebar-dropdown', key: 'slots', role: 'child' },
       variant: 'transparent',
-      tail: 'variant',
     });
 
     expect(token).toBe(
-      'var(--cmf-action-icon-sidebar-dropdown-slots-bd, var(--cmf-action-icon-sidebar-dropdown-child-bd, var(--cmf-action-icon-sidebar-dropdown-bd, var(--cmf-action-icon-transparent-bd, transparent))))',
+      'var(--cmf-action-icon-sidebar-dropdown-slots-bd, var(--cmf-action-icon-sidebar-dropdown-child-bd, var(--cmf-action-icon-sidebar-dropdown-bd, var(--cmf-action-icon-transparent-bd, var(--cmf-action-icon-sidebar-bd, transparent)))))',
     );
   });
 
@@ -67,14 +69,56 @@ describe('cmfCascadeResolve', () => {
     );
   });
 
-  it('builds Group layout cascade key → component → shared', () => {
+  it('builds Group layout cascade key → component → shared → parent', () => {
     const token = buildCmfGroupPropToken('justify', 'flex-start', {
       scope: { component: 'sidebar-header', key: 'logo' },
     });
 
     expect(token).toBe(
-      'var(--cmf-group-sidebar-header-logo-justify, var(--cmf-group-sidebar-header-justify, var(--cmf-group-justify, flex-start)))',
+      'var(--cmf-group-sidebar-header-logo-justify, var(--cmf-group-sidebar-header-justify, var(--cmf-group-justify, var(--cmf-group-sidebar-justify, flex-start))))',
     );
+  });
+
+  it('falls back sidebar-header active tokens to sidebar widget layer after variant', () => {
+    const token = buildCmfButtonPropToken('active-inset', 'auto 0 0 0', {
+      scope: { component: 'sidebar-header', key: 'account' },
+      variant: 'default',
+      tail: 'variant',
+    });
+
+    expect(token).toBe(
+      'var(--cmf-button-sidebar-header-account-active-inset, var(--cmf-button-sidebar-header-active-inset, var(--cmf-button-default-active-inset, var(--cmf-button-sidebar-active-inset, auto 0 0 0))))',
+    );
+  });
+
+  it('falls back sidebar-footer active tokens to sidebar widget layer after variant', () => {
+    const token = buildCmfButtonPropToken('active-color', 'var(--brand-color-5)', {
+      scope: { component: 'sidebar-footer', key: 'support' },
+      variant: 'default',
+      tail: 'variant',
+    });
+
+    expect(token).toBe(
+      'var(--cmf-button-sidebar-footer-support-active-color, var(--cmf-button-sidebar-footer-active-color, var(--cmf-button-default-active-color, var(--cmf-button-sidebar-active-color, var(--brand-color-5)))))',
+    );
+  });
+
+  it('variant paint wins over parent widget paint', () => {
+    const token = buildCmfButtonPropToken('bg', 'var(--mantine-color-white)', {
+      scope: { component: 'sidebar-footer', key: 'logout' },
+      variant: 'white',
+      tail: 'variant',
+    });
+
+    expect(token).toBe(
+      'var(--cmf-button-sidebar-footer-logout-bg, var(--cmf-button-sidebar-footer-bg, var(--cmf-button-white-bg, var(--cmf-button-sidebar-bg, var(--mantine-color-white)))))',
+    );
+  });
+
+  it('parentCmfComponent splits widget-chrome', () => {
+    expect(parentCmfComponent('sidebar-header')).toBe('sidebar');
+    expect(parentCmfComponent('sidebar-dropdown')).toBe('sidebar');
+    expect(parentCmfComponent('sidebar')).toBeUndefined();
   });
 
   it('builds Modal cascade key → component → shared', () => {
@@ -84,6 +128,26 @@ describe('cmfCascadeResolve', () => {
 
     expect(token).toBe(
       'var(--cmf-modal-layout-search-bg, var(--cmf-modal-layout-bg, var(--cmf-modal-bg, var(--mantine-color-body))))',
+    );
+  });
+
+  it('builds Text cascade key → component → default → parent', () => {
+    const token = buildCmfTextPropToken('color', 'inherit', {
+      scope: { component: 'sidebar-header', key: 'account' },
+    });
+
+    expect(token).toBe(
+      'var(--cmf-text-sidebar-header-account-color, var(--cmf-text-sidebar-header-color, var(--cmf-text-default-color, var(--cmf-text-sidebar-color, inherit))))',
+    );
+  });
+
+  it('builds Code cascade component → default', () => {
+    const token = buildCmfCodePropToken('bg', 'var(--mantine-color-dark-6)', {
+      scope: { component: 'layout' },
+    });
+
+    expect(token).toBe(
+      'var(--cmf-code-layout-bg, var(--cmf-code-default-bg, var(--mantine-color-dark-6)))',
     );
   });
 
@@ -144,7 +208,7 @@ describe('cmfCascadeResolve', () => {
     );
   });
 
-  it('reads scope from data-* attrs and cmf* props', () => {
+  it('reads scope from data-cmf-* attrs only', () => {
     expect(
       resolveCmfScope({
         'data-cmf-component': 'header',
@@ -157,7 +221,7 @@ describe('cmfCascadeResolve', () => {
         cmfComponent: 'banner',
         cmfKey: 'cta',
       }),
-    ).toEqual({ component: 'banner', key: 'cta', role: undefined });
+    ).toEqual({ component: undefined, key: undefined, role: undefined });
 
     expect(
       resolveCmfScope({

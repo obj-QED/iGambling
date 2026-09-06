@@ -24,8 +24,8 @@ function HeaderActionIconTooltipComponent({ item, children }: HeaderActionIconTo
       label={item.label}
       name={item.name}
       config={tooltip}
-      cmfComponent="header"
-      cmfKey={item.key}
+      data-cmf-component="header"
+      data-cmf-key={item.key}
     >
       {children}
     </AppTooltip>

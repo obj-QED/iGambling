@@ -11,7 +11,7 @@ import { APP_GRADIENT_DEFAULT, APP_GRADIENT_DEFAULT_HOVER } from '../theme/gradi
 const MANTINE_AI_BD_TRANSPARENT = 'transparent';
 const MANTINE_AI_BD_DEFAULT = 'var(--color-border)';
 const MANTINE_AI_BD_OUTLINE =
-  'color-mix(in srgb, var(--brand-color-7) 55%, var(--mantine-color-default-border))';
+  'color-mix(in srgb, var(--brand-color-6) 55%, var(--mantine-color-default-border))';
 const MANTINE_AI_BD_WIDTH = 'calc(0.0625rem * var(--mantine-scale))';
 
 function aiBdShorthand(colorToken: string, widthToken = 'var(--ai-bd-width)'): string {
@@ -30,25 +30,25 @@ type VariantPaint = {
 /** Last-resort paint when CMF tokens are unset. Keep in sync with buttonVars MANTINE_VARIANT_FALLBACKS. */
 const MANTINE_VARIANT_FALLBACKS = {
   filled: {
-    bg: 'light-dark(var(--brand-color-7), var(--brand-color-8))',
+    bg: 'light-dark(var(--brand-color-6), var(--brand-color-6))',
     color: '#fff',
     bd: MANTINE_AI_BD_TRANSPARENT,
-    hover: 'light-dark(var(--brand-color-6), var(--brand-color-7))',
+    hover: 'light-dark(var(--brand-color-7), var(--brand-color-7))',
     'hover-color': '#fff',
   },
   outline: {
     bg: 'transparent',
-    color: 'light-dark(var(--brand-color-7), var(--brand-color-3))',
+    color: 'light-dark(var(--brand-color-6), var(--brand-color-6))',
     bd: MANTINE_AI_BD_OUTLINE,
     hover: 'var(--mantine-color-brand-light-hover)',
     'hover-color': 'var(--color-text)',
   },
   light: {
     bg: 'var(--mantine-color-brand-light)',
-    color: 'light-dark(var(--brand-color-8), var(--brand-color-2))',
+    color: 'light-dark(var(--brand-color-6), var(--brand-color-6))',
     bd: MANTINE_AI_BD_TRANSPARENT,
     hover: 'var(--mantine-color-brand-light-hover)',
-    'hover-color': 'light-dark(var(--brand-color-8), var(--brand-color-2))',
+    'hover-color': 'light-dark(var(--brand-color-7), var(--brand-color-7))',
   },
   subtle: {
     bg: 'transparent',
@@ -73,10 +73,10 @@ const MANTINE_VARIANT_FALLBACKS = {
   },
   white: {
     bg: 'var(--mantine-color-white)',
-    color: 'var(--mantine-color-black)',
+    color: 'var(--mantine-color-brand-filled)',
     bd: MANTINE_AI_BD_TRANSPARENT,
     hover: 'var(--mantine-color-white)',
-    'hover-color': 'var(--mantine-color-black)',
+    'hover-color': 'var(--mantine-color-brand-filled)',
   },
   gradient: {
     bg: `var(--app-gradient-default, ${APP_GRADIENT_DEFAULT})`,
@@ -139,9 +139,6 @@ type ActionIconVarsProps = {
   size?: unknown;
   radius?: unknown;
   variant?: string;
-  cmfComponent?: string;
-  cmfKey?: string;
-  cmfRole?: string;
   'data-cmf-component'?: string;
   'data-cmf-key'?: string;
   'data-cmf-role'?: string;
@@ -228,7 +225,7 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
       variant,
       tail: 'variant',
     }),
-    '--ai-active-color': buildCmfActionIconPropToken('active-color', 'var(--brand-color-5)', {
+    '--ai-active-color': buildCmfActionIconPropToken('active-color', 'var(--brand-color-6)', {
       scope,
       variant,
       tail: 'variant',

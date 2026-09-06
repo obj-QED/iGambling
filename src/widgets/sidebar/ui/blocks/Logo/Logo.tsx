@@ -149,8 +149,8 @@ function LogoComponent({ item, className }: BlockProps) {
         label={item.label}
         name={item.name}
         config={tooltip}
-        cmfComponent="sidebar"
-        cmfKey={LOGO_CMF_KEY}
+        data-cmf-component="sidebar"
+        data-cmf-key={LOGO_CMF_KEY}
       >
         {logo}
       </AppTooltip>

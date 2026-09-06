@@ -1,4 +1,5 @@
 import type { TooltipConfig } from '@/shared/config/tooltipSettings';
+import type { CmfControlAttrs } from '@/shared/lib/cmf/types/scopeAttrs.types';
 import type { ReactElement, ReactNode } from 'react';
 
 export type AppTooltipProps = {
@@ -15,8 +16,5 @@ export type AppTooltipProps = {
   config: TooltipConfig;
   /** Optional place-level override merged on top of `config`. */
   override?: Partial<TooltipConfig>;
-  /** CMF scope for CSS cascade on the floating tooltip (`data-cmf-*`). */
-  cmfComponent?: string;
-  cmfKey?: string;
   className?: string;
-};
+} & CmfControlAttrs;

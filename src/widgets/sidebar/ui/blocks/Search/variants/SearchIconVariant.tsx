@@ -65,8 +65,8 @@ function SearchIconVariantComponent({ item, className }: BlockProps) {
       label={item.label}
       name={item.name}
       config={tooltip}
-      cmfComponent="sidebar"
-      cmfKey="search"
+      data-cmf-component="sidebar"
+      data-cmf-key="search"
     >
       {control}
     </AppTooltip>

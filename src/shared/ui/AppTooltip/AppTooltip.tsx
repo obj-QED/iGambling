@@ -14,9 +14,10 @@ function AppTooltipComponent({
   children,
   config,
   override,
-  cmfComponent,
-  cmfKey,
   className,
+  'data-cmf-component': dataCmfComponent,
+  'data-cmf-key': dataCmfKey,
+  'data-cmf-role': dataCmfRole,
 }: AppTooltipProps) {
   const resolved = resolveTooltipConfig(config, override);
   const tooltipLabel = resolveAppTooltipLabel(label, name);
@@ -40,8 +41,9 @@ function AppTooltipComponent({
       offset={offset}
       className={className}
       classNames={{ tooltip: styles.tooltip }}
-      {...(cmfComponent && { 'data-cmf-component': cmfComponent })}
-      {...(cmfKey && { 'data-cmf-key': cmfKey })}
+      {...(dataCmfComponent ? { 'data-cmf-component': dataCmfComponent } : {})}
+      {...(dataCmfKey ? { 'data-cmf-key': dataCmfKey } : {})}
+      {...(dataCmfRole ? { 'data-cmf-role': dataCmfRole } : {})}
     >
       <span className={styles.target}>{children}</span>
     </Tooltip>

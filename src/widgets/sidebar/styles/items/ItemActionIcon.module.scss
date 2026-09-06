@@ -12,13 +12,12 @@
 
   .indicator {
     position: var(--aside-menu-dropdown-indicator-position, absolute);
-    right: 0;
-    bottom: 0;
+    inset: var(--aside-menu-dropdown-indicator-inset, auto 0 auto auto);
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    align-items: var(--aside-menu-dropdown-indicator-align, center);
+    justify-content: var(--aside-menu-dropdown-indicator-justify, center);
     line-height: 0;
     pointer-events: none;
-    color: inherit;
+    color: var(--aside-menu-dropdown-indicator-color, inherit);
   }
 }

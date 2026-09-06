@@ -46,7 +46,7 @@ function RootComponent({ menu, config, className }: RootProps) {
 
   if (!chromeLayout || !hasSidebarLayoutContent(chromeLayout)) return null;
 
-  const rootStyle = toSidebarRootWidthStyle(config.width, config.type);
+  const rootStyle = toSidebarRootWidthStyle(config.width);
   const Layout = resolveSidebarLayout(config.layout);
   const strategyNode = <Strategy layout={chromeLayout} config={config} />;
 

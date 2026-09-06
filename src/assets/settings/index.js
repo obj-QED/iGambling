@@ -14,6 +14,8 @@
         /** Global: false → no skeleton on shell/adapters/page. true / omit → on. */
         skeleton: true,
       },
+      modal: {},
+      drawer: {},
     },
     header: {
       layout: 'container',
@@ -66,7 +68,6 @@
 
     aside: {
       /** Shell width is fixed — do not pair a compact calc with `type: 'default'` (labels need room). */
-      width: '15rem',
       type: 'default', // 'default' | 'compact' | 'slideout'
       layout: 'aside',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
@@ -115,12 +116,14 @@
           items: [
             {
               url: '/profile',
+              label: 'Your account',
               name: 'Harriette Spoonlicker',
               key: 'account',
               img: '/images/misc/default/header/icon_user.webp',
               imgRadius: 'round',
               subtitle: 'hspoonlicker@outlook.com',
               type: 'link',
+              variant: 'gradient',
             },
           ],
         },
@@ -145,18 +148,20 @@
           placement: { section: 'footer', at: 'start' },
           items: [
             {
+              label: 'Change account',
               url: '/account/switch',
               name: 'Change account',
               key: 'change_account',
               type: 'link',
-              variant: 'transparent',
+              variant: 'default',
             },
             {
+              label: 'Logout account',
               url: '/logout',
               name: 'Logout',
               key: 'logout',
               type: 'button',
-              variant: 'outline',
+              variant: 'white',
             },
           ],
         },

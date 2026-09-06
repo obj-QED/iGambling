@@ -28,8 +28,8 @@ describe('AppDrawer', () => {
         <AppDrawer
           opened
           onClose={vi.fn()}
-          cmfComponent="layout"
-          cmfKey="sidebar"
+          data-cmf-component="layout"
+          data-cmf-key="sidebar"
           withCloseButton={false}
         >
           <div>drawer body</div>

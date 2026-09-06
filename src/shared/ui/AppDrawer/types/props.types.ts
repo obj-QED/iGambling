@@ -1,4 +1,5 @@
 import type { BreakpointName } from '@/assets/theme/breakpoints';
+import type { CmfControlAttrs } from '@/shared/lib/cmf/types/scopeAttrs.types';
 import type { DrawerProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 
@@ -37,9 +38,6 @@ export type AppDrawerProps = {
    * Written as `data-viewport` for CSS token selection.
    */
   viewport?: AppDrawerViewport;
-  /** CMF scope for CSS cascade on the portaled panel (`data-cmf-*`). */
-  cmfComponent?: string;
-  cmfKey?: string;
   className?: string;
   classNames?: AppDrawerClassNames;
-};
+} & CmfControlAttrs;

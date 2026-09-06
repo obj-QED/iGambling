@@ -12,7 +12,9 @@
  */
 
 export {
+  createSidebarDropdownOpenKeysStore,
   readSidebarDropdownOpenKeys,
+  type SidebarDropdownOpenKeysStore,
   toggleSidebarDropdownOpenKey,
   writeSidebarDropdownOpenKeys,
 } from './dropdown';

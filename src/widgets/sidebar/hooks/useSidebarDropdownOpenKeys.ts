@@ -1,32 +1,37 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 
-import {
-  readSidebarDropdownOpenKeys,
-  toggleSidebarDropdownOpenKey,
-  writeSidebarDropdownOpenKeys,
-} from '../lib';
+import { createSidebarDropdownOpenKeysStore, type SidebarDropdownOpenKeysStore } from '../lib';
 
+export type { SidebarDropdownOpenKeysStore };
+
+/**
+ * Stable dropdown open-keys store for the provider.
+ * Per-item open state: `useSidebarDropdown(menuKey)` + `useSyncExternalStore`.
+ */
+export function useSidebarDropdownOpenKeysStore(
+  defaultOpenKeys: readonly string[],
+): SidebarDropdownOpenKeysStore {
+  const defaultsRef = useRef(defaultOpenKeys);
+  return useMemo(() => createSidebarDropdownOpenKeysStore(defaultsRef.current), []);
+}
+
+/** @deprecated Prefer `useSidebarDropdown(menuKey)`. */
 export type SidebarDropdownOpenKeysState = {
   isOpen: (menuKey: string) => boolean;
   toggle: (menuKey: string) => void;
 };
 
+/** @deprecated Use `useSidebarDropdownOpenKeysStore` + `useSidebarDropdown(menuKey)`. */
 export function useSidebarDropdownOpenKeys(
   defaultOpenKeys: readonly string[],
 ): SidebarDropdownOpenKeysState {
-  const [openKeys, setOpenKeys] = useState<ReadonlySet<string>>(() =>
-    readSidebarDropdownOpenKeys(defaultOpenKeys),
+  const store = useSidebarDropdownOpenKeysStore(defaultOpenKeys);
+  const isOpen = useCallback((menuKey: string) => store.getOpenKeys().has(menuKey), [store]);
+  const toggle = useCallback(
+    (menuKey: string) => {
+      store.toggle(menuKey);
+    },
+    [store],
   );
-
-  const isOpen = useCallback((menuKey: string) => openKeys.has(menuKey), [openKeys]);
-
-  const toggle = useCallback((menuKey: string) => {
-    setOpenKeys((current) => {
-      const next = toggleSidebarDropdownOpenKey(current, menuKey);
-      writeSidebarDropdownOpenKeys(next);
-      return next;
-    });
-  }, []);
-
-  return { isOpen, toggle };
+  return useMemo(() => ({ isOpen, toggle }), [isOpen, toggle]);
 }

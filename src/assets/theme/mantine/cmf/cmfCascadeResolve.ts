@@ -9,7 +9,9 @@
  *   2. `--cmf-{control}-{component}-{role}-{prop}` (e.g. dropdown parent|child)
  *   3. `--cmf-{control}-{component}-{prop}`
  *   4. `--cmf-{control}-{variant}-{prop}` when `tail: 'variant'` (or variant-in-shared)
- *   5. `--cmf-{control}-{prop}` when `tail: 'shared'`
+ *   5. `--cmf-{control}-{parent}-{prop}` when component is `{widget}-{chrome}`
+ *      (e.g. `sidebar-header` → `sidebar`) — after variant so paint variants win
+ *   6. `--cmf-{control}-{prop}` when `tail: 'shared'`
  *
  * Without component scope (plain `<Button data-variant>`):
  *   1. `--cmf-{control}-{variant}-{prop}`
@@ -47,12 +49,12 @@ function readStringProp(
   return undefined;
 }
 
-/** Resolve CMF location from Mantine props / data-* attrs on the control root. */
+/** Resolve CMF location from `data-cmf-*` attrs on the control / portal root. */
 export function resolveCmfScope(props: Record<string, unknown>): CmfScope {
   return {
-    component: readStringProp(props, ['data-cmf-component', 'cmfComponent']),
-    key: readStringProp(props, ['data-cmf-key', 'cmfKey']),
-    role: readStringProp(props, ['data-cmf-role', 'cmfRole']),
+    component: readStringProp(props, ['data-cmf-component']),
+    key: readStringProp(props, ['data-cmf-key']),
+    role: readStringProp(props, ['data-cmf-role']),
   };
 }
 
@@ -61,7 +63,17 @@ export function nestCssVars(names: string[], fallback: string): string {
   return names.reduceRight((inner, name) => `var(${name}, ${inner})`, fallback);
 }
 
-type CmfControlName = 'button' | 'action-icon' | 'group' | 'modal';
+/**
+ * Chrome components are `{widget}-{chrome}` (`sidebar-header`, `sidebar-dropdown`).
+ * Parent widget token layer: `sidebar-header` → `sidebar`.
+ */
+export function parentCmfComponent(component: string): string | undefined {
+  const i = component.indexOf('-');
+  if (i <= 0 || i === component.length - 1) return undefined;
+  return component.slice(0, i);
+}
+
+type CmfControlName = 'button' | 'action-icon' | 'group' | 'modal' | 'text' | 'code';
 
 function cmfControlName(control: CmfControlName, ...parts: string[]): string {
   return `--cmf-${control}-${parts.join('-')}`;
@@ -121,13 +133,21 @@ function buildCmfControlPropToken(
     names.push(cmfControlName(control, prop));
   }
 
+  // Parent widget AFTER variant/shared so `--cmf-button-sidebar-bg` cannot beat `white`/`gradient`.
+  if (hasComponent) {
+    const parent = parentCmfComponent(scope.component!);
+    if (parent !== undefined) {
+      names.push(cmfControlName(control, parent, prop));
+    }
+  }
+
   return nestCssVars(names, fallback);
 }
 
 type BuildCmfPropTokenOptions = BuildCmfControlPropTokenOptions;
 
 /**
- * With scope: component+key → component+role → component → variant|shared → fallback
+ * With scope: component+key → component+role → component → parent widget → variant|shared → fallback
  * Without scope: variant → (shared) → fallback
  */
 export function buildCmfButtonPropToken(
@@ -175,4 +195,64 @@ export function buildCmfModalPropToken(
     scope: options.scope,
     tail: 'shared',
   });
+}
+
+/**
+ * Text cascade when `data-cmf-*` is set:
+ * key → component → `--cmf-text-{variant}-{prop}` → parent → fallback
+ * Default variant segment is `default`; `c="dimmed"|"bright"` uses that segment for color.
+ */
+export function buildCmfTextPropToken(
+  prop: string,
+  fallback: string,
+  options: Pick<BuildCmfPropTokenOptions, 'scope' | 'variant'> = {},
+): string {
+  return buildCmfControlPropToken('text', prop, fallback, {
+    scope: options.scope,
+    variant: options.variant ?? 'default',
+    tail: 'variant',
+  });
+}
+
+/**
+ * Code cascade when `data-cmf-*` is set:
+ * key → component → `--cmf-code-default-{prop}` → parent → fallback
+ */
+export function buildCmfCodePropToken(
+  prop: string,
+  fallback: string,
+  options: Pick<BuildCmfPropTokenOptions, 'scope'> = {},
+): string {
+  return buildCmfControlPropToken('code', prop, fallback, {
+    scope: options.scope,
+    variant: 'default',
+    tail: 'variant',
+  });
+}
+
+/**
+ * Drawer portal cascade (tokens on `:root`, prefix `--drawer-*` — not `--cmf-drawer-*`):
+ * key → component → base `--drawer-{prop}` → fallback
+ *
+ * Runtime paint uses private `--_cmf-drawer-*` so we never clobber `:root --drawer-bg`
+ * (would cycle). Same nest as portal `:root --drawer-*` tokens.
+ */
+export function buildDrawerPropToken(
+  prop: string,
+  fallback: string,
+  options: Pick<BuildCmfPropTokenOptions, 'scope'> = {},
+): string {
+  const names: string[] = [];
+  const scope = options.scope;
+  const hasComponent = scope?.component !== undefined;
+
+  if (hasComponent && scope.key !== undefined) {
+    names.push(`--drawer-${scope.component}-${scope.key}-${prop}`);
+  }
+  if (hasComponent) {
+    names.push(`--drawer-${scope.component}-${prop}`);
+  }
+  names.push(`--drawer-${prop}`);
+
+  return nestCssVars(names, fallback);
 }

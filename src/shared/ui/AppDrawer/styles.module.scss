@@ -1,10 +1,11 @@
-@use './cmf-drawer-cascade' as drawer;
-
+/*
+ * Layout only (size / inset / viewport). Paint: theme `resolveDrawerRootVars` +
+ * `.drawerContent` / `.drawerHeader` / `.drawerBody` / `.drawerOverlay`.
+ */
 @layer components {
   /*
    * Mantine left/right Drawer defaults `--drawer-align: flex-start`, so the panel
    * shrinks to content height. Stretch + height → full viewport shell.
-   * (NativeScrollArea is a Fragment and ignores Mantine's inline 100vh style.)
    */
   .inner {
     --drawer-align: stretch;
@@ -12,14 +13,7 @@
     align-items: stretch;
   }
 
-  /*
-   * Paint: CMF cascade (`_cmf-drawer-cascade.scss`) — reads `--drawer-*` on this node / `:root`.
-   * Size / inset: generic tokens only. Instance + viewport overrides live in `tokens/theme.scss`
-   * (e.g. `[data-cmf-component][data-cmf-key][data-viewport]` or `@media ($mobile)`).
-   * Do NOT hardcode product cmfComponent / cmfKey here — AppDrawer is reusable.
-   */
   .content {
-    @include drawer.cmf-drawer-cascade;
     display: flex;
     flex-direction: column;
     align-self: stretch;
@@ -36,7 +30,6 @@
     overflow: hidden;
   }
 
-  /* Viewport bands (`data-viewport` = BREAKPOINTS_PX keys) → `--drawer-size-*`. */
   .content:where([data-viewport='mobile']) {
     --_drawer-size: var(--drawer-size-mobile, var(--drawer-size, 100%));
   }
@@ -62,20 +55,10 @@
     overflow: hidden;
     border-radius: inherit;
 
-    /* Inherits `--_cmf-drawer-padding` from `.content` cascade (base / component / key). */
-    padding: var(--_cmf-drawer-padding, var(--drawer-padding, 0));
-
     > * {
       flex: 1 1 auto;
       min-height: 0;
       height: 100%;
     }
   }
-}
-
-/*
- * Overlay — UNLAYERED so paint beats `@layer mantine` defaults (0.6 black).
- */
-.overlay {
-  @include drawer.cmf-drawer-overlay-cascade;
 }

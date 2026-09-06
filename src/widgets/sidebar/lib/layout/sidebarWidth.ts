@@ -32,7 +32,6 @@ export type SidebarRootWidthStyle = CSSProperties & {
 
 export function toSidebarRootWidthStyle(
   width: SidebarWidth | undefined,
-  _type: string,
 ): SidebarRootWidthStyle | undefined {
   const widthCss = toSidebarWidthCss(width);
   if (widthCss == null) {

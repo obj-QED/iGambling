@@ -17,6 +17,7 @@ import { useAsideMenuButtonSize } from '../../../hooks';
 import {
   hasItemImg,
   hasItemName,
+  renderSidebarFooterIcon,
   resolveItemHref,
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
@@ -31,9 +32,19 @@ function resolveActionIconContent(
   label: string,
   showItemImg: boolean,
   onImgError: (() => void) | undefined,
+  chrome: ItemActionIconProps['chrome'],
 ) {
   if (showItemImg && hasItemImg(item)) {
     return <ItemMedia item={item} alt={label} onImgError={onImgError} />;
+  }
+
+  if (chrome === 'footer') {
+    const footerIcon = renderSidebarFooterIcon(item, {
+      className: 'cmf-ActionIcon-icon-svg',
+      stroke: 1.5,
+      'aria-hidden': true,
+    });
+    if (footerIcon) return footerIcon;
   }
 
   if (hasItemName(item)) {
@@ -58,8 +69,8 @@ function ItemActionIconComponent({
   const size = useAsideMenuButtonSize();
   const label = resolveItemLabel(item);
   const content = useMemo(
-    () => resolveActionIconContent(item, label, showItemImg, onImgError),
-    [item, label, showItemImg, onImgError],
+    () => resolveActionIconContent(item, label, showItemImg, onImgError, chrome),
+    [item, label, showItemImg, onImgError, chrome],
   );
 
   return (

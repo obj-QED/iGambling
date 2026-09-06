@@ -32,6 +32,7 @@
     "./**/*.ts",
     "./**/*.tsx",
     "../src/vite-env.d.ts",
+    "../src/assets/theme/mantine/types/cmfMantineProps.d.ts",
     "../src/**/*.stories.@(ts|tsx)",
     "../src/storybook/**/*.ts",
     "../src/storybook/**/*.tsx",

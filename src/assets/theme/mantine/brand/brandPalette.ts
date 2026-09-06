@@ -1,6 +1,6 @@
 import type { MantineColorsTuple } from '@mantine/core';
 
-/** JS fallback when `--brand-color-*` from theme.scss is unavailable. Keep in sync with brand-palette.scss. */
+/** JS fallback when `--brand-color-*` from brand-palette.scss is unavailable. Keep in sync with that file. */
 export const BRAND_PALETTE_LIGHT_FALLBACK = [
   '#f0fdfa',
   '#ccfbf1',
@@ -14,20 +14,21 @@ export const BRAND_PALETTE_LIGHT_FALLBACK = [
   '#042f2e',
 ] as const;
 
+/** Amber/orange — mirrors `$palette-dark` in brand-palette.scss (SoT). */
 export const BRAND_PALETTE_DARK_FALLBACK = [
-  '#ecfeff',
-  '#cffafe',
-  '#a5f3fc',
-  '#67e8f9',
-  '#22d3ee',
-  '#06b6d4',
-  '#0891b2',
-  '#0e7490',
-  '#155e75',
-  '#164e63',
+  '#fff5e1',
+  '#ffeacb',
+  '#ffd49a',
+  '#ffbd64',
+  '#ffa937',
+  '#ff9c1b',
+  '#ff9200',
+  '#e38200',
+  '#cb7300',
+  '#915201',
 ] as const;
 
-/** Default export for mantineTheme — matches defaultColorScheme: dark (cyan). */
+/** Default export for mantineTheme — matches defaultColorScheme: dark. */
 export const BRAND_PALETTE_FALLBACK = BRAND_PALETTE_DARK_FALLBACK;
 
 export function createBrandColorsTuple(
