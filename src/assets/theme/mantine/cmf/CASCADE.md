@@ -89,9 +89,13 @@ Modal (always — `themeComponents` + `modalVars`; optional `data-cmf-*`):
 4. Mantine / theme fallback
 ```
 
-Props: `radius` | `size` | `y-offset` | `x-offset` | `bg` | `color` | `padding` | `shadow`.  
-→ `--modal-radius` / `--modal-size` / `--modal-y-offset` / `--modal-x-offset` / `--modal-bg` / …  
-Paint always via `.modalContent` / `.modalBody` / `.modalHeader` (default `:root --cmf-modal-*`).
+Props: `radius` | `size` | `y-offset` | `x-offset` | `bg` | `color` | `padding` | `shadow` |
+`header-padding` | `header-min-height` | `title-fz|fw|lh|color` | `close-size|icon-size|color|hover-bg|radius` |
+`overlay-opacity` | `overlay-blur`.  
+→ `--modal-*` on root. Paint via `.modalContent` / `.modalHeader` / `.modalTitle` / `.modalClose` / `.modalBody` / `.modalOverlay`.
+
+Behavior defaults (Mantine props): `params.modal` → `getModalDefaultProps()` → `Modal.extend` + wrappers.
+@see https://mantine.dev/core/modal/?t=props
 
 Text / Code (`data-cmf-*` on Mantine `Text` / `Code` — `themeComponents` + `textVars` / `codeVars`):
 
@@ -129,9 +133,14 @@ Drawer (portal → `:root --drawer-*`, via `themeComponents` + `AppDrawer` + `da
 ```
 
 Runtime private `--_cmf-drawer-*` (no cycle with `:root`).  
-Props: `bg` | `color` | `radius` | `padding` | `shadow` | `overlay-opacity` | `overlay-blur`.  
-Header / content / body / overlay paint: `.drawerHeader` etc. in `components.module.scss`.  
+Props: `bg` | `color` | `radius` | `padding` | `shadow` | `offset` |
+`header-padding` | `header-min-height` | `title-fz|fw|lh|color` | `close-*` |
+`overlay-opacity` | `overlay-blur`.  
+Header / title / close / content / body / overlay paint: `.drawer*` in `components.module.scss`.  
 Optional size / float: `--drawer-size`, `--drawer-size-{mobile|tablet|laptop|pc}`, `--drawer-inset`.
+
+Behavior defaults (Mantine props): `params.drawer` → `getDrawerDefaultProps()` → `Drawer.extend` + `AppDrawer`.
+@see https://mantine.dev/core/drawer/?t=props
 
 Tokens live on `:root` in `tokens/theme.scss`. Scope attrs: `data-cmf-component` / `data-cmf-key` / `data-cmf-role` (via `cmfControlAttrs` or spread).
 

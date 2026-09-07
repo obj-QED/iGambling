@@ -14,8 +14,34 @@
         /** Global: false → no skeleton on shell/adapters/page. true / omit → on. */
         skeleton: true,
       },
-      modal: {},
-      drawer: {},
+      /**
+       * Global Mantine Modal defaults — any prop except opened/onClose/children.
+       * @see https://mantine.dev/core/modal/?t=props
+       * Paint tokens: `tokens/theme.scss` `--cmf-modal-*` (content/header/title/close/body/overlay).
+       */
+      modal: {
+        centered: true,
+        // radius: 'md',
+        // size: 'md',
+        // overlayProps: { backgroundOpacity: 0.55, blur: 0 },
+        // transitionProps: { duration: 200 },
+        // withCloseButton: true,
+        // closeOnClickOutside: true,
+        // closeOnEscape: true,
+      },
+      /**
+       * Global Mantine Drawer defaults — any prop except opened/onClose/children.
+       * @see https://mantine.dev/core/drawer/?t=props
+       * Paint tokens: `tokens/theme.scss` `--drawer-*`. Sidebar: data-cmf + layout tokens.
+       */
+      drawer: {
+        // position: 'right',
+        // offset: 8,
+        // radius: 'md',
+        // size: 'md',
+        // overlayProps: { backgroundOpacity: 0.35, blur: 4 },
+        // withCloseButton: true,
+      },
     },
     header: {
       layout: 'container',

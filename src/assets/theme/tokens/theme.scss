@@ -76,23 +76,6 @@
     --cmf-scrollbar-radius: 999px;
 
     /*
-     * Modal CMF SoT on :root (portaled panel inherits from html).
-     * Always bridged via `themeComponents` Modal + `buildCmfModalPropToken`:
-     *   --cmf-modal-{component}-{key}-{radius|size|y-offset|x-offset|bg|color|padding|shadow}
-     *   --cmf-modal-{component}-{…}
-     *   --cmf-modal-{…}   ← default (no data-cmf-*)
-     * Guide: mantine/cmf/CASCADE.md
-     */
-    --cmf-modal-radius: var(--mantine-radius-default);
-    --cmf-modal-size: var(--modal-size-md, 37.5rem);
-    --cmf-modal-y-offset: 5dvh;
-    --cmf-modal-x-offset: 5vw;
-    --cmf-modal-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-7));
-    --cmf-modal-color: var(--mantine-color-text);
-    --cmf-modal-padding: var(--mantine-spacing-md);
-    --cmf-modal-shadow: var(--mantine-shadow-md);
-
-    /*
      * Tooltip SoT on :root (portaled floating inherits from html).
      * Edit here — cascade: key → component → base. Guide: mantine/cmf/CASCADE.md
      *   --tooltip-{header|sidebar}-{key}-{bg|color|radius|max-width}
@@ -125,6 +108,7 @@
     --drawer-radius: var(--radius-md);
 
     /* Generic drawer body inset (no data-cmf). Sidebar zeros via key layer. */
+    --drawer-layout-sidebar-inset: var(--mantine-spacing-sm);
     --drawer-padding: var(--spacing-md);
     --drawer-shadow: var(--mantine-shadow-md);
     --drawer-size: auto;
@@ -133,33 +117,8 @@
     --drawer-size-laptop: auto;
     --drawer-size-pc: auto;
 
-    /** Backdrop dim — lower = more transparent. Light blur keeps page readable. */
-    --drawer-overlay-opacity: 0.35;
-    --drawer-overlay-blur: 4px;
-    --drawer-z-index: var(--z-index-modal);
-
-    /* 2) Component layer aliases (JS nest: key → component → base) */
-    --drawer-layout-bg: var(--drawer-bg);
-    --drawer-layout-color: var(--drawer-color);
-    --drawer-layout-radius: var(--drawer-radius);
-    --drawer-layout-padding: var(--drawer-padding);
-    --drawer-layout-shadow: var(--drawer-shadow);
-    --drawer-layout-overlay-opacity: var(--drawer-overlay-opacity);
-    --drawer-layout-overlay-blur: var(--drawer-overlay-blur);
-
-    /* 3) layout + key=sidebar — defaults (chrome may set data-cmf-*) */
-    --drawer-layout-sidebar-bg: var(--drawer-layout-bg);
-    --drawer-layout-sidebar-color: var(--drawer-layout-color);
-    --drawer-layout-sidebar-radius: var(--drawer-layout-radius);
-    --drawer-layout-sidebar-padding: var(--drawer-layout-padding);
-    --drawer-layout-sidebar-shadow: var(--drawer-layout-shadow);
-    --drawer-layout-sidebar-overlay-opacity: var(--drawer-layout-overlay-opacity);
-    --drawer-layout-sidebar-overlay-blur: var(--drawer-layout-overlay-blur);
     --drawer-layout-sidebar-size: 35vw;
     --drawer-layout-sidebar-size-mobile: 100%;
-
-    /* float gap for chrome aside drawer (separate from paint padding) */
-    --drawer-layout-sidebar-inset: var(--mantine-spacing-sm);
 
     --cmf-button-hero-bg: light-dark(
       color-mix(in srgb, #059669 100%, transparent),
@@ -193,6 +152,7 @@
     --drawer-size-mobile: var(--drawer-layout-sidebar-size-mobile, 100%);
     --drawer-size-tablet: var(--drawer-layout-sidebar-size, 35vw);
     --drawer-inset: var(--drawer-layout-sidebar-inset);
+    --drawer-layout-radius: var(--mantine-radius-md);
 
     /* CMF cascade: key layer wins over `--drawer-padding` / `--drawer-radius` base. */
     --drawer-layout-sidebar-padding: 0;

@@ -27,8 +27,8 @@ $cmf-tooltip-props: bg, color, radius, max-width;
 
 /// Call inside `.tooltip { }`.
 @mixin cmf-tooltip-cascade {
-  --_cmf-tip-bg-base: light-dark(var(--mantine-color-gray-9), var(--mantine-color-gray-2));
-  --_cmf-tip-color-base: light-dark(var(--mantine-color-white), var(--mantine-color-black));
+  --_cmf-tip-bg-base: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-7));
+  --_cmf-tip-color-base: light-dark(var(--mantine-color-white), var(--mantine-color-bright));
   --_cmf-tip-radius-base: var(--mantine-radius-default);
   --_cmf-tip-max-width-base: 16rem;
 

@@ -40,20 +40,20 @@ $cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
     -webkit-appearance: none;
     width: var(#{$size}, #{$cmf-scrollbar-size-fallback});
     height: var(#{$size}, #{$cmf-scrollbar-size-fallback});
-    background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
+    background: var(#{$track}, #{$cmf-scrollbar-track-fallback});
   }
 
   &::-webkit-scrollbar-track {
-    background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
+    background: var(#{$track}, #{$cmf-scrollbar-track-fallback});
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
+    background: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
     border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background-color: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
+    background: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
   }
 }
 
@@ -80,7 +80,7 @@ $cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
   /* Hashed class alone is enough — avoid `:global([attr])` compound (fragile in CSS modules). */
   .scrollbar {
     padding: 0;
-    background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
+    background: var(#{$track}, #{$cmf-scrollbar-track-fallback});
     border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
 
     &:where([data-orientation='vertical']) {
@@ -93,7 +93,7 @@ $cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
 
     &:where(:hover, :active) {
       padding: 0;
-      background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
+      background: var(#{$track}, #{$cmf-scrollbar-track-fallback});
 
       &:where([data-orientation='vertical']) {
         width: var(--scrollarea-scrollbar-size, var(#{$size}, #{$cmf-scrollbar-size-fallback}));
@@ -104,13 +104,13 @@ $cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
       }
 
       > .thumb {
-        background-color: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
+        background: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
       }
     }
   }
 
   .thumb {
-    background-color: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
+    background: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
     border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
   }
 }
@@ -130,22 +130,22 @@ $cmf-scrollbar-radius-fallback: var(--cmf-scrollbar-radius, 999px);
   :global([data-mantine-scrollbar][data-orientation='vertical']) {
     width: var(#{$size}, 2px);
     padding: 0;
-    background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
+    background: var(#{$track}, #{$cmf-scrollbar-track-fallback});
     border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
 
     &:where(:hover, :active) {
       width: var(#{$size}, 2px);
       padding: 0;
-      background-color: var(#{$track}, #{$cmf-scrollbar-track-fallback});
+      background: var(#{$track}, #{$cmf-scrollbar-track-fallback});
     }
 
     & > :global([data-state]) {
-      background-color: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
+      background: var(#{$thumb}, #{$cmf-scrollbar-thumb-fallback});
       border-radius: var(#{$radius}, #{$cmf-scrollbar-radius-fallback});
     }
 
     &:hover > :global([data-state]) {
-      background-color: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
+      background: var(#{$thumb-hover}, #{$cmf-scrollbar-thumb-hover-fallback});
     }
   }
 }

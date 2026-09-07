@@ -4,6 +4,8 @@
     flex-direction: column;
     gap: var(--aside-block-gap, var(--spacing-xs, 0.5rem));
     align-items: stretch;
+
+    /* Child route active → `data-sidebar-dropdown-child-active="true"` on this node. */
   }
 
   .list {

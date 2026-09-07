@@ -13,6 +13,8 @@ import {
 } from '@mantine/core';
 import cx from 'clsx';
 
+import { getDrawerDefaultProps, getModalDefaultProps } from '@/shared/config';
+
 import { MANTINE_ACTION_ICON_VARIANTS } from '../cmf/cmfActionIconVars';
 import { MANTINE_BUTTON_VARIANTS } from '../cmf/cmfButtonVars';
 import { resolveActionIconRootVars } from '../vars/actionIconVars';
@@ -244,13 +246,18 @@ export const themeComponents: MantineThemeComponents = {
   /**
    * Modal — always theme paint bridge (default `:root --cmf-modal-*`).
    * With `data-cmf-*`: key → component → shared → fallback.
-   * Header must not keep Mantine `--mantine-color-body` (same sticky header as Drawer).
+   * Parts: content | header | title | close | body | overlay.
+   * Behavior defaults: `params.modal` (`getModalDefaultProps`).
    */
   Modal: Modal.extend({
+    defaultProps: getModalDefaultProps(),
     classNames: {
       content: classes.modalContent,
-      body: classes.modalBody,
       header: classes.modalHeader,
+      title: classes.modalTitle,
+      close: classes.modalClose,
+      body: classes.modalBody,
+      overlay: classes.modalOverlay,
     },
     vars: (_theme, props) => {
       const record = props as unknown as Record<string, unknown>;
@@ -266,12 +273,17 @@ export const themeComponents: MantineThemeComponents = {
   /**
    * Drawer — always theme paint bridge (default `:root --drawer-*`).
    * With `data-cmf-*`: key → component → `--drawer-*` (portal SoT).
-   * Runtime private `--_cmf-drawer-*` (no cycle). AppDrawer compound also applies vars in JS.
+   * Parts: content | header | title | close | body | overlay.
+   * Behavior defaults: `params.drawer` (`getDrawerDefaultProps`).
+   * AppDrawer compound also applies vars + classNames in JS.
    */
   Drawer: Drawer.extend({
+    defaultProps: getDrawerDefaultProps(),
     classNames: {
       content: classes.drawerContent,
       header: classes.drawerHeader,
+      title: classes.drawerTitle,
+      close: classes.drawerClose,
       body: classes.drawerBody,
       overlay: classes.drawerOverlay,
     },

@@ -115,11 +115,11 @@
 @keyframes shell-skel-pulse {
   0%,
   100% {
-    background-color: var(--shell-skel-from);
+    background: var(--shell-skel-from);
   }
 
   50% {
-    background-color: var(--shell-skel-to);
+    background: var(--shell-skel-to);
   }
 }
 
@@ -137,7 +137,7 @@
   border-color: transparent;
   box-shadow: none;
   background-image: none;
-  background-color: var(--shell-skel-from);
+  background: var(--shell-skel-from);
   animation: shell-skel-pulse 1500ms linear infinite;
 }
 
@@ -166,7 +166,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background-color: var(--shell-skel-from);
+  background: var(--shell-skel-from);
   animation: shell-skel-pulse 1500ms linear infinite;
 }
 
@@ -183,6 +183,6 @@
     var(--page-padding-inline, var(--mantine-spacing-md, 1rem));
   z-index: 1;
   border-radius: var(--radius-md, 0.5rem);
-  background-color: var(--shell-skel-from);
+  background: var(--shell-skel-from);
   animation: shell-skel-pulse 1500ms linear infinite;
 }

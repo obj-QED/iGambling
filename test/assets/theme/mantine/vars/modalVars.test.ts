@@ -28,6 +28,9 @@ describe('resolveModalRootVars', () => {
     );
     expect(vars['--modal-padding']).toContain('--cmf-modal-padding');
     expect(vars['--modal-radius']).toContain('--cmf-modal-radius');
+    expect(vars['--modal-title-fz']).toContain('--cmf-modal-title-fz');
+    expect(vars['--modal-close-size']).toContain('--cmf-modal-close-size');
+    expect(vars['--modal-overlay-opacity']).toContain('--cmf-modal-overlay-opacity');
   });
 
   it('nests component/key for scoped Modal', () => {

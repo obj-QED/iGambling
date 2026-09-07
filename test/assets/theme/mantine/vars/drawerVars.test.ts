@@ -27,6 +27,8 @@ describe('resolveDrawerRootVars', () => {
       'var(--drawer-bg, light-dark(var(--mantine-color-body), var(--mantine-color-dark-7)))',
     );
     expect(vars['--_cmf-drawer-color']).toContain('--drawer-color');
+    expect(vars['--_cmf-drawer-title-fz']).toContain('--drawer-title-fz');
+    expect(vars['--_cmf-drawer-close-size']).toContain('--drawer-close-size');
   });
 
   it('nests sidebar key for layout chrome', () => {

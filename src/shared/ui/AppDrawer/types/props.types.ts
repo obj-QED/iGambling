@@ -14,9 +14,10 @@ export type AppDrawerClassNames = Partial<{
   inner: string;
   content: string;
   header: string;
+  title: string;
+  close: string;
   body: string;
   overlay: string;
-  title: string;
 }>;
 
 export type AppDrawerProps = {

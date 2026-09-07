@@ -195,6 +195,7 @@ function OverlayDemoBlock() {
         <Title order={5}>TooltipWrapper — hover → label (`title` или children)</Title>
         <Group gap="sm">
           <TooltipWrapper
+            data-cmf-compoment="tooltip-home"
             target={<Button variant="default">Hover me</Button>}
             title="Tooltip label"
           >

@@ -54,27 +54,57 @@
 
   /*
    * Modal paint — always via theme `Modal.extend` + `resolveModalRootVars`.
+   * Parts: content | header | title | close | body | overlay (Styles API).
    * Vars: `--modal-*` ← nest `--cmf-modal-*` (default + component/key).
    */
   .modalContent {
     background: var(--modal-bg);
     color: var(--modal-color);
     box-shadow: var(--modal-shadow);
+    border-radius: var(--modal-radius);
+  }
+
+  .modalHeader {
+    /* Override Mantine ModalBase sticky header (`background: var(--mantine-color-body)`). */
+    background: var(--modal-bg);
+    color: var(--modal-color);
+    padding: var(--modal-header-padding, var(--modal-padding, var(--mantine-spacing-md)));
+    min-height: var(--modal-header-min-height, calc(3.75rem * var(--mantine-scale)));
+  }
+
+  .modalTitle {
+    font-size: var(--modal-title-fz, var(--mantine-font-size-lg));
+    font-weight: var(--modal-title-fw, 700);
+    line-height: var(--modal-title-lh, var(--mantine-line-height-md));
+    color: var(--modal-title-color, inherit);
+  }
+
+  .modalClose {
+    --cb-size: var(--modal-close-size, calc(2rem * var(--mantine-scale)));
+    --cb-icon-size: var(--modal-close-icon-size, 70%);
+    --cb-radius: var(--modal-close-radius, var(--mantine-radius-default));
+    color: var(--modal-close-color, var(--brand-color-6));
+
+    &:hover {
+      background: var(--modal-close-hover-bg, var(--mantine-color-default-hover));
+      color: var(--modal-close-color, var(--mantine-color-text));
+    }
   }
 
   .modalBody {
     padding: var(--modal-padding);
   }
 
-  .modalHeader {
-    /* Override Mantine ModalBase sticky header (`background-color: var(--mantine-color-body)`). */
-    background-color: var(--modal-bg);
-    color: var(--modal-color);
+  .modalOverlay {
+    --overlay-bg: rgb(0 0 0 / var(--modal-overlay-opacity, 0.55));
+    background: rgb(0 0 0 / var(--modal-overlay-opacity, 0.55));
+    -webkit-backdrop-filter: blur(var(--modal-overlay-blur, 0));
+    backdrop-filter: blur(var(--modal-overlay-blur, 0));
   }
 
   /*
    * Drawer paint — theme `Drawer.extend` + AppDrawer compound (inherits `--_cmf-drawer-*`).
-   * Header must not keep Mantine `--mantine-color-body` (opaque over panel tokens).
+   * Parts: content | header | title | close | body | overlay (Styles API).
    */
   .drawerContent {
     background: var(--_cmf-drawer-bg, var(--drawer-bg));
@@ -84,9 +114,33 @@
   }
 
   .drawerHeader {
-    /* Override Mantine ModalBase sticky header (`background-color: var(--mantine-color-body)`). */
-    background-color: var(--_cmf-drawer-bg, var(--drawer-bg, var(--mantine-color-body)));
+    /* Override Mantine ModalBase sticky header (`background: var(--mantine-color-body)`). */
+    background: var(--_cmf-drawer-bg, var(--drawer-bg, var(--mantine-color-body)));
     color: var(--_cmf-drawer-color, var(--drawer-color, var(--mantine-color-text)));
+    padding: var(
+      --_cmf-drawer-header-padding,
+      var(--_cmf-drawer-padding, var(--drawer-padding, var(--mantine-spacing-md)))
+    );
+    min-height: var(--_cmf-drawer-header-min-height, calc(3.75rem * var(--mantine-scale)));
+  }
+
+  .drawerTitle {
+    font-size: var(--_cmf-drawer-title-fz, var(--mantine-font-size-lg));
+    font-weight: var(--_cmf-drawer-title-fw, 700);
+    line-height: var(--_cmf-drawer-title-lh, var(--mantine-line-height-md));
+    color: var(--_cmf-drawer-title-color, inherit);
+  }
+
+  .drawerClose {
+    --cb-size: var(--_cmf-drawer-close-size, calc(2rem * var(--mantine-scale)));
+    --cb-icon-size: var(--_cmf-drawer-close-icon-size, 70%);
+    --cb-radius: var(--_cmf-drawer-close-radius, var(--mantine-radius-default));
+    color: var(--_cmf-drawer-close-color, var(--brand-color-6));
+
+    &:hover {
+      background: var(--_cmf-drawer-close-hover-bg, var(--mantine-color-default-hover));
+      color: var(--_cmf-drawer-close-color, var(--mantine-color-text));
+    }
   }
 
   .drawerBody {
@@ -126,7 +180,7 @@
     font-size: var(--code-fz);
     border-radius: var(--code-radius);
     padding: var(--code-padding);
-    background-color: var(--code-bg);
+    background: var(--code-bg);
   }
 
   /*

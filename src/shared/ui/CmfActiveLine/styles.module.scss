@@ -9,7 +9,7 @@
     inset: var(--_cmf-active-inset);
     width: var(--_cmf-active-width);
     height: var(--_cmf-active-height);
-    background-color: var(--_cmf-active-color);
+    background: var(--_cmf-active-color);
     border-radius: var(--_cmf-active-radius-tl) var(--_cmf-active-radius-tr)
       var(--_cmf-active-radius-br) var(--_cmf-active-radius-bl);
   }

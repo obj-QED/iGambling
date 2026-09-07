@@ -15,6 +15,10 @@ export const STORYBOOK_APP_SETTINGS_DEFAULTS: AppSettings = {
     preloader: {
       skeleton: true,
     },
+    modal: {
+      centered: true,
+    },
+    drawer: {},
   },
   header: {
     layout: 'container',

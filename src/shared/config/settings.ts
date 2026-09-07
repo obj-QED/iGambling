@@ -22,6 +22,20 @@ export type AppParams = {
      */
     skeleton?: boolean;
   };
+  /**
+   * Global Mantine Modal defaults (`themeComponents` + wrappers).
+   * Any Modal prop except `opened` / `onClose` / `children`.
+   * Paint tokens stay in `tokens/theme.scss` (`--cmf-modal-*`).
+   * @see https://mantine.dev/core/modal/?t=props
+   */
+  modal?: import('./overlaySettings').ModalSettings;
+  /**
+   * Global Mantine Drawer defaults (`themeComponents` + AppDrawer / wrappers).
+   * Any Drawer prop except `opened` / `onClose` / `children`.
+   * Paint tokens stay in `tokens/theme.scss` (`--drawer-*`).
+   * @see https://mantine.dev/core/drawer/?t=props
+   */
+  drawer?: import('./overlaySettings').DrawerSettings;
 };
 
 export type AppSettings = {

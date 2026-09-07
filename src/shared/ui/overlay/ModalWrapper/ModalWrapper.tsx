@@ -4,6 +4,8 @@ import { Children, cloneElement, isValidElement, memo, useState } from 'react';
 
 import { Modal } from '@mantine/core';
 
+import { getModalDefaultProps, mergeOverlayDefaultProps } from '@/shared/config';
+
 function ModalWrapperComponent({
   target,
   children,
@@ -50,18 +52,22 @@ function ModalWrapperComponent({
     ...(dataCmfRole ? { 'data-cmf-role': dataCmfRole } : {}),
   };
 
+  const defaults = getModalDefaultProps();
+  const instance = {
+    title,
+    className,
+    ...(portalTarget != null ? { portalProps: { target: portalTarget } } : {}),
+    ...cmfAttrs,
+  };
+  const modalProps = mergeOverlayDefaultProps(
+    defaults as Record<string, unknown>,
+    instance as Record<string, unknown>,
+  );
+
   return (
     <>
       {trigger}
-      <Modal
-        opened={opened}
-        onClose={close}
-        title={title}
-        centered
-        className={className}
-        portalProps={portalTarget != null ? { target: portalTarget } : undefined}
-        {...cmfAttrs}
-      >
+      <Modal opened={opened} onClose={close} {...modalProps}>
         {children}
       </Modal>
     </>

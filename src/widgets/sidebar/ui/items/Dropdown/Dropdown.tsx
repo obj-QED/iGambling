@@ -5,6 +5,8 @@ import { memo, useCallback } from 'react';
 import { Collapse } from '@mantine/core';
 import clsx from 'clsx';
 
+import { useHasActiveNavDescendant } from '@/shared/hooks';
+
 import { useSidebarDropdown } from '../../../context';
 import { useMenuItemRenderable } from '../../../hooks';
 import { isRenderableItem, itemKey } from '../../../lib';
@@ -17,18 +19,22 @@ function DropdownComponent({ item, className }: DropdownProps) {
   const menuKey = itemKey(item);
   const { opened, toggle } = useSidebarDropdown(menuKey);
   const { visible } = useMenuItemRenderable(item);
+  const children = item.items ?? [];
+  const hasActiveChild = useHasActiveNavDescendant(children);
 
   const onToggle = useCallback(() => {
     toggle();
   }, [toggle]);
 
   if (!isRenderableItem(item) || !visible) return null;
-
-  const children = item.items ?? [];
   if (children.length === 0) return null;
 
   return (
-    <div className={clsx(styles.root, className)} data-sidebar-dropdown>
+    <div
+      className={clsx(styles.root, className)}
+      data-sidebar-dropdown
+      {...(hasActiveChild ? { 'data-sidebar-dropdown-child-active': 'true' } : {})}
+    >
       <DropdownTrigger item={item} opened={opened} onToggle={onToggle} />
       <Collapse expanded={opened}>
         <ul className={styles.list} role="menu">
