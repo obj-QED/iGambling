@@ -256,3 +256,29 @@ export function buildDrawerPropToken(
 
   return nestCssVars(names, fallback);
 }
+
+/**
+ * Popover portal cascade (tokens on `:root`, prefix `--popover-*`):
+ * key → component → base `--popover-{prop}` → fallback
+ *
+ * Runtime paint uses private `--_cmf-popover-*` (no cycle with `:root`).
+ */
+export function buildPopoverPropToken(
+  prop: string,
+  fallback: string,
+  options: Pick<BuildCmfPropTokenOptions, 'scope'> = {},
+): string {
+  const names: string[] = [];
+  const scope = options.scope;
+  const hasComponent = scope?.component !== undefined;
+
+  if (hasComponent && scope.key !== undefined) {
+    names.push(`--popover-${scope.component}-${scope.key}-${prop}`);
+  }
+  if (hasComponent) {
+    names.push(`--popover-${scope.component}-${prop}`);
+  }
+  names.push(`--popover-${prop}`);
+
+  return nestCssVars(names, fallback);
+}

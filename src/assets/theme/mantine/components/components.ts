@@ -8,12 +8,17 @@ import {
   Group,
   type MantineThemeComponents,
   Modal,
+  Popover,
   Text,
   Title,
 } from '@mantine/core';
 import cx from 'clsx';
 
-import { getDrawerDefaultProps, getModalDefaultProps } from '@/shared/config';
+import {
+  getDrawerDefaultProps,
+  getModalDefaultProps,
+  getPopoverDefaultProps,
+} from '@/shared/config';
 
 import { MANTINE_ACTION_ICON_VARIANTS } from '../cmf/cmfActionIconVars';
 import { MANTINE_BUTTON_VARIANTS } from '../cmf/cmfButtonVars';
@@ -23,6 +28,7 @@ import { CLEAR_CODE_INLINE_VARS, resolveCodeRootVars } from '../vars/codeVars';
 import { resolveDrawerRootVars } from '../vars/drawerVars';
 import { CLEAR_GROUP_INLINE_VARS, resolveGroupRootVars } from '../vars/groupVars';
 import { CLEAR_MODAL_INLINE_VARS, resolveModalRootVars } from '../vars/modalVars';
+import { CLEAR_POPOVER_INLINE_VARS, resolvePopoverDropdownVars } from '../vars/popoverVars';
 import { CLEAR_TEXT_INLINE_VARS, resolveTextRootVars } from '../vars/textVars';
 
 import classes from '../styles/components.module.scss';
@@ -292,6 +298,30 @@ export const themeComponents: MantineThemeComponents = {
       return {
         root: {
           ...resolveDrawerRootVars(record),
+        },
+      } as never;
+    },
+  }),
+
+  /**
+   * Popover — always theme paint bridge (default `:root --popover-*`).
+   * With `data-cmf-*`: key → component → `--popover-*`.
+   * Parts: dropdown | arrow | overlay. Behavior: `params.popover`.
+   * DeepPanel may override paint via widget-layer classNames (wins over mantine-rebase).
+   */
+  Popover: Popover.extend({
+    defaultProps: getPopoverDefaultProps(),
+    classNames: {
+      dropdown: classes.popoverDropdown,
+      arrow: classes.popoverArrow,
+      overlay: classes.popoverOverlay,
+    },
+    vars: (_theme, props) => {
+      const record = props as unknown as Record<string, unknown>;
+      return {
+        dropdown: {
+          ...CLEAR_POPOVER_INLINE_VARS,
+          ...resolvePopoverDropdownVars(record),
         },
       } as never;
     },

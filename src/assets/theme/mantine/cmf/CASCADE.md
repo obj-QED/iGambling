@@ -123,6 +123,21 @@ Tooltip (portal → tokens on `:root`):
 
 Props: `bg` | `color` | `radius` | `max-width`.
 
+Popover (portal → `:root --popover-*`, via `themeComponents` + `PopoverWrapper` + `data-cmf-*`):
+
+```txt
+1. --popover-{component}-{key}-{prop}
+2. --popover-{component}-{prop}
+3. --popover-{prop}
+4. theme fallback
+```
+
+Runtime private `--_cmf-popover-*` (no cycle with `:root`).  
+Props: `bg` | `color` | `radius` | `shadow` | `padding` | `bd` | `arrow-bg`.  
+Paint: `.popoverDropdown` / `.popoverArrow` / `.popoverOverlay`.
+
+Behavior defaults (Mantine props): `params.popover` → `getPopoverDefaultProps()` → `Popover.extend` + `PopoverWrapper` (any [Popover prop](https://mantine.dev/core/popover/?t=props) except `opened` / `onChange` / `children`; instance props win).
+
 Drawer (portal → `:root --drawer-*`, via `themeComponents` + `AppDrawer` + `data-cmf-*`):
 
 ```txt

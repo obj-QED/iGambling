@@ -110,7 +110,7 @@
     background: var(--_cmf-drawer-bg, var(--drawer-bg));
     color: var(--_cmf-drawer-color, var(--drawer-color));
     border-radius: var(--_cmf-drawer-radius, var(--drawer-radius, 0));
-    box-shadow: var(--_cmf-drawer-shadow, var(--drawer-shadow, var(--mantine-shadow-md)));
+    box-shadow: var(--_cmf-drawer-shadow, var(--drawer-shadow, var(--mantine-shadow-xs)));
   }
 
   .drawerHeader {
@@ -159,6 +159,32 @@
   }
 
   /*
+   * Popover paint — theme `Popover.extend` + `resolvePopoverDropdownVars`.
+   * Private `--_cmf-popover-*` (no cycle). Widget DeepPanel may override in widget layer.
+   */
+  .popoverDropdown {
+    background: var(--_cmf-popover-bg, var(--popover-bg, var(--mantine-color-body)));
+    color: var(--_cmf-popover-color, var(--popover-color, var(--mantine-color-text)));
+    border-radius: var(--_cmf-popover-radius, var(--popover-radius, var(--mantine-radius-default)));
+    box-shadow: var(--_cmf-popover-shadow, var(--popover-shadow, var(--mantine-shadow-xs)));
+    padding: var(--_cmf-popover-padding, var(--popover-padding, var(--mantine-spacing-sm)));
+    border: var(--_cmf-popover-bd, var(--popover-bd, 1px solid var(--color-border, transparent)));
+  }
+
+  .popoverArrow {
+    background: var(
+      --_cmf-popover-arrow-bg,
+      var(--_cmf-popover-bg, var(--popover-bg, var(--mantine-color-body)))
+    );
+    border: var(--_cmf-popover-bd, var(--popover-bd, 1px solid var(--color-border, transparent)));
+  }
+
+  .popoverOverlay {
+    /* Optional click-outside dim when `withOverlay` — keep transparent by default. */
+    background: transparent;
+  }
+
+  /*
    * Text paint — theme `Text.extend`.
    * Skip when the same node is Anchor (Mantine Anchor = Text-based) — link owns color.
    * Nested Text inside AppLink/Anchor inherits link color.
@@ -169,6 +195,9 @@
 
   .anchor :where(.text) {
     color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
   }
 
   /*

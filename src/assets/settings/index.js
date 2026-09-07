@@ -21,13 +21,7 @@
        */
       modal: {
         centered: true,
-        // radius: 'md',
-        // size: 'md',
-        // overlayProps: { backgroundOpacity: 0.55, blur: 0 },
-        // transitionProps: { duration: 200 },
-        // withCloseButton: true,
-        // closeOnClickOutside: true,
-        // closeOnEscape: true,
+
       },
       /**
        * Global Mantine Drawer defaults — any prop except opened/onClose/children.
@@ -35,12 +29,16 @@
        * Paint tokens: `tokens/theme.scss` `--drawer-*`. Sidebar: data-cmf + layout tokens.
        */
       drawer: {
-        // position: 'right',
-        // offset: 8,
-        // radius: 'md',
-        // size: 'md',
-        // overlayProps: { backgroundOpacity: 0.35, blur: 4 },
-        // withCloseButton: true,
+
+      },
+      /**
+       * Global Mantine Popover defaults — any prop except opened/onChange/children.
+       * @see https://mantine.dev/core/popover/?t=props
+       * Paint tokens: `tokens/theme.scss` `--popover-*` (dropdown/arrow).
+       * Also accepted per-instance on <PopoverWrapper … /> (instance wins).
+       */
+      popover: {
+
       },
     },
     header: {

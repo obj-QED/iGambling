@@ -160,7 +160,15 @@ function OverlayDemoBlock() {
       <Stack gap="xs">
         <Title order={5}>PopoverWrapper — клик → dropdown рядом с target</Title>
         <Group gap="sm">
-          <PopoverWrapper target={<Button variant="filled">Open popover</Button>}>
+          <PopoverWrapper
+            data-cmf-component="popover-home"
+            width={240}
+            position="bottom"
+            withArrow
+            shadow="md"
+            trapFocus
+            target={<Button variant="filled">Open popover</Button>}
+          >
             <Text size="sm">Контент popover. Клик по target снова закрывает.</Text>
           </PopoverWrapper>
         </Group>

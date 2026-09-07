@@ -19,6 +19,7 @@ export const STORYBOOK_APP_SETTINGS_DEFAULTS: AppSettings = {
       centered: true,
     },
     drawer: {},
+    popover: {},
   },
   header: {
     layout: 'container',

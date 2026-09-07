@@ -34,7 +34,7 @@ const brand = createBrandColorsTuple(BRAND_PALETTE_FALLBACK);
 const TOKEN_BRIDGED_COLOR_VARS = {
   '--mantine-color-anchor': 'var(--cmf-anchor-color, var(--brand-color-6))',
   '--mantine-color-brand-text': 'var(--cmf-brand-text-color, var(--brand-color-6))',
-  '--mantine-color-anchor-hover': 'var(--cmf-anchor-hover, var(--brand-color-9))',
+  '--mantine-color-anchor-hover': 'var(--cmf-anchor-hover, var(--brand-color-8))',
 } as const;
 
 export const mantineCssVariablesResolver: CSSVariablesResolver = () => ({
@@ -67,8 +67,8 @@ export const mantineTheme = createTheme({
 
   shadows: {
     sm: '0 10px 15px -12px 0000001F',
-    md: '0px 4px 12px 0px #0000001F inset',
-    lg: '0px 12px 32px 0px #00000026 inset',
+    md: '0px 4px 12px 0px #0000001F',
+    lg: '0px 12px 32px 0px #00000026',
   },
 
   radius: {

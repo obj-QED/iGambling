@@ -28,7 +28,7 @@ export function resolveModalRootVars(props: Record<string, unknown>): Record<str
     '--modal-bg': t('bg', 'light-dark(var(--mantine-color-body), var(--mantine-color-dark-7))'),
     '--modal-color': t('color', 'var(--mantine-color-text)'),
     '--modal-padding': t('padding', 'var(--mantine-spacing-md)'),
-    '--modal-shadow': t('shadow', 'var(--mantine-shadow-md)'),
+    '--modal-shadow': t('shadow', 'var(--mantine-shadow-xs)'),
 
     '--modal-header-padding': t(
       'header-padding',

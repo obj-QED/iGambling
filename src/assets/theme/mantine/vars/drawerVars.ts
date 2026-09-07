@@ -18,7 +18,7 @@ export function resolveDrawerRootVars(props: Record<string, unknown>): Record<st
     '--_cmf-drawer-color': t('color', 'var(--mantine-color-text)'),
     '--_cmf-drawer-radius': t('radius', '0'),
     '--_cmf-drawer-padding': t('padding', 'var(--mantine-spacing-md)'),
-    '--_cmf-drawer-shadow': t('shadow', 'var(--mantine-shadow-md)'),
+    '--_cmf-drawer-shadow': t('shadow', 'var(--mantine-shadow-xs)'),
     '--_cmf-drawer-offset': t('offset', '0'),
 
     '--_cmf-drawer-header-padding': t(

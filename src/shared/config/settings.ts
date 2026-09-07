@@ -36,6 +36,13 @@ export type AppParams = {
    * @see https://mantine.dev/core/drawer/?t=props
    */
   drawer?: import('./overlaySettings').DrawerSettings;
+  /**
+   * Global Mantine Popover defaults (`themeComponents` + PopoverWrapper).
+   * Any Popover prop except `opened` / `onChange` / `children`.
+   * Paint tokens stay in `tokens/theme.scss` (`--popover-*`).
+   * @see https://mantine.dev/core/popover/?t=props
+   */
+  popover?: import('./overlaySettings').PopoverSettings;
 };
 
 export type AppSettings = {

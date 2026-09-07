@@ -88,6 +88,21 @@
     --tooltip-max-width: 16rem;
 
     /*
+     * Popover SoT on :root (portaled dropdown inherits from html).
+     * Cascade via `themeComponents` Popover + `buildPopoverPropToken`:
+     *   --popover-{component}-{key}-{bg|color|radius|shadow|padding|bd|arrow-bg}
+     *   --popover-{component}-{…}
+     *   --popover-{…}
+     * Guide: mantine/cmf/CASCADE.md
+     */
+    --popover-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-7));
+    --popover-color: var(--mantine-color-text);
+    --popover-radius: var(--mantine-radius-default);
+    --popover-padding: var(--mantine-spacing-sm);
+    --popover-bd: 1px solid var(--color-border, transparent);
+    --popover-arrow-bg: var(--popover-bg);
+
+    /*
      * Drawer SoT on :root (portaled panel inherits from html).
      * Cascade: key → component → base. Guide: mantine/cmf/CASCADE.md
      *
@@ -110,7 +125,6 @@
     /* Generic drawer body inset (no data-cmf). Sidebar zeros via key layer. */
     --drawer-layout-sidebar-inset: var(--mantine-spacing-sm);
     --drawer-padding: var(--spacing-md);
-    --drawer-shadow: var(--mantine-shadow-md);
     --drawer-size: auto;
     --drawer-size-mobile: 100%;
     --drawer-size-tablet: 35vw;

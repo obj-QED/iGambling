@@ -29,6 +29,7 @@ export {
   ModalWrapper,
   type OverlayTargetProps,
   PopoverWrapper,
+  type PopoverWrapperProps,
   resolveWrapperLoader,
   TooltipWrapper,
   WRAPPER_REGISTRY,

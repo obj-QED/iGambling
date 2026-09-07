@@ -1,1 +1,1 @@
-export type { OverlayTargetProps } from './props.types';
+export type { OverlayTargetProps, PopoverWrapperProps } from './props.types';
