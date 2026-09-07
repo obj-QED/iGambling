@@ -204,34 +204,10 @@
   [data-theme='dark'],
   [data-mantine-color-scheme='dark'] {
     @include brand.apply-palette(brand.$palette-dark);
-
-    /* Explicit paints — do not rely on light-dark() alone (Storybook iframe / late color-scheme). */
-
-    --app-gradient-default: linear-gradient(
-      45deg,
-      var(--brand-color-6) 0%,
-      var(--brand-color-8) 100%
-    );
-    --app-gradient-default-hover: linear-gradient(
-      45deg,
-      var(--brand-color-7) 0%,
-      var(--brand-color-9) 100%
-    );
   }
 
   [data-theme='light'],
   [data-mantine-color-scheme='light'] {
     @include brand.apply-palette(brand.$palette-light);
-
-    --app-gradient-default: linear-gradient(
-      45deg,
-      var(--brand-color-6) 0%,
-      var(--brand-color-8) 100%
-    );
-    --app-gradient-default-hover: linear-gradient(
-      45deg,
-      var(--brand-color-7) 0%,
-      var(--brand-color-9) 100%
-    );
   }
 }

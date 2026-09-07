@@ -6,7 +6,8 @@
 //   - `line` → DOM `CmfActiveLine` + host only (no `::after`)
 //
 // Placement (element): `active-inset` / width / height — sidebar shifts left via
-// negative inset and height `100% + 2×bd` (see sidebar tokens).
+// negative inset and height `100% + 2×bd` (see sidebar tokens; use
+// `--cmf-*-sidebar-bd-width`, never `--button-bd-width` in widget-root tokens).
 //
 // Prefer unlayered compound selectors (see components.module.scss) so CSS Modules
 // does not emit an empty `.actionIcon {}` / `.button {}` shell.
@@ -54,10 +55,11 @@
   @if $position {
     @include cmf-control-active-radius($prefix, $position);
   } @else {
-    border-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-radius))
-      var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-radius))
-      var(--#{$prefix}-active-radius-br, var(--#{$prefix}-radius))
-      var(--#{$prefix}-active-radius-bl, var(--#{$prefix}-radius));
+    /* Active chrome radius only — never fall back to control `--*-radius`. */
+    border-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0))
+      var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0))
+      var(--#{$prefix}-active-radius-br, var(--#{$prefix}-active-radius, 0))
+      var(--#{$prefix}-active-radius-bl, var(--#{$prefix}-active-radius, 0));
   }
 }
 

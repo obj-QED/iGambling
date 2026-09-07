@@ -24,12 +24,15 @@
   --aside-shell-border-color: #111;
   --aside-footer-border-color: red;
   --aside-header-border-color: red;
+  --cmf-button-sidebar-bg: black;
+  --cmf-button-sidebar-bd-width: 10px;
 
   /* Header region chrome */
   --header-logo-width: 120px;
   --aside-header-gap: var(--spacing-xs, 0.375rem);
   --aside-header-color: inherit;
   --aside-header-avatar-size: 1.5rem;
+  --cmf-button-sidebar-header-logo-bg: light-dark(var(#111), transparent);
 
   /* Optional chrome overrides (omit → inherit `--cmf-*-sidebar-active-*`). */
   --cmf-button-sidebar-header-padding-x: 0;
@@ -41,37 +44,42 @@
 
   /*
    * Active bar — public: position + size (+ color + radius).
-   * Base `--cmf-*-sidebar-active-*` applies to body, header, footer, dropdown
-   * (cascade: chrome → widget). Optional chrome overrides below.
-   * Corner radius on the bar itself (`::after` / CmfActiveLine).
+   * Absolute CB = padding edge; negative inset pulls onto the border box.
+   * Height MUST include `2×bd` — plain `100%` leaves bd gaps (border “pushes” the bar).
+   *
+   * IMPORTANT: do NOT reference `--button-bd-width` here — it exists only on the
+   * control. Vars in these tokens resolve on `[data-widget=sidebar]`; a missing
+   * `--button-bd-width` invalidates the whole custom property (inset/height vanish).
+   * Use `--cmf-*-sidebar-bd-width` (same scope) instead.
    */
   --cmf-button-sidebar-active-position: left;
   --cmf-button-sidebar-active-size: 2px;
   --cmf-button-sidebar-active-color: var(--brand-color-6);
-  --cmf-button-sidebar-active-radius: var(--button-radius, var(--mantine-radius-default));
-  --cmf-button-sidebar-active-radius-tl: var(--cmf-button-sidebar-active-radius);
-  --cmf-button-sidebar-active-radius-bl: var(--cmf-button-sidebar-active-radius);
+  --cmf-button-sidebar-active-radius-tl: 0;
+  --cmf-button-sidebar-active-radius-bl: 0;
 
-  /* inset = top right bottom left — uses control `--button-bd-width` (see HTML vars). */
-  --cmf-button-sidebar-active-inset: calc(-1 * var(--button-bd-width)) auto
-    calc(-1 * var(--button-bd-width)) calc(-1 * var(--button-bd-width));
+  /* inset = top right bottom left — one line (avoid broken multi-line custom props). */
+  --cmf-button-sidebar-active-inset: calc(-1 * var(--cmf-button-sidebar-bd-width, 0px)) auto
+    calc(-1 * var(--cmf-button-sidebar-bd-width, 0px))
+    calc(-1 * var(--cmf-button-sidebar-bd-width, 0px));
   --cmf-button-sidebar-active-width: var(--cmf-button-sidebar-active-size);
-  --cmf-button-sidebar-active-height: 100%;
+  --cmf-button-sidebar-active-height: calc(100% + 2 * var(--cmf-button-sidebar-bd-width, 0px));
 
   /*
    * ActionIcon left rail — geometry is inset + width + height (not position alone).
-   * Use `--ai-bd-width` (ActionIcon), not `--button-bd-width`.
    */
   --cmf-action-icon-sidebar-active-position: var(--cmf-button-sidebar-active-position);
   --cmf-action-icon-sidebar-active-size: var(--cmf-button-sidebar-active-size);
   --cmf-action-icon-sidebar-active-color: var(--cmf-button-sidebar-active-color);
-  --cmf-action-icon-sidebar-active-radius: var(--cmf-button-sidebar-active-radius);
-  --cmf-action-icon-sidebar-active-radius-tl: var(--cmf-button-sidebar-active-radius-tl);
-  --cmf-action-icon-sidebar-active-radius-bl: var(--cmf-button-sidebar-active-radius-bl);
-  --cmf-action-icon-sidebar-active-inset: calc(-1 * var(--ai-bd-width)) auto
-    calc(-1 * var(--ai-bd-width)) calc(-1 * var(--ai-bd-width));
+  --cmf-action-icon-sidebar-active-radius-tl: 0;
+  --cmf-action-icon-sidebar-active-radius-bl: 0;
+  --cmf-action-icon-sidebar-active-inset: calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px))
+    auto calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px))
+    calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px));
   --cmf-action-icon-sidebar-active-width: var(--cmf-action-icon-sidebar-active-size);
-  --cmf-action-icon-sidebar-active-height: 100%;
+  --cmf-action-icon-sidebar-active-height: calc(
+    100% + 2 * var(--cmf-action-icon-sidebar-bd-width, 0px)
+  );
 
   --tooltip-sidebar-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-7));
   --tooltip-sidebar-color: var(--mantine-color-white);

@@ -44,6 +44,9 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-active-height']).toBe('var(--cmf-button-default-active-height, 2px)');
     expect(vars['--button-active-radius-bl']).toContain('--cmf-button-default-active-radius-bl');
     expect(vars['--button-active-radius-bl']).toContain('--cmf-button-default-active-radius');
+    expect(vars['--button-active-radius-bl']).toMatch(/, 0\)+$/);
+    expect(vars['--button-active-radius']).toMatch(/active-radius, 0\)$/);
+    expect(vars['--button-active-radius']).not.toContain('--button-radius');
     expect(vars['--button-radius']).toContain('var(--cmf-button-default-radius');
     expect(vars['--button-radius']).not.toContain('var(--cmf-button-sm-radius');
     expect(vars['--button-radius-disabled']).toBe(
@@ -122,6 +125,25 @@ describe('resolveButtonRootVars', () => {
 
     expect(vars['--button-hover']).toContain('--cmf-button-gradient-hover');
     expect(vars['--button-hover']).toContain('--app-gradient-default-hover');
+  });
+
+  it('sidebar-header gradient nests variant paint before parent widget', () => {
+    const vars = resolveButtonRootVars({
+      variant: 'gradient',
+      'data-cmf-component': 'sidebar-header',
+      'data-cmf-key': 'account',
+    });
+
+    const bg = vars['--button-bg'] ?? '';
+    const hover = vars['--button-hover'] ?? '';
+    expect(bg.indexOf('--cmf-button-gradient-bg')).toBeGreaterThan(-1);
+    expect(bg.indexOf('--cmf-button-sidebar-bg')).toBeGreaterThan(-1);
+    expect(bg.indexOf('--cmf-button-gradient-bg')).toBeLessThan(
+      bg.indexOf('--cmf-button-sidebar-bg'),
+    );
+    expect(hover.indexOf('--cmf-button-gradient-hover')).toBeLessThan(
+      hover.indexOf('--cmf-button-sidebar-hover'),
+    );
   });
 
   it('paint-only bridge for plain gradient differs hover from bg', () => {

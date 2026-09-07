@@ -2,21 +2,19 @@
 @mixin gradient-variant-hover($prefix) {
   &[data-variant='gradient']:where(:not(:disabled, [data-disabled], [data-loading])) {
     /* Ensure paint is always an image (CMF nestCssVars / Mantine --*-bg). */
-    background: transparent;
-    background-image: var(--#{$prefix}-bg);
+    background: var(--#{$prefix}-bg);
+    background-origin: border-box;
 
     @media (hover: hover) {
       &:hover {
-        background: transparent;
-        background-image: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
+        background: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
         color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
       }
     }
 
     @media (hover: none) {
       &:active {
-        background: transparent;
-        background-image: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
+        background: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
         color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
       }
     }

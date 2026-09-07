@@ -67,6 +67,9 @@ vars(): CLEAR_* (null)  →  resolve*RootVars (nestCssVars)
 So `--cmf-button-sidebar-active-*` paints **all** aside controls; override with
 `--cmf-button-sidebar-header-active-*` / `…-footer-…` / `…-dropdown-…` when needed.
 Variant paint (`white` / `gradient`) wins over widget `--cmf-button-sidebar-bg`.
+**Seed** `--cmf-button-gradient-*` / `--cmf-button-white-*` on `:root` (see `tokens/theme.scss`)
+so an unset variant layer cannot fall through to parent widget paint and break hover.
+Active bar radius (`--*-active-radius*`) defaults to `0` — independent of `--button-radius`.
 
 Group layout (`data-cmf-*` on Mantine `Group`):
 

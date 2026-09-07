@@ -300,14 +300,15 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       variant,
       tail: 'variant',
     }),
-    '--button-active-radius': buildCmfButtonPropToken('active-radius', 'var(--button-radius)', {
+    /* Active bar radius — independent of `--button-radius` (default 0). */
+    '--button-active-radius': buildCmfButtonPropToken('active-radius', '0', {
       scope,
       variant,
       tail: 'variant',
     }),
     '--button-active-radius-tl': buildCmfButtonPropToken(
       'active-radius-tl',
-      buildCmfButtonPropToken('active-radius', 'var(--button-radius)', {
+      buildCmfButtonPropToken('active-radius', '0', {
         scope,
         variant,
         tail: 'variant',
@@ -316,7 +317,7 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
     ),
     '--button-active-radius-tr': buildCmfButtonPropToken(
       'active-radius-tr',
-      buildCmfButtonPropToken('active-radius', 'var(--button-radius)', {
+      buildCmfButtonPropToken('active-radius', '0', {
         scope,
         variant,
         tail: 'variant',
@@ -325,7 +326,7 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
     ),
     '--button-active-radius-br': buildCmfButtonPropToken(
       'active-radius-br',
-      buildCmfButtonPropToken('active-radius', 'var(--button-radius)', {
+      buildCmfButtonPropToken('active-radius', '0', {
         scope,
         variant,
         tail: 'variant',
@@ -334,7 +335,7 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
     ),
     '--button-active-radius-bl': buildCmfButtonPropToken(
       'active-radius-bl',
-      buildCmfButtonPropToken('active-radius', 'var(--button-radius)', {
+      buildCmfButtonPropToken('active-radius', '0', {
         scope,
         variant,
         tail: 'variant',
