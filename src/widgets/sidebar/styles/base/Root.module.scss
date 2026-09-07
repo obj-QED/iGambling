@@ -28,10 +28,10 @@
     --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
     flex: 1;
     min-height: 0;
-    margin: var(--aside-shell-margin-y, var(--aside-shell-margin, var(--mantine-spacing-sm)))
-      var(--aside-shell-margin-x, var(--aside-shell-margin, 0));
-    padding: var(--aside-shell-padding-y, var(--aside-shell-padding, 0))
-      var(--aside-shell-padding-x, var(--aside-shell-padding, 0));
+    margin: var(--aside-shell-scroll-margin-y, var(--aside-shell-scroll-margin, 0))
+      var(--aside-shell-scroll-margin-x, var(--aside-shell-scroll-margin, 0));
+    padding: var(--aside-shell-scroll-padding-y, var(--aside-shell-scroll-padding, 0))
+      var(--aside-shell-scroll-padding-x, var(--aside-shell-scroll-padding, 0));
   }
 
   /*
@@ -46,20 +46,6 @@
 
   .scrollContent {
     height: 100%;
-
-    /*
-     * `--aside-shell-content-spacing` → margin + padding together.
-     * Do not fall through `--aside-shell-padding` (compact zeros it).
-     */
-    margin: var(--aside-shell-content-margin, var(--aside-shell-content-spacing, 0));
-    margin-block: var(--aside-shell-content-margin-y);
-    margin-inline: var(--aside-shell-content-margin-x);
-    padding: var(
-      --aside-shell-content-padding,
-      var(--aside-shell-content-spacing, var(--mantine-spacing-md))
-    );
-    padding-block: var(--aside-shell-content-padding-y);
-    padding-inline: var(--aside-shell-content-padding-x);
   }
 }
 

@@ -7,20 +7,17 @@
 
     /*
      * `--aside-shell-footer-spacing` → margin + padding together.
-     * Optional: `-margin` / `-padding` split; `-y` / `-x` axis (no fallback).
+     * Optional split: `-margin` / `-padding` (use 1–4 values; no bare `-y`/`-x`
+     * — unset axis vars invalidate and reset shorthand to 0).
      */
     margin: var(
       --aside-shell-footer-margin,
       var(--aside-shell-footer-spacing, var(--mantine-spacing-md) 0 0)
     );
-    margin-block: var(--aside-shell-footer-margin-y);
-    margin-inline: var(--aside-shell-footer-margin-x);
     padding: var(
       --aside-shell-footer-padding,
       var(--aside-shell-footer-spacing, var(--mantine-spacing-md) 0 0)
     );
-    padding-block: var(--aside-shell-footer-padding-y);
-    padding-inline: var(--aside-shell-footer-padding-x);
     border-top: 1px solid var(--aside-footer-border-color, var(--mantine-color-dark-4));
   }
 }
