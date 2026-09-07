@@ -22,45 +22,27 @@
   }
 }
 
-/// Square the corners on the active edge (`$position`: top | right | bottom | left).
+/// Host radius from active tokens. Cascade (JS): corner → `--*-active-radius` →
+/// `--*-radius`. So `--cmf-*-active-radius: 0` squares all; only `-tl`/`-bl`
+/// squares the rail edge and keeps the opposite corners as control radius.
 @mixin cmf-control-active-radius($prefix, $position) {
-  @if $position==bottom {
-    border-bottom-left-radius: var(
-      --#{$prefix}-active-radius-bl,
-      var(--#{$prefix}-active-radius, 0)
-    );
-    border-bottom-right-radius: var(
-      --#{$prefix}-active-radius-br,
-      var(--#{$prefix}-active-radius, 0)
-    );
-  } @else if $position==top {
-    border-top-left-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0));
-    border-top-right-radius: var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0));
-  } @else if $position==left {
-    border-top-left-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0));
-    border-bottom-left-radius: var(
-      --#{$prefix}-active-radius-bl,
-      var(--#{$prefix}-active-radius, 0)
-    );
-  } @else if $position==right {
-    border-top-right-radius: var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0));
-    border-bottom-right-radius: var(
-      --#{$prefix}-active-radius-br,
-      var(--#{$prefix}-active-radius, 0)
-    );
-  }
+  border-radius: var(
+      --#{$prefix}-active-radius-tl,
+      var(--#{$prefix}-active-radius, var(--#{$prefix}-radius))
+    )
+    var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, var(--#{$prefix}-radius)))
+    var(--#{$prefix}-active-radius-br, var(--#{$prefix}-active-radius, var(--#{$prefix}-radius)))
+    var(--#{$prefix}-active-radius-bl, var(--#{$prefix}-active-radius, var(--#{$prefix}-radius)));
 }
 
 @mixin cmf-control-active-radius-cascade($prefix, $position: null) {
   @if $position {
     @include cmf-control-active-radius($prefix, $position);
-  } @else {
-    /* Active chrome radius only — never fall back to control `--*-radius`. */
-    border-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0))
-      var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0))
-      var(--#{$prefix}-active-radius-br, var(--#{$prefix}-active-radius, 0))
-      var(--#{$prefix}-active-radius-bl, var(--#{$prefix}-active-radius, 0));
   }
+
+  /* No $position (element/line default include): do not rewrite host radius —
+   * that forced all corners to `--*-active-radius` (0) and squared the button.
+   * Bar radius lives on `::after` / CmfActiveLine only. */
 }
 
 /// `element` mode: CSS `::after` bar.
@@ -84,10 +66,13 @@
     width: var(--#{$prefix}-active-width, 100%);
     height: var(--#{$prefix}-active-height, 2px);
     background: var(--#{$prefix}-active-color, var(--brand-color-6));
-    border-radius: var(--#{$prefix}-active-radius-tl, var(--#{$prefix}-active-radius, 0))
-      var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, 0))
-      var(--#{$prefix}-active-radius-br, var(--#{$prefix}-active-radius, 0))
-      var(--#{$prefix}-active-radius-bl, var(--#{$prefix}-active-radius, 0));
+    border-radius: var(
+        --#{$prefix}-active-radius-tl,
+        var(--#{$prefix}-active-radius, var(--#{$prefix}-radius))
+      )
+      var(--#{$prefix}-active-radius-tr, var(--#{$prefix}-active-radius, var(--#{$prefix}-radius)))
+      var(--#{$prefix}-active-radius-br, var(--#{$prefix}-active-radius, var(--#{$prefix}-radius)))
+      var(--#{$prefix}-active-radius-bl, var(--#{$prefix}-active-radius, var(--#{$prefix}-radius)));
   }
 }
 

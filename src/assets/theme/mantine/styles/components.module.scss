@@ -373,6 +373,10 @@
  *
  * `element` (default / omit settings): CSS `::after` via cascade tokens.
  * `line` (`[data-cmf-active-type='line']` on widget root): DOM `CmfActiveLine`, no `::after`.
+ *
+ * Host squares the active edge from `--*-active-radius-*` when
+ * `data-cmf-active-position` is left/right (sidebar rail). Bar/line radius
+ * still uses the same tokens on `::after` / CmfActiveLine.
  */
 .button[data-active='true']:where(
     :not(:disabled, [data-disabled], [aria-disabled='true'], [data-variant='button-link'])
@@ -384,6 +388,30 @@
     :where([data-cmf-active-type='line'] *)
   ) {
   @include cmfControl.cmf-control-active-after-body('ai');
+}
+
+[data-cmf-active-position='left']
+  .button[data-active='true']:where(
+    :not(:disabled, [data-disabled], [aria-disabled='true'], [data-variant='button-link'])
+  ) {
+  @include cmfControl.cmf-control-active-radius('button', left);
+}
+
+[data-cmf-active-position='right']
+  .button[data-active='true']:where(
+    :not(:disabled, [data-disabled], [aria-disabled='true'], [data-variant='button-link'])
+  ) {
+  @include cmfControl.cmf-control-active-radius('button', right);
+}
+
+[data-cmf-active-position='left']
+  .actionIcon[data-active='true']:where(:not(:disabled, [data-disabled], [aria-disabled='true'])) {
+  @include cmfControl.cmf-control-active-radius('ai', left);
+}
+
+[data-cmf-active-position='right']
+  .actionIcon[data-active='true']:where(:not(:disabled, [data-disabled], [aria-disabled='true'])) {
+  @include cmfControl.cmf-control-active-radius('ai', right);
 }
 
 [data-cmf-active-type='line']

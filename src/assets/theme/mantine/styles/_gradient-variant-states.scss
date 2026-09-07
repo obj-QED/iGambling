@@ -1,13 +1,17 @@
-// Mantine hover uses `background-color`; gradients need `background-image`.
+// Mantine hover paints `background-color` (invalid for gradient tokens).
+// Use `background` shorthand so tokens may be a gradient *or* a solid color.
+// Do NOT transition `background` — browsers cannot interpolate two gradients
+// (flash / transparent flicker). Color may still ease.
 @mixin gradient-variant-hover($prefix) {
   &[data-variant='gradient']:where(:not(:disabled, [data-disabled], [data-loading])) {
-    /* Ensure paint is always an image (CMF nestCssVars / Mantine --*-bg). */
     background: var(--#{$prefix}-bg);
     background-origin: border-box;
+    transition: color 160ms ease;
 
     @media (hover: hover) {
       &:hover {
         background: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
+        background-origin: border-box;
         color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
       }
     }
@@ -15,6 +19,7 @@
     @media (hover: none) {
       &:active {
         background: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
+        background-origin: border-box;
         color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
       }
     }

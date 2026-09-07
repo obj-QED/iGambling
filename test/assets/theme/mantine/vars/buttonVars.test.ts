@@ -44,7 +44,7 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-active-height']).toBe('var(--cmf-button-default-active-height, 2px)');
     expect(vars['--button-active-radius-bl']).toContain('--cmf-button-default-active-radius-bl');
     expect(vars['--button-active-radius-bl']).toContain('--cmf-button-default-active-radius');
-    expect(vars['--button-active-radius-bl']).toMatch(/, 0\)+$/);
+    expect(vars['--button-active-radius-bl']).toMatch(/var\(--button-radius\)\)+$/);
     expect(vars['--button-active-radius']).toMatch(/active-radius, 0\)$/);
     expect(vars['--button-active-radius']).not.toContain('--button-radius');
     expect(vars['--button-radius']).toContain('var(--cmf-button-default-radius');

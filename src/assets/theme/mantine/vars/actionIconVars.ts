@@ -255,7 +255,9 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
       variant,
       tail: 'variant',
     }),
-    /* Active bar radius — independent of `--ai-radius` (default 0). */
+    /*
+     * Active radius: shorthand and/or per-corner. Corner → shorthand → `--ai-radius`.
+     */
     '--ai-active-radius': buildCmfActionIconPropToken('active-radius', '0', {
       scope,
       variant,
@@ -263,7 +265,7 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
     }),
     '--ai-active-radius-tl': buildCmfActionIconPropToken(
       'active-radius-tl',
-      buildCmfActionIconPropToken('active-radius', '0', {
+      buildCmfActionIconPropToken('active-radius', 'var(--ai-radius)', {
         scope,
         variant,
         tail: 'variant',
@@ -272,7 +274,7 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
     ),
     '--ai-active-radius-tr': buildCmfActionIconPropToken(
       'active-radius-tr',
-      buildCmfActionIconPropToken('active-radius', '0', {
+      buildCmfActionIconPropToken('active-radius', 'var(--ai-radius)', {
         scope,
         variant,
         tail: 'variant',
@@ -281,7 +283,7 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
     ),
     '--ai-active-radius-br': buildCmfActionIconPropToken(
       'active-radius-br',
-      buildCmfActionIconPropToken('active-radius', '0', {
+      buildCmfActionIconPropToken('active-radius', 'var(--ai-radius)', {
         scope,
         variant,
         tail: 'variant',
@@ -290,7 +292,7 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
     ),
     '--ai-active-radius-bl': buildCmfActionIconPropToken(
       'active-radius-bl',
-      buildCmfActionIconPropToken('active-radius', '0', {
+      buildCmfActionIconPropToken('active-radius', 'var(--ai-radius)', {
         scope,
         variant,
         tail: 'variant',

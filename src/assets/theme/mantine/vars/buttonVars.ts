@@ -86,6 +86,7 @@ const MANTINE_VARIANT_FALLBACKS = {
     bg: `var(--app-gradient-default, ${APP_GRADIENT_DEFAULT})`,
     color: '#fff',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
+    /* Distinct from bg — never fall back to `--button-bg` (hides hover when equal). */
     hover: `var(--app-gradient-default-hover, ${APP_GRADIENT_DEFAULT_HOVER})`,
     'hover-color': '#fff',
   },
@@ -300,7 +301,11 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       variant,
       tail: 'variant',
     }),
-    /* Active bar radius — independent of `--button-radius` (default 0). */
+    /*
+     * Active radius: `--cmf-*-active-radius` (all corners) and/or
+     * `--cmf-*-active-radius-{tl|tr|br|bl}`. Corner → shorthand → `--button-radius`
+     * (unset corner keeps control radius; shorthand `0` squares all).
+     */
     '--button-active-radius': buildCmfButtonPropToken('active-radius', '0', {
       scope,
       variant,
@@ -308,7 +313,7 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
     }),
     '--button-active-radius-tl': buildCmfButtonPropToken(
       'active-radius-tl',
-      buildCmfButtonPropToken('active-radius', '0', {
+      buildCmfButtonPropToken('active-radius', 'var(--button-radius)', {
         scope,
         variant,
         tail: 'variant',
@@ -317,7 +322,7 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
     ),
     '--button-active-radius-tr': buildCmfButtonPropToken(
       'active-radius-tr',
-      buildCmfButtonPropToken('active-radius', '0', {
+      buildCmfButtonPropToken('active-radius', 'var(--button-radius)', {
         scope,
         variant,
         tail: 'variant',
@@ -326,7 +331,7 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
     ),
     '--button-active-radius-br': buildCmfButtonPropToken(
       'active-radius-br',
-      buildCmfButtonPropToken('active-radius', '0', {
+      buildCmfButtonPropToken('active-radius', 'var(--button-radius)', {
         scope,
         variant,
         tail: 'variant',
@@ -335,7 +340,7 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
     ),
     '--button-active-radius-bl': buildCmfButtonPropToken(
       'active-radius-bl',
-      buildCmfButtonPropToken('active-radius', '0', {
+      buildCmfButtonPropToken('active-radius', 'var(--button-radius)', {
         scope,
         variant,
         tail: 'variant',

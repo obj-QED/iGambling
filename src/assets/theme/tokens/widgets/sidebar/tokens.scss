@@ -24,7 +24,6 @@
   --aside-shell-border-color: #111;
   --aside-footer-border-color: red;
   --aside-header-border-color: red;
-  --cmf-button-sidebar-bg: black;
   --cmf-button-sidebar-bd-width: 10px;
 
   /* Header region chrome */
@@ -55,6 +54,14 @@
   --cmf-button-sidebar-active-position: left;
   --cmf-button-sidebar-active-size: 2px;
   --cmf-button-sidebar-active-color: var(--brand-color-6);
+
+  /*
+   * Active radius — either form works:
+   *   --cmf-button-sidebar-active-radius: 0;           // all corners
+   *   --cmf-button-sidebar-active-radius-tl/bl: 0;    // rail edge only
+   * Unset corners keep `--button-radius` (cascade fallback).
+   */
+
   --cmf-button-sidebar-active-radius-tl: 0;
   --cmf-button-sidebar-active-radius-bl: 0;
 
@@ -71,8 +78,11 @@
   --cmf-action-icon-sidebar-active-position: var(--cmf-button-sidebar-active-position);
   --cmf-action-icon-sidebar-active-size: var(--cmf-button-sidebar-active-size);
   --cmf-action-icon-sidebar-active-color: var(--cmf-button-sidebar-active-color);
+
+  /* Compact rail — same shorthand / per-corner contract as Button. */
   --cmf-action-icon-sidebar-active-radius-tl: 0;
   --cmf-action-icon-sidebar-active-radius-bl: 0;
+
   --cmf-action-icon-sidebar-active-inset: calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px))
     auto calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px))
     calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px));

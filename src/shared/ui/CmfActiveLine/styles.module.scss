@@ -19,10 +19,22 @@
     --_cmf-active-width: var(--button-active-width, 100%);
     --_cmf-active-height: var(--button-active-height, 2px);
     --_cmf-active-color: var(--button-active-color, var(--brand-color-6));
-    --_cmf-active-radius-tl: var(--button-active-radius-tl, var(--button-active-radius, 0));
-    --_cmf-active-radius-tr: var(--button-active-radius-tr, var(--button-active-radius, 0));
-    --_cmf-active-radius-br: var(--button-active-radius-br, var(--button-active-radius, 0));
-    --_cmf-active-radius-bl: var(--button-active-radius-bl, var(--button-active-radius, 0));
+    --_cmf-active-radius-tl: var(
+      --button-active-radius-tl,
+      var(--button-active-radius, var(--button-radius, 0))
+    );
+    --_cmf-active-radius-tr: var(
+      --button-active-radius-tr,
+      var(--button-active-radius, var(--button-radius, 0))
+    );
+    --_cmf-active-radius-br: var(
+      --button-active-radius-br,
+      var(--button-active-radius, var(--button-radius, 0))
+    );
+    --_cmf-active-radius-bl: var(
+      --button-active-radius-bl,
+      var(--button-active-radius, var(--button-radius, 0))
+    );
   }
 
   .ai {
@@ -30,9 +42,21 @@
     --_cmf-active-width: var(--ai-active-width, 100%);
     --_cmf-active-height: var(--ai-active-height, 2px);
     --_cmf-active-color: var(--ai-active-color, var(--brand-color-6));
-    --_cmf-active-radius-tl: var(--ai-active-radius-tl, var(--ai-active-radius, 0));
-    --_cmf-active-radius-tr: var(--ai-active-radius-tr, var(--ai-active-radius, 0));
-    --_cmf-active-radius-br: var(--ai-active-radius-br, var(--ai-active-radius, 0));
-    --_cmf-active-radius-bl: var(--ai-active-radius-bl, var(--ai-active-radius, 0));
+    --_cmf-active-radius-tl: var(
+      --ai-active-radius-tl,
+      var(--ai-active-radius, var(--ai-radius, 0))
+    );
+    --_cmf-active-radius-tr: var(
+      --ai-active-radius-tr,
+      var(--ai-active-radius, var(--ai-radius, 0))
+    );
+    --_cmf-active-radius-br: var(
+      --ai-active-radius-br,
+      var(--ai-active-radius, var(--ai-radius, 0))
+    );
+    --_cmf-active-radius-bl: var(
+      --ai-active-radius-bl,
+      var(--ai-active-radius, var(--ai-radius, 0))
+    );
   }
 }
