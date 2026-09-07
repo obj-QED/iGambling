@@ -131,7 +131,8 @@
         scrollHideDelay: 3000,
         type: 'auto',
         overscrollBehavior: 'contain',
-        offsetScrollbars: true,
+        /** Padding only while content overflows (not always-on gutter). */
+        offsetScrollbars: 'present',
       },
       // Special blocks for header and footer, key: ['logo', 'search_leftmenu', 'wheel_mdl', 'timer']
       customBlocks: [

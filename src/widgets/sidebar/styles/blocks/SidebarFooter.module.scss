@@ -12,11 +12,11 @@
      */
     margin: var(
       --aside-shell-footer-margin,
-      var(--aside-shell-footer-spacing, var(--mantine-spacing-md) 0 0)
+      var(--aside-shell-footer-spacing, var(--mantine-spacing-sm) 0 0)
     );
     padding: var(
       --aside-shell-footer-padding,
-      var(--aside-shell-footer-spacing, var(--mantine-spacing-md) 0 0)
+      var(--aside-shell-footer-spacing, var(--mantine-spacing-sm) 0 0)
     );
     border-top: 1px solid var(--aside-footer-border-color, var(--mantine-color-dark-4));
   }

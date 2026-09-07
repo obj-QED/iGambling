@@ -36,7 +36,6 @@ function SlideoutStrategyComponent({ layout, config }: SidebarTypeStrategyProps)
           {...scrollAreaProps}
           classNames={{
             viewport: styles.viewport,
-            content: styles.scrollContent,
             scrollbar: styles.scrollbar,
             thumb: styles.thumb,
           }}

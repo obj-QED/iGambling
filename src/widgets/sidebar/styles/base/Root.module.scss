@@ -43,18 +43,31 @@
       display: none;
     }
   }
-
-  .scrollContent {
-    height: 100%;
-  }
 }
 
 /*
- * Viewport — UNLAYERED (beats `@layer mantine` offsetScrollbars rule that sets
- * `padding-inline-start: unset`). Wire via `classNames.viewport`.
+ * Viewport — UNLAYERED (beats `@layer mantine` offsetScrollbars padding).
+ * Key off Radix scrollbar `data-state`, not Mantine `data-vertical-hidden`.
+ *
+ * Transition only `padding-inline-end` (longhand) — shorthand 1↔2 values jitters.
+ * Collapse delay damps overflow ↔ gutter feedback while the thumb settles.
  */
 .viewport {
-  padding-inline: var(--scrollarea-padding-start, 4px) calc(2 * var(--scrollarea-scrollbar-size));
+  --_scroll-pad-inline: var(--scrollarea-padding-inline, 4px);
+  padding-inline: var(--scrollarea-padding-start, var(--_scroll-pad-inline))
+    var(--_scroll-pad-inline);
+  transition: padding-inline-end var(--aside-scroll-gutter-duration, 280ms)
+    var(--aside-scroll-gutter-ease, cubic-bezier(0.22, 1, 0.36, 1))
+    var(--aside-scroll-gutter-delay, 60ms);
+}
+
+.scroll:has(> .scrollbar:where([data-orientation='vertical']):where([data-state='visible'])) {
+  .viewport {
+    padding-inline-end: calc(2 * var(--scrollarea-scrollbar-size));
+
+    /* Expand immediately — no delay */
+    transition-delay: 0ms;
+  }
 }
 
 /*

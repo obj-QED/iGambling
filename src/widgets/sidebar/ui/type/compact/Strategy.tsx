@@ -44,7 +44,6 @@ function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) 
           offsetScrollbars={false}
           classNames={{
             viewport: styles.viewport,
-            content: styles.scrollContent,
             scrollbar: styles.scrollbar,
             thumb: styles.thumb,
           }}

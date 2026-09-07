@@ -14,6 +14,8 @@ export const DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG: SidebarScrollAreaConfig = {
   scrollHideDelay: 3000,
   type: 'auto',
   overscrollBehavior: 'contain',
+  /** Gutter only when vertical thumb is needed (`scrollHeight > clientHeight`). */
+  offsetScrollbars: 'present',
 };
 
 export const DEFAULT_SIDEBAR_REGIONS: SidebarRegionsConfig = {
