@@ -2,6 +2,7 @@ import type { SidebarRegionsConfig, SidebarSchema, SidebarScrollAreaConfig } fro
 import type { MenuItemDto } from '@/shared/types/menu';
 
 import {
+  ASIDE_CONTROL_FITS,
   ASIDE_SCROLL_AREA_OVERSCROLL,
   ASIDE_SCROLL_AREA_TYPES,
   type AsideRegionsSettings,
@@ -170,7 +171,7 @@ function mergeBlockVariants(
 }
 
 function adapterForType(type: string): string {
-  if (type === 'compact') {
+  if (type === 'compact' || type === 'slideout') {
     return 'icon';
   }
   return 'row';
@@ -257,6 +258,11 @@ function coerceSidebarSchema(
     ...(width && { width }),
     layout: readSettingsKey(merged.layout, DEFAULT_SIDEBAR_CONFIG.layout),
     type,
+    controlFit: pickUnionValue(
+      ASIDE_CONTROL_FITS,
+      merged.controlFit,
+      DEFAULT_SIDEBAR_CONFIG.controlFit,
+    ),
     blockVariants: resolveBlockVariants(merged, type, layers),
     openedDropdowns: resolveOpenedDropdowns(merged),
     specialBlockKeys: resolveSpecialBlockKeys(merged),

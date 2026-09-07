@@ -6,6 +6,12 @@ interface ImportMetaEnv {
   readonly VITE_LOBBY_API_URL?: string;
   /** Dev only: seed lobby `token` for `initV2` / `getPage` (use `.env.local`, never commit secrets). */
   readonly VITE_DEV_LOBBY_TOKEN?: string;
+  /**
+   * Dev only: show TanStack Query Devtools. Default on when `import.meta.env.DEV`.
+   * Set `VITE_TANSTACK_ENABLED=false` in `.env.local` to hide the floating button.
+   * (Bare `TANSTACK_ENABLED` is ignored — Vite does not expose non-`VITE_*` vars.)
+   */
+  readonly VITE_TANSTACK_ENABLED?: string;
   /** Set by Storybook Vite config — no backend bootstrap in stories. */
   readonly STORYBOOK?: string;
 }

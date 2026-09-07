@@ -13,7 +13,7 @@ import { cmfControlAttrs, controlAttrs, resolveCmfScope } from '@/shared/lib';
 import { AppActionIcon } from '@/shared/ui';
 import { AppLogo, AppTooltip } from '@/shared/ui';
 
-import { useSidebarConfig, useSidebarTypePack } from '../../../context';
+import { useSidebarConfig, useSidebarSlideout, useSidebarTypePack } from '../../../context';
 import { useAsideMenuButtonSize, useMenuItemRenderable } from '../../../hooks';
 import { itemKey, resolveItemHref, resolveLogoControlVariant } from '../../../lib';
 
@@ -76,6 +76,11 @@ function resolveTriggerItem(item: HeaderMenuItem): HeaderMenuItem {
 function LogoComponent({ item, className }: BlockProps) {
   const { tooltip } = useSidebarConfig();
   const { itemKind } = useSidebarTypePack();
+  const {
+    enabled: slideoutEnabled,
+    expanded: slideoutExpanded,
+    toggle: toggleSlideout,
+  } = useSidebarSlideout();
   const size = useAsideMenuButtonSize();
   const isMobile = useIsMobile();
   const { visible, onImgError, showItemImg } = useMenuItemRenderable(item);
@@ -115,8 +120,20 @@ function LogoComponent({ item, className }: BlockProps) {
       className={className}
       variant={variant}
       size={size}
-      aria-label={triggerItem.name}
+      aria-label={
+        slideoutEnabled
+          ? slideoutExpanded
+            ? 'Collapse sidebar'
+            : 'Expand sidebar'
+          : triggerItem.name
+      }
       {...triggerAttrs}
+      {...(slideoutEnabled
+        ? {
+            onClick: toggleSlideout,
+            'aria-expanded': slideoutExpanded,
+          }
+        : {})}
     >
       <IconMenu2 stroke={1.75} aria-hidden className="cmf-ActionIcon-icon-svg" />
     </AppActionIcon>

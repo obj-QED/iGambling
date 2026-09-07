@@ -2,6 +2,7 @@ export type {
   AsideBehaviorSettings,
   AsideBlockVariantSettings,
   AsideCapabilitiesSettings,
+  AsideControlFit,
   AsideLayoutKey,
   AsideLayoutStrategyKey,
   AsideRegionsSettings,
@@ -15,6 +16,7 @@ export type {
   AsideWrappersSettings,
 } from './asideSettings';
 export {
+  ASIDE_CONTROL_FITS,
   ASIDE_LAYOUT_KEYS,
   ASIDE_SCROLL_AREA_OVERSCROLL,
   ASIDE_SCROLL_AREA_TYPES,

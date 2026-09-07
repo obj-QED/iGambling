@@ -43,6 +43,17 @@ export const SIDEBAR_TYPE_TUNABLE_DEFAULTS: Record<AsideTypeStrategyKey, Sidebar
     },
     regions: DEFAULT_SIDEBAR_REGIONS,
   },
+  /** Collapsed icon rail; expands on hover/focus — tooltips for collapsed labels. */
+  slideout: {
+    scrollArea: DEFAULT_SIDEBAR_SCROLL_AREA_CONFIG,
+    tooltip: {
+      ...DEFAULT_TOOLTIP_CONFIG,
+      enabled: true,
+      position: 'right',
+      delay: 280,
+    },
+    regions: DEFAULT_SIDEBAR_REGIONS,
+  },
 };
 
 export function resolveSidebarTypeTunableDefaults(type: string): SidebarTypeTunables {

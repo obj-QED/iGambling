@@ -2,11 +2,11 @@
 
 ```txt
 config.type → resolveSidebarTypePack → Root Provider (SidebarTypePackContext)
-  Strategy     — per-type chrome tree (`default/Strategy`, `compact/Strategy`, …)
+  Strategy     — per-type chrome tree (`default/Strategy`, `compact/Strategy`, `slideout/Strategy`, …)
   styles.root  — CSS module on <aside>
-  Item         — row presentation (button vs actionIcon)
+  Item         — row presentation (button vs actionIcon vs slideout button+initial)
   HeaderLink / FooterLink — chrome rows
-  blocks       — sync overlay on BLOCK_REGISTRY (compact only)
+  blocks       — sync overlay on BLOCK_REGISTRY (compact / slideout icon adapters)
 ```
 
 Each type owns its own `Strategy.tsx` — full render tree for that skin (regions, scroll, shell, extra chrome). Do **not** share one ChromeStrategy across types; duplicate and reshape freely.

@@ -20,4 +20,12 @@
     pointer-events: none;
     color: var(--aside-menu-dropdown-indicator-color, inherit);
   }
+
+  /* Name initial — label text inside ActionIcon (not a scaled media glyph). */
+  .nameLabel {
+    font-size: var(--aside-menu-fz, var(--mantine-font-size-md, 1rem));
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: normal;
+  }
 }

@@ -24,6 +24,10 @@ function createQueryDevtoolsPanel(): LazyExoticComponent<ComponentType> | null {
   if (!import.meta.env.DEV) {
     return null;
   }
+  // Vite only exposes `VITE_*`. Default: on in DEV; set `VITE_TANSTACK_ENABLED=false` to hide.
+  if (import.meta.env.VITE_TANSTACK_ENABLED === 'false') {
+    return null;
+  }
   return lazy(() => import('./reactQueryDevtools.tsx'));
 }
 

@@ -9,4 +9,11 @@ export function resolveItemLabel(item: HeaderMenuItem): string {
   return itemKey(item);
 }
 
+/** First glyph of `name` for icon-less slideout collapsed rail. */
+export function resolveItemNameInitial(item: HeaderMenuItem): string | null {
+  const name = itemName(item).trim();
+  if (name.length === 0) return null;
+  return name.slice(0, 1).toUpperCase();
+}
+
 export { resolveItemHref } from '@/shared/lib';

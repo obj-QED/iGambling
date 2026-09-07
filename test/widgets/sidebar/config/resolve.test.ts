@@ -5,6 +5,12 @@ import { resolveSidebarWidth, toSidebarWidthCss } from '@/widgets/sidebar/lib';
 import { SIDEBAR_TYPE_TUNABLE_DEFAULTS } from '@/widgets/sidebar/ui/type/tunableDefaults';
 
 describe('resolveSidebarConfig', () => {
+  it('defaults controlFit to max and accepts fill', () => {
+    expect(resolveSidebarConfig({ aside: {} }).controlFit).toBe('max');
+    expect(resolveSidebarConfig({ aside: { controlFit: 'fill' } }).controlFit).toBe('fill');
+    expect(resolveSidebarConfig({ aside: { controlFit: 'nope' as 'max' } }).controlFit).toBe('max');
+  });
+
   it('returns defaults when settings.aside is missing', () => {
     expect(resolveSidebarConfig({})).toEqual(DEFAULT_SIDEBAR_CONFIG);
   });
@@ -31,6 +37,10 @@ describe('resolveSidebarConfig', () => {
       promo: 'row',
     });
     expect(resolveSidebarConfig({ aside: { type: 'compact' } }).blockVariants).toEqual({
+      search: 'icon',
+      promo: 'icon',
+    });
+    expect(resolveSidebarConfig({ aside: { type: 'slideout' } }).blockVariants).toEqual({
       search: 'icon',
       promo: 'icon',
     });

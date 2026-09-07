@@ -15,6 +15,10 @@ describe('asideMenuButtonSizeForType', () => {
   it('matches compact sidebar token md', () => {
     expect(asideMenuButtonSizeForType('compact')).toBe('md');
   });
+
+  it('matches slideout sidebar token md', () => {
+    expect(asideMenuButtonSizeForType('slideout')).toBe('md');
+  });
 });
 
 describe('readAsideMenuButtonSize', () => {

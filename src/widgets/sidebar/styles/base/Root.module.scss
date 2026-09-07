@@ -9,8 +9,8 @@
     max-height: var(--aside-shell-max-height, 100vh);
     min-height: 0;
     overflow: hidden;
-    padding: var(--aside-shell-padding, var(--mantine-spacing-sm));
-    padding-bottom: 0;
+    padding: var(--aside-shell-padding-y, var(--aside-shell-padding, var(--mantine-spacing-sm)))
+      var(--aside-shell-padding-x, var(--aside-shell-padding, var(--mantine-spacing-sm)));
     border-right: 1px solid var(--aside-shell-border-color, var(--mantine-color-dark-4));
     background: var(--aside-shell-bg, var(--mantine-color-body));
 
@@ -28,13 +28,38 @@
     --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
     flex: 1;
     min-height: 0;
-    margin-inline: calc(var(--aside-shell-padding, var(--mantine-spacing-sm)) * -1);
-    padding-inline: var(--aside-shell-padding, var(--mantine-spacing-sm));
+    margin: var(--aside-shell-margin-y, var(--aside-shell-margin, var(--mantine-spacing-sm)))
+      var(--aside-shell-margin-x, var(--aside-shell-margin, 0));
+    padding: var(--aside-shell-padding-y, var(--aside-shell-padding, 0))
+      var(--aside-shell-padding-x, var(--aside-shell-padding, 0));
+  }
+
+  /*
+   * Compact + fill: overlay thumb cuts the right edge of full-width controls.
+   * Hide chrome; wheel/trackpad scrolling still works.
+   */
+  .root:global([data-type='compact'][data-control-fit='fill']) {
+    .scrollbar {
+      display: none;
+    }
   }
 
   .scrollContent {
-    padding-top: var(--aside-shell-padding-top, var(--mantine-spacing-sm));
-    padding-bottom: var(--aside-shell-padding-bottom, var(--mantine-spacing-sm));
+    height: 100%;
+
+    /*
+     * `--aside-shell-content-spacing` → margin + padding together.
+     * Do not fall through `--aside-shell-padding` (compact zeros it).
+     */
+    margin: var(--aside-shell-content-margin, var(--aside-shell-content-spacing, 0));
+    margin-block: var(--aside-shell-content-margin-y);
+    margin-inline: var(--aside-shell-content-margin-x);
+    padding: var(
+      --aside-shell-content-padding,
+      var(--aside-shell-content-spacing, var(--mantine-spacing-md))
+    );
+    padding-block: var(--aside-shell-content-padding-y);
+    padding-inline: var(--aside-shell-content-padding-x);
   }
 }
 
@@ -43,7 +68,7 @@
  * `padding-inline-start: unset`). Wire via `classNames.viewport`.
  */
 .viewport {
-  padding-inline-start: var(--scrollarea-padding-start, 4px);
+  padding-inline: var(--scrollarea-padding-start, 4px) calc(2 * var(--scrollarea-scrollbar-size));
 }
 
 /*

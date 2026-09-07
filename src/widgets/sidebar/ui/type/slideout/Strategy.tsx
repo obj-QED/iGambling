@@ -12,17 +12,11 @@ import { Shell } from '../../Shell';
 import styles from '../../../styles/base/Root.module.scss';
 
 /**
- * Compact type chrome — owns the full aside tree for this pack (narrow ActionIcon rail).
- * Not shared with default: reshape regions, scroll, shell, or inject type-only chrome here.
- *
- * Layout slots (override per product needs):
- * 1. Header region — pack `HeaderLink` / compact overlays via `blocks`
- * 2. Main region — scroll + `Shell` (sync block overlays for search/promo/logo)
- * 3. Footer region — pack `FooterLink`
+ * Slideout type chrome — collapsed icon rail that expands on hover/focus-within.
+ * Row buttons keep labels in the DOM; CSS clips them while the shell width animates.
  */
-function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) {
+function SlideoutStrategyComponent({ layout, config }: SidebarTypeStrategyProps) {
   const { regions, scrollArea } = config;
-  // Omit Mantine `scrollbarSize` — size comes from `.scroll` CSS tokens.
   const { scrollbarSize, ...scrollAreaProps } = scrollArea;
   void scrollbarSize;
 
@@ -40,8 +34,6 @@ function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) 
           h="100%"
           scrollbars="y"
           {...scrollAreaProps}
-          /* Rail alignment: offset gutter shifts menu off header/footer axis. */
-          offsetScrollbars={false}
           classNames={{
             viewport: styles.viewport,
             content: styles.scrollContent,
@@ -58,5 +50,5 @@ function CompactStrategyComponent({ layout, config }: SidebarTypeStrategyProps) 
   );
 }
 
-export const CompactStrategy = memo(CompactStrategyComponent);
-CompactStrategy.displayName = 'SidebarCompactTypeStrategy';
+export const SlideoutStrategy = memo(SlideoutStrategyComponent);
+SlideoutStrategy.displayName = 'SidebarSlideoutTypeStrategy';

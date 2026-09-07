@@ -1,4 +1,5 @@
 import type {
+  AsideControlFit,
   AsideLayoutKey,
   AsideScrollAreaOverscrollBehavior,
   AsideScrollAreaSettings,
@@ -10,7 +11,7 @@ import type { HeaderCustomBlockConfig } from '@/shared/config/headerSettings';
 import type { TooltipConfig } from '@/shared/config/tooltipSettings';
 import type { SchemaVersion, WrapperMode } from '@/shared/schema';
 
-export type { AsideLayoutKey, AsideTypeKey };
+export type { AsideControlFit, AsideLayoutKey, AsideTypeKey };
 
 /** Resolved ScrollArea props: pack defaults → `aside.scrollArea` (typed Mantine passthrough). */
 export type SidebarScrollAreaConfig = AsideScrollAreaSettings & {
@@ -52,6 +53,11 @@ export type SidebarSchema = {
   width?: number | string;
   layout: AsideLayoutKey;
   type: AsideTypeKey;
+  /**
+   * Control width mode (`max` | `fill`). Default `max`.
+   * Wired to `[data-control-fit]` on the aside root (compact + non-compact tokens).
+   */
+  controlFit: AsideControlFit;
   /** Adapter variants from settings (`search` / `promo` / custom keys). Open strings. */
   blockVariants: SidebarBlockVariants;
   /** Default open dropdown keys — first visit only; then localStorage. */

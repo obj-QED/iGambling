@@ -75,8 +75,21 @@ export function parentCmfComponent(component: string): string | undefined {
 
 type CmfControlName = 'button' | 'action-icon' | 'group' | 'modal' | 'text' | 'code';
 
+/**
+ * CSS custom-property segment. Menu keys may contain spaces (`instant game`) —
+ * those are invalid inside `var(--cmf-…)` and wipe the whole cascade inline style.
+ */
+function cssVarSegment(part: string): string {
+  const cleaned = part
+    .trim()
+    .replace(/[^a-zA-Z0-9_-]+/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return cleaned.length > 0 ? cleaned : 'key';
+}
+
 function cmfControlName(control: CmfControlName, ...parts: string[]): string {
-  return `--cmf-${control}-${parts.join('-')}`;
+  return `--cmf-${[control, ...parts].map(cssVarSegment).join('-')}`;
 }
 
 type BuildCmfControlPropTokenOptions = {

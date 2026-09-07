@@ -21,25 +21,20 @@
        */
       modal: {
         centered: true,
-
       },
       /**
        * Global Mantine Drawer defaults — any prop except opened/onClose/children.
        * @see https://mantine.dev/core/drawer/?t=props
        * Paint tokens: `tokens/theme.scss` `--drawer-*`. Sidebar: data-cmf + layout tokens.
        */
-      drawer: {
-
-      },
+      drawer: {},
       /**
        * Global Mantine Popover defaults — any prop except opened/onChange/children.
        * @see https://mantine.dev/core/popover/?t=props
        * Paint tokens: `tokens/theme.scss` `--popover-*` (dropdown/arrow).
        * Also accepted per-instance on <PopoverWrapper … /> (instance wins).
        */
-      popover: {
-
-      },
+      popover: {},
     },
     header: {
       layout: 'container',
@@ -93,6 +88,16 @@
     aside: {
       /** Shell width is fixed — do not pair a compact calc with `type: 'default'` (labels need room). */
       type: 'default', // 'default' | 'compact' | 'slideout'
+      /**
+       * Control width: `max` (hug / capped) | `fill` (full track, flat).
+       * Tokens: compact + non-compact `[data-control-fit]` blocks separately.
+       */
+      controlFit: 'fill', // 'max' | 'fill'
+      /**
+       * slideout — logo-trigger toggles width (4s). During compress: ellipsis labels.
+       * After width ends (`data-aside-slideout-settled`): square rail, name initial (no img),
+       * logo group centered, dropdown chevron under icon.
+       */
       layout: 'aside',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
       mockMenu: false,

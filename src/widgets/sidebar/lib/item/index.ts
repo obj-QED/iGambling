@@ -1,6 +1,6 @@
 export { filterRenderableItems, filterRenderableMenu, hasRenderableMenuSections } from './filter';
 export { itemImg, itemKey, itemName, menuItemKeyAttr } from './key';
-export { resolveItemHref, resolveItemLabel } from './label';
+export { resolveItemHref, resolveItemLabel, resolveItemNameInitial } from './label';
 export {
   hasItemImg,
   hasItemName,

@@ -7,64 +7,12 @@
   /*
    * Compact rail — ActionIcon column.
    * Applied as second class on `[data-widget='sidebar'][data-type='compact']`.
+   *
+   * Size: fill content track width, max `--aside-compact-control-max` (4em).
+   * Leaf controls → square (`aspect-ratio` + synced `--ai-size`).
+   * Dropdown trigger → same width, height auto (chevron under icon).
    */
 
-  :global([data-cmf-component='sidebar-dropdown']) {
-    margin-left: 0;
-  }
-
   .root {
-    /* Type-owned spacing — ItemActionIcon `.dropdownTrigger` / `.indicator` read these. */
-    align-items: center;
-    width: var(--app-layout-sidebar-width, 4.5rem);
-
-    :global([data-sidebar-region='header']),
-    :global([data-sidebar-region='footer']) {
-      align-items: center;
-    }
-
-    :global(nav[data-section-key] ul) {
-      align-items: center;
-    }
-
-    :global(nav[data-section-key] li),
-    :global(nav[data-section-key] li > *) {
-      display: flex;
-      justify-content: center;
-      width: auto;
-    }
-
-    :global([data-sidebar-dropdown]) {
-      align-items: center;
-      width: 100%;
-    }
-
-    :global([data-sidebar-dropdown] ul[role='menu']) {
-      padding-left: 0;
-      align-items: center;
-    }
-
-    /*
-     * Compact dropdown trigger = same square ActionIcon as siblings.
-     * Chevron is a corner badge (absolute) — never flex-row with gap (clips under overflow).
-     */
-    :global([data-sidebar-dropdown-trigger]) {
-      margin-left: 0;
-    }
-
-    :global([data-sidebar-dropdown-trigger] .cmf-ActionIcon-icon) {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      justify-content: var(--aside-compact-dropdown-trigger-justify, center);
-      align-items: var(--aside-compact-dropdown-trigger-align, center);
-      gap: var(--aside-compact-dropdown-trigger-gap, var(--spacing-xs, 0.375rem));
-      flex-wrap: var(--aside-compact-dropdown-trigger-flex-wrap, wrap);
-      flex-flow: var(--aside-compact-dropdown-trigger-flex-flow, column);
-    }
-
-    :global([data-sidebar-dropdown-item]) {
-      margin-left: 0;
-    }
   }
 }

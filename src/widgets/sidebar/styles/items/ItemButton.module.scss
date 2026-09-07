@@ -1,7 +1,9 @@
 @layer widget.element {
   .dropdownTrigger {
     /* Flex lives on root (`.cmf-Button-inner` is `display: contents`). */
-    width: 100%;
+    /* Width SoT: `[data-control-fit]` tokens → `--aside-control-width`. */
+    width: var(--aside-control-width, 100%);
+    max-width: var(--aside-control-max-width, none);
     min-width: 0;
 
     :global(.cmf-Button-label) {

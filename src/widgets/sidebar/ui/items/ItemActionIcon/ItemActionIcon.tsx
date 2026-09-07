@@ -20,6 +20,7 @@ import {
   renderSidebarFooterIcon,
   resolveItemHref,
   resolveItemLabel,
+  resolveItemNameInitial,
   resolveMenuItemActionIconVariant,
 } from '../../../lib';
 import { SidebarPhotoFallback } from '../icons/SidebarPhotoFallback';
@@ -48,7 +49,12 @@ function resolveActionIconContent(
   }
 
   if (hasItemName(item)) {
-    return label.slice(0, 1).toUpperCase();
+    const initial = resolveItemNameInitial(item) ?? label.slice(0, 1).toUpperCase();
+    return (
+      <span className={styles.nameLabel} data-sidebar-item-label>
+        {initial}
+      </span>
+    );
   }
 
   return <SidebarPhotoFallback />;

@@ -16,10 +16,14 @@ export type AsideTypeKey = string;
 
 export const ASIDE_LAYOUT_KEYS = ['container', 'container-fluid'] as const;
 
-export const ASIDE_TYPE_KEYS = ['default', 'compact'] as const;
+export const ASIDE_TYPE_KEYS = ['default', 'compact', 'slideout'] as const;
+
+/** Compact rail control width: `max` = capped square; `fill` = stretch to content track. */
+export const ASIDE_CONTROL_FITS = ['max', 'fill'] as const;
 
 export type AsideLayoutStrategyKey = (typeof ASIDE_LAYOUT_KEYS)[number];
 export type AsideTypeStrategyKey = (typeof ASIDE_TYPE_KEYS)[number];
+export type AsideControlFit = (typeof ASIDE_CONTROL_FITS)[number];
 
 export const ASIDE_SCROLL_AREA_TYPES = ['auto', 'always', 'scroll', 'hover', 'never'] as const;
 
@@ -70,6 +74,12 @@ export type AsideSettings = {
   layout?: AsideLayoutKey;
   /** Active type pack (`default` | `compact` | …). Structure lives in code type packs. */
   type?: AsideTypeKey;
+  /**
+   * Control width mode (`max` | `fill`) for all aside types. Omit → `max`.
+   * `fill` → controls stretch to the content track (`data-control-fit="fill"`).
+   * Tokens: `tokens/widgets/sidebar` — compact / non-compact blocks separately.
+   */
+  controlFit?: AsideControlFit;
   /**
    * Plugin adapter variants (`search`: `row` | `icon`).
    * Nested `types.<type>.blockVariants` overrides when present.

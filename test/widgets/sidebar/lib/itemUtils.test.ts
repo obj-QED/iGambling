@@ -7,6 +7,7 @@ import {
   isIconOnlyItem,
   isRenderableItem,
   resolveItemHref,
+  resolveItemNameInitial,
   shouldRenderMenuItem,
 } from '@/widgets/sidebar/lib';
 
@@ -44,6 +45,12 @@ describe('sidebar itemUtils visibility', () => {
 
   it('resolveItemHref does not rewrite relative paths', () => {
     expect(resolveItemHref('profile')).toBe('profile');
+  });
+
+  it('resolveItemNameInitial returns uppercased first glyph', () => {
+    expect(resolveItemNameInitial({ key: 'x', name: 'casino', url: '/' })).toBe('C');
+    expect(resolveItemNameInitial({ key: 'x', name: '  bets', url: '/' })).toBe('B');
+    expect(resolveItemNameInitial({ key: 'x', name: '', url: '/', img: '/a.webp' })).toBeNull();
   });
 });
 

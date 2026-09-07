@@ -32,6 +32,7 @@ export {
   menuItemKeyAttr,
   resolveItemHref,
   resolveItemLabel,
+  resolveItemNameInitial,
   shouldRenderMenuItem,
 } from './item';
 export {

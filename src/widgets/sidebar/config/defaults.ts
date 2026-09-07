@@ -16,6 +16,7 @@ export const DEFAULT_SIDEBAR_CONFIG: SidebarSchema = {
   version: 1,
   layout: 'container',
   type: 'default',
+  controlFit: 'max',
   blockVariants: {
     search: 'row',
     promo: 'row',

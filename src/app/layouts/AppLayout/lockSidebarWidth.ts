@@ -9,6 +9,11 @@ export function lockSidebarWidth(root: HTMLElement | null): void {
     return;
   }
 
+  // Slideout owns animated width — freezing would kill expand/collapse.
+  if (aside.getAttribute('data-type') === 'slideout') {
+    return;
+  }
+
   const width = aside.getBoundingClientRect().width;
   if (width <= 0) {
     return;

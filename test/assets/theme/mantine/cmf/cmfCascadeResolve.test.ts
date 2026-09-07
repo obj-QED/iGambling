@@ -47,6 +47,18 @@ describe('cmfCascadeResolve', () => {
     );
   });
 
+  it('sanitizes menu keys with spaces for valid CSS custom properties', () => {
+    const token = buildCmfActionIconPropToken('bg', 'transparent', {
+      scope: { component: 'sidebar-dropdown', key: 'instant game', role: 'child' },
+      variant: 'subtle',
+    });
+
+    expect(token).toBe(
+      'var(--cmf-action-icon-sidebar-dropdown-instant-game-bg, var(--cmf-action-icon-sidebar-dropdown-child-bg, var(--cmf-action-icon-sidebar-dropdown-bg, var(--cmf-action-icon-subtle-bg, var(--cmf-action-icon-sidebar-bg, transparent)))))',
+    );
+    expect(token).not.toContain('instant game');
+  });
+
   it('builds component → variant without key', () => {
     const token = buildCmfButtonPropToken('color', '#000', {
       scope: { component: 'sidebar' },
