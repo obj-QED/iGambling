@@ -129,7 +129,7 @@
     --aside-shell-align: center;
     --aside-shell-footer-padding: var(--mantine-spacing-xs);
     --aside-footer-gap: var(--mantine-spacing-xs);
-
+    --cmf-action-icon-sidebar-padding: var(--mantine-spacing-xs) 0;
     /* Same SoT as `.scroll` — must exist here for the size calc. */
     --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
 
