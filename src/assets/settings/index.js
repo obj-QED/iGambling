@@ -24,17 +24,26 @@
       },
       /**
        * Global Mantine Drawer defaults — any prop except opened/onClose/children.
+       * Cascade: `params.drawer` → place `defaults` (e.g. aside.drawer) → instance.
+       * Used by AppDrawer / DrawerWrapper (incl. Home demos).
        * @see https://mantine.dev/core/drawer/?t=props
-       * Paint tokens: `tokens/theme.scss` `--drawer-*`. Sidebar: data-cmf + layout tokens.
+       * Paint tokens: `tokens/theme.scss` `--cmf-drawer-*`. Sidebar: data-cmf + layout tokens.
        */
       drawer: {},
       /**
        * Global Mantine Popover defaults — any prop except opened/onChange/children.
+       * Cascade: `params.popover` → place `defaults` → instance.
        * @see https://mantine.dev/core/popover/?t=props
-       * Paint tokens: `tokens/theme.scss` `--popover-*` (dropdown/arrow).
-       * Also accepted per-instance on <PopoverWrapper … /> (instance wins).
+       * Paint tokens: `tokens/theme.scss` `--cmf-popover-*` (dropdown/arrow).
        */
       popover: {},
+
+      /**
+       * Global Mantine Menu defaults — any prop except opened/onChange/children.
+       * Cascade: `params.menu` → `header.menu` → DeepPanel product defaults.
+       * @see https://mantine.dev/core/menu/?t=props
+       */
+      menu: {},
     },
     header: {
       layout: 'container',
@@ -52,6 +61,12 @@
        * (e.g. search: compact|icon|input|modal, wallet: compact|full|drawer).
        * Unknown / omitted → `compact`.
        */
+
+      /**
+       * DeepPanel Menu — any Mantine Menu prop except opened/onChange/children.
+       * Wins over `params.menu`. @see https://mantine.dev/core/menu/?t=props
+       */
+      menu: {},
       blockVariants: {
         search: 'compact', // compact | icon | input | modal
         wallet: 'compact', // compact | full | drawer
@@ -87,12 +102,11 @@
 
     aside: {
       /** Shell width is fixed — do not pair a compact calc with `type: 'default'` (labels need room). */
-      type: 'compact', // 'default' | 'compact' | 'slideout'
+      type: 'default', // 'default' | 'compact' | 'slideout'
       /**
        * Control width: `max` (hug / capped) | `fill` (full track, flat).
        * Tokens: compact + non-compact `[data-control-fit]` blocks separately.
        */
-      controlFit: 'fill', // 'max' | 'fill'
       /**
        * slideout — logo-trigger toggles width (4s). During compress: ellipsis labels.
        * After width ends (`data-aside-slideout-settled`): square rail, name initial (no img),
@@ -116,8 +130,17 @@
        * Tooltip for aside (Mantine-compatible). Omit → pack default.
        * Cascade: pack → aside.tooltip → place override in AppTooltip.
        * Styles (CSS cascade on floating, tokens on :root):
-       * --tooltip-sidebar-{item|search}-max-width|bg|… → --tooltip-sidebar-* → --tooltip-*
+       * --cmf-tooltip-sidebar-{item|search}-max-width|bg|… → --cmf-tooltip-sidebar-* → --cmf-tooltip-*
        */
+
+      /**
+       * Aside AppDrawer — any Mantine Drawer prop except opened/onClose/children.
+       * Cascade: `params.drawer` → `aside.drawer` → AppLayoutChrome instance.
+       * Size omit → `var(--app-layout-sidebar-width)` (theme tokens).
+       * @see https://mantine.dev/core/drawer/?t=props
+       */
+      drawer: {},
+
       tooltip: {
         enabled: true,
         position: 'right',

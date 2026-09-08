@@ -9,13 +9,14 @@ import {
   type AsideScrollAreaOverscrollBehavior,
   type AsideScrollAreaSettings,
   type AsideSettings,
+  type DrawerSettings,
   getSettings,
   type HeaderCustomBlockConfig,
   type HeaderCustomBlockInput,
   type HeaderCustomBlockSettings,
   resolveCmfActiveConfig,
 } from '@/shared/config';
-import { pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
+import { isRecord, pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
 import { resolveTooltipConfig } from '@/shared/lib/tooltip';
 import {
@@ -137,6 +138,19 @@ function resolveScrollArea(
   };
 }
 
+const DRAWER_RUNTIME_STRIP = new Set(['opened', 'onClose', 'children']);
+
+/** Passthrough Mantine Drawer props from `aside.drawer` (strip runtime-owned keys). */
+function resolveDrawer(raw: unknown): DrawerSettings | undefined {
+  if (!isRecord(raw)) return undefined;
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(raw)) {
+    if (DRAWER_RUNTIME_STRIP.has(key)) continue;
+    out[key] = value;
+  }
+  return Object.keys(out).length > 0 ? (out as DrawerSettings) : undefined;
+}
+
 function resolveWrappers(
   raw: SidebarSchemaLayer['wrappers'] | undefined,
 ): SidebarSchema['wrappers'] {
@@ -245,6 +259,7 @@ function coerceSidebarSchema(
   settingsOverlay: {
     tooltip?: SidebarSchemaLayer['tooltip'];
     scrollArea?: SidebarSchemaLayer['scrollArea'];
+    drawer?: SidebarSchemaLayer['drawer'];
   },
   layers: SchemaLayers<SidebarSchemaLayer>,
 ): SidebarSchema {
@@ -252,6 +267,7 @@ function coerceSidebarSchema(
   const type = readSettingsKey(merged.type, DEFAULT_SIDEBAR_CONFIG.type);
   const packDefaults = resolveSidebarTypeTunableDefaults(type);
   const typeTunables = merged.types?.[type];
+  const drawer = resolveDrawer(settingsOverlay.drawer ?? merged.drawer);
 
   return {
     version: merged.version === 2 ? 2 : 1,
@@ -270,6 +286,7 @@ function coerceSidebarSchema(
     regions: resolveRegions(packDefaults.regions, typeTunables?.regions),
     scrollArea: resolveScrollArea(settingsOverlay.scrollArea, packDefaults.scrollArea),
     tooltip: resolveTooltipConfig(packDefaults.tooltip, settingsOverlay.tooltip),
+    ...(drawer ? { drawer } : {}),
     active: resolveCmfActiveConfig(merged.active, DEFAULT_SIDEBAR_CONFIG.active),
     wrappers: resolveWrappers(merged.wrappers),
     behavior: resolveBehavior(merged.behavior),
@@ -282,7 +299,7 @@ function coerceSidebarSchema(
 
 function pickLayerField<T>(
   layers: SchemaLayers<SidebarSchemaLayer>,
-  key: 'tooltip' | 'scrollArea',
+  key: 'tooltip' | 'scrollArea' | 'drawer',
 ): T | undefined {
   return (
     (layers.props?.[key] as T | undefined) ??
@@ -301,6 +318,10 @@ export function resolveSidebarSchema(layers: SchemaLayers<SidebarSchema> = {}): 
     scrollArea: pickLayerField<SidebarSchemaLayer['scrollArea']>(
       layers as SchemaLayers<SidebarSchemaLayer>,
       'scrollArea',
+    ),
+    drawer: pickLayerField<SidebarSchemaLayer['drawer']>(
+      layers as SchemaLayers<SidebarSchemaLayer>,
+      'drawer',
     ),
   };
 

@@ -73,7 +73,8 @@ export function parentCmfComponent(component: string): string | undefined {
   return component.slice(0, i);
 }
 
-type CmfControlName = 'button' | 'action-icon' | 'group' | 'modal' | 'text' | 'code';
+type CmfControlName =
+  'button' | 'action-icon' | 'group' | 'modal' | 'drawer' | 'popover' | 'text' | 'code';
 
 /**
  * CSS custom-property segment. Menu keys may contain spaces (`instant game`) —
@@ -139,19 +140,21 @@ function buildCmfControlPropToken(
     }
   } else if (tail === 'variant' && hasVariant) {
     names.push(cmfControlName(control, variant, prop));
-  } else if (tail === 'shared') {
-    if (includeVariantInShared === true && hasVariant) {
-      names.push(cmfControlName(control, variant, prop));
-    }
-    names.push(cmfControlName(control, prop));
-  }
-
-  // Parent widget AFTER variant/shared so `--cmf-button-sidebar-bg` cannot beat `white`/`gradient`.
-  if (hasComponent) {
+    // Parent AFTER variant so `--cmf-button-sidebar-bg` cannot beat `white`/`gradient`.
     const parent = parentCmfComponent(scope.component!);
     if (parent !== undefined) {
       names.push(cmfControlName(control, parent, prop));
     }
+  } else if (tail === 'shared') {
+    if (includeVariantInShared === true && hasVariant) {
+      names.push(cmfControlName(control, variant, prop));
+    }
+    // Parent BEFORE shared: widget (`--cmf-group-sidebar-*`) > `--cmf-group-*` > fallback.
+    const parent = parentCmfComponent(scope.component!);
+    if (parent !== undefined) {
+      names.push(cmfControlName(control, parent, prop));
+    }
+    names.push(cmfControlName(control, prop));
   }
 
   return nestCssVars(names, fallback);
@@ -182,7 +185,7 @@ export function buildCmfActionIconPropToken(
 
 /**
  * Group layout cascade (no variant/role):
- * key → component → shared `--cmf-group-{prop}` → fallback
+ * key → component → parent widget → shared `--cmf-group-{prop}` → fallback
  */
 export function buildCmfGroupPropToken(
   prop: string,
@@ -244,54 +247,80 @@ export function buildCmfCodePropToken(
 }
 
 /**
- * Drawer portal cascade (tokens on `:root`, prefix `--drawer-*` — not `--cmf-drawer-*`):
- * key → component → base `--drawer-{prop}` → fallback
+ * Drawer portal cascade (tokens on `:root`, prefix `--cmf-drawer-*`):
+ * key → component → base `--cmf-drawer-{prop}` → fallback
  *
- * Runtime paint uses private `--_cmf-drawer-*` so we never clobber `:root --drawer-bg`
- * (would cycle). Same nest as portal `:root --drawer-*` tokens.
+ * Runtime paint uses private `--_cmf-drawer-*` (leading `_`) so we never
+ * clobber `:root --cmf-drawer-bg` (would cycle). Mantine keeps `--drawer-size`.
  */
 export function buildDrawerPropToken(
   prop: string,
   fallback: string,
   options: Pick<BuildCmfPropTokenOptions, 'scope'> = {},
 ): string {
-  const names: string[] = [];
-  const scope = options.scope;
-  const hasComponent = scope?.component !== undefined;
-
-  if (hasComponent && scope.key !== undefined) {
-    names.push(`--drawer-${scope.component}-${scope.key}-${prop}`);
-  }
-  if (hasComponent) {
-    names.push(`--drawer-${scope.component}-${prop}`);
-  }
-  names.push(`--drawer-${prop}`);
-
-  return nestCssVars(names, fallback);
+  return buildCmfControlPropToken('drawer', prop, fallback, {
+    scope: options.scope,
+    tail: 'shared',
+  });
 }
 
+export type DrawerViewportSizeBand = 'mobile' | 'tablet' | 'laptop' | 'pc';
+
 /**
- * Popover portal cascade (tokens on `:root`, prefix `--popover-*`):
- * key → component → base `--popover-{prop}` → fallback
+ * Viewport drawer width nest. `@media` may set only `--cmf-drawer-{c}-{k}-size`
+ * (no `size-tablet`) — that must still win over base `--cmf-drawer-size-tablet`.
  *
- * Runtime paint uses private `--_cmf-popover-*` (no cycle with `:root`).
+ * Order:
+ *   1. `--cmf-drawer-{c}-{k}-size-{band}`
+ *   2. `--cmf-drawer-{c}-size-{band}`
+ *   3. `--cmf-drawer-{c}-{k}-size`          ← key size (media override)
+ *   4. `--cmf-drawer-{c}-size`
+ *   5. `--cmf-drawer-size-{band}`
+ *   6. `--cmf-drawer-size`
+ *   7. fallback
  */
-export function buildPopoverPropToken(
-  prop: string,
+export function buildDrawerViewportSizeToken(
+  band: DrawerViewportSizeBand,
   fallback: string,
   options: Pick<BuildCmfPropTokenOptions, 'scope'> = {},
 ): string {
   const names: string[] = [];
   const scope = options.scope;
   const hasComponent = scope?.component !== undefined;
+  const bandProp = `size-${band}`;
 
   if (hasComponent && scope.key !== undefined) {
-    names.push(`--popover-${scope.component}-${scope.key}-${prop}`);
+    names.push(cmfControlName('drawer', scope.component!, scope.key, bandProp));
   }
   if (hasComponent) {
-    names.push(`--popover-${scope.component}-${prop}`);
+    names.push(cmfControlName('drawer', scope.component!, bandProp));
   }
-  names.push(`--popover-${prop}`);
+  if (hasComponent && scope.key !== undefined) {
+    names.push(cmfControlName('drawer', scope.component!, scope.key, 'size'));
+  }
+  if (hasComponent) {
+    names.push(cmfControlName('drawer', scope.component!, 'size'));
+  }
+  names.push(cmfControlName('drawer', bandProp));
+  names.push(cmfControlName('drawer', 'size'));
 
   return nestCssVars(names, fallback);
+}
+
+/**
+ * Popover portal cascade (tokens on `:root`, prefix `--cmf-popover-*`):
+ * key → component → base `--cmf-popover-{prop}` → fallback
+ *
+ * Runtime paint uses private `--_cmf-popover-*` (no cycle with `:root`).
+ * Mantine keeps `--popover-radius` / `--popover-shadow` (cleared then nested).
+ */
+export function buildPopoverPropToken(
+  prop: string,
+  fallback: string,
+  options: Pick<BuildCmfPropTokenOptions, 'scope'> = {},
+): string {
+  return buildCmfControlPropToken('popover', prop, fallback, {
+    scope: options.scope,
+    tail: 'shared',
+  });
 }

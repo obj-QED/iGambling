@@ -3,13 +3,12 @@ import type { HeaderMenuItem } from '@/widgets/header';
 
 import { memo } from 'react';
 
-import { Group } from '@mantine/core';
 import { IconMenu2 } from '@tabler/icons-react';
 import clsx from 'clsx';
 
 import { useIsMobile } from '@hooks/useIsMobile';
 
-import { cmfControlAttrs, controlAttrs, resolveCmfScope } from '@/shared/lib';
+import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 import { AppActionIcon } from '@/shared/ui';
 import { AppLogo, AppTooltip } from '@/shared/ui';
 
@@ -68,7 +67,7 @@ function resolveTriggerItem(item: HeaderMenuItem): HeaderMenuItem {
 }
 
 /**
- * Two controls:
+ * Two controls (siblings for parent header `HeaderRow` Group — no nested Group):
  * - trigger when `menuIcon: true` — `data-cmf-key="logo-trigger"`
  * - mark when name and/or working img — `data-cmf-key="logo"`
  * Hide mark when no img (or onError) and no name.
@@ -147,6 +146,7 @@ function LogoComponent({ item, className }: BlockProps) {
       variant={variant}
       size={size}
       aria-label={ariaLabel}
+      className={className}
       {...logoAttrs}
     >
       <LogoMark
@@ -157,7 +157,14 @@ function LogoComponent({ item, className }: BlockProps) {
       />
     </AppActionIcon>
   ) : (
-    <AppLogo href={href} label={name} img={item.img} variant={variant} {...logoAttrs} />
+    <AppLogo
+      href={href}
+      label={name}
+      img={item.img}
+      variant={variant}
+      className={clsx(styles.markHost, className)}
+      {...logoAttrs}
+    />
   );
 
   const logoNode =
@@ -176,13 +183,10 @@ function LogoComponent({ item, className }: BlockProps) {
     );
 
   return (
-    <Group
-      className={clsx(styles.root, className)}
-      {...cmfControlAttrs({ component: 'sidebar-header', key: LOGO_CMF_KEY })}
-    >
+    <>
       {trigger}
       {logoNode}
-    </Group>
+    </>
   );
 }
 

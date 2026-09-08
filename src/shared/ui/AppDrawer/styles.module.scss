@@ -1,51 +1,115 @@
 /*
  * Layout only (size / inset / viewport). Paint: theme `resolveDrawerRootVars` +
- * `.drawerContent` / `.drawerHeader` / `.drawerBody` / `.drawerOverlay`.
+ * `.drawerContent` / parts in `components.module.scss`.
+ *
+ * Sidebar chrome (`data-cmf-component=layout` + `data-cmf-key=sidebar`):
+ *   width SoT = `:root` `--cmf-drawer-layout-sidebar-size` (+ optional `-size-{band}`).
+ *   Binds Mantine `--drawer-size` directly — `@media` on `:root` must win without JS nest.
+ *
+ * Size/width UNLAYERED — Mantine `flex: 0 0 var(--drawer-size)` is unlayered.
  */
-@layer components {
+
+.inner {
+  --drawer-align: stretch;
+  --drawer-height: 100%;
+  align-items: stretch;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+
+  --drawer-flex: 0 0 auto;
+
+  /* Inset must be a <length> (0px). Unitless `0` makes width calc invalid → shrink-wrap. */
+  --_drawer-inset: var(--_cmf-drawer-inset, var(--cmf-drawer-inset, 0px));
+  --_drawer-width: var(--_drawer-size, var(--_cmf-drawer-size, var(--cmf-drawer-size, auto)));
+  flex: 0 0 auto;
+  margin: var(--_drawer-inset);
+
   /*
-   * Mantine left/right Drawer defaults `--drawer-align: flex-start`, so the panel
-   * shrinks to content height. Stretch + height → full viewport shell.
+   * Inset in calc MUST be a length. Token `0` (unitless) invalidates
+   * `calc(100vw - 0 * 2)` → width ignored → shrink-wrap to aside (~15rem).
+   * Always write `0px` in theme; `+ 0px` hardens legacy unitless values.
    */
-  .inner {
-    --drawer-align: stretch;
-    --drawer-height: 100%;
-    align-items: stretch;
-  }
+  width: calc(var(--_drawer-width) - (var(--_drawer-inset) + 0px) * 2);
+  min-width: calc(var(--_drawer-width) - (var(--_drawer-inset) + 0px) * 2);
+  max-width: calc(100% - (var(--_drawer-inset) + 0px) * 2);
+  height: calc(var(--drawer-height, 100dvh) - var(--_drawer-inset) * 2);
+  max-height: calc(100dvh - var(--_drawer-inset) * 2);
+  min-height: 0;
+  overflow: hidden;
+}
 
-  .content {
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
+/* Generic drawers — JS nest `--_cmf-drawer-size-{band}`. */
+.content[data-viewport='mobile'] {
+  --_drawer-size: var(
+    --_cmf-drawer-size-mobile,
+    var(--_cmf-drawer-size, var(--cmf-drawer-size-mobile, var(--cmf-drawer-size, 100%)))
+  );
+}
 
-    --_drawer-width: var(--_drawer-size, var(--drawer-size, auto));
-    --_drawer-inset: var(--drawer-inset, 0px);
-    flex: 0 0 auto;
-    margin: var(--_drawer-inset);
-    width: calc(var(--_drawer-width) - var(--_drawer-inset) * 2);
-    max-width: calc(100% - var(--_drawer-inset) * 2);
-    height: calc(var(--drawer-height, 100dvh) - var(--_drawer-inset) * 2);
-    max-height: calc(100dvh - var(--_drawer-inset) * 2);
-    min-height: 0;
-    overflow: hidden;
-  }
+.content[data-viewport='tablet'] {
+  --_drawer-size: var(
+    --_cmf-drawer-size-tablet,
+    var(--_cmf-drawer-size, var(--cmf-drawer-size-tablet, var(--cmf-drawer-size, 35vw)))
+  );
+}
 
-  .content:where([data-viewport='mobile']) {
-    --_drawer-size: var(--drawer-size-mobile, var(--drawer-size, 100%));
-  }
+.content[data-viewport='laptop'] {
+  --_drawer-size: var(
+    --_cmf-drawer-size-laptop,
+    var(--_cmf-drawer-size, var(--cmf-drawer-size-laptop, var(--cmf-drawer-size, auto)))
+  );
+}
 
-  .content:where([data-viewport='tablet']) {
-    --_drawer-size: var(--drawer-size-tablet, var(--drawer-size, 35vw));
-  }
+.content[data-viewport='pc'] {
+  --_drawer-size: var(
+    --_cmf-drawer-size-pc,
+    var(--_cmf-drawer-size, var(--cmf-drawer-size-pc, var(--cmf-drawer-size, auto)))
+  );
+}
 
-  .content:where([data-viewport='laptop']) {
-    --_drawer-size: var(--drawer-size-laptop, var(--drawer-size, auto));
-  }
+/*
+ * Sidebar layout drawer — read CMF tokens on the panel (portal inherits `:root`).
+ * Do not route size through `--_cmf-drawer-size-*` here: feed Mantine `--drawer-size`
+ * so `flex: 0 0 var(--drawer-size)` and our width stay in sync with `@media`.
+ */
+.content[data-cmf-component='layout'][data-cmf-key='sidebar'] {
+  --drawer-size: var(--cmf-drawer-layout-sidebar-size, var(--app-layout-sidebar-width, 15rem));
+  --_drawer-width: var(--drawer-size);
+}
 
-  .content:where([data-viewport='pc']) {
-    --_drawer-size: var(--drawer-size-pc, var(--drawer-size, auto));
-  }
+.content[data-cmf-component='layout'][data-cmf-key='sidebar'][data-viewport='mobile'] {
+  --drawer-size: var(
+    --cmf-drawer-layout-sidebar-size-mobile,
+    var(--cmf-drawer-layout-sidebar-size, var(--cmf-drawer-size-mobile, 100%))
+  );
+}
 
+.content[data-cmf-component='layout'][data-cmf-key='sidebar'][data-viewport='tablet'] {
+  --drawer-size: var(
+    --cmf-drawer-layout-sidebar-size-tablet,
+    var(--cmf-drawer-layout-sidebar-size, var(--cmf-drawer-size-tablet, 35vw))
+  );
+}
+
+.content[data-cmf-component='layout'][data-cmf-key='sidebar'][data-viewport='laptop'] {
+  --drawer-size: var(
+    --cmf-drawer-layout-sidebar-size-laptop,
+    var(--cmf-drawer-layout-sidebar-size, var(--cmf-drawer-size-laptop, auto))
+  );
+}
+
+.content[data-cmf-component='layout'][data-cmf-key='sidebar'][data-viewport='pc'] {
+  --drawer-size: var(
+    --cmf-drawer-layout-sidebar-size-pc,
+    var(--cmf-drawer-layout-sidebar-size, var(--cmf-drawer-size-pc, auto))
+  );
+}
+
+@layer components {
   .body {
     display: flex;
     flex: 1 1 auto;

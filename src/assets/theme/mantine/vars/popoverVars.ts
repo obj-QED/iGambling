@@ -35,7 +35,7 @@ function resolvePopoverShadowProp(shadow: unknown): string {
 
 /**
  * Private paint vars for Popover dropdown / arrow / overlay.
- * Must not write bare `--popover-bg` on the panel (cycle with `:root`).
+ * Must not write bare `--cmf-popover-bg` on the panel (cycle with `:root`).
  * Honors Mantine `radius` / `shadow` props as last-resort fallbacks (settings / instance).
  */
 export function resolvePopoverDropdownVars(props: Record<string, unknown>): Record<string, string> {
@@ -57,7 +57,7 @@ export function resolvePopoverDropdownVars(props: Record<string, unknown>): Reco
     '--_cmf-popover-bd': t('bd', '1px solid var(--color-border, transparent)'),
     '--_cmf-popover-arrow-bg': t(
       'arrow-bg',
-      'var(--_cmf-popover-bg, var(--popover-bg, var(--mantine-color-body)))',
+      'var(--_cmf-popover-bg, var(--cmf-popover-bg, var(--mantine-color-body)))',
     ),
   };
 }

@@ -1,9 +1,13 @@
-import type { OverlayTargetProps } from '../types';
+import type { DrawerWrapperProps } from '../types';
 
 import { Children, cloneElement, isValidElement, memo, useState } from 'react';
 
 import { AppDrawer } from '@/shared/ui/AppDrawer';
 
+/**
+ * Trigger + AppDrawer. Cascade: `params.drawer` → `defaults` (place) → instance props.
+ * @see https://mantine.dev/core/drawer/?t=props
+ */
 function DrawerWrapperComponent({
   target,
   children,
@@ -11,10 +15,13 @@ function DrawerWrapperComponent({
   onClose,
   title,
   className,
+  defaults: placeDefaults,
+  portalTarget: _portalTarget,
   'data-cmf-component': dataCmfComponent,
   'data-cmf-key': dataCmfKey,
   'data-cmf-role': dataCmfRole,
-}: OverlayTargetProps) {
+  ...drawerProps
+}: DrawerWrapperProps) {
   const [uncontrolled, setUncontrolled] = useState(false);
   const controlled = openedProp !== undefined;
   const opened = controlled ? openedProp : uncontrolled;
@@ -55,9 +62,10 @@ function DrawerWrapperComponent({
       <AppDrawer
         opened={opened}
         onClose={close}
+        defaults={placeDefaults}
         title={title}
-        position="right"
         className={className}
+        {...drawerProps}
         {...cmfAttrs}
       >
         {children}

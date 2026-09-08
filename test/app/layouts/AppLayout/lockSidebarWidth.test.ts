@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { lockSidebarWidth } from '@/app/layouts/AppLayout/lockSidebarWidth';
+import { lockSidebarWidth, unlockSidebarWidth } from '@/app/layouts/AppLayout/lockSidebarWidth';
 
 describe('lockSidebarWidth', () => {
-  it('writes a used-width lock onto the sidebar once', () => {
+  it('writes a used-width lock onto the sidebar CSS token once', () => {
     const root = document.createElement('div');
     const aside = document.createElement('aside');
     aside.setAttribute('data-widget', 'sidebar');
@@ -16,9 +16,10 @@ describe('lockSidebarWidth', () => {
     lockSidebarWidth(root);
 
     expect(aside.dataset.shellBoxLock).toBe('true');
-    expect(aside.style.width).toBe('240px');
-    expect(aside.style.minWidth).toBe('240px');
-    expect(aside.style.maxWidth).toBe('240px');
+    expect(aside.style.getPropertyValue('--app-layout-sidebar-width')).toBe('240px');
+    expect(aside.style.width).toBe('');
+    expect(aside.style.minWidth).toBe('');
+    expect(aside.style.maxWidth).toBe('');
   });
 
   it('skips when the sidebar has no used width', () => {
@@ -30,7 +31,7 @@ describe('lockSidebarWidth', () => {
     lockSidebarWidth(root);
 
     expect(aside.dataset.shellBoxLock).toBeUndefined();
-    expect(aside.style.width).toBe('');
+    expect(aside.style.getPropertyValue('--app-layout-sidebar-width')).toBe('');
   });
 
   it('skips slideout so width can animate', () => {
@@ -46,6 +47,26 @@ describe('lockSidebarWidth', () => {
     lockSidebarWidth(root);
 
     expect(aside.dataset.shellBoxLock).toBeUndefined();
+    expect(aside.style.getPropertyValue('--app-layout-sidebar-width')).toBe('');
+  });
+
+  it('unlock clears the token freeze and legacy px locks', () => {
+    const root = document.createElement('div');
+    const aside = document.createElement('aside');
+    aside.setAttribute('data-widget', 'sidebar');
+    aside.dataset.shellBoxLock = 'true';
+    aside.style.setProperty('--app-layout-sidebar-width', '240px');
+    aside.style.width = '240px';
+    aside.style.minWidth = '240px';
+    aside.style.maxWidth = '240px';
+    root.append(aside);
+
+    unlockSidebarWidth(root);
+
+    expect(aside.dataset.shellBoxLock).toBeUndefined();
+    expect(aside.style.getPropertyValue('--app-layout-sidebar-width')).toBe('');
     expect(aside.style.width).toBe('');
+    expect(aside.style.minWidth).toBe('');
+    expect(aside.style.maxWidth).toBe('');
   });
 });

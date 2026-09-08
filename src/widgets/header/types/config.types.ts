@@ -5,6 +5,7 @@ import type {
   HeaderLayoutKey,
   HeaderTypeKey,
 } from '@/shared/config/headerSettings';
+import type { MenuSettings } from '@/shared/config/overlaySettings';
 import type { TooltipConfig } from '@/shared/config/tooltipSettings';
 import type { SchemaVersion, WrapperMode } from '@/shared/schema';
 
@@ -34,6 +35,11 @@ export type HeaderSchema = {
   capabilities: HeaderCapabilitiesConfig;
   customBlocks?: HeaderCustomBlockConfig[];
   tooltip: TooltipConfig;
+  /**
+   * DeepPanel Menu defaults — `params.menu` → `header.menu` → instance.
+   * @see https://mantine.dev/core/menu/?t=props
+   */
+  menu?: MenuSettings;
   /** Active route chrome — `line` mounts DOM bar; `element` uses CSS `::after`. */
   active: CmfActiveConfig;
 };

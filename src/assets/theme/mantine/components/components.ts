@@ -278,11 +278,12 @@ export const themeComponents: MantineThemeComponents = {
   }),
 
   /**
-   * Drawer — always theme paint bridge (default `:root --drawer-*`).
-   * With `data-cmf-*`: key → component → `--drawer-*` (portal SoT).
+   * Drawer — always theme paint bridge (default `:root --cmf-drawer-*`).
+   * With `data-cmf-*`: key → component → `--cmf-drawer-*` (portal SoT).
    * Parts: content | header | title | close | body | overlay.
    * Behavior defaults: `params.drawer` (`getDrawerDefaultProps`).
    * AppDrawer compound also applies vars + classNames in JS.
+   * Mantine engine keeps `--drawer-size` / `--drawer-flex`.
    */
   Drawer: Drawer.extend({
     defaultProps: getDrawerDefaultProps(),
@@ -305,10 +306,11 @@ export const themeComponents: MantineThemeComponents = {
   }),
 
   /**
-   * Popover — always theme paint bridge (default `:root --popover-*`).
-   * With `data-cmf-*`: key → component → `--popover-*`.
+   * Popover — always theme paint bridge (default `:root --cmf-popover-*`).
+   * With `data-cmf-*`: key → component → `--cmf-popover-*`.
    * Parts: dropdown | arrow | overlay. Behavior: `params.popover`.
    * DeepPanel may override paint via widget-layer classNames (wins over mantine-rebase).
+   * Mantine engine keeps `--popover-radius` / `--popover-shadow`.
    */
   Popover: Popover.extend({
     defaultProps: getPopoverDefaultProps(),

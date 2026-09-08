@@ -1,5 +1,5 @@
 import type { AppDrawerProps, AppDrawerViewport } from './types/props.types';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, CSSProperties } from 'react';
 
 import { memo, useEffect, useMemo, useState } from 'react';
 
@@ -13,6 +13,34 @@ import { getDrawerDefaultProps, mergeOverlayDefaultProps } from '@/shared/config
 import { readAppDrawerViewport } from './lib/resolveAppDrawerViewport';
 
 import styles from './styles.module.scss';
+
+const DRAWER_RUNTIME_KEYS = new Set([
+  'opened',
+  'onClose',
+  'children',
+  'title',
+  'className',
+  'classNames',
+  'defaults',
+  'viewport',
+  'data-cmf-component',
+  'data-cmf-key',
+  'data-cmf-role',
+]);
+
+const HANDLED_MERGED_KEYS = new Set([
+  'position',
+  'size',
+  'withCloseButton',
+  'keepMounted',
+  'offset',
+  'radius',
+  'zIndex',
+  'transitionProps',
+  'removeScrollProps',
+  'closeButtonProps',
+  'overlayProps',
+]);
 
 function useDrawerViewport(override: AppDrawerViewport | undefined): AppDrawerViewport {
   const [viewport, setViewport] = useState(readAppDrawerViewport);
@@ -44,30 +72,44 @@ function AppDrawerComponent({
   position,
   size,
   withCloseButton,
-  keepMounted = false,
+  keepMounted,
+  defaults: defaultsProp,
   viewport: viewportProp,
   className,
   classNames,
   'data-cmf-component': dataCmfComponent,
   'data-cmf-key': dataCmfKey,
   'data-cmf-role': dataCmfRole,
+  ...rest
 }: AppDrawerProps) {
   const viewport = useDrawerViewport(viewportProp);
-  const defaults = getDrawerDefaultProps();
+  const globalDefaults = getDrawerDefaultProps();
 
   const merged = mergeOverlayDefaultProps(
-    defaults as Record<string, unknown>,
+    mergeOverlayDefaultProps(
+      globalDefaults as Record<string, unknown>,
+      (defaultsProp ?? {}) as Record<string, unknown>,
+    ),
     {
+      ...rest,
       ...(position !== undefined ? { position } : {}),
       ...(size !== undefined ? { size } : {}),
       ...(withCloseButton !== undefined ? { withCloseButton } : {}),
+      ...(keepMounted !== undefined ? { keepMounted } : {}),
+      ...(title !== undefined ? { title } : {}),
     } as Record<string, unknown>,
   );
 
   const resolvedPosition = (merged.position as AppDrawerProps['position']) ?? 'right';
-  const resolvedSize = merged.size as AppDrawerProps['size'];
+  /**
+   * Omit `size` unless settings/instance set it — otherwise Mantine paints
+   * `--drawer-size-md`. Width then comes from AppDrawer SCSS + theme tokens.
+   */
+  const resolvedSize = merged.size as AppDrawerProps['size'] | undefined;
   const resolvedWithClose =
     typeof merged.withCloseButton === 'boolean' ? merged.withCloseButton : true;
+  const resolvedKeepMounted = typeof merged.keepMounted === 'boolean' ? merged.keepMounted : false;
+  const resolvedTitle = title !== undefined ? title : (merged.title as AppDrawerProps['title']);
   const closeButtonProps = merged.closeButtonProps as
     ComponentProps<typeof Drawer.CloseButton> | undefined;
   const overlayProps = merged.overlayProps as Record<string, unknown> | undefined;
@@ -80,22 +122,22 @@ function AppDrawerComponent({
     'var(--drawer-z-index, var(--z-index-modal, 500))';
 
   const showHeader =
-    (title !== undefined && title !== null && title !== false) || resolvedWithClose;
+    (resolvedTitle !== undefined && resolvedTitle !== null && resolvedTitle !== false) ||
+    resolvedWithClose;
 
-  const panelAttrs = {
-    'data-viewport': viewport,
+  const cmfAttrs = {
     ...(dataCmfComponent ? { 'data-cmf-component': dataCmfComponent } : {}),
     ...(dataCmfKey ? { 'data-cmf-key': dataCmfKey } : {}),
     ...(dataCmfRole ? { 'data-cmf-role': dataCmfRole } : {}),
   };
 
+  const panelAttrs = {
+    'data-viewport': viewport,
+    ...cmfAttrs,
+  };
+
   const drawerVars = useMemo(
-    () =>
-      resolveDrawerRootVars({
-        ...(dataCmfComponent ? { 'data-cmf-component': dataCmfComponent } : {}),
-        ...(dataCmfKey ? { 'data-cmf-key': dataCmfKey } : {}),
-        ...(dataCmfRole ? { 'data-cmf-role': dataCmfRole } : {}),
-      }),
+    () => resolveDrawerRootVars(cmfAttrs) as CSSProperties,
     [dataCmfComponent, dataCmfKey, dataCmfRole],
   );
 
@@ -108,18 +150,27 @@ function AppDrawerComponent({
   const bodyClass = clsx(styles.body, themeClasses.drawerBody, classNames?.body) || undefined;
   const overlayClass = clsx(themeClasses.drawerOverlay, classNames?.overlay);
 
+  const forwardedRootProps: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(merged)) {
+    if (DRAWER_RUNTIME_KEYS.has(key) || HANDLED_MERGED_KEYS.has(key)) continue;
+    forwardedRootProps[key] = value;
+  }
+
   return (
     <Drawer.Root
       opened={opened}
       onClose={onClose}
       position={resolvedPosition}
-      size={resolvedSize}
+      {...(resolvedSize !== undefined ? { size: resolvedSize } : {})}
       offset={offset}
       radius={radius}
-      keepMounted={keepMounted}
+      keepMounted={resolvedKeepMounted}
       zIndex={zIndex}
       transitionProps={transitionProps}
       removeScrollProps={removeScrollProps}
+      /* Root gets cmf + vars so Drawer.extend varsResolver nests key tokens. */
+      style={drawerVars}
+      {...cmfAttrs}
       classNames={{
         content: contentClass,
         header: headerClass,
@@ -128,6 +179,7 @@ function AppDrawerComponent({
         body: bodyClass,
         overlay: overlayClass,
       }}
+      {...forwardedRootProps}
     >
       {/* Overlay is a sibling of Content — same data-* + paint vars for scrim. */}
       <Drawer.Overlay
@@ -146,8 +198,8 @@ function AppDrawerComponent({
       >
         {showHeader && (
           <Drawer.Header className={headerClass}>
-            {title !== undefined && title !== null && title !== false && (
-              <Drawer.Title className={titleClass}>{title}</Drawer.Title>
+            {resolvedTitle !== undefined && resolvedTitle !== null && resolvedTitle !== false && (
+              <Drawer.Title className={titleClass}>{resolvedTitle}</Drawer.Title>
             )}
             {resolvedWithClose && (
               <Drawer.CloseButton className={closeClass} {...closeButtonProps} />

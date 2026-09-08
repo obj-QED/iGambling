@@ -1,14 +1,27 @@
 import type { CmfScope } from '../cmf/cmfCascadeResolve';
 
-import { buildDrawerPropToken, resolveCmfScope } from '../cmf/cmfCascadeResolve';
+import {
+  buildDrawerPropToken,
+  buildDrawerViewportSizeToken,
+  resolveCmfScope,
+} from '../cmf/cmfCascadeResolve';
 
 /**
- * Private paint vars for Drawer panel / parts / overlay.
- * Must not write `--drawer-bg` on the panel (cycle with `:root` aliases).
+ * Private paint + layout vars for Drawer panel / parts / overlay.
+ * Must not write `--cmf-drawer-bg` / `--cmf-drawer-size` on the panel (cycle with `:root`).
+ *
+ * Nest (with `data-cmf-component` + `data-cmf-key`):
+ *   `--drawer-{component}-{key}-{prop}` → `--drawer-{component}-{prop}` → `--drawer-{prop}`
+ *
+ * Viewport size (`size-mobile|tablet|…`): key `size-{band}` → key `size` → base
+ * `size-{band}` → `--cmf-drawer-size`. So `@media { --cmf-drawer-layout-sidebar-size }`
+ * wins without requiring `--cmf-drawer-layout-sidebar-size-tablet`.
  */
 export function resolveDrawerRootVars(props: Record<string, unknown>): Record<string, string> {
   const scope: CmfScope = resolveCmfScope(props);
   const t = (prop: string, fallback: string) => buildDrawerPropToken(prop, fallback, { scope });
+  const tv = (band: 'mobile' | 'tablet' | 'laptop' | 'pc', fallback: string) =>
+    buildDrawerViewportSizeToken(band, fallback, { scope });
 
   return {
     '--_cmf-drawer-bg': t(
@@ -20,6 +33,14 @@ export function resolveDrawerRootVars(props: Record<string, unknown>): Record<st
     '--_cmf-drawer-padding': t('padding', 'var(--mantine-spacing-md)'),
     '--_cmf-drawer-shadow': t('shadow', 'var(--mantine-shadow-xs)'),
     '--_cmf-drawer-offset': t('offset', '0'),
+    '--_cmf-drawer-inset': t('inset', '0px'),
+
+    /* Size — key layer e.g. `--cmf-drawer-layout-sidebar-size` wins over `--cmf-drawer-size`. */
+    '--_cmf-drawer-size': t('size', 'auto'),
+    '--_cmf-drawer-size-mobile': tv('mobile', '100%'),
+    '--_cmf-drawer-size-tablet': tv('tablet', '35vw'),
+    '--_cmf-drawer-size-laptop': tv('laptop', 'auto'),
+    '--_cmf-drawer-size-pc': tv('pc', 'auto'),
 
     '--_cmf-drawer-header-padding': t(
       'header-padding',

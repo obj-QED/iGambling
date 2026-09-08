@@ -13,17 +13,19 @@
  *   (not API `aside_header_logo*`)
  * Cascade engine: mantine/cmf/cmfCascadeResolve.ts (clear → nestCssVars)
  * Guide: mantine/cmf/CASCADE.md
- * Tooltip tokens live on :root in tokens/theme.scss (portal).
+ *
+ * Portal overlays (Drawer / Tooltip / Popover / Modal) — tokens on `:root` in
+ * `tokens/theme.scss` only. Vars on this host never reach portaled panels.
  */
 
 @use 'assets/theme/breakpoints' as *;
 
 @mixin sidebar-root-tokens {
   --app-layout-sidebar-width: 15rem;
-  --aside-shell-bg: light-dark(var(--mantine-color-gray-1), var(--mantine-color-gray-4));
+  --aside-shell-bg: light-dark(var(--mantine-color-gray-1), #000);
   --aside-shell-border-color: #111;
-  --aside-footer-border-color: red;
-  --aside-header-border-color: red;
+  --aside-footer-border-color: #111;
+  --aside-header-border-color: #111;
   --cmf-button-sidebar-bd-width: 10px;
 
   /* Header region chrome */
@@ -31,7 +33,7 @@
   --aside-header-gap: var(--spacing-xs, 0.375rem);
   --aside-header-color: inherit;
   --aside-header-avatar-size: 1.5rem;
-  --cmf-button-sidebar-header-logo-bg: light-dark(var(#111), transparent);
+  --cmf-button-sidebar-header-logo-bg: light-dark(#111, transparent);
 
   /* Optional chrome overrides (omit → inherit `--cmf-*-sidebar-active-*`). */
   --cmf-button-sidebar-header-padding-x: 0;
@@ -91,10 +93,6 @@
     100% + 2 * var(--cmf-action-icon-sidebar-bd-width, 0px)
   );
 
-  --tooltip-sidebar-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-7));
-  --tooltip-sidebar-color: var(--mantine-color-white);
-  --tooltip-sidebar-radius: var(--mantine-radius-default);
-  --tooltip-sidebar-max-width: 10rem;
   --cmf-action-icon-sidebar-header-drawer-close-icon-scale: 1;
   --cmf-action-icon-sidebar-header-drawer-close-icon-bg: transparent;
   --cmf-action-icon-sidebar-header-drawer-close-color: light-dark(
@@ -130,6 +128,7 @@
     --aside-shell-footer-padding: var(--mantine-spacing-xs);
     --aside-footer-gap: var(--mantine-spacing-xs);
     --cmf-action-icon-sidebar-padding: var(--mantine-spacing-xs) 0;
+
     /* Same SoT as `.scroll` — must exist here for the size calc. */
     --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
 
@@ -149,8 +148,13 @@
     }
   }
 
+  @media (max-width: $laptop) {
+    --app-layout-sidebar-width: 25vw;
+  }
+
   @media (max-width: $tablet) {
     --cmf-button-sidebar-header-logo-padding-x: 10px;
     --aside-shell-padding: 10px;
+    --aside-shell-bg: #1a1a1a;
   }
 }

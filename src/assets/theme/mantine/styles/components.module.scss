@@ -107,19 +107,19 @@
    * Parts: content | header | title | close | body | overlay (Styles API).
    */
   .drawerContent {
-    background: var(--_cmf-drawer-bg, var(--drawer-bg));
-    color: var(--_cmf-drawer-color, var(--drawer-color));
-    border-radius: var(--_cmf-drawer-radius, var(--drawer-radius, 0));
-    box-shadow: var(--_cmf-drawer-shadow, var(--drawer-shadow, var(--mantine-shadow-xs)));
+    background: var(--_cmf-drawer-bg, var(--cmf-drawer-bg));
+    color: var(--_cmf-drawer-color, var(--cmf-drawer-color));
+    border-radius: var(--_cmf-drawer-radius, var(--cmf-drawer-radius, 0));
+    box-shadow: var(--_cmf-drawer-shadow, var(--cmf-drawer-shadow, var(--mantine-shadow-xs)));
   }
 
   .drawerHeader {
     /* Override Mantine ModalBase sticky header (`background: var(--mantine-color-body)`). */
-    background: var(--_cmf-drawer-bg, var(--drawer-bg, var(--mantine-color-body)));
-    color: var(--_cmf-drawer-color, var(--drawer-color, var(--mantine-color-text)));
+    background: var(--_cmf-drawer-bg, var(--cmf-drawer-bg, var(--mantine-color-body)));
+    color: var(--_cmf-drawer-color, var(--cmf-drawer-color, var(--mantine-color-text)));
     padding: var(
       --_cmf-drawer-header-padding,
-      var(--_cmf-drawer-padding, var(--drawer-padding, var(--mantine-spacing-md)))
+      var(--_cmf-drawer-padding, var(--cmf-drawer-padding, var(--mantine-spacing-md)))
     );
     min-height: var(--_cmf-drawer-header-min-height, calc(3.75rem * var(--mantine-scale)));
   }
@@ -144,18 +144,20 @@
   }
 
   .drawerBody {
-    padding: var(--_cmf-drawer-padding, var(--drawer-padding, var(--mantine-spacing-md)));
+    padding: var(--_cmf-drawer-padding, var(--cmf-drawer-padding, var(--mantine-spacing-md)));
   }
 
   .drawerOverlay {
     --overlay-bg: rgb(
-      0 0 0 / var(--_cmf-drawer-overlay-opacity, var(--drawer-overlay-opacity, 0.35))
+      0 0 0 / var(--_cmf-drawer-overlay-opacity, var(--cmf-drawer-overlay-opacity, 0.35))
     );
     background: rgb(
-      0 0 0 / var(--_cmf-drawer-overlay-opacity, var(--drawer-overlay-opacity, 0.35))
+      0 0 0 / var(--_cmf-drawer-overlay-opacity, var(--cmf-drawer-overlay-opacity, 0.35))
     );
-    -webkit-backdrop-filter: blur(var(--_cmf-drawer-overlay-blur, var(--drawer-overlay-blur, 4px)));
-    backdrop-filter: blur(var(--_cmf-drawer-overlay-blur, var(--drawer-overlay-blur, 4px)));
+    -webkit-backdrop-filter: blur(
+      var(--_cmf-drawer-overlay-blur, var(--cmf-drawer-overlay-blur, 4px))
+    );
+    backdrop-filter: blur(var(--_cmf-drawer-overlay-blur, var(--cmf-drawer-overlay-blur, 4px)));
   }
 
   /*
@@ -163,20 +165,29 @@
    * Private `--_cmf-popover-*` (no cycle). Widget DeepPanel may override in widget layer.
    */
   .popoverDropdown {
-    background: var(--_cmf-popover-bg, var(--popover-bg, var(--mantine-color-body)));
-    color: var(--_cmf-popover-color, var(--popover-color, var(--mantine-color-text)));
-    border-radius: var(--_cmf-popover-radius, var(--popover-radius, var(--mantine-radius-default)));
-    box-shadow: var(--_cmf-popover-shadow, var(--popover-shadow, var(--mantine-shadow-xs)));
-    padding: var(--_cmf-popover-padding, var(--popover-padding, var(--mantine-spacing-sm)));
-    border: var(--_cmf-popover-bd, var(--popover-bd, 1px solid var(--color-border, transparent)));
+    background: var(--_cmf-popover-bg, var(--cmf-popover-bg, var(--mantine-color-body)));
+    color: var(--_cmf-popover-color, var(--cmf-popover-color, var(--mantine-color-text)));
+    border-radius: var(
+      --_cmf-popover-radius,
+      var(--cmf-popover-radius, var(--mantine-radius-default))
+    );
+    box-shadow: var(--_cmf-popover-shadow, var(--cmf-popover-shadow, var(--mantine-shadow-xs)));
+    padding: var(--_cmf-popover-padding, var(--cmf-popover-padding, var(--mantine-spacing-sm)));
+    border: var(
+      --_cmf-popover-bd,
+      var(--cmf-popover-bd, 1px solid var(--color-border, transparent))
+    );
   }
 
   .popoverArrow {
     background: var(
       --_cmf-popover-arrow-bg,
-      var(--_cmf-popover-bg, var(--popover-bg, var(--mantine-color-body)))
+      var(--_cmf-popover-bg, var(--cmf-popover-bg, var(--mantine-color-body)))
     );
-    border: var(--_cmf-popover-bd, var(--popover-bd, 1px solid var(--color-border, transparent)));
+    border: var(
+      --_cmf-popover-bd,
+      var(--cmf-popover-bd, 1px solid var(--color-border, transparent))
+    );
   }
 
   .popoverOverlay {
@@ -270,6 +281,7 @@
     display: inline-flex;
     align-items: var(--button-align, center);
     justify-content: var(--button-justify, center);
+    transition: all 0.2s ease-in-out;
 
     &:where([data-block]) {
       display: flex;

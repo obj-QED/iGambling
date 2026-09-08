@@ -1,4 +1,5 @@
 import type { BreakpointName } from '@/assets/theme/breakpoints';
+import type { DrawerSettings } from '@/shared/config';
 import type { CmfControlAttrs } from '@/shared/lib/cmf/types/scopeAttrs.types';
 import type { DrawerProps } from '@mantine/core';
 import type { ReactNode } from 'react';
@@ -27,13 +28,19 @@ export type AppDrawerProps = {
   title?: ReactNode;
   position?: DrawerProps['position'];
   /**
-   * Optional explicit Mantine size. Prefer theme tokens + `data-viewport`
-   * (`--drawer-layout-sidebar-size` / `-mobile`) when omitted.
+   * Optional explicit Mantine size. When omitted, theme/CSS owns width
+   * (`--cmf-drawer-layout-sidebar-size` → `--app-layout-sidebar-width`).
+   * Sidebar chrome passes a CSS `var(...)` so Mantine does not fall back to `--drawer-size-md`.
    */
   size?: DrawerProps['size'];
   withCloseButton?: boolean;
   /** Keep panel mounted while closed (warm lazy adapters; avoid remount flash). */
   keepMounted?: boolean;
+  /**
+   * Widget / place defaults (e.g. `aside.drawer`). Cascade:
+   * `params.drawer` → `defaults` → instance props.
+   */
+  defaults?: DrawerSettings;
   /**
    * Override auto viewport from theme `--breakpoint-*` / `BREAKPOINTS_PX`.
    * Written as `data-viewport` for CSS token selection.
@@ -41,4 +48,5 @@ export type AppDrawerProps = {
   viewport?: AppDrawerViewport;
   className?: string;
   classNames?: AppDrawerClassNames;
-} & CmfControlAttrs;
+} & CmfControlAttrs &
+  Omit<DrawerSettings, 'title' | 'classNames' | 'className'>;

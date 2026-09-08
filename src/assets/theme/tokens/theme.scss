@@ -1,5 +1,6 @@
 /* Design tokens — structural SoT + brand palettes / gradients + widget scopes. */
 
+@use 'assets/theme/breakpoints' as *;
 @use 'assets/theme/mantine/brand/brand-palette' as brand;
 @use 'assets/theme/tokens/widgets/header/tokens' as header;
 @use 'assets/theme/tokens/widgets/sidebar/tokens' as sidebar;
@@ -76,63 +77,74 @@
     --cmf-scrollbar-radius: 999px;
 
     /*
-     * Tooltip SoT on :root (portaled floating inherits from html).
-     * Edit here — cascade: key → component → base. Guide: mantine/cmf/CASCADE.md
-     *   --tooltip-{header|sidebar}-{key}-{bg|color|radius|max-width}
-     *   --tooltip-{header|sidebar}-{bg|color|radius|max-width}
-     *   --tooltip-{bg|color|radius|max-width}
+     * Tooltip SoT on :root (portaled). Cascade: key → component → base.
+     *   --cmf-tooltip-{header|sidebar}-{key}-{prop} → --cmf-tooltip-{comp}-{prop} → --cmf-tooltip-{prop}
+     * Paint resolves onto Mantine `--tooltip-*` via AppTooltip cascade mixin.
+     * Do NOT set these on `[data-widget=sidebar]` — portal never sees it.
      */
-    --tooltip-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-9));
-    --tooltip-color: light-dark(var(--mantine-color-white), var(--mantine-color-white));
-    --tooltip-radius: var(--mantine-radius-default);
-    --tooltip-max-width: 16rem;
+    --cmf-tooltip-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-9));
+    --cmf-tooltip-color: light-dark(var(--mantine-color-white), var(--mantine-color-white));
+    --cmf-tooltip-radius: var(--mantine-radius-default);
+    --cmf-tooltip-max-width: 16rem;
+    --cmf-tooltip-sidebar-bg: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-7));
+    --cmf-tooltip-sidebar-color: var(--mantine-color-white);
+    --cmf-tooltip-sidebar-radius: var(--mantine-radius-default);
+    --cmf-tooltip-sidebar-max-width: 10rem;
 
     /*
-     * Popover SoT on :root (portaled dropdown inherits from html).
-     * Cascade via `themeComponents` Popover + `buildPopoverPropToken`:
-     *   --popover-{component}-{key}-{bg|color|radius|shadow|padding|bd|arrow-bg}
-     *   --popover-{component}-{…}
-     *   --popover-{…}
-     * Guide: mantine/cmf/CASCADE.md
+     * Popover SoT on :root (portaled). Cascade: key → component → base.
+     *   --cmf-popover-{component}-{key}-{prop} → --cmf-popover-{component}-{prop} → --cmf-popover-{prop}
+     * Runtime paint: private `--_cmf-popover-*`.
      */
-    --popover-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-7));
-    --popover-color: var(--mantine-color-text);
-    --popover-radius: var(--mantine-radius-default);
-    --popover-padding: var(--mantine-spacing-sm);
-    --popover-bd: 1px solid var(--color-border, transparent);
-    --popover-arrow-bg: var(--popover-bg);
+    --cmf-popover-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-7));
+    --cmf-popover-color: var(--mantine-color-text);
+    --cmf-popover-radius: var(--mantine-radius-default);
+    --cmf-popover-padding: var(--mantine-spacing-sm);
+    --cmf-popover-bd: 1px solid var(--color-border, transparent);
+    --cmf-popover-arrow-bg: var(--cmf-popover-bg);
 
     /*
-     * Drawer SoT on :root (portaled panel inherits from html).
-     * Cascade: key → component → base. Guide: mantine/cmf/CASCADE.md
-     *
-     * Size: `--drawer-size` / `--drawer-size-{mobile|tablet|laptop|pc}`
-     * Float gap (optional): `--drawer-inset` (AppDrawer margin; default 0)
-     *
-     * Viewport / instance overrides → attribute selectors BELOW (not AppDrawer SCSS).
-     * Use `--drawer-layout-sidebar-*` when `data-cmf-component` + `data-cmf-key` are set
-     * (JS nest via `buildDrawerPropToken` / `resolveDrawerRootVars`). Bare `--drawer-*` for generic drawers.
-     * Prefer on the panel:
-     *   [data-viewport='mobile'] { --drawer-layout-sidebar-radius: 0; }
-     * or global:
-     *   @media (max-width: $mobile) { :root { --drawer-radius: 0; } }
+     * Modal SoT on :root (portaled). Nest via `buildCmfModalPropToken`:
+     *   --cmf-modal-{component}-{key}-{prop} → --cmf-modal-{component}-{prop} → --cmf-modal-{prop}
      */
-    /* 1) Default panel (wallet / generic) */
-    --drawer-bg: light-dark(var(--mantine-color-body), #0d0d0d);
-    --drawer-color: var(--mantine-color-text);
-    --drawer-radius: var(--radius-md);
+    --cmf-modal-bg: light-dark(var(--mantine-color-body), var(--mantine-color-dark-7));
+    --cmf-modal-color: var(--mantine-color-text);
+    --cmf-modal-radius: var(--mantine-radius-default);
+    --cmf-modal-padding: var(--mantine-spacing-md);
+    --cmf-modal-shadow: var(--mantine-shadow-xs);
 
-    /* Generic drawer body inset (no data-cmf). Sidebar zeros via key layer. */
-    --drawer-layout-sidebar-inset: var(--mantine-spacing-sm);
-    --drawer-padding: var(--spacing-md);
-    --drawer-size: auto;
-    --drawer-size-mobile: 100%;
-    --drawer-size-tablet: 35vw;
-    --drawer-size-laptop: auto;
-    --drawer-size-pc: auto;
+    /*
+     * Drawer SoT on :root (portaled). Cascade: key → component → base.
+     *   --cmf-drawer-layout-sidebar-{prop}  (AppDrawer data-cmf-component=layout + key=sidebar)
+     *   --cmf-drawer-layout-{prop}
+     *   --cmf-drawer-{prop}
+     * Size (data-viewport = mobile|tablet|laptop|pc):
+     *   1. --cmf-drawer-layout-sidebar-size-{band}   ← optional band token
+     *   2. --cmf-drawer-layout-sidebar-size          ← shared (ok to set only in @media)
+     *   3. --cmf-drawer-size-{band} → --cmf-drawer-size
+     * Either (1) or (2) works; (1) wins when both exist.
+     * Edit HERE — never on `[data-widget=sidebar]` (portal does not inherit).
+     * Mantine keeps its own `--drawer-size` / `--drawer-flex` (engine).
+     */
+    --cmf-drawer-bg: light-dark(var(--mantine-color-body), #1a1a1a);
+    --cmf-drawer-color: var(--mantine-color-text);
+    --cmf-drawer-radius: var(--mantine-radius-md);
+    --cmf-drawer-padding: var(--spacing-md);
+    --cmf-drawer-inset: 0px;
+    --cmf-drawer-size: auto;
+    --cmf-drawer-size-mobile: 100%;
+    --cmf-drawer-size-tablet: 35vw;
+    --cmf-drawer-size-laptop: auto;
+    --cmf-drawer-size-pc: auto;
 
-    --drawer-layout-sidebar-size: 35vw;
-    --drawer-layout-sidebar-size-mobile: 100%;
+    --app-layout-sidebar-width: 15rem;
+
+    /*
+     * Sidebar drawer size — both APIs (data-viewport nest on portal):
+     *   1) --cmf-drawer-layout-sidebar-size-{mobile|tablet|laptop|pc}  (band wins)
+     *   2) --cmf-drawer-layout-sidebar-size                             (@media OK)
+     */
+    --cmf-drawer-layout-sidebar-size: var(--app-layout-sidebar-width);
 
     --cmf-button-hero-bg: light-dark(
       color-mix(in srgb, #059669 100%, transparent),
@@ -155,50 +167,34 @@
     --cmf-button-link-hover-color: var(--mantine-primary-color-contrast);
   }
 
-  /*
-   * AppDrawer panel overrides — attrs live on the portaled panel (not [data-widget]).
-   * Add a block per product instance (any `data-cmf-component` / `data-cmf-key`). Keep AppDrawer SCSS generic.
-   *
-   * Mobile: either `[data-viewport='mobile']` on the panel, or `@media (max-width: $mobile)`.
-   */
-  [data-cmf-component='layout'][data-cmf-key='sidebar'] {
-    --drawer-size: var(--drawer-layout-sidebar-size, 35vw);
-    --drawer-size-mobile: var(--drawer-layout-sidebar-size-mobile, 100%);
-    --drawer-size-tablet: var(--drawer-layout-sidebar-size, 35vw);
-    --drawer-inset: var(--drawer-layout-sidebar-inset);
-    --drawer-layout-radius: var(--mantine-radius-md);
-
-    /* CMF cascade: key layer wins over `--drawer-padding` / `--drawer-radius` base. */
-    --drawer-layout-sidebar-padding: 0;
-  }
-
-  [data-cmf-component='layout'][data-cmf-key='sidebar'][data-viewport='mobile'] {
-    --drawer-layout-sidebar-radius: 0;
-    --drawer-layout-sidebar-padding: 0;
-
-    /* Length unit required — unitless `0` makes `width: calc(100% - var(--inset) * 2)` IACVT. */
-    --drawer-inset: 0px;
-  }
-
-  /* Example — all drawers on phone (uncomment / narrow as needed):
-  [data-viewport='mobile'] {
-    --drawer-radius: 0;
-    --drawer-padding: 0;
-  }
-  @media (max-width: $mobile) {
-    :root {
-      --drawer-radius: 0;
-      --drawer-padding: 0;
-    }
-  }
-  */
-
   [data-widget='header'] {
     @include header.header-root-tokens;
   }
 
   [data-widget='sidebar'] {
     @include sidebar.sidebar-root-tokens;
+  }
+
+  /*
+   * Shared size in @media (panel reads `--cmf-drawer-layout-sidebar-size`).
+   * `$mobile` = ≤767px (`data-viewport=mobile`). Drawer also opens on tablet
+   * (≤1024) — edit `$tablet` block or use `--cmf-drawer-layout-sidebar-size-mobile`.
+   */
+  @media (max-width: $tablet) {
+    :root {
+      --cmf-drawer-layout-sidebar-padding: 0;
+      --cmf-drawer-layout-sidebar-size: 50vw;
+      --cmf-drawer-layout-sidebar-inset: var(--mantine-spacing-sm);
+      --cmf-drawer-layout-sidebar-radius: var(--mantine-radius-md);
+    }
+  }
+
+  @media (max-width: $mobile) {
+    :root {
+      --cmf-drawer-layout-sidebar-inset: 0px;
+      --cmf-drawer-layout-sidebar-radius: 0;
+      --cmf-drawer-layout-sidebar-size: 100vw;
+    }
   }
 
   [data-theme='dark'],

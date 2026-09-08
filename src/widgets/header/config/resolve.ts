@@ -8,9 +8,10 @@ import {
   type HeaderCustomBlockInput,
   type HeaderCustomBlockSettings,
   type HeaderSettings,
+  type MenuSettings,
   resolveCmfActiveConfig,
 } from '@/shared/config';
-import { pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
+import { isRecord, pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
 import { resolveTooltipConfig } from '@/shared/lib/tooltip';
 import {
@@ -148,6 +149,19 @@ function resolveCapabilities(
   };
 }
 
+const MENU_RUNTIME_STRIP = new Set(['opened', 'onChange', 'children']);
+
+/** Passthrough Mantine Menu props from `header.menu` (strip runtime-owned keys). */
+function resolveMenu(raw: unknown): MenuSettings | undefined {
+  if (!isRecord(raw)) return undefined;
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(raw)) {
+    if (MENU_RUNTIME_STRIP.has(key)) continue;
+    out[key] = value;
+  }
+  return Object.keys(out).length > 0 ? (out as MenuSettings) : undefined;
+}
+
 function coerceHeaderSchema(merged: HeaderSchema & HeaderSchemaLayer): HeaderSchema {
   const type = readSettingsKey(merged.type, DEFAULT_HEADER_CONFIG.type);
   const packDefaults = resolveHeaderTypeTunableDefaults(type);
@@ -159,6 +173,7 @@ function coerceHeaderSchema(merged: HeaderSchema & HeaderSchemaLayer): HeaderSch
   );
   const withLegacy = mergeBlockVariants(packDefaults.blockVariants, remappedLegacy.overlay);
   const blockVariants = mergeBlockVariants(withLegacy, remappedNested.overlay);
+  const menu = resolveMenu(merged.menu);
 
   return {
     version: merged.version === 2 ? 2 : 1,
@@ -170,6 +185,7 @@ function coerceHeaderSchema(merged: HeaderSchema & HeaderSchemaLayer): HeaderSch
     capabilities: resolveCapabilities(merged.capabilities),
     customBlocks: resolveCustomBlocks(merged),
     tooltip: resolveTooltipConfig(DEFAULT_HEADER_CONFIG.tooltip, merged.tooltip),
+    ...(menu ? { menu } : {}),
     active: resolveCmfActiveConfig(merged.active, DEFAULT_HEADER_CONFIG.active),
   };
 }

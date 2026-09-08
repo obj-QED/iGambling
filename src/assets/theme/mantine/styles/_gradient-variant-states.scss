@@ -1,26 +1,58 @@
 // Mantine hover paints `background-color` (invalid for gradient tokens).
 // Use `background` shorthand so tokens may be a gradient *or* a solid color.
-// Do NOT transition `background` — browsers cannot interpolate two gradients
-// (flash / transparent flicker). Color may still ease.
+//
+// Browsers cannot interpolate two `background` gradients — `transition: background`
+// (or `transition: all`) flickers / snaps. Smooth paint = opacity crossfade on a layer.
 @mixin gradient-variant-hover($prefix) {
   &[data-variant='gradient']:where(:not(:disabled, [data-disabled], [data-loading])) {
+    position: relative;
+    isolation: isolate;
     background: var(--#{$prefix}-bg);
     background-origin: border-box;
-    transition: color 160ms ease;
+
+    /* Only color eases on the host; paint morph is ::before opacity. */
+    transition: color 0.2s ease-in-out;
+
+    /*
+     * Hover paint layer. Replaces Mantine Button shine (::before) on gradient only.
+     * ::after stays free for CMF active rail (`data-cmf-active-type='element'`).
+     */
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      border-radius: inherit;
+      background: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
+      background-origin: border-box;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+      pointer-events: none;
+    }
+
+    /* Keep label / sections / icons above the hover layer. */
+    > :where(*) {
+      position: relative;
+      z-index: 1;
+    }
 
     @media (hover: hover) {
       &:hover {
-        background: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
-        background-origin: border-box;
         color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
+
+        &::before {
+          opacity: 1;
+        }
       }
     }
 
     @media (hover: none) {
       &:active {
-        background: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
-        background-origin: border-box;
         color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
+
+        &::before {
+          opacity: 1;
+        }
       }
     }
   }

@@ -10,12 +10,12 @@ describe('buildPopoverPropToken', () => {
     });
 
     expect(token).toBe(
-      'var(--popover-header-wallet-bg, var(--popover-header-bg, var(--popover-bg, fallback)))',
+      'var(--cmf-popover-header-wallet-bg, var(--cmf-popover-header-bg, var(--cmf-popover-bg, fallback)))',
     );
   });
 
   it('falls back to base without scope', () => {
-    expect(buildPopoverPropToken('padding', '0')).toBe('var(--popover-padding, 0)');
+    expect(buildPopoverPropToken('padding', '0')).toBe('var(--cmf-popover-padding, 0)');
   });
 });
 
@@ -23,8 +23,8 @@ describe('resolvePopoverDropdownVars', () => {
   it('emits private paint vars for default popover', () => {
     const vars = resolvePopoverDropdownVars({});
 
-    expect(vars['--_cmf-popover-bg']).toContain('--popover-bg');
-    expect(vars['--_cmf-popover-radius']).toContain('--popover-radius');
+    expect(vars['--_cmf-popover-bg']).toContain('--cmf-popover-bg');
+    expect(vars['--_cmf-popover-radius']).toContain('--cmf-popover-radius');
   });
 
   it('honors Mantine radius / shadow props as nest fallbacks', () => {

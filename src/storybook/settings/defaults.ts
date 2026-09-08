@@ -20,12 +20,14 @@ export const STORYBOOK_APP_SETTINGS_DEFAULTS: AppSettings = {
     },
     drawer: {},
     popover: {},
+    menu: {},
   },
   header: {
     layout: 'container',
     type: 'default',
     mockMenu: true,
     mockAuth: 'authenticated',
+    menu: {},
     customBlocks: [COLOR_SCHEME_CUSTOM_BLOCK],
   },
   aside: {

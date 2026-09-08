@@ -128,12 +128,12 @@ Tooltip (portal → tokens on `:root`):
 
 Props: `bg` | `color` | `radius` | `max-width`.
 
-Popover (portal → `:root --popover-*`, via `themeComponents` + `PopoverWrapper` + `data-cmf-*`):
+Popover (portal → `:root --cmf-popover-*`, via `themeComponents` + `PopoverWrapper` + `data-cmf-*`):
 
 ```txt
-1. --popover-{component}-{key}-{prop}
-2. --popover-{component}-{prop}
-3. --popover-{prop}
+1. --cmf-popover-{component}-{key}-{prop}
+2. --cmf-popover-{component}-{prop}
+3. --cmf-popover-{prop}
 4. theme fallback
 ```
 
@@ -143,12 +143,12 @@ Paint: `.popoverDropdown` / `.popoverArrow` / `.popoverOverlay`.
 
 Behavior defaults (Mantine props): `params.popover` → `getPopoverDefaultProps()` → `Popover.extend` + `PopoverWrapper` (any [Popover prop](https://mantine.dev/core/popover/?t=props) except `opened` / `onChange` / `children`; instance props win).
 
-Drawer (portal → `:root --drawer-*`, via `themeComponents` + `AppDrawer` + `data-cmf-*`):
+Drawer (portal → `:root --cmf-drawer-*`, via `themeComponents` + `AppDrawer` + `data-cmf-*`):
 
 ```txt
-1. --drawer-{component}-{key}-{prop}
-2. --drawer-{component}-{prop}
-3. --drawer-{prop}
+1. --cmf-drawer-{component}-{key}-{prop}
+2. --cmf-drawer-{component}-{prop}
+3. --cmf-drawer-{prop}
 4. theme fallback
 ```
 
@@ -157,33 +157,48 @@ Props: `bg` | `color` | `radius` | `padding` | `shadow` | `offset` |
 `header-padding` | `header-min-height` | `title-fz|fw|lh|color` | `close-*` |
 `overlay-opacity` | `overlay-blur`.  
 Header / title / close / content / body / overlay paint: `.drawer*` in `components.module.scss`.  
-Optional size / float: `--drawer-size`, `--drawer-size-{mobile|tablet|laptop|pc}`, `--drawer-inset`.
+Optional size / float (also key-cascaded via `resolveDrawerRootVars`):
+`--cmf-drawer-size`, `--cmf-drawer-size-{mobile|tablet|laptop|pc}`, `--cmf-drawer-inset`
+→ runtime `--_cmf-drawer-size*` / `--_cmf-drawer-inset`.
 
 Behavior defaults (Mantine props): `params.drawer` → `getDrawerDefaultProps()` → `Drawer.extend` + `AppDrawer`.
 @see https://mantine.dev/core/drawer/?t=props
 
-Tokens live on `:root` in `tokens/theme.scss`. Scope attrs: `data-cmf-component` / `data-cmf-key` / `data-cmf-role` (via `cmfControlAttrs` or spread).
+Tokens live on `:root` in `tokens/theme.scss` (portal inherits from `html`).  
+**Never** put `--cmf-drawer-*` / `--cmf-tooltip-*` / `--cmf-popover-*` / `--cmf-modal-*` on
+`[data-widget=sidebar|header]` — the floating panel is portaled and will not see them.
 
-**Where to override by viewport / instance** — `tokens/theme.scss` (not `AppDrawer` SCSS):
+Scope attrs: `data-cmf-component` / `data-cmf-key` / `data-cmf-role`.
+
+**Where to override by viewport / instance** — `tokens/theme.scss` `:root` + `@media`:
+
+Prefer **only** `--cmf-drawer-layout-sidebar-size` in media (no need for `-size-tablet`).
+Viewport nest: `size-{band}` (key) → **`size` (key)** → `size-{band}` (base) → `size`.
 
 ```scss
-[data-cmf-component='layout'][data-cmf-key='sidebar'][data-viewport='mobile'] {
-  /* key layer — CMF cascade reads `--drawer-layout-sidebar-*`, not bare `--drawer-*` */
-  --drawer-layout-sidebar-radius: 0;
-  --drawer-layout-sidebar-padding: 0;
-  --drawer-inset: 0;
+:root {
+  --cmf-drawer-layout-sidebar-bg: transparent;
+  --cmf-drawer-layout-sidebar-size: var(--app-layout-sidebar-width, 35vw);
 }
 
-/* or global breakpoint */
+@media (max-width: $tablet) {
+  :root {
+    --cmf-drawer-layout-sidebar-size: 90vw; /* enough — beats --cmf-drawer-size-tablet */
+    --cmf-drawer-layout-sidebar-inset: var(--mantine-spacing-sm);
+  }
+}
+
 @media (max-width: $mobile) {
   :root {
-    --drawer-radius: 0;
-    --drawer-padding: 0;
+    --cmf-drawer-layout-sidebar-size: 80vw;
   }
 }
 ```
 
-Aside _widget_ tokens (`--aside-*`) stay in `tokens/widgets/sidebar/tokens.scss` and use `@media ($mobile)` — `data-viewport` is on the drawer portal, not `[data-widget='sidebar']`.
+Optional explicit band (wins over key `size`): `--cmf-drawer-layout-sidebar-size-tablet`.
+
+Aside _widget_ tokens (`--aside-*`) stay in `tokens/widgets/sidebar/tokens.scss`.
+`data-viewport` is on the drawer portal, not `[data-widget='sidebar']`.
 
 ---
 
@@ -205,8 +220,8 @@ Aside _widget_ tokens (`--aside-*`) stay in `tokens/widgets/sidebar/tokens.scss`
 --cmf-action-icon-sidebar-header-logo-trigger-icon-scale: 1.25;
 
 /* Tooltip width for aside rows */
---tooltip-sidebar-max-width: 12rem;
---tooltip-sidebar-item-max-width: 10rem;
+--cmf-tooltip-sidebar-max-width: 12rem;
+--cmf-tooltip-sidebar-item-max-width: 10rem;
 ```
 
 ActionIcon uses `--cmf-action-icon-*`, prop **`size`**, and CMF **`padding`** → `--ai-padding`

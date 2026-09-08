@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import {
   getDrawerDefaultProps,
+  getMenuDefaultProps,
   getModalDefaultProps,
   getPopoverDefaultProps,
   mergeOverlayDefaultProps,
@@ -12,7 +13,7 @@ describe('overlaySettings', () => {
     delete (globalThis as unknown as Window).__SETTINGS__;
   });
 
-  it('reads params.modal / drawer / popover and strips runtime keys', () => {
+  it('reads params.modal / drawer / popover / menu and strips runtime keys', () => {
     (globalThis as unknown as Window).__SETTINGS__ = {
       params: {
         modal: {
@@ -25,6 +26,7 @@ describe('overlaySettings', () => {
         drawer: {
           position: 'left',
           offset: 8,
+          title: 'Drawer test',
           opened: false,
         },
         popover: {
@@ -36,11 +38,22 @@ describe('overlaySettings', () => {
           opened: true,
           onChange: () => undefined,
         },
+        menu: {
+          position: 'bottom-end',
+          offset: 8,
+          opened: true,
+          onChange: () => undefined,
+          children: 'x',
+        },
       },
     };
 
     expect(getModalDefaultProps()).toEqual({ centered: true, size: 'lg' });
-    expect(getDrawerDefaultProps()).toEqual({ position: 'left', offset: 8 });
+    expect(getDrawerDefaultProps()).toEqual({
+      position: 'left',
+      offset: 8,
+      title: 'Drawer test',
+    });
     expect(getPopoverDefaultProps()).toEqual({
       position: 'bottom',
       withArrow: true,
@@ -48,6 +61,16 @@ describe('overlaySettings', () => {
       trapFocus: true,
       onClose: expect.any(Function),
     });
+    expect(getMenuDefaultProps()).toEqual({ position: 'bottom-end', offset: 8 });
+  });
+
+  it('skips undefined overrides so settings title is not wiped', () => {
+    const merged = mergeOverlayDefaultProps(
+      { title: 'Drawer test', position: 'left' },
+      { title: undefined, size: 'md' },
+    );
+
+    expect(merged).toEqual({ title: 'Drawer test', position: 'left', size: 'md' });
   });
 
   it('merges nested overlayProps with instance winning', () => {

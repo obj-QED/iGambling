@@ -1,4 +1,4 @@
-import type { OverlayTargetProps } from '../types';
+import type { ModalWrapperProps } from '../types';
 
 import { Children, cloneElement, isValidElement, memo, useState } from 'react';
 
@@ -6,6 +6,10 @@ import { Modal } from '@mantine/core';
 
 import { getModalDefaultProps, mergeOverlayDefaultProps } from '@/shared/config';
 
+/**
+ * Trigger + Modal. Cascade: `params.modal` → `defaults` → instance.
+ * @see https://mantine.dev/core/modal/?t=props
+ */
 function ModalWrapperComponent({
   target,
   children,
@@ -13,11 +17,13 @@ function ModalWrapperComponent({
   onClose,
   title,
   className,
+  defaults: placeDefaults,
   portalTarget,
   'data-cmf-component': dataCmfComponent,
   'data-cmf-key': dataCmfKey,
   'data-cmf-role': dataCmfRole,
-}: OverlayTargetProps) {
+  ...modalRest
+}: ModalWrapperProps) {
   const [uncontrolled, setUncontrolled] = useState(false);
   const controlled = openedProp !== undefined;
   const opened = controlled ? openedProp : uncontrolled;
@@ -52,22 +58,24 @@ function ModalWrapperComponent({
     ...(dataCmfRole ? { 'data-cmf-role': dataCmfRole } : {}),
   };
 
-  const defaults = getModalDefaultProps();
-  const instance = {
-    title,
-    className,
-    ...(portalTarget != null ? { portalProps: { target: portalTarget } } : {}),
-    ...cmfAttrs,
-  };
-  const modalProps = mergeOverlayDefaultProps(
-    defaults as Record<string, unknown>,
-    instance as Record<string, unknown>,
+  const merged = mergeOverlayDefaultProps(
+    mergeOverlayDefaultProps(
+      getModalDefaultProps() as Record<string, unknown>,
+      (placeDefaults ?? {}) as Record<string, unknown>,
+    ),
+    {
+      ...modalRest,
+      ...(title !== undefined ? { title } : {}),
+      ...(className !== undefined ? { className } : {}),
+      ...(portalTarget != null ? { portalProps: { target: portalTarget } } : {}),
+      ...cmfAttrs,
+    } as Record<string, unknown>,
   );
 
   return (
     <>
       {trigger}
-      <Modal opened={opened} onClose={close} {...modalProps}>
+      <Modal opened={opened} onClose={close} {...merged}>
         {children}
       </Modal>
     </>

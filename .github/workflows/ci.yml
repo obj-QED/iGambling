@@ -86,15 +86,8 @@ jobs:
       - name: Story index report
         run: node .github/scripts/storybook-index-report.mjs
 
-      - name: Configure GitHub Pages
-        if: github.event_name == 'push'
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        if: github.event_name == 'push'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: storybook-static
+      # GitHub Pages for the app (+ optional Storybook) → `.github/workflows/pages-app.yml`
+      # (avoids two deploy-pages jobs fighting over the same environment)
 
       - name: Upload Storybook artifact
         uses: actions/upload-artifact@v4
@@ -205,18 +198,7 @@ jobs:
           retention-days: 14
           if-no-files-found: ignore
 
-  deploy:
-    name: Deploy GitHub Pages
-    runs-on: ubuntu-latest
-    needs: [build-storybook, storybook-gate]
-    if: needs.storybook-gate.outputs.enabled == 'true' && github.event_name == 'push'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+  # Pages deploy moved to `.github/workflows/pages-app.yml` (app at /build/).
 
   report:
     name: PR report
@@ -233,7 +215,7 @@ jobs:
     steps:
       - uses: actions/github-script@v7
         env:
-          PAGES_URL: https://obj-qed.github.io/iGambling/
+          PAGES_URL: https://obj-qed.github.io/iGambling/build/
           STORYBOOK_ENABLED: ${{ needs.storybook-gate.outputs.enabled }}
         with:
           script: |
@@ -258,14 +240,12 @@ jobs:
               '',
               `Commit: \`${sha}\``,
               '',
+              'App GitHub Pages (when `PAGES_BUILD=true`):',
+              pagesUrl,
+              '',
               storybookEnabled
-                ? [
-                    'With `STORYBOOK=true`, push deploys Storybook to:',
-                    pagesUrl,
-                    '',
-                    'Optional secrets: `CHROMATIC_PROJECT_TOKEN`, `OPENAI_API_KEY`.',
-                  ].join('\n')
-                : 'Storybook build/deploy runs when `STORYBOOK=true` in `.env.production` (branch `storybook`).',
+                ? 'Storybook deploys to site root via `pages-app.yml` when `STORYBOOK=true` (with `PAGES_BUILD=true`).'
+                : 'Set `PAGES_BUILD=true` in `.env.production` to publish the app; `STORYBOOK=true` for Storybook at site root.',
             ].join('\n');
 
             const { data: comments } = await github.rest.issues.listComments({

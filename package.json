@@ -17,6 +17,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:pages": "VITE_BASE=/iGambling/build/ yarn build",
     "build:analyze": "VITE_ANALYZE=true yarn build",
     "scaffold": "node scripts/create-module.mjs",
     "scaffold:widget-plugin": "node scripts/scaffold-widget-plugin.mjs",

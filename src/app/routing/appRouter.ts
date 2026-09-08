@@ -54,4 +54,7 @@ const appRouteObjects: RouteObject[] = [
   },
 ];
 
-export const appRouter = createBrowserRouter(appRouteObjects);
+export const appRouter = createBrowserRouter(appRouteObjects, {
+  /** Vite `base` → trailing slash stripped for React Router. */
+  basename: import.meta.env.BASE_URL.replace(/\/$/, '') || undefined,
+});

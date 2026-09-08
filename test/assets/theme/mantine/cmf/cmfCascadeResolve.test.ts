@@ -81,13 +81,23 @@ describe('cmfCascadeResolve', () => {
     );
   });
 
-  it('builds Group layout cascade key → component → shared → parent', () => {
+  it('builds Group layout cascade key → component → parent → shared', () => {
     const token = buildCmfGroupPropToken('justify', 'flex-start', {
       scope: { component: 'sidebar-header', key: 'logo' },
     });
 
     expect(token).toBe(
-      'var(--cmf-group-sidebar-header-logo-justify, var(--cmf-group-sidebar-header-justify, var(--cmf-group-justify, var(--cmf-group-sidebar-justify, flex-start))))',
+      'var(--cmf-group-sidebar-header-logo-justify, var(--cmf-group-sidebar-header-justify, var(--cmf-group-sidebar-justify, var(--cmf-group-justify, flex-start))))',
+    );
+  });
+
+  it('builds Group gap with shared --cmf-group-gap last before fallback', () => {
+    const token = buildCmfGroupPropToken('gap', 'var(--mantine-spacing-sm)', {
+      scope: { component: 'sidebar-footer', key: 'logout' },
+    });
+
+    expect(token).toBe(
+      'var(--cmf-group-sidebar-footer-logout-gap, var(--cmf-group-sidebar-footer-gap, var(--cmf-group-sidebar-gap, var(--cmf-group-gap, var(--mantine-spacing-sm)))))',
     );
   });
 

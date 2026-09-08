@@ -1,4 +1,5 @@
 import type { CmfActiveSettings } from './cmfActiveSettings';
+import type { MenuSettings } from './overlaySettings';
 import type { TooltipSettings } from './tooltipSettings';
 import type { BehaviorFlags, SchemaVersion, WrapperMode } from '@/shared/schema';
 import type { MenuItemDto } from '@/shared/types/menu';
@@ -127,6 +128,12 @@ export type HeaderSettings = {
    * Cascade: defaults → `header.tooltip` → place override in AppTooltip.
    */
   tooltip?: TooltipSettings;
+  /**
+   * DeepPanel (and other header Menu hosts) — any Mantine Menu prop except
+   * `opened` / `onChange` / `children`. Cascade: `params.menu` → `header.menu` → instance.
+   * @see https://mantine.dev/core/menu/?t=props
+   */
+  menu?: MenuSettings;
   /**
    * Active route chrome: `line` → DOM `CmfActiveLine`; `element` → CSS `::after`.
    * Omit → `element`.

@@ -76,9 +76,15 @@ export {
   HEADER_MOCK_AUTH_KEYS,
   HEADER_TYPE_KEYS,
 } from './headerSettings';
-export type { DrawerSettings, ModalSettings, PopoverSettings } from './overlaySettings';
+export type {
+  DrawerSettings,
+  MenuSettings,
+  ModalSettings,
+  PopoverSettings,
+} from './overlaySettings';
 export {
   getDrawerDefaultProps,
+  getMenuDefaultProps,
   getModalDefaultProps,
   getPopoverDefaultProps,
   mergeOverlayDefaultProps,

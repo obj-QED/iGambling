@@ -5,6 +5,7 @@ import { memo } from 'react';
 
 import { Group } from '@mantine/core';
 import { IconXFilled } from '@tabler/icons-react';
+import clsx from 'clsx';
 
 import { useIsMobile } from '@hooks/useIsMobile';
 
@@ -34,7 +35,7 @@ function HeaderRow({
 }) {
   return (
     <Group
-      className={className}
+      className={clsx(styles.row, className)}
       {...cmfControlAttrs({ component: HEADER_CMF_COMPONENT, key: cascadeKey })}
     >
       {children}
@@ -46,7 +47,7 @@ function HeaderRow({
  * Header region — chrome links; specials from `schema.specialBlockKeys` → Block.
  * Typical: `aside_header_logo` via customBlocks. Main specials stay in Section → Block.
  * Mobile/tablet (drawer chrome): close control; logo-trigger is hidden in Logo.
- * Each chrome row is a CMF-scoped Group (gap/align/justify/wrap via theme tokens).
+ * Every chrome strip is a CMF-scoped Group row (`styles.row` + group tokens).
  */
 function SidebarHeaderComponent({ section }: SectionProps) {
   const { HeaderLink } = useSidebarTypePack();
@@ -60,7 +61,7 @@ function SidebarHeaderComponent({ section }: SectionProps) {
   return (
     <div className={styles.root} data-sidebar-region="header">
       {isMobile && (
-        <HeaderRow cascadeKey="drawer-close" className={styles.row}>
+        <HeaderRow cascadeKey="drawer-close">
           <AppActionIcon
             variant="transparent"
             aria-label="Close"
@@ -87,10 +88,6 @@ function SidebarHeaderComponent({ section }: SectionProps) {
         }
 
         if (isSpecialBlockKey(item.key, specialBlockKeys)) {
-          /* Logo owns its Group + CMF scope — avoid nested Groups. */
-          if (item.key === LOGO_ITEM_KEY) {
-            return <Block key={rowKey} item={item} />;
-          }
           return (
             <HeaderRow key={rowKey} cascadeKey={cascadeKey}>
               <Block item={item} />

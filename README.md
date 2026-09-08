@@ -283,6 +283,8 @@ yarn storybook
 
 **Published** (when `STORYBOOK=true` in `.env.production`, typically branch `storybook`): [obj-qed.github.io/iGambling](https://obj-qed.github.io/iGambling/)
 
+**App build** (when `PAGES_BUILD=true` in `.env.production`): [obj-qed.github.io/iGambling/build](https://obj-qed.github.io/iGambling/build/) — workflow `pages-app.yml` (or Actions → manual `deploy_build`).
+
 | Area              | Contents                                                      |
 | ----------------- | ------------------------------------------------------------- |
 | **Develop**       | Public architecture + **Security** threat model for AI review |

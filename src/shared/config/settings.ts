@@ -43,6 +43,13 @@ export type AppParams = {
    * @see https://mantine.dev/core/popover/?t=props
    */
   popover?: import('./overlaySettings').PopoverSettings;
+  /**
+   * Global Mantine Menu defaults (DeepPanel / other Menu hosts).
+   * Any Menu prop except `opened` / `onChange` / `children`.
+   * Cascade: `params.menu` → `header.menu` → instance.
+   * @see https://mantine.dev/core/menu/?t=props
+   */
+  menu?: import('./overlaySettings').MenuSettings;
 };
 
 export type AppSettings = {

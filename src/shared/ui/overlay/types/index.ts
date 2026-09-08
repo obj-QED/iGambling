@@ -1,1 +1,7 @@
-export type { OverlayTargetProps, PopoverWrapperProps } from './props.types';
+export type {
+  DrawerWrapperProps,
+  MenuSettings,
+  ModalWrapperProps,
+  OverlayTargetProps,
+  PopoverWrapperProps,
+} from './props.types';

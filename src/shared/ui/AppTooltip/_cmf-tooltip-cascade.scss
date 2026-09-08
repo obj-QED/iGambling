@@ -3,13 +3,14 @@
 // =============================================================================
 //
 // HOW TO CHANGE STYLES → tokens/theme.scss `:root`:
-//   --tooltip-{header|sidebar}-{key}-{bg|color|radius|max-width}
-//   --tooltip-{header|sidebar}-{bg|color|radius|max-width}
-//   --tooltip-{bg|color|radius|max-width}   (optional alias layer)
+//   --cmf-tooltip-{header|sidebar}-{key}-{bg|color|radius|max-width}
+//   --cmf-tooltip-{header|sidebar}-{bg|color|radius|max-width}
+//   --cmf-tooltip-{bg|color|radius|max-width}
 //
-// Winner: key → component → base (engine). Guide: mantine/cmf/CASCADE.md
+// Winner: key → component → base. Guide: mantine/cmf/CASCADE.md
+// Resolved paint writes Mantine `--tooltip-*` on the floating node.
 // New key: add to `$cmf-tooltip-keys` below.
-// Never `--tooltip-bg: var(--token, var(--tooltip-bg))` on the same node.
+// Never `--cmf-tooltip-bg: var(--token, var(--cmf-tooltip-bg))` on the same node.
 // =============================================================================
 
 $cmf-tooltip-components: header, sidebar;
@@ -19,6 +20,7 @@ $cmf-tooltip-keys:
 $cmf-tooltip-props: bg, color, radius, max-width;
 
 @mixin cmf-tooltip-resolve($prop) {
+  /* Mantine Tooltip reads `--tooltip-*` — resolve CMF nest into those. */
   --tooltip-#{$prop}: var(
     --_cmf-tip-#{$prop}-key,
     var(--_cmf-tip-#{$prop}-comp, var(--_cmf-tip-#{$prop}-base))
@@ -27,10 +29,16 @@ $cmf-tooltip-props: bg, color, radius, max-width;
 
 /// Call inside `.tooltip { }`.
 @mixin cmf-tooltip-cascade {
-  --_cmf-tip-bg-base: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-7));
-  --_cmf-tip-color-base: light-dark(var(--mantine-color-white), var(--mantine-color-bright));
-  --_cmf-tip-radius-base: var(--mantine-radius-default);
-  --_cmf-tip-max-width-base: 16rem;
+  --_cmf-tip-bg-base: var(
+    --cmf-tooltip-bg,
+    light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-7))
+  );
+  --_cmf-tip-color-base: var(
+    --cmf-tooltip-color,
+    light-dark(var(--mantine-color-white), var(--mantine-color-bright))
+  );
+  --_cmf-tip-radius-base: var(--cmf-tooltip-radius, var(--mantine-radius-default));
+  --_cmf-tip-max-width-base: var(--cmf-tooltip-max-width, 16rem);
 
   @each $prop in $cmf-tooltip-props {
     @include cmf-tooltip-resolve($prop);
@@ -40,13 +48,13 @@ $cmf-tooltip-props: bg, color, radius, max-width;
   @each $component in $cmf-tooltip-components {
     &:where([data-cmf-component='#{$component}']) {
       @each $prop in $cmf-tooltip-props {
-        --_cmf-tip-#{$prop}-comp: var(--tooltip-#{$component}-#{$prop});
+        --_cmf-tip-#{$prop}-comp: var(--cmf-tooltip-#{$component}-#{$prop});
       }
 
       @each $key in $cmf-tooltip-keys {
         &:where([data-cmf-key='#{$key}']) {
           @each $prop in $cmf-tooltip-props {
-            --_cmf-tip-#{$prop}-key: var(--tooltip-#{$component}-#{$key}-#{$prop});
+            --_cmf-tip-#{$prop}-key: var(--cmf-tooltip-#{$component}-#{$key}-#{$prop});
           }
         }
       }

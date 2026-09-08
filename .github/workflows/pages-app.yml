@@ -1,0 +1,145 @@
+name: Deploy GitHub Pages (app)
+
+# App → https://obj-qed.github.io/iGambling/build/
+# Gate: PAGES_BUILD=true in `.env.production` (same idea as STORYBOOK).
+# Manual run can force deploy via workflow_dispatch input.
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      deploy_build:
+        description: "Force deploy app build to Pages (/build/)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-app
+  cancel-in-progress: true
+
+env:
+  VITE_BASE: /iGambling/build/
+  PAGES_APP_URL: https://obj-qed.github.io/iGambling/build/
+
+jobs:
+  gate:
+    name: PAGES_BUILD gate
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+      storybook: ${{ steps.check.outputs.storybook }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: check
+        name: Read PAGES_BUILD / STORYBOOK from .env.production
+        run: |
+          set -euo pipefail
+
+          read_env_bool() {
+            local key="$1"
+            local enabled=false
+            if [ -f .env.production ]; then
+              line=$(grep -E "^[[:space:]]*${key}=" .env.production | tail -n1 || true)
+              val=${line#*=}
+              val=${val%%#*}
+              val=$(printf '%s' "$val" | tr -d "[:space:]\"'")
+              if [ "$val" = "true" ] || [ "$val" = "1" ]; then
+                enabled=true
+              fi
+            fi
+            printf '%s' "$enabled"
+          }
+
+          pages=$(read_env_bool PAGES_BUILD)
+          storybook=$(read_env_bool STORYBOOK)
+
+          # Manual workflow can force app deploy even when PAGES_BUILD=false
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.deploy_build }}" = "true" ]; then
+            pages=true
+          fi
+
+          echo "enabled=${pages}" >> "$GITHUB_OUTPUT"
+          echo "storybook=${storybook}" >> "$GITHUB_OUTPUT"
+          echo "PAGES_BUILD gate: enabled=${pages} (STORYBOOK=${storybook})"
+
+  build-pages:
+    name: Build Pages site
+    needs: gate
+    if: needs.gate.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-yarn
+
+      - name: Build app (GitHub Pages base)
+        run: yarn build
+
+      - name: Build Storybook (optional, site root)
+        if: needs.gate.outputs.storybook == 'true'
+        env:
+          STORYBOOK_BASE: /iGambling/
+        run: yarn build-storybook
+
+      - name: Assemble Pages site
+        run: |
+          set -euo pipefail
+          rm -rf site
+          mkdir -p site
+
+          if [ "${{ needs.gate.outputs.storybook }}" = "true" ]; then
+            cp -R storybook-static/. site/
+          else
+            cat > site/index.html <<'EOF'
+          <!doctype html>
+          <meta charset="utf-8" />
+          <meta http-equiv="refresh" content="0;url=./build/" />
+          <title>iGambling</title>
+          <a href="./build/">Open app</a>
+          EOF
+          fi
+
+          rm -rf site/build
+          mkdir -p site/build
+          cp -R dist/. site/build/
+          cp site/build/index.html site/build/404.html
+          test -f site/build/index.html
+          echo "Assembled site:" && find site -maxdepth 2 -type f | head -40
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: Deploy
+    needs: [gate, build-pages]
+    if: needs.gate.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  skip:
+    name: Skip (PAGES_BUILD off)
+    needs: gate
+    if: needs.gate.outputs.enabled != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "PAGES_BUILD!=true — app Pages deploy skipped."
+          echo "Set PAGES_BUILD=true in .env.production, or run workflow_dispatch with deploy_build=true."

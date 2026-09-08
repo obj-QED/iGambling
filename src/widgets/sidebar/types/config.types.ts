@@ -8,6 +8,7 @@ import type {
 } from '@/shared/config/asideSettings';
 import type { CmfActiveConfig } from '@/shared/config/cmfActiveSettings';
 import type { HeaderCustomBlockConfig } from '@/shared/config/headerSettings';
+import type { DrawerSettings } from '@/shared/config/overlaySettings';
 import type { TooltipConfig } from '@/shared/config/tooltipSettings';
 import type { SchemaVersion, WrapperMode } from '@/shared/schema';
 
@@ -74,6 +75,11 @@ export type SidebarSchema = {
   scrollArea: SidebarScrollAreaConfig;
   /** Resolved tooltip: pack defaults → `aside.tooltip`. */
   tooltip: TooltipConfig;
+  /**
+   * Mobile AppDrawer defaults — `params.drawer` → `aside.drawer` → instance.
+   * @see https://mantine.dev/core/drawer/?t=props
+   */
+  drawer?: DrawerSettings;
   /** Active route chrome — omit in settings → `element` (CSS `::after`). */
   active: CmfActiveConfig;
   wrappers: SidebarWrappersConfig;

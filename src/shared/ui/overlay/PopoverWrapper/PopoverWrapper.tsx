@@ -9,6 +9,10 @@ import themeClasses from '@/assets/theme/mantine/styles/components.module.scss';
 import { resolvePopoverDropdownVars } from '@/assets/theme/mantine/vars/popoverVars';
 import { getPopoverDefaultProps, mergeOverlayDefaultProps } from '@/shared/config';
 
+/**
+ * Trigger + Popover. Cascade: `params.popover` → `defaults` → instance.
+ * @see https://mantine.dev/core/popover/?t=props
+ */
 function PopoverWrapperComponent({
   target,
   children,
@@ -16,14 +20,18 @@ function PopoverWrapperComponent({
   onClose,
   className,
   classNames,
+  defaults: placeDefaults,
   portalTarget,
   'data-cmf-component': dataCmfComponent,
   'data-cmf-key': dataCmfKey,
   'data-cmf-role': dataCmfRole,
   ...popoverProps
 }: PopoverWrapperProps) {
-  const defaults = getPopoverDefaultProps();
-  const [uncontrolled, setUncontrolled] = useState(() => defaults.defaultOpened === true);
+  const layeredDefaults = mergeOverlayDefaultProps(
+    getPopoverDefaultProps() as Record<string, unknown>,
+    (placeDefaults ?? {}) as Record<string, unknown>,
+  );
+  const [uncontrolled, setUncontrolled] = useState(() => layeredDefaults.defaultOpened === true);
   const controlled = openedProp !== undefined;
   const opened = controlled ? openedProp : uncontrolled;
 
@@ -62,7 +70,7 @@ function PopoverWrapperComponent({
       : {}),
   };
 
-  const merged = mergeOverlayDefaultProps(defaults as Record<string, unknown>, instanceOverrides);
+  const merged = mergeOverlayDefaultProps(layeredDefaults, instanceOverrides);
 
   const {
     classNames: mergedClassNames,

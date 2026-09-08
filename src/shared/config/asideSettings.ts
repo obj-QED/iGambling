@@ -4,6 +4,7 @@ import type {
   HeaderCustomBlockPlacement,
   HeaderCustomBlockSettings,
 } from './headerSettings';
+import type { DrawerSettings } from './overlaySettings';
 import type { TooltipSettings } from './tooltipSettings';
 import type { BehaviorFlags, SchemaVersion, WrapperMode } from '@/shared/schema';
 import type { ScrollAreaProps } from '@mantine/core';
@@ -103,6 +104,12 @@ export type AsideSettings = {
    * Cascade: pack defaults → `aside.tooltip` → place override in UI.
    */
   tooltip?: TooltipSettings;
+  /**
+   * Mobile/tablet AppDrawer for aside — any Mantine Drawer prop except
+   * `opened` / `onClose` / `children`. Cascade: `params.drawer` → `aside.drawer` → instance.
+   * @see https://mantine.dev/core/drawer/?t=props
+   */
+  drawer?: DrawerSettings;
   /**
    * Active route chrome: `line` → DOM `CmfActiveLine`; `element` → CSS `::after`.
    * Omit → `element` (aside has no `active` in default settings).

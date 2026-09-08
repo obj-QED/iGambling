@@ -1,4 +1,4 @@
-import type { DrawerProps, ModalProps, PopoverProps } from '@mantine/core';
+import type { DrawerProps, MenuProps, ModalProps, PopoverProps } from '@mantine/core';
 
 import { isRecord } from '@/shared/lib/coercion';
 
@@ -26,8 +26,15 @@ export type DrawerSettings = Omit<Partial<DrawerProps>, 'opened' | 'onClose' | '
  */
 export type PopoverSettings = Omit<Partial<PopoverProps>, 'opened' | 'onChange' | 'children'>;
 
+/**
+ * Global / header Menu tunables from `params.menu` / `header.menu`.
+ * Any Mantine Menu prop except runtime-owned (`opened` / `onChange` / `children`).
+ * @see https://mantine.dev/core/menu/?t=props
+ */
+export type MenuSettings = Omit<Partial<MenuProps>, 'opened' | 'onChange' | 'children'>;
+
 const MODAL_DRAWER_STRIP = new Set(['opened', 'onClose', 'children']);
-const POPOVER_STRIP = new Set(['opened', 'onChange', 'children']);
+const POPOVER_MENU_STRIP = new Set(['opened', 'onChange', 'children']);
 
 const NESTED_PROP_KEYS = [
   'overlayProps',
@@ -60,22 +67,33 @@ export function getDrawerDefaultProps(settings = getSettings()): DrawerSettings 
 
 /** Safe `params.popover` → Mantine Popover default props. */
 export function getPopoverDefaultProps(settings = getSettings()): PopoverSettings {
-  return readOverlaySettings(settings.params?.popover, POPOVER_STRIP) as PopoverSettings;
+  return readOverlaySettings(settings.params?.popover, POPOVER_MENU_STRIP) as PopoverSettings;
+}
+
+/** Safe `params.menu` → Mantine Menu default props. */
+export function getMenuDefaultProps(settings = getSettings()): MenuSettings {
+  return readOverlaySettings(settings.params?.menu, POPOVER_MENU_STRIP) as MenuSettings;
 }
 
 /**
  * Merge settings defaults with instance props (instance wins).
+ * `undefined` overrides are skipped so they do not wipe settings (e.g. `title`).
  * Nested `overlayProps` / `transitionProps` / `middlewares` / … are shallow-merged.
  */
 export function mergeOverlayDefaultProps<T extends Record<string, unknown>>(
   defaults: T,
   overrides: T,
 ): T {
-  const out = { ...defaults, ...overrides } as T;
+  const cleaned: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(overrides)) {
+    if (value !== undefined) cleaned[key] = value;
+  }
+
+  const out = { ...defaults, ...cleaned } as T;
 
   for (const key of NESTED_PROP_KEYS) {
     const base = defaults[key as keyof T];
-    const next = overrides[key as keyof T];
+    const next = cleaned[key];
     if (!isRecord(base) && !isRecord(next)) continue;
     (out as Record<string, unknown>)[key] = {
       ...(isRecord(base) ? base : {}),

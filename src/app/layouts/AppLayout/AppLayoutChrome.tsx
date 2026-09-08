@@ -12,9 +12,10 @@ import { AppBanner } from '@/widgets/banner';
 import { AppFooter } from '@/widgets/footer';
 import { AppHeader } from '@/widgets/header';
 import { AppSidebar } from '@/widgets/sidebar';
+import { toSidebarWidthCss } from '@/widgets/sidebar/lib';
 
 import { AppLayoutMain } from './AppLayoutMain';
-import { lockSidebarWidth } from './lockSidebarWidth';
+import { lockSidebarWidth, unlockSidebarWidth } from './lockSidebarWidth';
 import { type UseAppLayoutResult } from './useAppLayout';
 
 import styles from './AppLayout.module.scss';
@@ -70,13 +71,24 @@ function SidebarSlot({ sidebarMenu, sidebarConfig, isMobile }: SidebarSlotProps)
     />
   );
 
+  /**
+   * Only pass Mantine `size` when settings set it (aside.drawer.size / width).
+   * Otherwise omit — AppDrawer CSS nest owns width via
+   * `--cmf-drawer-layout-sidebar-size-{band|}` on `:root` (Mantine `size` would
+   * paint `--drawer-size` and fight the token cascade).
+   */
+  const drawerSize = sidebarConfig.drawer?.size ?? toSidebarWidthCss(sidebarConfig.width);
+
   return isMobile ? (
     <AppDrawer
       opened={opened}
       onClose={close}
       position="left"
+      title={false}
       withCloseButton={false}
       keepMounted
+      defaults={sidebarConfig.drawer}
+      {...(drawerSize != null ? { size: drawerSize } : {})}
       data-cmf-component="layout"
       data-cmf-key="sidebar"
     >
@@ -102,10 +114,15 @@ function AppLayoutChromeComponent({
   const rootRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    // Freeze used width before reveal so late icon/font metrics cannot shift chrome.
-    if (!isMobile) {
-      lockSidebarWidth(rootRef.current);
+    if (isMobile) {
+      return;
     }
+    // Freeze only while shell skeleton paints; unlock so CSS tokens own live width.
+    if (skeleton) {
+      lockSidebarWidth(rootRef.current);
+      return;
+    }
+    unlockSidebarWidth(rootRef.current);
   }, [skeleton, sidebarMenu, isMobile]);
 
   return (
