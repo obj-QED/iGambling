@@ -7,6 +7,7 @@ describe('resolveActionIconRootVars', () => {
     const vars = resolveActionIconRootVars({ variant: 'default', size: 'sm' });
 
     expect(vars['--ai-size']).toBe('var(--cmf-action-icon-default-size, var(--ai-size-sm))');
+    expect(vars['--ai-padding']).toBe('var(--cmf-action-icon-default-padding, 0)');
     expect(vars['--ai-bg']).toBe('var(--cmf-action-icon-default-bg, var(--mantine-color-default))');
     expect(vars['--ai-color']).toContain('var(--cmf-action-icon-default-color');
     expect(vars['--ai-color']).not.toContain('var(--cmf-action-icon-sm-color');

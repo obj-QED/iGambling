@@ -65,6 +65,7 @@ const CLEAR_BUTTON_INLINE_VARS = {
 
 const CLEAR_ACTION_ICON_INLINE_VARS = {
   '--ai-size': null,
+  '--ai-padding': null,
   '--ai-radius': null,
   '--ai-bg': null,
   '--ai-hover': null,

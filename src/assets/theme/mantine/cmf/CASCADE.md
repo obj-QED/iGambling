@@ -209,7 +209,8 @@ Aside _widget_ tokens (`--aside-*`) stay in `tokens/widgets/sidebar/tokens.scss`
 --tooltip-sidebar-item-max-width: 10rem;
 ```
 
-ActionIcon uses `--cmf-action-icon-*` and prop **`size`** (not `height`).  
+ActionIcon uses `--cmf-action-icon-*`, prop **`size`**, and CMF **`padding`** → `--ai-padding`
+(Mantine has no native AI padding; we paint it in `components.module.scss`).  
 Button uses `--cmf-button-*` and **`height`** / **`padding-x`** / **`fz`**.
 
 ---

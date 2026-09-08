@@ -106,6 +106,49 @@
     --mantine-color-dimmed: var(--mantine-primary-color-contrast);
   }
 
+  /*
+   * Compact rail — ActionIcon fill width = shell content track.
+   * Formula (border-box aside): width − 2×shell pad − 2×viewport pad.
+   * Do NOT nest scroll gutter inside `var(--aside-shell-padding, …)` fallback —
+   * when shell padding is set that fallback never runs, and a missing
+   * `--scrollarea-scrollbar-size` on the aside (it lives on `.scroll`)
+   * invalidates the whole custom property.
+   */
+  &[data-type='compact'] {
+    --app-layout-sidebar-width: calc(3.75rem * var(--mantine-scale));
+    --scrollarea-padding-inline: var(--mantine-spacing-xs);
+    --aside-scrollbar-size: 1px;
+    --aside-shell-padding: var(--mantine-spacing-xs);
+    --cmf-action-icon-sidebar-radius: var(--mantine-radius-sm);
+    --cmf-action-icon-icon-scale: 0.5;
+    --aside-menu-dropdown-indicator-position: relative;
+    --aside-menu-dropdown-indicator-inset: unset;
+    --aside-menu-dropdown-indent: 0;
+    --cmf-group-sidebar-header-logo-justify: center;
+    --aside-footer-justify: center;
+    --aside-shell-align: center;
+    --aside-shell-footer-padding: var(--mantine-spacing-xs);
+    --aside-footer-gap: var(--mantine-spacing-xs);
+
+    /* Same SoT as `.scroll` — must exist here for the size calc. */
+    --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
+
+    --cmf-action-icon-sidebar-size: calc(
+      var(--app-layout-sidebar-width) - 2 *
+        var(--aside-shell-padding-x, var(--aside-shell-padding, var(--mantine-spacing-sm))) - 2 *
+        var(--scrollarea-padding-inline, 4px)
+    );
+
+    .cmf-ActionIcon-icon {
+      flex-flow: column nowrap;
+      gap: var(--mantine-spacing-xs);
+    }
+
+    [type='button'] {
+      height: auto;
+    }
+  }
+
   @media (max-width: $tablet) {
     --cmf-button-sidebar-header-logo-padding-x: 10px;
     --aside-shell-padding: 10px;

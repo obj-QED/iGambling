@@ -38,11 +38,6 @@
    * Compact + fill: overlay thumb cuts the right edge of full-width controls.
    * Hide chrome; wheel/trackpad scrolling still works.
    */
-  .root:global([data-type='compact'][data-control-fit='fill']) {
-    .scrollbar {
-      display: none;
-    }
-  }
 }
 
 /*
@@ -63,7 +58,7 @@
 
 .scroll:has(> .scrollbar:where([data-orientation='vertical']):where([data-state='visible'])) {
   .viewport {
-    padding-inline-end: calc(2 * var(--scrollarea-scrollbar-size));
+    padding-inline-end: var(--scrollarea-padding-end, calc(2 * var(--scrollarea-scrollbar-size)));
 
     /* Expand immediately — no delay */
     transition-delay: 0ms;

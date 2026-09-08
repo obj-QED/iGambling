@@ -268,7 +268,7 @@
 
     /* Own flex row — was on `.cmf-Button-inner` before `display: contents`. */
     display: inline-flex;
-    align-items: center;
+    align-items: var(--button-align, center);
     justify-content: var(--button-justify, center);
 
     &:where([data-block]) {
@@ -335,6 +335,10 @@
   }
 
   .actionIcon {
+    /* CMF padding (Mantine AI is size-only). Insets content inside `--ai-size`. */
+    padding: var(--ai-padding, 0);
+    box-sizing: border-box;
+
     &:where([data-cmf-component], [data-cmf-key]) {
       @include cmfControl.cmf-control-shadow('ai');
       @include cmfControl.cmf-control-disabled-radius('ai');

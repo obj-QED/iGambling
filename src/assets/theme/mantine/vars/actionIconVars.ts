@@ -174,6 +174,12 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
       variant,
       tail: 'variant',
     }),
+    /* Mantine ActionIcon has no padding var — CMF adds `--ai-padding` (box inset). */
+    '--ai-padding': buildCmfActionIconPropToken('padding', '0', {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
     ...resolveCmfIconControlVars({
       scope,
       variant,

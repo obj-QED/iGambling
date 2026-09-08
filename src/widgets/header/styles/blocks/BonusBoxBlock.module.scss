@@ -1,8 +1,8 @@
 @layer widget.component {
   .root {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    align-items: var(--header-bonus-box-align, center);
+    justify-content: var(--header-bonus-box-justify, center);
     line-height: 0;
     padding: 0;
     background: var(--header-bonus-box-bg, var(--cmf-action-icon-default-bg));

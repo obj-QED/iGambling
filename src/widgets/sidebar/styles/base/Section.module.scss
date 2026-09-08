@@ -4,13 +4,16 @@
     padding: 0;
     list-style: none;
     display: flex;
-    flex-direction: column;
+    flex-direction: var(--aside-section-flex-direction, column);
+    align-items: var(--aside-section-align, stretch);
+    justify-content: var(--aside-section-justify, flex-start);
     gap: var(--aside-section-gap, var(--spacing-xs, 0.5rem));
   }
 
   .item {
     margin: 0;
     width: 100%;
+    min-width: 0;
   }
 
   .itemContent {

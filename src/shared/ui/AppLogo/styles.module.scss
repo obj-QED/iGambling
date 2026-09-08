@@ -1,8 +1,8 @@
 @layer components {
   .root {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    align-items: var(--header-logo-align, center);
+    justify-content: var(--header-logo-justify, center);
     flex-shrink: 0;
     height: var(--logo-height, var(--header-logo-height, var(--button-height, 2.25rem)));
     min-width: var(

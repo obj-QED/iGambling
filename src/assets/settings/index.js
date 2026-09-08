@@ -87,7 +87,7 @@
 
     aside: {
       /** Shell width is fixed — do not pair a compact calc with `type: 'default'` (labels need room). */
-      type: 'default', // 'default' | 'compact' | 'slideout'
+      type: 'compact', // 'default' | 'compact' | 'slideout'
       /**
        * Control width: `max` (hug / capped) | `fill` (full track, flat).
        * Tokens: compact + non-compact `[data-control-fit]` blocks separately.
