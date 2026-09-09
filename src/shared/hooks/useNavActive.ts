@@ -1,6 +1,6 @@
 import type { NavActiveSource } from '@/shared/lib/menu';
 
-import { useCallback, useRef, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react';
 
 import { activeAttrs as buildActiveAttrs, resolveNavActive } from '@/shared/lib/menu';
 import { getPathname, subscribePathname } from '@/shared/lib/routing';
@@ -18,7 +18,9 @@ export function useNavActive(item: NavActiveSource): {
   activeAttrs: ReturnType<typeof buildActiveAttrs>;
 } {
   const itemRef = useRef(item);
-  itemRef.current = item;
+  useEffect(() => {
+    itemRef.current = item;
+  }, [item]);
 
   const subscribe = useCallback((onStoreChange: () => void) => {
     let prev = resolveNavActive(itemRef.current, getPathname());
@@ -30,7 +32,7 @@ export function useNavActive(item: NavActiveSource): {
     });
   }, []);
 
-  const getSnapshot = useCallback(() => resolveNavActive(itemRef.current, getPathname()), []);
+  const getSnapshot = useCallback(() => resolveNavActive(item, getPathname()), [item]);
 
   const isActive = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 

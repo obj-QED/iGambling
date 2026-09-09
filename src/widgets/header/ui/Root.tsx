@@ -2,9 +2,9 @@ import type { RootProps } from '../types';
 
 import { memo, useMemo, useState } from 'react';
 
-import { useIsMobile } from '@hooks/useIsMobile';
-
 import clsx from 'clsx';
+
+import { useIsMobile } from '@hooks/useIsMobile';
 
 import { CmfActiveIndicatorProvider } from '@/shared/ui/CmfActiveLine';
 

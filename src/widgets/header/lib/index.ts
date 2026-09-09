@@ -1,5 +1,6 @@
 export { resolveButtonVariant } from './buttonVariant';
 export { HEADER_CMF_COMPONENT, HEADER_DROPDOWN_CMF_COMPONENT } from './cmfConstants';
+export { filterCustomBlocksByView } from './filterCustomBlocksByView';
 export {
   DEFAULT_HEADER_MENU_SIZES,
   type HeaderMenuSizes,
@@ -34,4 +35,3 @@ export {
   isHeaderDropdownOutsideKey,
   splitHeaderDropdownMenu,
 } from './splitHeaderDropdownMenu';
-export { filterCustomBlocksByView } from './filterCustomBlocksByView';

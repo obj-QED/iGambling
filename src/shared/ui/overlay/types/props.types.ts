@@ -1,5 +1,5 @@
 import type { DrawerSettings, MenuSettings, ModalSettings, PopoverSettings } from '@/shared/config';
-import type { CmfControlAttrs } from '@/shared/lib/cmf/types/scopeAttrs.types';
+import type { CmfControlAttrs } from '@/shared/lib/cmf';
 import type { ModalProps, PopoverProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 

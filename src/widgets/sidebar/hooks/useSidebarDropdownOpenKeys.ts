@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { createSidebarDropdownOpenKeysStore, type SidebarDropdownOpenKeysStore } from '../lib';
 
@@ -7,12 +7,13 @@ export type { SidebarDropdownOpenKeysStore };
 /**
  * Stable dropdown open-keys store for the provider.
  * Per-item open state: `useSidebarDropdown(menuKey)` + `useSyncExternalStore`.
+ * Defaults are read once on mount (first-visit open keys).
  */
 export function useSidebarDropdownOpenKeysStore(
   defaultOpenKeys: readonly string[],
 ): SidebarDropdownOpenKeysStore {
-  const defaultsRef = useRef(defaultOpenKeys);
-  return useMemo(() => createSidebarDropdownOpenKeysStore(defaultsRef.current), []);
+  const [store] = useState(() => createSidebarDropdownOpenKeysStore(defaultOpenKeys));
+  return store;
 }
 
 /** @deprecated Prefer `useSidebarDropdown(menuKey)`. */

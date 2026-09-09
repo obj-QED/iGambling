@@ -1,6 +1,6 @@
 import type { BreakpointName } from '@/assets/theme/breakpoints';
 import type { DrawerSettings } from '@/shared/config';
-import type { CmfControlAttrs } from '@/shared/lib/cmf/types/scopeAttrs.types';
+import type { CmfControlAttrs } from '@/shared/lib/cmf';
 import type { DrawerProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 

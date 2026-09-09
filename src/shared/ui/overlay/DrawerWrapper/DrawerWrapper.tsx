@@ -16,12 +16,15 @@ function DrawerWrapperComponent({
   title,
   className,
   defaults: placeDefaults,
-  portalTarget: _portalTarget,
+  portalTarget,
   'data-cmf-component': dataCmfComponent,
   'data-cmf-key': dataCmfKey,
   'data-cmf-role': dataCmfRole,
   ...drawerProps
 }: DrawerWrapperProps) {
+  // Reserved for portal host; strip from Mantine drawer props.
+  void portalTarget;
+
   const [uncontrolled, setUncontrolled] = useState(false);
   const controlled = openedProp !== undefined;
   const opened = controlled ? openedProp : uncontrolled;

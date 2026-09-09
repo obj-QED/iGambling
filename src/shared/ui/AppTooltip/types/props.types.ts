@@ -1,5 +1,5 @@
 import type { TooltipConfig } from '@/shared/config/tooltipSettings';
-import type { CmfControlAttrs } from '@/shared/lib/cmf/types/scopeAttrs.types';
+import type { CmfControlAttrs } from '@/shared/lib/cmf';
 import type { ReactElement, ReactNode } from 'react';
 
 export type AppTooltipProps = {

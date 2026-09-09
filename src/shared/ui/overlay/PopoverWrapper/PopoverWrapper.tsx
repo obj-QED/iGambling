@@ -1,6 +1,6 @@
 import type { PopoverWrapperProps } from '../types/props.types';
 
-import { Children, cloneElement, isValidElement, memo, useMemo, useState } from 'react';
+import { Children, cloneElement, isValidElement, memo, useState } from 'react';
 
 import { Popover } from '@mantine/core';
 import clsx from 'clsx';
@@ -74,12 +74,12 @@ function PopoverWrapperComponent({
 
   const {
     classNames: mergedClassNames,
-    className: _ignoredClassName,
-    defaultOpened: _ignoredDefaultOpened,
+    className: ignoredClassName,
+    defaultOpened: ignoredDefaultOpened,
     onClose: settingsOnClose,
     onOpen: settingsOnOpen,
     onDismiss: settingsOnDismiss,
-    onChange: _ignoredOnChange,
+    onChange: ignoredOnChange,
     ...restPopover
   } = merged as Record<string, unknown> & {
     classNames?: { dropdown?: string; arrow?: string; overlay?: string };
@@ -90,16 +90,15 @@ function PopoverWrapperComponent({
     onDismiss?: () => void;
     onChange?: (opened: boolean) => void;
   };
+  void ignoredClassName;
+  void ignoredDefaultOpened;
+  void ignoredOnChange;
 
-  const popoverVars = useMemo(
-    () =>
-      resolvePopoverDropdownVars({
-        ...cmfAttrs,
-        radius: restPopover.radius,
-        shadow: restPopover.shadow,
-      }),
-    [dataCmfComponent, dataCmfKey, dataCmfRole, restPopover.radius, restPopover.shadow],
-  );
+  const popoverVars = resolvePopoverDropdownVars({
+    ...cmfAttrs,
+    radius: restPopover.radius,
+    shadow: restPopover.shadow,
+  });
 
   return (
     <Popover

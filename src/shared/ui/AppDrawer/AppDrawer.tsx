@@ -137,7 +137,12 @@ function AppDrawerComponent({
   };
 
   const drawerVars = useMemo(
-    () => resolveDrawerRootVars(cmfAttrs) as CSSProperties,
+    () =>
+      resolveDrawerRootVars({
+        ...(dataCmfComponent ? { 'data-cmf-component': dataCmfComponent } : {}),
+        ...(dataCmfKey ? { 'data-cmf-key': dataCmfKey } : {}),
+        ...(dataCmfRole ? { 'data-cmf-role': dataCmfRole } : {}),
+      }) as CSSProperties,
     [dataCmfComponent, dataCmfKey, dataCmfRole],
   );
 
