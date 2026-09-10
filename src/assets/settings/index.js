@@ -37,13 +37,16 @@
        * Paint tokens: `tokens/theme.scss` `--cmf-popover-*` (dropdown/arrow).
        */
       popover: {},
-
       /**
        * Global Mantine Menu defaults — any prop except opened/onChange/children.
        * Cascade: `params.menu` → `header.menu` → DeepPanel product defaults.
        * @see https://mantine.dev/core/menu/?t=props
        */
       menu: {},
+      search: {
+        type: 'modal', // modal | spotlight | input
+        style: 'input', // compact| input | icon
+      }
     },
     header: {
       layout: 'container',
@@ -52,7 +55,8 @@
       mockMenu: true,
       active: {
         type: 'line', // type: 'line' | 'element'
-        position: 'bottom', // position: 'bottom' | 'top' | 'left' | 'right'
+        // dropdown type → left rail (tokens `--cmf-button-header-dropdown-active-*`)
+        position: 'left', // position: 'bottom' | 'top' | 'left' | 'right'
       },
       /**
        * Global adapter variants for special blocks — apply wherever they render
@@ -68,8 +72,14 @@
        */
       menu: {},
       blockVariants: {
-        search: 'compact', // compact | icon | input | modal
-        wallet: 'compact', // compact | full | drawer
+        search: {
+          type: 'modal',   // modal | input
+          style: 'input',  // compact | button | input
+        },
+        wallet: {
+          type: 'modal',  // modal | dropdown | drawer
+          style: 'input',  // compact | button | input
+        },
       },
 
       tooltip: {
@@ -121,6 +131,12 @@
        * Omit → widget defaults. Component map stays in `ui/Block` switch.
        */
       specialBlockKeys: ['search_leftmenu', 'timer', 'wheel_mdl', 'aside_header_logo'],
+      blockVariants: {
+        search_leftmenu: {
+          type: 'modal',
+          style: 'input',
+        },
+      },
       /**
        * Active route chrome. Omit → `element` (CSS `::after` via tokens, e.g. left bar).
        * `type: 'line'` → DOM `CmfActiveLine` (same contract as `header.active`).

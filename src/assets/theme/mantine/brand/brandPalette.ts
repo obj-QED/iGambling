@@ -2,7 +2,7 @@ import type { MantineColorsTuple } from '@mantine/core';
 
 /** JS fallback when `--brand-color-*` from brand-palette.scss is unavailable. Keep in sync with that file. */
 export const BRAND_PALETTE_LIGHT_FALLBACK = [
-  '#f0fdfa',
+  '#fff',
   '#ccfbf1',
   '#5eead4',
   '#2dd4bf',
@@ -16,7 +16,7 @@ export const BRAND_PALETTE_LIGHT_FALLBACK = [
 
 /** Amber/orange — mirrors `$palette-dark` in brand-palette.scss (SoT). */
 export const BRAND_PALETTE_DARK_FALLBACK = [
-  '#fff5e1',
+  '#fff',
   '#ffeacb',
   '#ffd49a',
   '#ffbd64',

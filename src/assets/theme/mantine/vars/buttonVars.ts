@@ -303,8 +303,11 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
     }),
     /*
      * Active radius: `--cmf-*-active-radius` (all corners) and/or
-     * `--cmf-*-active-radius-{tl|tr|br|bl}`. Corner → shorthand → `--button-radius`
-     * (unset corner keeps control radius; shorthand `0` squares all).
+     * `--cmf-*-active-radius-{tl|tr|br|bl}`.
+     *
+     * Corner chain → shorthand `active-radius` chain → `--button-radius`
+     * (unset corner keeps control radius for host rail squaring; set shorthand
+     * `0` / `0px` to square the ::after / CmfActiveLine bar on all corners).
      */
     '--button-active-radius': buildCmfButtonPropToken('active-radius', '0', {
       scope,

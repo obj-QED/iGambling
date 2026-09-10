@@ -2,7 +2,7 @@
 
 // Light: deeper shades for text/borders on white (outline/light readable)
 $palette-light: (
-  0: #f0fdfa,
+  0: #fff,
   1: #ccfbf1,
   2: #5eead4,
   3: #2dd4bf,
@@ -16,7 +16,7 @@ $palette-light: (
 
 // Dark: amber/orange — keep in sync with BRAND_PALETTE_DARK_FALLBACK in brandPalette.ts
 $palette-dark: (
-  0: #fff5e1,
+  0: #fff,
   1: #ffeacb,
   2: #ffd49a,
   3: #ffbd64,

@@ -59,6 +59,10 @@
   --cmf-action-icon-header-home-radius: 0;
   --cmf-action-icon-header-radius-disabled: var(--mantine-radius-md);
 
+  /* Menu toggle icon */
+  --cmf-action-icon-header-menu_toggle-bg: transparent;
+  --cmf-action-icon-header-menu_toggle-hover: transparent;
+
   /* Icons: --cmf-*-header-{key?}-icon-* — full order in CASCADE.md */
   --cmf-action-icon-header-icon-scale: 0.7;
   --cmf-action-icon-header-icon-aspect: 1;
@@ -98,7 +102,11 @@
    * `type: dropdown` — deep menu chrome.
    * Row / trigger paint: `--cmf-*-header-dropdown-*` (independent from bar `--cmf-*-header-*`).
    * Active bar geometry = inset + width + height (not `active-position` alone —
-   * position is hint/data-attr; SoT for paint is inset/size — see cmfActiveSettings).
+   * position is hint/`data-cmf-active-position`; SoT for paint is inset/size).
+   *
+   * Active radius cascade (JS): corner → `--*-active-radius` → `--button-radius`.
+   * Only `-tl`/`-bl`: 0 leaves `-tr`/`-br` → control radius → a 2px left rail looks round.
+   * Set shorthand `active-radius: 0px` so unset corners stay square on the bar/line.
    */
   &[data-type='dropdown'] {
     --cmf-button-header-dropdown-justify: flex-start;
@@ -110,5 +118,10 @@
     --cmf-button-header-dropdown-active-inset: 0 auto 0 0;
     --cmf-button-header-dropdown-active-width: var(--cmf-button-header-dropdown-active-size);
     --cmf-button-header-dropdown-active-height: 100%;
+    --cmf-button-header-dropdown-active-radius: 0px;
+    --cmf-button-header-dropdown-active-radius-tl: 0px;
+    --cmf-button-header-dropdown-active-radius-tr: 0px;
+    --cmf-button-header-dropdown-active-radius-br: 0px;
+    --cmf-button-header-dropdown-active-radius-bl: 0px;
   }
 }

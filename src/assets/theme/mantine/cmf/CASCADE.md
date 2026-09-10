@@ -72,6 +72,11 @@ so an unset variant layer cannot fall through to parent widget paint and break h
 Active radius: `--*-active-radius` (all corners) and/or `--*-active-radius-{tl|tr|br|bl}`.
 Corner → shorthand → `--button-radius` / `--ai-radius`. Shorthand last-resort stays `0`
 (for the bar when nothing is set).
+**Left/right rail:** set `--cmf-*-active-radius: 0` (or all four corners). Only `-tl`/`-bl`
+leaves `-tr`/`-br` → control radius — a 2px rail looks round. Header dropdown:
+`--cmf-button-header-dropdown-active-*` under `[data-widget=header][data-type=dropdown]`.
+Also set settings `header.active.position: 'left'` so `data-cmf-active-position` matches
+(host-radius CSS); paint geometry still comes from inset/width/height tokens.
 
 Group layout (`data-cmf-*` on Mantine `Group`):
 
