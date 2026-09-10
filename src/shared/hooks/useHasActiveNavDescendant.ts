@@ -1,6 +1,6 @@
 import type { NavActiveTreeNode } from '@/shared/lib/menu';
 
-import { useCallback, useRef, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react';
 
 import { hasActiveNavDescendant } from '@/shared/lib/menu';
 import { getPathname, subscribePathname } from '@/shared/lib/routing';
@@ -13,7 +13,9 @@ export function useHasActiveNavDescendant(
   items: readonly NavActiveTreeNode[] | undefined,
 ): boolean {
   const itemsRef = useRef(items);
-  itemsRef.current = items;
+  useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
 
   const subscribe = useCallback((onStoreChange: () => void) => {
     let prev = hasActiveNavDescendant(itemsRef.current, getPathname());
@@ -25,10 +27,7 @@ export function useHasActiveNavDescendant(
     });
   }, []);
 
-  const getSnapshot = useCallback(
-    () => hasActiveNavDescendant(itemsRef.current, getPathname()),
-    [],
-  );
+  const getSnapshot = useCallback(() => hasActiveNavDescendant(items, getPathname()), [items]);
 
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }

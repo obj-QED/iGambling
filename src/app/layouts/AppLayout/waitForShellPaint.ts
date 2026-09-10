@@ -44,7 +44,7 @@ export function waitForHtmlImages(root: ParentNode | null): Promise<void> {
 }
 
 export function waitForDocumentFonts(): Promise<void> {
-  if (typeof document === 'undefined' || document.fonts == null) {
+  if (typeof document === 'undefined') {
     return Promise.resolve();
   }
   return document.fonts.ready.then(() => undefined);

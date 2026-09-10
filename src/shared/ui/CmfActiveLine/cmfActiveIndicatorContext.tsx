@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- provider + hook pair */
 import type { CmfActiveIndicatorValue } from './cmfActiveIndicator.types';
 
 import { createContext, useContext } from 'react';

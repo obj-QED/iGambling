@@ -18,32 +18,31 @@ type BootGateProps = {
  * Single fullscreen preloader for:
  * 1) translation → init bootstrap
  * 2) when `params.preloader.skeleton: false`, adapter warmup (no second mount)
+ *
+ * Adapter hold is derived from pending flags; one `requestAnimationFrame` after
+ * idle releases the hold (no synchronous setState in the effect body).
  */
 export function BootGate({ bootstrapPending, children }: BootGateProps) {
   const skeletonOn = isShellSkeletonEnabled();
   const adapterPending = useAdapterPending();
-  const [adapterHold, setAdapterHold] = useState(!skeletonOn);
+  const busy = bootstrapPending || adapterPending;
+  /** Bumped after a paint when idle (skeleton off) — gates post-warmup release. */
+  const [releaseGen, setReleaseGen] = useState(0);
 
   useLayoutEffect(() => {
-    if (skeletonOn) {
-      setAdapterHold(false);
+    if (skeletonOn || busy) {
       return undefined;
     }
-
-    if (bootstrapPending || adapterPending) {
-      setAdapterHold(true);
-      return undefined;
-    }
-
     const frame = requestAnimationFrame(() => {
-      setAdapterHold(false);
+      setReleaseGen((gen) => gen + 1);
     });
     return () => {
       cancelAnimationFrame(frame);
     };
-  }, [skeletonOn, bootstrapPending, adapterPending]);
+  }, [skeletonOn, busy]);
 
-  const showPreloader = bootstrapPending || (!skeletonOn && adapterHold);
+  const adapterHold = !skeletonOn && (busy || releaseGen === 0);
+  const showPreloader = bootstrapPending || adapterHold;
   const warmup = !skeletonOn && adapterHold && !bootstrapPending;
 
   return (
