@@ -1,11 +1,14 @@
 export type {
   AsideTypeKey,
+  SidebarBehaviorConfig,
+  SidebarBehaviorsConfig,
   SidebarBlockVariants,
   SidebarCapabilitiesConfig,
   SidebarConfig,
   SidebarRegionsConfig,
   SidebarSchema,
   SidebarScrollAreaConfig,
+  SidebarWrappersConfig,
 } from './config.types';
 export type { SidebarConfigProviderProps, SidebarDropdownProviderProps } from './context.types';
 export type {

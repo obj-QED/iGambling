@@ -3,6 +3,8 @@ import type { ComponentType } from 'react';
 
 import { memo } from 'react';
 
+import { isNonEmptyArray } from '@/shared/lib';
+
 import { useSidebarConfig } from '../context';
 import { isSpecialBlockKey } from '../lib';
 import { resolveBlockRegistryKey } from '../registry/keys';
@@ -26,7 +28,7 @@ function BlockComponent({ item, className }: BlockProps) {
   const { blocks } = useSidebarTypePack();
   const { specialBlockKeys } = useSidebarConfig();
 
-  if (item.items !== undefined && item.items.length > 0) {
+  if (isNonEmptyArray(item.items)) {
     const Overlay = blocks?.menuDropdown;
     if (Overlay) {
       return <Overlay item={item} className={className} />;

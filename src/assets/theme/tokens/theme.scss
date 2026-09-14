@@ -164,14 +164,29 @@
     --cmf-button-link-bd: transparent;
     --cmf-button-link-hover: var(--mantine-primary-color-light-hover);
     --cmf-button-link-hover-color: var(--mantine-primary-color-contrast);
-  }
 
-  [data-widget='header'] {
-    @include header.header-root-tokens;
-  }
+    /*
+     * App gradients + seeded variant paints (plain Button/ActionIcon cascade).
+     * Cascade: `--cmf-button-{gradient|white}-*` → these → Mantine fallbacks in buttonVars.
+     */
+    --app-gradient-default: linear-gradient(
+      45deg,
+      var(--brand-color-6) 0%,
+      var(--brand-color-8) 100%
+    );
+    --app-gradient-default-hover: linear-gradient(
+      45deg,
+      var(--brand-color-7) 0%,
+      var(--brand-color-9) 100%
+    );
 
-  [data-widget='sidebar'] {
-    @include sidebar.sidebar-root-tokens;
+    [data-widget='header'] {
+      @include header.header-root-tokens;
+    }
+
+    [data-widget='sidebar'] {
+      @include sidebar.sidebar-root-tokens;
+    }
   }
 
   /*

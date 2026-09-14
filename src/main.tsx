@@ -19,7 +19,7 @@ import { resolveLobbyInitPage } from '@/shared/lib/routing';
 
 const root = createRoot(document.getElementById('root')!);
 
-(async function bootstrap() {
+(function bootstrap() {
   const language = getBrowserLanguage();
   const pathname =
     typeof window !== 'undefined'
@@ -48,12 +48,6 @@ const root = createRoot(document.getElementById('root')!);
   void prefetchInitData(queryClient, language, initialPath).catch((error) => {
     console.error('[bootstrap] prefetch failed', error);
   });
-
-  try {
-    await import('@pages/Login/LoginPage');
-  } catch (error) {
-    console.error('[bootstrap] chunk load failed', error);
-  }
 
   root.render(
     <StrictMode>

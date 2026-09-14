@@ -14,20 +14,18 @@ function nonEmptyString(value: string | null | undefined): string | undefined {
   return t.length > 0 ? t : undefined;
 }
 
-export function initQueryFn({
-  queryKey: [, , language, page],
-  signal,
-}: QueryFunctionContext<InitKey>) {
+export function initQueryFn({ queryKey: [, , language, page] }: QueryFunctionContext<InitKey>) {
   const token = nonEmptyString(getLobbySessionTokenSnapshot());
   const params = token === undefined ? { language, page } : { language, page, token };
-  return initV2(params, signal);
+  // Bootstrap: do not read `signal`. Accessing it marks the query abortable, and
+  // StrictMode unmount then cancels the in-flight translation→init pair (second language request).
+  return initV2(params);
 }
 
 export function translationQueryFn({
   queryKey: [, , language],
-  signal,
 }: QueryFunctionContext<TranslationKey>) {
-  return fetchTranslation(language, signal);
+  return fetchTranslation(language);
 }
 
 export function pageQueryFn({

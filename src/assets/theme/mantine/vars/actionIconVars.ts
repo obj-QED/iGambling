@@ -1,6 +1,7 @@
 import { CMF_ACTION_ICON_SIZES, type CmfActionIconSize } from '../cmf/cmfActionIconVars';
 import {
   buildCmfActionIconPropToken,
+  buildCmfSearchPropToken,
   type CmfScope,
   resolveCmfScope,
 } from '../cmf/cmfCascadeResolve';
@@ -13,6 +14,11 @@ const MANTINE_AI_BD_DEFAULT = 'var(--color-border)';
 const MANTINE_AI_BD_OUTLINE =
   'color-mix(in srgb, var(--brand-color-6) 55%, var(--mantine-color-default-border))';
 const MANTINE_AI_BD_WIDTH = 'calc(0.0625rem * var(--mantine-scale))';
+
+/** Disabled paint last-resort (override via `--cmf-action-icon-{variant|scope}-disabled*`). */
+const MANTINE_AI_DISABLED_BG = 'var(--mantine-color-disabled)';
+const MANTINE_AI_DISABLED_COLOR = 'var(--mantine-color-disabled-color)';
+const MANTINE_AI_DISABLED_BD = 'transparent';
 
 function aiBdShorthand(colorToken: string, widthToken = 'var(--ai-bd-width)'): string {
   return `${widthToken} solid ${colorToken}`;
@@ -73,10 +79,11 @@ const MANTINE_VARIANT_FALLBACKS = {
   },
   white: {
     bg: 'var(--mantine-color-white)',
-    color: 'var(--mantine-color-brand-filled)',
+    color: 'var(--brand-color-6)',
     bd: MANTINE_AI_BD_TRANSPARENT,
+    /* No hover chrome in default — keep fill + text stable. */
     hover: 'var(--mantine-color-white)',
-    'hover-color': 'var(--mantine-color-brand-filled)',
+    'hover-color': 'var(--brand-color-7)',
   },
   gradient: {
     bg: `var(--app-gradient-default, ${APP_GRADIENT_DEFAULT})`,
@@ -144,16 +151,62 @@ type ActionIconVarsProps = {
   'data-cmf-role'?: string;
 };
 
+/** Semantic AppSearch keys — paint/size via `--cmf-search-*` (not `--cmf-action-icon-*`). */
+function isSearchCmfKey(key: string | undefined): boolean {
+  return key === 'search' || key === 'search_leftmenu';
+}
+
+/**
+ * Search ActionIcon: place+key → place → `--cmf-search-*` → variant paint fallback.
+ */
+function resolveSearchActionIconRootVars(
+  props: ActionIconVarsProps,
+  scope: CmfScope,
+  size: CmfActionIconSize,
+  paint: VariantPaint,
+): Record<string, string> {
+  const height = buildCmfSearchPropToken('height', `var(--ai-size-${size})`, { scope });
+
+  return {
+    '--ai-radius': resolveRadius(
+      props.radius,
+      buildCmfSearchPropToken('radius', 'var(--mantine-radius-md)', { scope }),
+    ),
+    '--ai-radius-disabled': buildCmfSearchPropToken('radius-disabled', 'var(--ai-radius)', {
+      scope,
+    }),
+    '--ai-size': height,
+    '--ai-padding': buildCmfSearchPropToken('padding', '0', { scope }),
+    '--ai-bg': buildCmfSearchPropToken('bg', paint.bg, { scope }),
+    '--ai-color': buildCmfSearchPropToken('color', paint.color, { scope }),
+    '--ai-bd-color': buildCmfSearchPropToken('bd', paint.bd, { scope }),
+    '--ai-bd-width': buildCmfSearchPropToken('bd-width', MANTINE_AI_BD_WIDTH, { scope }),
+    '--ai-bd': aiBdShorthand('var(--ai-bd-color)'),
+    '--ai-hover': buildCmfSearchPropToken('hover', paint.hover, { scope }),
+    '--ai-hover-color': buildCmfSearchPropToken('hover-color', paint['hover-color'], { scope }),
+    '--ai-disabled': buildCmfSearchPropToken('disabled', MANTINE_AI_DISABLED_BG, { scope }),
+    '--ai-disabled-color': buildCmfSearchPropToken('disabled-color', MANTINE_AI_DISABLED_COLOR, {
+      scope,
+    }),
+    '--ai-disabled-bd': buildCmfSearchPropToken('disabled-bd', MANTINE_AI_DISABLED_BD, { scope }),
+  };
+}
+
 /**
  * Inline style CMF cascade (mirrors Button):
  * - with `data-cmf-*`: component(+key) → data-variant|shared
  * - without: data-variant → (shared for radius)
+ * - `data-cmf-key=search` → `--cmf-search-*` paint/size bridge
  * Size table (`--ai-size-sm`, …) stays in Mantine CSS as fallbacks only.
  */
 export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<string, string> {
   const scope: CmfScope = resolveCmfScope(props as Record<string, unknown>);
   const size = resolveActionIconSize(props.size);
   const { cascade: variant, paint } = resolveVariant(props.variant);
+
+  if (isSearchCmfKey(scope.key)) {
+    return resolveSearchActionIconRootVars(props, scope, size, paint);
+  }
 
   return {
     '--ai-radius': resolveRadius(
@@ -212,6 +265,25 @@ export function resolveActionIconRootVars(props: ActionIconVarsProps): Record<st
       tail: 'variant',
     }),
     '--ai-hover-color': buildCmfActionIconPropToken('hover-color', paint['hover-color'], {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-disabled': buildCmfActionIconPropToken('disabled', MANTINE_AI_DISABLED_BG, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--ai-disabled-color': buildCmfActionIconPropToken(
+      'disabled-color',
+      MANTINE_AI_DISABLED_COLOR,
+      {
+        scope,
+        variant,
+        tail: 'variant',
+      },
+    ),
+    '--ai-disabled-bd': buildCmfActionIconPropToken('disabled-bd', MANTINE_AI_DISABLED_BD, {
       scope,
       variant,
       tail: 'variant',

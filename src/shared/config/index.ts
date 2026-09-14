@@ -31,6 +31,16 @@ export type {
 } from './bannerSettings';
 export { BANNER_LAYOUT_KEYS, BANNER_VARIANT_KEYS } from './bannerSettings';
 export type {
+  BlockVariantSettingsMap,
+  BlockVariantSettingsValue,
+  BlockVariantSpec,
+} from './blockVariantSpec';
+export {
+  blockVariantTypeToWrapper,
+  flattenBlockVariantSettings,
+  readBlockVariantSpec,
+} from './blockVariantSpec';
+export type {
   CmfActiveConfig,
   CmfActivePosition,
   CmfActiveSettings,
@@ -81,14 +91,30 @@ export type {
   MenuSettings,
   ModalSettings,
   PopoverSettings,
+  SpotlightSettings,
 } from './overlaySettings';
 export {
   getDrawerDefaultProps,
   getMenuDefaultProps,
   getModalDefaultProps,
   getPopoverDefaultProps,
+  getSearchModalDefaultProps,
+  getSpotlightDefaultProps,
   mergeOverlayDefaultProps,
+  resolveSearchModalProps,
+  resolveSpotlightProps,
 } from './overlaySettings';
+export type { SearchSettings } from './searchSettings';
+export {
+  getSearchDefaultSpec,
+  isSearchInputBehavior,
+  isSearchOverlayBehavior,
+  isSpotlightSearchBehavior,
+  mapAsideSearchStyle,
+  mapHeaderSearchStyle,
+  mapHeaderWalletStyle,
+  readSearchSettings,
+} from './searchSettings';
 export {
   type AppParams,
   type AppSettings,

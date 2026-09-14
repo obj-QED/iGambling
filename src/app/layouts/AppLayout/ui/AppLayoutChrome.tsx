@@ -7,16 +7,16 @@ import clsx from 'clsx';
 import { useIsMobile } from '@hooks/useIsMobile';
 
 import { useCloseOnPathnameChange } from '@/shared/hooks';
-import { AppDrawer, AppDrawerProvider, useAppDrawerContext } from '@/shared/ui';
+import { AppDrawer, AppDrawerProvider, AppSearch, useAppDrawerContext } from '@/shared/ui';
 import { AppBanner } from '@/widgets/banner';
 import { AppFooter } from '@/widgets/footer';
 import { AppHeader } from '@/widgets/header';
 import { AppSidebar } from '@/widgets/sidebar';
 import { toSidebarWidthCss } from '@/widgets/sidebar/lib';
 
+import { type UseAppLayoutResult } from '../../lib/useAppLayout';
+import { lockSidebarWidth, unlockSidebarWidth } from '../lib';
 import { AppLayoutMain } from './AppLayoutMain';
-import { lockSidebarWidth, unlockSidebarWidth } from './lockSidebarWidth';
-import { type UseAppLayoutResult } from './useAppLayout';
 
 import styles from './AppLayout.module.scss';
 
@@ -127,6 +127,7 @@ function AppLayoutChromeComponent({
 
   return (
     <AppDrawerProvider>
+      <AppSearch />
       <div
         ref={rootRef}
         className={clsx(styles.root, 'cmf-Layout')}
@@ -140,10 +141,15 @@ function AppLayoutChromeComponent({
             }
           : {})}
       >
-        <SidebarSlot sidebarMenu={sidebarMenu} sidebarConfig={sidebarConfig} isMobile={isMobile} />
+        <SidebarSlot
+          sidebarMenu={resolvedMenu(sidebarMenu)}
+          sidebarConfig={sidebarConfig}
+          isMobile={isMobile}
+        />
 
         <div className={clsx(styles.content, 'cmf-Layout-content')}>
-          <Activity mode={activityMode(headerMenu !== null)}>
+          {/* Keep header mounted during shell skeleton (empty API menus + customBlocks). */}
+          <Activity mode={activityMode(skeleton || headerMenu !== null)}>
             <AppHeader
               menu={resolvedMenu(headerMenu)}
               config={headerConfig}

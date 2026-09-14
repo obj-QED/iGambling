@@ -6,8 +6,7 @@ import { IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
 
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
-import { AppActionIcon } from '@/shared/ui';
-import { AppTooltip } from '@/shared/ui';
+import { AppTooltip, SearchIconTrigger } from '@/shared/ui';
 
 import { useSidebarConfig } from '../../../../context';
 import { useAsideMenuButtonSize } from '../../../../hooks';
@@ -22,10 +21,14 @@ import {
 import itemActionIconStyles from '../../../../styles/items/ItemActionIcon.module.scss';
 
 /**
- * Compact rail search — same ActionIcon chrome as siblings (`ItemActionIcon` styles),
- * with Tabler search glyph (menu `img` is often empty).
+ * Compact rail search — ActionIcon chrome via shared SearchIconTrigger.
  */
-function SearchIconVariantComponent({ item, className }: BlockProps) {
+function SearchIconVariantComponent({
+  item,
+  className,
+  onActivate,
+  onSearchQueryChange,
+}: BlockProps) {
   const { tooltip } = useSidebarConfig();
   const size = useAsideMenuButtonSize();
   const searchGlyph = useMemo(
@@ -35,13 +38,14 @@ function SearchIconVariantComponent({ item, className }: BlockProps) {
 
   if (!isRenderableItem(item)) return null;
 
+  const isAction = onActivate !== undefined || onSearchQueryChange !== undefined;
   const placeholder = item.name ?? 'Search';
-  const href = resolveItemHref(item.url);
+  const href = isAction ? undefined : resolveItemHref(item.url);
   const label = resolveItemLabel(item);
   const ariaLabel = label.length > 0 ? label : placeholder;
 
   const control = (
-    <AppActionIcon
+    <SearchIconTrigger
       name={item.name}
       img={item.img}
       href={href}
@@ -49,13 +53,15 @@ function SearchIconVariantComponent({ item, className }: BlockProps) {
       variant={resolveMenuItemActionIconVariant(item)}
       size={size}
       aria-label={ariaLabel}
-      active={item.active}
-      matchRoute={item.matchRoute}
+      active={isAction ? false : item.active}
+      matchRoute={isAction ? false : item.matchRoute}
       activeMatch={item.activeMatch}
-      {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar' }))}
+      onActivate={onActivate}
+      onSearchQueryChange={onSearchQueryChange}
+      {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar', key: 'search' }))}
     >
       {searchGlyph}
-    </AppActionIcon>
+    </SearchIconTrigger>
   );
 
   if (!hasItemName(item)) return control;

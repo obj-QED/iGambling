@@ -1,4 +1,4 @@
-export { AdapterBoundary } from './AdapterBoundary';
+export { AdapterBoundary, LazyHost } from './AdapterBoundary';
 export {
   AdapterPendingFallback,
   AdapterPendingProvider,

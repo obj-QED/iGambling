@@ -47,7 +47,7 @@ export default defineConfig(({ mode }) => {
   const isProd = mode === 'production';
   const shouldAnalyze = env.VITE_ANALYZE === 'true';
   /** GitHub Pages / CDN subpath — e.g. `VITE_BASE=/iGambling/build/` for Pages. */
-  const base = env.VITE_BASE.trim() || '/';
+  const base = (env.VITE_BASE ?? '').trim() || '/';
   return {
     base,
     plugins: [

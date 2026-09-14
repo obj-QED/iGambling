@@ -47,7 +47,12 @@ export function waitForDocumentFonts(): Promise<void> {
   if (typeof document === 'undefined') {
     return Promise.resolve();
   }
-  return document.fonts.ready.then(() => undefined);
+
+  try {
+    return document.fonts.ready.then(() => undefined);
+  } catch {
+    return Promise.resolve();
+  }
 }
 
 function waitForInlineSvgHost(host: Element, signal?: AbortSignal): Promise<void> {

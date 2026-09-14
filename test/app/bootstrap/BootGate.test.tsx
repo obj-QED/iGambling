@@ -29,12 +29,12 @@ describe('BootGate', () => {
     skeletonEnabled.current = true;
   });
 
-  it('keeps one preloader across bootstrap while skeleton is off', () => {
+  it('mounts shell under preloader while bootstrap is pending (skeleton off)', () => {
     skeletonEnabled.current = false;
     const { rerender } = renderGate(true);
 
     expect(screen.getByRole('status', { name: /loading/i })).toBeInTheDocument();
-    expect(screen.queryByText('app-shell')).not.toBeInTheDocument();
+    expect(screen.getByText('app-shell')).toBeInTheDocument();
 
     rerender(
       <AdapterPendingProvider>
@@ -43,6 +43,13 @@ describe('BootGate', () => {
         </BootGate>
       </AdapterPendingProvider>,
     );
+
+    expect(screen.getByRole('status', { name: /loading/i })).toBeInTheDocument();
+    expect(screen.getByText('app-shell')).toBeInTheDocument();
+  });
+
+  it('mounts shell under preloader while bootstrap is pending (skeleton on)', () => {
+    renderGate(true);
 
     expect(screen.getByRole('status', { name: /loading/i })).toBeInTheDocument();
     expect(screen.getByText('app-shell')).toBeInTheDocument();

@@ -22,6 +22,27 @@
   }
 }
 
+/// Beat Mantine disabled paint (`--mantine-color-disabled*`) with CMF cascade vars
+/// (`--{prefix}-disabled` / `-color` / `-bd`). Accepts solid or gradient via `background`.
+@mixin cmf-control-disabled-paint($prefix) {
+  &:where(
+    :disabled:not([data-loading]),
+    [data-disabled]:not([data-loading]),
+    [aria-disabled='true']:not([data-loading])
+  ) {
+    cursor: not-allowed;
+    transform: none;
+    color: var(--#{$prefix}-disabled-color, var(--mantine-color-disabled-color));
+    background: var(--#{$prefix}-disabled, var(--mantine-color-disabled)) border-box !important;
+    border: var(--#{$prefix}-bd-width, calc(0.0625rem * var(--mantine-scale))) solid
+      var(--#{$prefix}-disabled-bd, transparent);
+
+    &::before {
+      content: none !important;
+    }
+  }
+}
+
 /// Host radius from active tokens. Cascade (JS): corner → `--*-active-radius` →
 /// `--*-radius`. So `--cmf-*-active-radius: 0` squares all; only `-tl`/`-bl`
 /// squares the rail edge and keeps the opposite corners as control radius.

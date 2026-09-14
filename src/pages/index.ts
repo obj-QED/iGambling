@@ -6,9 +6,9 @@ export const LoginPage = lazy(() => import('./Login/LoginPage'));
 
 export const RegisterPage = lazy(() => import('./Register/RegisterPage'));
 
-export const NotFoundPage = lazy(() => import('./NotFound/NotFoundPage'));
+export const NotFoundPage = lazy(() => import('./errors/NotFoundPage'));
 
-export const ServerErrorPage = lazy(() => import('./ServerError/ServerErrorPage'));
+export const ServerErrorPage = lazy(() => import('./errors/ServerErrorPage'));
 
 export const ProfileActivationPage = lazy(
   () => import('./ProfileActivation/ProfileActivationPage'),

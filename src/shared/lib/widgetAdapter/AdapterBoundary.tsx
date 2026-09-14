@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 
 import { memo, Suspense } from 'react';
 
@@ -58,3 +58,14 @@ function AdapterBoundaryComponent({ children, fallback }: AdapterBoundaryProps) 
 
 export const AdapterBoundary = memo(AdapterBoundaryComponent);
 AdapterBoundary.displayName = 'AdapterBoundary';
+
+/**
+ * Module-level host for components resolved in render (`useAdapter`, `useWrapper`,
+ * layout registries). Callers pass `component={Adapter}` instead of `<Adapter />`.
+ */
+export function LazyHost<P extends object>({
+  component: Component,
+  ...props
+}: { component: ComponentType<P> } & P) {
+  return <Component {...(props as P)} />;
+}

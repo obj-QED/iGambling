@@ -28,6 +28,9 @@
   --aside-header-border-color: #111;
   --cmf-button-sidebar-bd-width: 10px;
 
+  /* AppSearch TextInput — same radius as sidebar buttons */
+  --cmf-search-sidebar-radius: var(--cmf-button-sidebar-radius, var(--cmf-search-radius));
+
   /* Header region chrome */
   --header-logo-width: 120px;
   --aside-header-gap: var(--spacing-xs, 0.375rem);

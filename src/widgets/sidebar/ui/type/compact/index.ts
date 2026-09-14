@@ -2,7 +2,7 @@ import type { SidebarTypePack } from '../types';
 
 import { Logo } from '../../blocks/Logo/Logo';
 import { PromoIconVariant } from '../../blocks/PromoBlock/variants/PromoIconVariant';
-import { SearchIconVariant } from '../../blocks/Search/variants/SearchIconVariant';
+import { Search } from '../../blocks/Search/Search';
 import { SIDEBAR_TYPE_TUNABLE_DEFAULTS } from '../tunableDefaults';
 import { CompactFooterLink } from './FooterLink';
 import { CompactHeaderLink } from './HeaderLink';
@@ -20,8 +20,11 @@ export const compactTypePack: SidebarTypePack = {
   HeaderLink: CompactHeaderLink,
   FooterLink: CompactFooterLink,
   blocks: {
-    /** Sync adapters — avoid lazy Suspense wrapping compact `li > *` ActionIcon layout. */
-    search_leftmenu: SearchIconVariant,
+    /**
+     * Use Search router (not bare SearchIconVariant) so AppSearch onActivate
+     * is wired — icon chrome comes from blockVariants.search = icon.
+     */
+    search_leftmenu: Search,
     timer: PromoIconVariant,
     wheel_mdl: PromoIconVariant,
     aside_header_logo: Logo,

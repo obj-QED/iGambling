@@ -1,0 +1,11 @@
+@layer components {
+  /** Overlay trigger (modal / spotlight) — button-like, not text caret. */
+  .overlay {
+    cursor: pointer;
+
+    :global(.cmf-TextInput-input),
+    :global(input) {
+      cursor: pointer;
+    }
+  }
+}

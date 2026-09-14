@@ -2,14 +2,19 @@ import type { HeaderSchema } from '../types';
 import type { MenuItemDto } from '@/shared/types/menu';
 
 import {
+  flattenBlockVariantSettings,
+  getSearchDefaultSpec,
   getSettings,
   type HeaderBlockVariantSettings,
   type HeaderCustomBlockConfig,
   type HeaderCustomBlockInput,
   type HeaderCustomBlockSettings,
   type HeaderSettings,
+  mapHeaderSearchStyle,
+  mapHeaderWalletStyle,
   type MenuSettings,
   resolveCmfActiveConfig,
+  type SearchSettings,
 } from '@/shared/config';
 import { isRecord, pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
@@ -82,7 +87,7 @@ function resolveCustomBlocks(header: HeaderSchemaLayer): HeaderSchema['customBlo
 
 function mergeBlockVariants(
   base: HeaderSchema['blockVariants'],
-  layer: HeaderBlockVariantSettings | undefined,
+  layer: HeaderSchema['blockVariants'] | undefined,
 ): HeaderSchema['blockVariants'] {
   if (!layer) return { ...base };
   return { ...base, ...layer };
@@ -96,30 +101,38 @@ function resolveWrapperMode(raw: unknown, fallback: WrapperMode = 'none'): Wrapp
   );
 }
 
+function mapHeaderBlockStyle(domain: string, style: string | undefined): string | undefined {
+  if (domain === 'search') return mapHeaderSearchStyle(style);
+  if (domain === 'wallet') return mapHeaderWalletStyle(style);
+  return style;
+}
+
 /**
- * Legacy blockVariants `drawer` / `modal` → wrappers + compact content variant.
- * Other keys/values stay as given in settings.
+ * Flatten `{ type, style }` / legacy strings → adapter keys + wrappers.
+ * Cascade: `params.search` → layer `blockVariants`.
  */
-function remapLegacyOverlayVariants(
+function flattenHeaderBlockVariants(
   overlay: HeaderBlockVariantSettings | undefined,
   wrappers: HeaderSchema['wrappers'],
-): { overlay: HeaderBlockVariantSettings | undefined; wrappers: HeaderSchema['wrappers'] } {
-  if (!overlay) return { overlay, wrappers };
-
-  const nextVariants = { ...overlay };
-  const nextWrappers = { ...wrappers };
-
-  if (nextVariants.wallet === 'drawer') {
-    nextWrappers.wallet = nextWrappers.wallet ?? 'drawer';
-    nextVariants.wallet = 'compact';
-  }
-
-  if (nextVariants.search === 'modal') {
-    nextWrappers.search = nextWrappers.search ?? 'modal';
-    nextVariants.search = 'compact';
-  }
-
-  return { overlay: nextVariants, wrappers: nextWrappers };
+  behaviors: HeaderSchema['behaviors'],
+  searchDefaults?: SearchSettings,
+): {
+  variants: HeaderSchema['blockVariants'];
+  wrappers: HeaderSchema['wrappers'];
+  behaviors: HeaderSchema['behaviors'];
+} {
+  const flat = flattenBlockVariantSettings(overlay, wrappers, {
+    baseBehaviors: behaviors,
+    domainDefaults: searchDefaults
+      ? { search: { type: searchDefaults.type, style: searchDefaults.style } }
+      : undefined,
+    mapStyle: mapHeaderBlockStyle,
+  });
+  return {
+    variants: flat.variants as HeaderSchema['blockVariants'],
+    wrappers: flat.wrappers as HeaderSchema['wrappers'],
+    behaviors: flat.behaviors,
+  };
 }
 
 function resolveWrappers(raw: HeaderSchemaLayer['wrappers'] | undefined): HeaderSchema['wrappers'] {
@@ -162,17 +175,27 @@ function resolveMenu(raw: unknown): MenuSettings | undefined {
   return Object.keys(out).length > 0 ? (out as MenuSettings) : undefined;
 }
 
-function coerceHeaderSchema(merged: HeaderSchema & HeaderSchemaLayer): HeaderSchema {
+function coerceHeaderSchema(
+  merged: HeaderSchema & HeaderSchemaLayer,
+  searchDefaults?: SearchSettings,
+): HeaderSchema {
   const type = readSettingsKey(merged.type, DEFAULT_HEADER_CONFIG.type);
   const packDefaults = resolveHeaderTypeTunableDefaults(type);
   const wrappersFromSettings = resolveWrappers(merged.wrappers);
-  const remappedLegacy = remapLegacyOverlayVariants(merged.blockVariants, wrappersFromSettings);
-  const remappedNested = remapLegacyOverlayVariants(
-    merged.types?.[type]?.blockVariants,
-    remappedLegacy.wrappers,
+  const flatGlobal = flattenHeaderBlockVariants(
+    merged.blockVariants,
+    wrappersFromSettings,
+    {},
+    searchDefaults,
   );
-  const withLegacy = mergeBlockVariants(packDefaults.blockVariants, remappedLegacy.overlay);
-  const blockVariants = mergeBlockVariants(withLegacy, remappedNested.overlay);
+  const flatNested = flattenHeaderBlockVariants(
+    merged.types?.[type]?.blockVariants,
+    flatGlobal.wrappers,
+    flatGlobal.behaviors,
+    searchDefaults,
+  );
+  const withPack = mergeBlockVariants(packDefaults.blockVariants, flatGlobal.variants);
+  const blockVariants = mergeBlockVariants(withPack, flatNested.variants);
   const menu = resolveMenu(merged.menu);
 
   return {
@@ -180,7 +203,8 @@ function coerceHeaderSchema(merged: HeaderSchema & HeaderSchemaLayer): HeaderSch
     layout: readSettingsKey(merged.layout, DEFAULT_HEADER_CONFIG.layout),
     type,
     blockVariants,
-    wrappers: remappedNested.wrappers,
+    wrappers: flatNested.wrappers,
+    behaviors: flatNested.behaviors,
     behavior: resolveBehavior(merged.behavior),
     capabilities: resolveCapabilities(merged.capabilities),
     customBlocks: resolveCustomBlocks(merged),
@@ -194,10 +218,14 @@ function coerceHeaderSchema(merged: HeaderSchema & HeaderSchemaLayer): HeaderSch
  * Resolve header schema: defaults → global → brand → page → props.
  * Brand/page optional until sources exist.
  */
-export function resolveHeaderSchema(layers: SchemaLayers<HeaderSchema> = {}): HeaderSchema {
+export function resolveHeaderSchema(
+  layers: SchemaLayers<HeaderSchema> = {},
+  searchDefaults?: SearchSettings,
+): HeaderSchema {
   return resolveWidgetSchema(DEFAULT_HEADER_CONFIG, layers, {
     supportedVersions: [1, 2],
-    coerce: (merged) => coerceHeaderSchema(merged as HeaderSchema & HeaderSchemaLayer),
+    coerce: (merged) =>
+      coerceHeaderSchema(merged as HeaderSchema & HeaderSchemaLayer, searchDefaults),
   });
 }
 
@@ -208,8 +236,11 @@ export function resolveHeaderConfig(
   settings = getSettings(),
   overrides?: Partial<HeaderSettings>,
 ): HeaderSchema {
-  return resolveHeaderSchema({
-    global: settings.header as Partial<HeaderSchema> | undefined,
-    props: overrides as Partial<HeaderSchema> | undefined,
-  });
+  return resolveHeaderSchema(
+    {
+      global: settings.header as Partial<HeaderSchema> | undefined,
+      props: overrides as Partial<HeaderSchema> | undefined,
+    },
+    getSearchDefaultSpec(settings),
+  );
 }

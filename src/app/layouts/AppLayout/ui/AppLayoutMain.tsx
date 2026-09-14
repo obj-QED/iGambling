@@ -1,4 +1,4 @@
-import type { PageLayoutMatch } from '../lib/resolvePageLayout';
+import type { PageLayoutMatch } from '../../lib/resolvePageLayout';
 
 import { memo, Suspense } from 'react';
 
@@ -6,7 +6,15 @@ import { Container } from '@mantine/core';
 import clsx from 'clsx';
 import { Outlet, useMatches } from 'react-router-dom';
 
-import { resolvePageLayoutFromMatches } from '../lib/resolvePageLayout';
+import {
+  resolveSearchSchema,
+  SearchResults,
+  shouldShowSearchResults,
+  useSearchPageMode,
+  useSearchQuery,
+} from '@/shared/ui';
+
+import { resolvePageLayoutFromMatches } from '../../lib/resolvePageLayout';
 import { AppPageSkeleton } from './AppPageSkeleton';
 
 import styles from './AppLayout.module.scss';
@@ -19,8 +27,14 @@ import styles from './AppLayout.module.scss';
  */
 function AppLayoutMainComponent() {
   const pageLayout = resolvePageLayoutFromMatches(useMatches() as unknown as PageLayoutMatch[]);
+  const query = useSearchQuery();
+  const pageMode = useSearchPageMode();
+  const globalType = resolveSearchSchema().type;
+  const showResults = shouldShowSearchResults({ query, pageMode, globalType });
 
-  const page = (
+  const page = showResults ? (
+    <SearchResults query={query} />
+  ) : (
     <Suspense fallback={<AppPageSkeleton />}>
       <Outlet />
     </Suspense>

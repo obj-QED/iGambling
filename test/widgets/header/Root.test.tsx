@@ -1,28 +1,15 @@
 import type { HeaderMenuModel } from '@/widgets/header';
 
+import { configureStore } from '@reduxjs/toolkit';
 import { MantineProvider } from '@mantine/core';
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
 import { AppHeader, DEFAULT_HEADER_CONFIG } from '@/widgets/header';
-
-beforeAll(() => {
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: () => undefined,
-      removeListener: () => undefined,
-      addEventListener: () => undefined,
-      removeEventListener: () => undefined,
-      dispatchEvent: () => false,
-    }),
-  });
-});
+import { contextReducer } from '@store/slices/contextSlice';
 
 const SAMPLE_MENU: HeaderMenuModel = {
   sections: [
@@ -47,47 +34,15 @@ const SAMPLE_MENU: HeaderMenuModel = {
   ],
 };
 
-function renderHeader() {
+function renderHeader(menu: HeaderMenuModel = SAMPLE_MENU) {
+  const store = configureStore({ reducer: { context: contextReducer } });
+
   return render(
-    <MantineProvider theme={mantineTheme} defaultColorScheme="light">
-      <MemoryRouter>
-        <AppHeader
-          menu={SAMPLE_MENU}
-          config={{
-            ...DEFAULT_HEADER_CONFIG,
-            layout: 'container',
-            type: 'default',
-            blockVariants: {},
-            tooltip: {
-              enabled: false,
-              position: 'top',
-              delay: 0,
-              closeDelay: 300,
-              withArrow: true,
-              offset: 5,
-            },
-          }}
-        />
-      </MemoryRouter>
-    </MantineProvider>,
-  );
-}
-
-describe('AppHeader', () => {
-  it('renders special blocks, logo and dropdown trigger', async () => {
-    renderHeader();
-
-    expect(screen.getByRole('button', { name: /logo/i })).toBeInTheDocument();
-    expect(await screen.findByRole('button', { name: 'search' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Profile' })).toBeInTheDocument();
-  });
-
-  it('renders nothing when menu has no visible items', () => {
-    render(
+    <Provider store={store}>
       <MantineProvider theme={mantineTheme} defaultColorScheme="light">
         <MemoryRouter>
           <AppHeader
-            menu={{ sections: [{ key: 'empty', items: [{ key: 'x', name: '', url: '' }] }] }}
+            menu={menu}
             config={{
               ...DEFAULT_HEADER_CONFIG,
               layout: 'container',
@@ -104,8 +59,22 @@ describe('AppHeader', () => {
             }}
           />
         </MemoryRouter>
-      </MantineProvider>,
-    );
+      </MantineProvider>
+    </Provider>,
+  );
+}
+
+describe('AppHeader', () => {
+  it('renders special blocks, logo and dropdown trigger', async () => {
+    renderHeader();
+
+    expect(screen.getByRole('button', { name: /logo/i })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'search' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Profile' })).toBeInTheDocument();
+  });
+
+  it('renders nothing when menu has no visible items', () => {
+    renderHeader({ sections: [{ key: 'empty', items: [{ key: 'x', name: '', url: '' }] }] });
 
     expect(screen.queryByRole('banner')).not.toBeInTheDocument();
   });

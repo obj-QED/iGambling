@@ -60,6 +60,11 @@ function normalizedLobbyToken(token: string | null | undefined): string | undefi
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
+/** One language on the wire — do not let the browser send a bilingual Accept-Language. */
+function lobbyLanguageHeaders(language: string): { 'Accept-Language': string } {
+  return { 'Accept-Language': language };
+}
+
 export function toInitV2Content(value: unknown): InitV2Content {
   return toInitPayload(value);
 }
@@ -76,6 +81,7 @@ export async function fetchTranslation(
   assertLobbyCommand('translation');
   const { data } = await lobbyApiClient.get<unknown>(API_LOBBY_PATH, {
     params: { translation: language },
+    headers: lobbyLanguageHeaders(language),
     signal,
   });
   return toApiEnvelope(data, toWords);
@@ -97,7 +103,7 @@ export async function initV2(
       // still visible in DevTools Network; backend should stop echoing tokens into JSON.
       ...(token && { token }),
     },
-    { signal },
+    { headers: lobbyLanguageHeaders(params.language), signal },
   );
   return toApiEnvelope(data, toInitV2Content);
 }
@@ -117,7 +123,7 @@ export async function getPage(
       page: params.page,
       ...(token && { token }),
     },
-    { signal },
+    { headers: lobbyLanguageHeaders(params.language), signal },
   );
   return toApiEnvelope(data, toGetPageContent);
 }

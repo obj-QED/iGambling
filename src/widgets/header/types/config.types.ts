@@ -19,6 +19,9 @@ export type HeaderBehaviorConfig = {
 
 export type HeaderWrappersConfig = Partial<Record<string, WrapperMode>>;
 
+/** Settings `type` per domain (`modal` | `spotlight` | `input` | …). */
+export type HeaderBehaviorsConfig = Partial<Record<string, string>>;
+
 export type HeaderCapabilitiesConfig = Record<string, boolean>;
 
 /**
@@ -31,6 +34,8 @@ export type HeaderSchema = {
   type: HeaderTypeKey;
   blockVariants: HeaderBlockVariants;
   wrappers: HeaderWrappersConfig;
+  /** Behavior mode from settings `type` (e.g. search → `spotlight`). */
+  behaviors: HeaderBehaviorsConfig;
   behavior: HeaderBehaviorConfig;
   capabilities: HeaderCapabilitiesConfig;
   customBlocks?: HeaderCustomBlockConfig[];

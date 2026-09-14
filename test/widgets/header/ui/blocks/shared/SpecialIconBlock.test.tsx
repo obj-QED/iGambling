@@ -4,7 +4,7 @@ import { MantineProvider } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
 import { DEFAULT_HEADER_CONFIG } from '@/widgets/header/config/defaults';
@@ -23,22 +23,6 @@ function renderSpecialIconBlock(props: ComponentProps<typeof SpecialIconBlock>) 
     </MantineProvider>,
   );
 }
-
-beforeAll(() => {
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: () => undefined,
-      removeListener: () => undefined,
-      addEventListener: () => undefined,
-      removeEventListener: () => undefined,
-      dispatchEvent: () => false,
-    }),
-  });
-});
 
 describe('SpecialIconBlock', () => {
   it('does not render without name and img', () => {

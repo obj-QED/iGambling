@@ -10,11 +10,15 @@ import {
   type AsideScrollAreaSettings,
   type AsideSettings,
   type DrawerSettings,
+  flattenBlockVariantSettings,
+  getSearchDefaultSpec,
   getSettings,
   type HeaderCustomBlockConfig,
   type HeaderCustomBlockInput,
   type HeaderCustomBlockSettings,
+  mapAsideSearchStyle,
   resolveCmfActiveConfig,
+  type SearchSettings,
 } from '@/shared/config';
 import { isRecord, pickUnionValue, readSettingsKey, readString } from '@/shared/lib/coercion';
 import { parseMenuItemDto } from '@/shared/lib/menu';
@@ -178,7 +182,7 @@ function resolveBehavior(
 
 function mergeBlockVariants(
   base: SidebarSchema['blockVariants'],
-  overlay: SidebarSchemaLayer['blockVariants'] | undefined,
+  overlay: SidebarSchema['blockVariants'] | undefined,
 ): SidebarSchema['blockVariants'] {
   if (overlay === undefined) return { ...base };
   return { ...base, ...overlay };
@@ -194,7 +198,7 @@ function adapterForType(type: string): string {
 function typePackBlockVariants(
   aside: SidebarSchemaLayer,
   type: string,
-): SidebarSchemaLayer['blockVariants'] | undefined {
+): AsideSettings['blockVariants'] | undefined {
   const types = aside.types;
   if (types === undefined) {
     return undefined;
@@ -208,7 +212,7 @@ function typePackBlockVariants(
 
 function mergeBlockVariantLayers(
   base: SidebarSchema['blockVariants'],
-  overlays: ReadonlyArray<SidebarSchemaLayer['blockVariants'] | undefined>,
+  overlays: ReadonlyArray<SidebarSchema['blockVariants'] | undefined>,
 ): SidebarSchema['blockVariants'] {
   if (overlays.length === 0) {
     return { ...base };
@@ -222,36 +226,88 @@ function mergeBlockVariantLayers(
 
 function layerBlockVariants(
   layer: SidebarSchemaLayer | undefined,
-): SidebarSchemaLayer['blockVariants'] | undefined {
+): AsideSettings['blockVariants'] | undefined {
   if (layer === undefined) {
     return undefined;
   }
   return layer.blockVariants;
 }
 
+function mapAsideBlockStyle(domain: string, style: string | undefined): string | undefined {
+  if (domain === 'search') return mapAsideSearchStyle(style);
+  return style;
+}
+
+function flattenAsideLayerVariants(
+  overlay: AsideSettings['blockVariants'] | undefined,
+  wrappers: SidebarSchema['wrappers'],
+  behaviors: SidebarSchema['behaviors'],
+  searchDefaults?: SearchSettings,
+): {
+  variants: SidebarSchema['blockVariants'];
+  wrappers: SidebarSchema['wrappers'];
+  behaviors: SidebarSchema['behaviors'];
+} {
+  const flat = flattenBlockVariantSettings(overlay, wrappers, {
+    aliases: { search_leftmenu: 'search' },
+    baseBehaviors: behaviors,
+    domainDefaults: searchDefaults
+      ? { search: { type: searchDefaults.type, style: searchDefaults.style } }
+      : undefined,
+    mapStyle: mapAsideBlockStyle,
+  });
+  return {
+    variants: flat.variants as SidebarSchema['blockVariants'],
+    wrappers: flat.wrappers as SidebarSchema['wrappers'],
+    behaviors: flat.behaviors,
+  };
+}
+
 /**
  * Derive adapter variants from type when unset: compact → icon, else row.
- * Cascade: pack/type derive → legacy `aside.blockVariants` → `aside.types[type].blockVariants`.
+ * Cascade: pack/type derive → flattened `aside.blockVariants` (+ `params.search`) →
+ * `aside.types[type].blockVariants`. `search_leftmenu` aliases to `search`.
  */
-function resolveBlockVariants(
+function resolveBlockVariantsAndWrappers(
   aside: SidebarSchemaLayer,
   type: string,
   layers: SchemaLayers<SidebarSchemaLayer>,
-): SidebarSchema['blockVariants'] {
+  baseWrappers: SidebarSchema['wrappers'],
+  searchDefaults?: SearchSettings,
+): {
+  blockVariants: SidebarSchema['blockVariants'];
+  wrappers: SidebarSchema['wrappers'];
+  behaviors: SidebarSchema['behaviors'];
+} {
   const adapter = adapterForType(type);
-  return mergeBlockVariantLayers(
-    {
-      search: adapter,
-      promo: adapter,
-    },
-    [
-      layerBlockVariants(layers.global),
-      layerBlockVariants(layers.brand),
-      layerBlockVariants(layers.page),
-      layerBlockVariants(layers.props),
-      typePackBlockVariants(aside, type),
-    ],
-  );
+  let wrappers = { ...baseWrappers };
+  let behaviors: SidebarSchema['behaviors'] = {};
+
+  const flattenedLayers: SidebarSchema['blockVariants'][] = [];
+  for (const overlay of [
+    layerBlockVariants(layers.global),
+    layerBlockVariants(layers.brand),
+    layerBlockVariants(layers.page),
+    layerBlockVariants(layers.props),
+    typePackBlockVariants(aside, type),
+  ]) {
+    const flat = flattenAsideLayerVariants(overlay, wrappers, behaviors, searchDefaults);
+    wrappers = flat.wrappers;
+    behaviors = flat.behaviors;
+    flattenedLayers.push(flat.variants);
+  }
+
+  return {
+    blockVariants: mergeBlockVariantLayers(
+      {
+        search: adapter,
+        promo: adapter,
+      },
+      flattenedLayers,
+    ),
+    wrappers,
+    behaviors,
+  };
 }
 
 function coerceSidebarSchema(
@@ -262,12 +318,20 @@ function coerceSidebarSchema(
     drawer?: SidebarSchemaLayer['drawer'];
   },
   layers: SchemaLayers<SidebarSchemaLayer>,
+  searchDefaults?: SearchSettings,
 ): SidebarSchema {
   const width = resolveSidebarWidth(merged.width);
   const type = readSettingsKey(merged.type, DEFAULT_SIDEBAR_CONFIG.type);
   const packDefaults = resolveSidebarTypeTunableDefaults(type);
   const typeTunables = merged.types?.[type];
   const drawer = resolveDrawer(settingsOverlay.drawer ?? merged.drawer);
+  const { blockVariants, wrappers, behaviors } = resolveBlockVariantsAndWrappers(
+    merged,
+    type,
+    layers,
+    resolveWrappers(merged.wrappers),
+    searchDefaults,
+  );
 
   return {
     version: merged.version === 2 ? 2 : 1,
@@ -279,7 +343,7 @@ function coerceSidebarSchema(
       merged.controlFit,
       DEFAULT_SIDEBAR_CONFIG.controlFit,
     ),
-    blockVariants: resolveBlockVariants(merged, type, layers),
+    blockVariants,
     openedDropdowns: resolveOpenedDropdowns(merged),
     specialBlockKeys: resolveSpecialBlockKeys(merged),
     customBlocks: resolveCustomBlocks(merged, type),
@@ -288,7 +352,8 @@ function coerceSidebarSchema(
     tooltip: resolveTooltipConfig(packDefaults.tooltip, settingsOverlay.tooltip),
     ...(drawer ? { drawer } : {}),
     active: resolveCmfActiveConfig(merged.active, DEFAULT_SIDEBAR_CONFIG.active),
-    wrappers: resolveWrappers(merged.wrappers),
+    wrappers,
+    behaviors,
     behavior: resolveBehavior(merged.behavior),
     capabilities: {
       ...DEFAULT_SIDEBAR_CONFIG.capabilities,
@@ -309,7 +374,10 @@ function pickLayerField<T>(
   );
 }
 
-export function resolveSidebarSchema(layers: SchemaLayers<SidebarSchema> = {}): SidebarSchema {
+export function resolveSidebarSchema(
+  layers: SchemaLayers<SidebarSchema> = {},
+  searchDefaults?: SearchSettings,
+): SidebarSchema {
   const settingsOverlay = {
     tooltip: pickLayerField<SidebarSchemaLayer['tooltip']>(
       layers as SchemaLayers<SidebarSchemaLayer>,
@@ -332,6 +400,7 @@ export function resolveSidebarSchema(layers: SchemaLayers<SidebarSchema> = {}): 
         merged as SidebarSchema & SidebarSchemaLayer,
         settingsOverlay,
         layers as SchemaLayers<SidebarSchemaLayer>,
+        searchDefaults,
       ),
   });
 }
@@ -343,8 +412,11 @@ export function resolveSidebarConfig(
   settings = getSettings(),
   overrides?: Partial<AsideSettings>,
 ): SidebarSchema {
-  return resolveSidebarSchema({
-    global: settings.aside as Partial<SidebarSchema> | undefined,
-    props: overrides as Partial<SidebarSchema> | undefined,
-  });
+  return resolveSidebarSchema(
+    {
+      global: settings.aside as Partial<SidebarSchema> | undefined,
+      props: overrides as Partial<SidebarSchema> | undefined,
+    },
+    getSearchDefaultSpec(settings),
+  );
 }

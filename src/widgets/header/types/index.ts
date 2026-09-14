@@ -1,6 +1,7 @@
 export type { SpecialIconBlockProps } from './block.types';
 export type {
   HeaderBehaviorConfig,
+  HeaderBehaviorsConfig,
   HeaderCapabilitiesConfig,
   HeaderConfig,
   HeaderSchema,

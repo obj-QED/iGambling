@@ -4,6 +4,7 @@ import type { ComponentType, LazyExoticComponent } from 'react';
 import { lazy, Suspense } from 'react';
 
 import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 
@@ -16,7 +17,9 @@ import {
   mantineCssVariablesResolver,
   mantineTheme,
 } from '@/assets/theme';
+import { getModalDefaultProps } from '@/shared/config';
 
+import { appModals } from './appModals';
 import { DeviceBodySync } from './DeviceBodySync';
 import { ScrollFullscreenSync } from './ScrollFullscreenSync';
 
@@ -57,9 +60,11 @@ export function Providers({ children }: ProvidersProps) {
           cssVariablesResolver={mantineCssVariablesResolver}
           deduplicateInlineStyles
         >
-          <DeviceBodySync />
-          <ScrollFullscreenSync />
-          {children}
+          <ModalsProvider modals={appModals} modalProps={getModalDefaultProps()}>
+            <DeviceBodySync />
+            <ScrollFullscreenSync />
+            {children}
+          </ModalsProvider>
         </MantineProvider>
         <QueryDevtools />
       </QueryClientProvider>

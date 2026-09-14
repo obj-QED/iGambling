@@ -2,14 +2,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MantineProvider } from '@mantine/core';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { UseAppLayoutResult } from '@/app/layouts/AppLayout/useAppLayout';
+import type { UseAppLayoutResult } from '@/app/layouts/lib/useAppLayout';
 import { AppLayout } from '@/app/layouts/AppLayout/AppLayout';
 import { mantineTheme } from '@/assets/theme';
 
 const useAppLayoutMock = vi.fn();
 const skeletonEnabled = vi.hoisted(() => ({ current: true }));
 
-vi.mock('@/app/layouts/AppLayout/useAppLayout', () => ({
+vi.mock('@/app/layouts/lib/useAppLayout', () => ({
   useAppLayout: (...args: unknown[]) => useAppLayoutMock(...args),
 }));
 
@@ -25,7 +25,7 @@ vi.mock('@/shared/config', async (importOriginal) => {
   };
 });
 
-vi.mock('@/app/layouts/AppLayout/AppLayoutChrome', () => ({
+vi.mock('@/app/layouts/AppLayout/ui', () => ({
   AppLayoutChrome: ({ skeleton }: { skeleton?: boolean }) => (
     <div>{skeleton ? 'chrome-skeleton' : 'chrome-ready'}</div>
   ),

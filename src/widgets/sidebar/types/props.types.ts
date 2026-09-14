@@ -17,6 +17,13 @@ export type SidebarTypeStrategyProps = {
 export type BlockProps = {
   item: HeaderMenuItem;
   className?: string;
+  /** Overlay / command-center activate (modal | spotlight). */
+  onActivate?: () => void;
+  /** Show ⌘/Ctrl+K badge on input-style trigger (spotlight). */
+  showHotkeyBadge?: boolean;
+  /** Controlled query for `type: input` trigger. */
+  searchQuery?: string;
+  onSearchQueryChange?: (query: string) => void;
 };
 
 export type SectionProps = {

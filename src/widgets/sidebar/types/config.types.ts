@@ -36,6 +36,9 @@ export type SidebarBehaviorConfig = {
 
 export type SidebarWrappersConfig = Partial<Record<string, WrapperMode>>;
 
+/** Settings `type` per domain (`modal` | `spotlight` | `input` | …). */
+export type SidebarBehaviorsConfig = Partial<Record<string, string>>;
+
 export type SidebarCapabilitiesConfig = Record<string, boolean>;
 
 /**
@@ -83,6 +86,8 @@ export type SidebarSchema = {
   /** Active route chrome — omit in settings → `element` (CSS `::after`). */
   active: CmfActiveConfig;
   wrappers: SidebarWrappersConfig;
+  /** Behavior mode from settings `type` (e.g. search → `spotlight`). */
+  behaviors: SidebarBehaviorsConfig;
   behavior: SidebarBehaviorConfig;
   capabilities: SidebarCapabilitiesConfig;
 };

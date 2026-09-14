@@ -5,6 +5,7 @@ import { memo, useCallback, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
 
+import { LazyHost } from '@/shared/lib';
 import { CmfActiveIndicatorProvider } from '@/shared/ui/CmfActiveLine';
 import { mergeCustomBlock } from '@/widgets/header';
 
@@ -140,8 +141,9 @@ function RootComponent({ menu, config, className }: RootProps) {
                   rootStyle={rootStyle}
                   width={config.width}
                 >
-                  {/* eslint-disable-next-line react-hooks/static-components -- registry returns stable layout components */}
-                  <Layout layout={config.layout}>{strategyNode}</Layout>
+                  <LazyHost component={Layout} layout={config.layout}>
+                    {strategyNode}
+                  </LazyHost>
                 </SidebarAsideShell>
               </SidebarSlideoutProvider>
             </SidebarDropdownProvider>

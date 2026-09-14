@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { lockSidebarWidth, unlockSidebarWidth } from '@/app/layouts/AppLayout/lockSidebarWidth';
+import { lockSidebarWidth, unlockSidebarWidth } from '@/app/layouts/AppLayout/lib/lockSidebarWidth';
 
 describe('lockSidebarWidth', () => {
   it('writes a used-width lock onto the sidebar CSS token once', () => {

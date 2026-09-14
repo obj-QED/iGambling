@@ -28,8 +28,3 @@ export function findMenuBlockItems(page: unknown, blockType: string): MenuItemDt
 
   return null;
 }
-
-/** @deprecated Prefer `findMenuBlockItems(page, MENU_HEADER_TOP_BLOCK_TYPE)`. */
-export function findMenuHeaderTopItems(page: unknown): MenuItemDto[] | null {
-  return findMenuBlockItems(page, MENU_HEADER_TOP_BLOCK_TYPE);
-}

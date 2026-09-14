@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { useShellReveal, useShellSkeleton } from '@/app/layouts/AppLayout/useShellSkeleton';
+import { useShellReveal, useShellSkeleton } from '@/app/layouts/AppLayout/hooks/useShellSkeleton';
 import { AdapterPendingFallback, AdapterPendingProvider } from '@/shared/lib/widgetAdapter';
 
 const skeletonEnabled = vi.hoisted(() => ({ current: true }));

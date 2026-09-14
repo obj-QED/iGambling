@@ -2,9 +2,9 @@ import { memo } from 'react';
 
 import { useLanguage } from '@hooks/useLanguage';
 
-import { AppLayoutChrome } from './AppLayoutChrome';
-import { useAppLayout, type UseAppLayoutResult } from './useAppLayout';
-import { useShellReveal } from './useShellSkeleton';
+import { useAppLayout, type UseAppLayoutResult } from '../lib/useAppLayout';
+import { useShellReveal } from './hooks';
+import { AppLayoutChrome } from './ui';
 
 function AppLayoutReady(layout: UseAppLayoutResult) {
   const {
@@ -19,10 +19,6 @@ function AppLayoutReady(layout: UseAppLayoutResult) {
     isReady,
   } = layout;
   const { skeleton } = useShellReveal(isReady);
-
-  if (!isReady) {
-    return null;
-  }
 
   return (
     <AppLayoutChrome

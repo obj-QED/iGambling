@@ -67,6 +67,19 @@ describe('resolveSidebarConfig', () => {
     ).toBe('icon');
   });
 
+  it('aliases search_leftmenu { type, style } onto search + wrappers', () => {
+    const schema = resolveSidebarConfig({
+      aside: {
+        blockVariants: {
+          search_leftmenu: { type: 'modal', style: 'input' },
+        },
+      },
+    });
+
+    expect(schema.blockVariants.search).toBe('row');
+    expect(schema.wrappers.search).toBe('modal');
+  });
+
   it('keeps extra blockVariant keys from settings', () => {
     expect(
       resolveSidebarConfig({

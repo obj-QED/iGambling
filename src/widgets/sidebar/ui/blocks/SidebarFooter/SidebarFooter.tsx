@@ -6,7 +6,7 @@ import { memo } from 'react';
 import { Group } from '@mantine/core';
 import clsx from 'clsx';
 
-import { cmfControlAttrs } from '@/shared/lib';
+import { cmfControlAttrs, isNonEmptyArray } from '@/shared/lib';
 
 import { filterRenderableItems } from '../../../lib';
 import { Block } from '../../Block';
@@ -53,7 +53,7 @@ function SidebarFooterComponent({ section }: SectionProps) {
         const rowKey = item.key ?? item.name;
         const cascadeKey = item.key ?? String(rowKey ?? 'row');
 
-        if (item.items !== undefined && item.items.length > 0) {
+        if (isNonEmptyArray(item.items)) {
           return (
             <FooterRow key={rowKey} cascadeKey={cascadeKey}>
               <Block item={item} />

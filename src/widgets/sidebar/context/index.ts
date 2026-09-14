@@ -5,7 +5,7 @@
  * - `dropdown/` — open-key set for nested rows
  * - `size/`     — Mantine button size from CSS var
  * - `slideout/` — expand/collapse for `type: slideout` (logo-trigger)
- * - `typePack/` — default vs compact presentation pack
+ * - `typePack` — default vs compact presentation pack
  */
 
 export { SidebarConfigContext, SidebarConfigProvider, useSidebarConfig } from './config';

@@ -9,7 +9,7 @@ import clsx from 'clsx';
 
 import { useIsMobile } from '@hooks/useIsMobile';
 
-import { cmfControlAttrs } from '@/shared/lib';
+import { cmfControlAttrs, isNonEmptyArray } from '@/shared/lib';
 import { AppActionIcon, useAppDrawerContext } from '@/shared/ui';
 
 import { useSidebarConfig } from '../../../context';
@@ -79,7 +79,7 @@ function SidebarHeaderComponent({ section }: SectionProps) {
         const cascadeKey =
           item.key === LOGO_ITEM_KEY ? LOGO_CMF_KEY : (item.key ?? String(rowKey ?? 'row'));
 
-        if (item.items !== undefined && item.items.length > 0) {
+        if (isNonEmptyArray(item.items)) {
           return (
             <HeaderRow key={rowKey} cascadeKey={cascadeKey}>
               <Block item={item} />

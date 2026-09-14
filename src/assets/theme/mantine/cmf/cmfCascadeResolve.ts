@@ -74,7 +74,7 @@ export function parentCmfComponent(component: string): string | undefined {
 }
 
 type CmfControlName =
-  'button' | 'action-icon' | 'group' | 'modal' | 'drawer' | 'popover' | 'text' | 'code';
+  'button' | 'action-icon' | 'group' | 'modal' | 'drawer' | 'popover' | 'text' | 'code' | 'search';
 
 /**
  * CSS custom-property segment. Menu keys may contain spaces (`instant game`) —
@@ -208,6 +208,24 @@ export function buildCmfModalPropToken(
   options: Pick<BuildCmfPropTokenOptions, 'scope'> = {},
 ): string {
   return buildCmfControlPropToken('modal', prop, fallback, {
+    scope: options.scope,
+    tail: 'shared',
+  });
+}
+
+/**
+ * AppSearch trigger cascade (`SearchInputTrigger` / `SearchIconTrigger`):
+ * place+key → place → shared `--cmf-search-{prop}` → fallback
+ *
+ * Example (`data-cmf-component=sidebar` `data-cmf-key=search`):
+ * `--cmf-search-sidebar-search-*` → `--cmf-search-sidebar-*` → `--cmf-search-*`
+ */
+export function buildCmfSearchPropToken(
+  prop: string,
+  fallback: string,
+  options: Pick<BuildCmfPropTokenOptions, 'scope'> = {},
+): string {
+  return buildCmfControlPropToken('search', prop, fallback, {
     scope: options.scope,
     tail: 'shared',
   });

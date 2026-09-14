@@ -1,8 +1,10 @@
 import type { RootProps } from '../../../types';
 
-import { createElement, memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { Group } from '@mantine/core';
+
+import { isNonEmptyArray, LazyHost } from '@/shared/lib';
 
 import { splitHeaderDropdownMenu } from '../../../lib';
 import { resolveHeaderLayout } from '../../../registry';
@@ -20,7 +22,8 @@ import dropdownStyles from '../../../styles/type/DropdownType.module.scss';
  */
 function DropdownStrategyComponent({ menu, config }: RootProps) {
   const { outsideMenu, dropdownGroups } = useMemo(() => splitHeaderDropdownMenu(menu), [menu]);
-  const outsideSections = outsideMenu.sections.filter((section) => section.items.length > 0);
+  const outsideSections = outsideMenu.sections.filter((section) => isNonEmptyArray(section.items));
+  const Layout = resolveHeaderLayout(config.layout);
 
   return (
     <>
@@ -29,9 +32,7 @@ function DropdownStrategyComponent({ menu, config }: RootProps) {
       </div>
 
       <div className={dropdownStyles.mobile} data-header-dropdown-mode="mobile">
-        {createElement(
-          resolveHeaderLayout(config.layout),
-          null,
+        <LazyHost component={Layout}>
           <Group className={styles.sections} data-header-type="dropdown" unstyled>
             <Group className={dropdownStyles.outside} gap="sm" wrap="wrap" unstyled>
               {outsideSections.map((section) => (
@@ -39,8 +40,8 @@ function DropdownStrategyComponent({ menu, config }: RootProps) {
               ))}
             </Group>
             <DeepPanel groups={dropdownGroups} />
-          </Group>,
-        )}
+          </Group>
+        </LazyHost>
       </div>
     </>
   );

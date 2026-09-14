@@ -1,3 +1,4 @@
+import type { BlockVariantSettingsMap } from './blockVariantSpec';
 import type { CmfActiveSettings } from './cmfActiveSettings';
 import type { MenuSettings } from './overlaySettings';
 import type { TooltipSettings } from './tooltipSettings';
@@ -77,9 +78,9 @@ export type HeaderCustomBlockSettings = {
 
 /**
  * Raw adapter variants from settings (`window.__SETTINGS__`).
- * Open strings at the boundary — coerced to `HeaderBlockVariants` unions in resolve.
+ * String (legacy style) or `{ type, style }` — flattened in `resolveHeaderConfig`.
  */
-export type HeaderBlockVariantSettings = Partial<Record<string, string>>;
+export type HeaderBlockVariantSettings = BlockVariantSettingsMap;
 
 export type HeaderMockAuthKey = 'authenticated' | 'guest';
 
@@ -112,9 +113,11 @@ export type HeaderSettings = {
   customBlocks?: HeaderCustomBlockSettings[];
   /**
    * Global adapter variants for special blocks (`search` / `wallet` / …).
-   * Open strings resolved against each block registry; unknown → `compact`.
+   * Prefer `{ type, style }`:
+   * - `type` — behavior (`modal` | `spotlight` | `input` | …); search → AppSearch host
+   * - `style` — adapter chrome (`compact` | `icon` | `input`)
+   * Legacy plain string = style (overlay names `modal`/`drawer` remapped to wrappers for non-search).
    * Nested `types.<type>.blockVariants` still overrides when present.
-   * Legacy `drawer` / `modal` values are remapped onto `wrappers` at resolve time.
    */
   blockVariants?: HeaderBlockVariantSettings;
   /** Overlay mode per block (`drawer` / `popover` / `modal` / …). */

@@ -3,7 +3,7 @@ import { useLayoutEffect, useState } from 'react';
 import { isShellSkeletonEnabled } from '@/shared/config';
 import { useAdapterPending } from '@/shared/lib';
 
-import { waitForShellPaint } from './waitForShellPaint';
+import { waitForShellPaint } from '../lib';
 
 /** Safety cap so a hung chrome icon cannot keep the shell skeleton forever. */
 export const SHELL_SKELETON_HOLD_MS = 800;
@@ -14,10 +14,11 @@ export type ShellReveal = {
 };
 
 /**
- * Element skeleton on live chrome after bootstrap.
+ * Element skeleton on live chrome (including before init settles).
  * When `params.preloader.skeleton: false`, always `{ skeleton: false }` —
  * adapter warmup is held by `BootGate` (single GlobalPreloader).
  *
+ * Lift only after `isReady` (init) + adapters idle + shell paint.
  * After the first successful reveal, late adapter mounts (e.g. opening the
  * mobile sidebar drawer) must NOT re-arm the full-page shell skeleton —
  * those slots already have local `AdapterBoundary` fallbacks.

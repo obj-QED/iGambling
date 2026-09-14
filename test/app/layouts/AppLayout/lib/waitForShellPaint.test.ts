@@ -5,7 +5,7 @@ import {
   waitForHtmlImages,
   waitForLayoutStable,
   waitForShellPaint,
-} from '@/app/layouts/AppLayout/waitForShellPaint';
+} from '@/app/layouts/AppLayout/lib/waitForShellPaint';
 
 describe('waitForHtmlImages', () => {
   it('resolves when there are no images', async () => {

@@ -28,6 +28,7 @@ export const DEFAULT_SIDEBAR_CONFIG: SidebarSchema = {
   tooltip: SIDEBAR_TYPE_TUNABLE_DEFAULTS.default.tooltip,
   active: { ...DEFAULT_SIDEBAR_CMF_ACTIVE_CONFIG },
   wrappers: {},
+  behaviors: {},
   behavior: {
     sticky: false,
     transparent: false,

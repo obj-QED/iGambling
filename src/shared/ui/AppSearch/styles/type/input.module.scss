@@ -1,0 +1,18 @@
+@layer components {
+  .root {
+    display: var(--cmf-search-type-input-display);
+    flex-direction: var(--cmf-search-type-input-flex-direction);
+    gap: var(--cmf-search-type-input-gap, var(--mantine-spacing-md));
+    padding-block: var(--cmf-search-type-input-padding-block, var(--mantine-spacing-md));
+  }
+
+  .title {
+    margin: 0;
+  }
+
+  .body {
+    color: var(--cmf-search-type-input-body-color, var(--mantine-color-dimmed));
+    font-size: var(--cmf-search-type-input-body-font-size, var(--mantine-font-size-sm));
+    line-height: 1.5;
+  }
+}

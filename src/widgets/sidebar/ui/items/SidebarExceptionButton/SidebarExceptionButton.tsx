@@ -1,5 +1,5 @@
 import type { HeaderMenuItem } from '@/widgets/header';
-import type { ReactNode } from 'react';
+import type { MouseEventHandler, ReactNode } from 'react';
 
 import { memo } from 'react';
 
@@ -18,6 +18,7 @@ export type SidebarExceptionButtonProps = {
   label?: string;
   leftSection?: ReactNode;
   className?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
 function SidebarExceptionButtonComponent({
@@ -25,23 +26,27 @@ function SidebarExceptionButtonComponent({
   label,
   leftSection,
   className,
+  onClick,
 }: SidebarExceptionButtonProps) {
-  const href = resolveItemHref(item.url);
+  const isAction = onClick !== undefined;
+  // Action triggers (e.g. global search) must not go through href → '' → disabled.
+  const href = isAction ? undefined : resolveItemHref(item.url);
   const size = useAsideMenuButtonSize();
-
   return (
     <AppButton
       label={label}
       href={href}
+      native={isAction}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
       fullscreen
       justify="flex-start"
       className={clsx(styles.root, className)}
       leftSection={leftSection}
-      active={item.active}
-      matchRoute={item.matchRoute}
+      active={isAction ? false : item.active}
+      matchRoute={isAction ? false : item.matchRoute}
       activeMatch={item.activeMatch}
+      onClick={onClick}
       {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar' }))}
     />
   );

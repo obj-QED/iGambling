@@ -1,8 +1,8 @@
 import type { BlockProps } from '../../../types';
 
-import { createElement, memo } from 'react';
+import { memo } from 'react';
 
-import { AdapterBoundary, useAdapter, useWrapper } from '@/shared/lib';
+import { AdapterBoundary, LazyHost, useAdapter, useWrapper } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useSidebarConfig } from '../../../context';
@@ -23,7 +23,7 @@ function PromoBlockComponent({ item, className }: BlockProps) {
 
   if (!enabled || !Adapter) return null;
 
-  const adapterNode = createElement(Adapter, { item, className });
+  const adapterNode = <LazyHost component={Adapter} item={item} className={className} />;
 
   if (!wrapperMode || wrapperMode === 'none') {
     return <AdapterBoundary>{adapterNode}</AdapterBoundary>;
@@ -31,11 +31,13 @@ function PromoBlockComponent({ item, className }: BlockProps) {
 
   return (
     <AdapterBoundary>
-      {createElement(Wrapper, {
-        target: adapterNode,
-        title: label.length > 0 ? label : (item.name ?? 'Promo'),
-        children: adapterNode,
-      })}
+      <LazyHost
+        component={Wrapper}
+        target={adapterNode}
+        title={label.length > 0 ? label : (item.name ?? 'Promo')}
+      >
+        {adapterNode}
+      </LazyHost>
     </AdapterBoundary>
   );
 }

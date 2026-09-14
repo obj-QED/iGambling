@@ -1,13 +1,9 @@
 import type { HeaderConfig } from '../types';
 
-import { useContext } from 'react';
+import { useRequiredContext } from '@/shared/hooks';
 
 import { ConfigContext } from './context';
 
 export function useConfig(): HeaderConfig {
-  const config = useContext(ConfigContext);
-  if (config === null) {
-    throw new Error('useConfig must be used within ConfigProvider');
-  }
-  return config;
+  return useRequiredContext(ConfigContext, 'useConfig must be used within ConfigProvider');
 }

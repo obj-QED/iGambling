@@ -40,13 +40,30 @@
       /**
        * Global Mantine Menu defaults — any prop except opened/onChange/children.
        * Cascade: `params.menu` → `header.menu` → DeepPanel product defaults.
+       * DeepPanel: bottom-right (`bottom-end`).
        * @see https://mantine.dev/core/menu/?t=props
        */
-      menu: {},
+      menu: {
+        position: 'bottom-end',
+      },
+      /**
+       * Global Spotlight defaults — any prop except store/actions/children/filter.
+       * Cascade: `params.spotlight` → AppSearch Spotlight instance.
+       * @see https://mantine.dev/x/spotlight/?t=props
+       */
+      spotlight: {},
+      /**
+       * Global search — `shared/ui/AppSearch` split by:
+       * - type/: modal | spotlight | input (hosts)
+       * - style/: compact | icon | input (trigger chrome keys)
+       * Header `search` + aside `search_leftmenu` → useAppSearchTrigger.
+       * `modal` overrides cascade: `params.modal` → `params.search.modal`.
+       */
       search: {
-        type: 'modal', // modal | spotlight | input
-        style: 'input', // compact| input | icon
-      }
+        type: 'spotlight',
+        style: 'input',
+        modal: {},
+      },
     },
     header: {
       layout: 'container',
@@ -59,26 +76,22 @@
         position: 'left', // position: 'bottom' | 'top' | 'left' | 'right'
       },
       /**
-       * Global adapter variants for special blocks — apply wherever they render
-       * (default bar, dropdown outside row, …). Per-type override: `types.<type>.blockVariants`.
-       * Values are open strings: use a key registered on that block’s variant registry
-       * (e.g. search: compact|icon|input|modal, wallet: compact|full|drawer).
-       * Unknown / omitted → `compact`.
-       */
-
-      /**
        * DeepPanel Menu — any Mantine Menu prop except opened/onChange/children.
        * Wins over `params.menu`. @see https://mantine.dev/core/menu/?t=props
        */
       menu: {},
+      /**
+       * Special-block adapters: `{ type, style }` (legacy string = style).
+       * search: type → AppSearch behavior; style → trigger. Cascade: `params.search` → here.
+       */
       blockVariants: {
         search: {
-          type: 'modal',   // modal | input
-          style: 'input',  // compact | button | input
+          type: 'spotlight', // modal | spotlight | input
+          style: 'input', // compact | icon | input
         },
         wallet: {
-          type: 'modal',  // modal | dropdown | drawer
-          style: 'input',  // compact | button | input
+          type: 'modal', // modal | dropdown | drawer
+          style: 'compact', // compact | button | input(=full)
         },
       },
 
@@ -131,10 +144,15 @@
        * Omit → widget defaults. Component map stays in `ui/Block` switch.
        */
       specialBlockKeys: ['search_leftmenu', 'timer', 'wheel_mdl', 'aside_header_logo'],
+      /**
+       * Per special-block override (`search_leftmenu` → search adapters).
+       * Same `{ type, style }` as header; falls back to `params.search`.
+       * search type → AppSearch; style → trigger (compact|icon|input → icon|row).
+       */
       blockVariants: {
         search_leftmenu: {
-          type: 'modal',
-          style: 'input',
+          type: 'input', // modal | spotlight | input
+          style: 'input', // compact | icon | input
         },
       },
       /**

@@ -1,42 +1,48 @@
 import type { BlockProps } from '../../../types';
 
-import { createElement, memo } from 'react';
+import { memo } from 'react';
 
-import { AdapterBoundary, useAdapter, useWrapper } from '@/shared/lib';
+import { AdapterBoundary, LazyHost, useAdapter } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
+import { useAppSearchTrigger } from '@/shared/ui';
 
 import { useSidebarConfig } from '../../../context';
-import { resolveItemLabel } from '../../../lib';
 import { SEARCH_ADAPTER_KEYS, SEARCH_ADAPTERS } from './adapters';
 
+import styles from '../../../styles/blocks/SearchRow.module.scss';
+
 /**
- * Sync search block router.
- * Compact: typePack.blocks.search_leftmenu → SearchIconVariant (sync).
+ * Aside search trigger (`search_leftmenu`) — opens global AppSearch.
+ * Compact/slideout chrome via blockVariants.search (icon | row).
  */
 function SearchComponent({ item, className }: BlockProps) {
-  const { blockVariants, wrappers, capabilities } = useSidebarConfig();
+  const { blockVariants, behaviors, capabilities } = useSidebarConfig();
   const Adapter = useAdapter(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
-  const wrapperMode = wrappers.search;
-  const Wrapper = useWrapper(wrapperMode);
-  const label = resolveItemLabel(item);
   const enabled = isCapabilityEnabled(capabilities, 'search');
+  const { searchQuery, onActivate, onSearchQueryChange, showHotkeyBadge } = useAppSearchTrigger(
+    behaviors.search,
+  );
 
   if (!enabled || !Adapter) return null;
 
-  const adapterNode = createElement(Adapter, { item, className });
-
-  if (!wrapperMode || wrapperMode === 'none') {
-    return <AdapterBoundary>{adapterNode}</AdapterBoundary>;
-  }
+  const isInputSlot = blockVariants.search === 'row';
 
   return (
-    <AdapterBoundary>
-      {createElement(Wrapper, {
-        target: adapterNode,
-        title: label.length > 0 ? label : (item.name ?? 'Search'),
-        children: adapterNode,
-      })}
-    </AdapterBoundary>
+    <div
+      className={isInputSlot ? styles.slot : undefined}
+      {...(isInputSlot ? { 'data-search-slot': 'input' } : {})}
+    >
+      <AdapterBoundary>
+        <LazyHost
+          component={Adapter}
+          item={item}
+          className={className}
+          onActivate={onActivate}
+          showHotkeyBadge={showHotkeyBadge}
+          {...(onSearchQueryChange !== undefined ? { searchQuery, onSearchQueryChange } : {})}
+        />
+      </AdapterBoundary>
+    </div>
   );
 }
 

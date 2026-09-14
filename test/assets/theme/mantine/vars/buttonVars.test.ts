@@ -29,6 +29,13 @@ describe('resolveButtonRootVars', () => {
     );
     expect(vars['--button-hover']).toContain('var(--cmf-button-default-hover');
     expect(vars['--button-hover-color']).toContain('var(--cmf-button-default-hover-color');
+    expect(vars['--button-disabled']).toBe(
+      'var(--cmf-button-default-disabled, var(--mantine-color-disabled))',
+    );
+    expect(vars['--button-disabled-color']).toBe(
+      'var(--cmf-button-default-disabled-color, var(--mantine-color-disabled-color))',
+    );
+    expect(vars['--button-disabled-bd']).toBe('var(--cmf-button-default-disabled-bd, transparent)');
     expect(vars['--button-shadow']).toBe('var(--cmf-button-default-shadow, none)');
     expect(vars['--button-active-position']).toBe(
       'var(--cmf-button-default-active-position, bottom)',
@@ -91,6 +98,10 @@ describe('resolveButtonRootVars', () => {
       'var(--cmf-button-header-sign_in-hover, var(--cmf-button-header-hover, var(--cmf-button-filled-hover, light-dark(var(--brand-color-6), var(--brand-color-7)))))',
     );
     expect(vars['--button-hover-color']).toContain('--cmf-button-header-sign_in-hover-color');
+    expect(vars['--button-disabled']).toBe(
+      'var(--cmf-button-header-sign_in-disabled, var(--cmf-button-header-disabled, var(--cmf-button-filled-disabled, var(--mantine-color-disabled))))',
+    );
+    expect(vars['--button-disabled-color']).toContain('--cmf-button-header-sign_in-disabled-color');
     expect(vars['--button-shadow']).toBe(
       'var(--cmf-button-header-sign_in-shadow, var(--cmf-button-header-shadow, var(--cmf-button-filled-shadow, none)))',
     );
@@ -155,11 +166,12 @@ describe('resolveButtonRootVars', () => {
     expect(paint['--button-height']).toBeUndefined();
   });
 
-  it('paint-only bridge for plain white uses brand text + light hover', () => {
+  it('paint-only bridge for plain white keeps hover fill/text stable', () => {
     const paint = resolveButtonCustomVariantPaintVars({ variant: 'white' });
 
     expect(paint['--button-color']).toContain('--mantine-color-brand-filled');
-    expect(paint['--button-hover']).toContain('color-mix');
+    expect(paint['--button-hover']).toContain('--mantine-color-white');
+    expect(paint['--button-hover-color']).toContain('--mantine-color-brand-filled');
     expect(paint['--button-height']).toBeUndefined();
   });
 

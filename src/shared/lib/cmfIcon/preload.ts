@@ -1,3 +1,4 @@
+import { isNonEmptyArray } from '../coercion';
 import { isSvgMediaSrc } from './icon';
 
 const warmed = new Set<string>();
@@ -41,7 +42,7 @@ export function collectMenuItemImgSrcs(items: readonly MenuImgNode[] | undefined
     for (const node of nodes) {
       const img = node.img?.trim();
       if (img !== undefined && img.length > 0) out.push(img);
-      if (node.items !== undefined && node.items.length > 0) walk(node.items);
+      if (isNonEmptyArray(node.items)) walk(node.items);
     }
   };
   walk(items);

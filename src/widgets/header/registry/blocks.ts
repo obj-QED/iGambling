@@ -1,6 +1,8 @@
 import type { BlockProps, HeaderMenuItem } from '../types';
 import type { ComponentType } from 'react';
 
+import { isNonEmptyArray } from '@/shared/lib';
+
 import { BonusBoxBlock } from '../ui/blocks/BonusBoxBlock/BonusBoxBlock';
 import { ColorSchemeBlock } from '../ui/blocks/ColorSchemeBlock/ColorSchemeBlock';
 import { DefaultItemBlock } from '../ui/blocks/DefaultItemBlock/DefaultItemBlock';
@@ -61,10 +63,9 @@ export function resolveBlockComponent(
   item: HeaderMenuItem,
   type: string,
 ): ComponentType<BlockProps> {
-  const key: BlockRegistryKey =
-    item.items !== undefined && item.items.length > 0
-      ? 'menuDropdown'
-      : resolveBlockRegistryKey(item.key ?? '');
+  const key: BlockRegistryKey = isNonEmptyArray(item.items)
+    ? 'menuDropdown'
+    : resolveBlockRegistryKey(item.key ?? '');
 
   const overlay = resolveTypePackBlocks?.(type);
   return overlay?.[key] ?? requireGlobalBlock(key);

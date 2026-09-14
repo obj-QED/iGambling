@@ -30,29 +30,44 @@ describe('lobby query functions', () => {
     mockedGetLobbySessionTokenSnapshot.mockReturnValue(null);
   });
 
-  it('passes abort signal to bootstrap translation request', async () => {
-    const signal = new AbortController().signal;
+  it('does not consume abort signal for bootstrap translation', async () => {
+    let signalAccessed = false;
+    const ctx = {
+      queryKey: lobbyQueryKeys.translation('en'),
+      get signal() {
+        signalAccessed = true;
+        return new AbortController().signal;
+      },
+    } as unknown as QueryFunctionContext<ReturnType<typeof lobbyQueryKeys.translation>>;
 
-    await translationQueryFn(queryContext(lobbyQueryKeys.translation('en'), signal));
+    await translationQueryFn(ctx);
 
-    expect(mockedFetchTranslation).toHaveBeenCalledWith('en', signal);
+    expect(signalAccessed).toBe(false);
+    expect(mockedFetchTranslation).toHaveBeenCalledWith('en');
   });
 
-  it('passes lobby session token and abort signal to initV2', async () => {
-    const signal = new AbortController().signal;
+  it('does not consume abort signal for bootstrap initV2', async () => {
+    let signalAccessed = false;
+    const ctx = {
+      queryKey: lobbyQueryKeys.init('en', '/'),
+      get signal() {
+        signalAccessed = true;
+        return new AbortController().signal;
+      },
+    } as unknown as QueryFunctionContext<ReturnType<typeof lobbyQueryKeys.init>>;
 
-    await initQueryFn(queryContext(lobbyQueryKeys.init('en', '/'), signal));
+    await initQueryFn(ctx);
 
-    expect(mockedInitV2).toHaveBeenCalledWith({ language: 'en', page: '/' }, signal);
+    expect(signalAccessed).toBe(false);
+    expect(mockedInitV2).toHaveBeenCalledWith({ language: 'en', page: '/' });
   });
 
   it('passes non-null snapshot token into initV2', async () => {
     mockedGetLobbySessionTokenSnapshot.mockReturnValue('1383_abc');
-    const signal = new AbortController().signal;
 
-    await initQueryFn(queryContext(lobbyQueryKeys.init('en', '/'), signal));
+    await initQueryFn(queryContext(lobbyQueryKeys.init('en', '/'), new AbortController().signal));
 
-    expect(mockedInitV2).toHaveBeenCalledWith({ language: 'en', page: '/', token: '1383_abc' }, signal);
+    expect(mockedInitV2).toHaveBeenCalledWith({ language: 'en', page: '/', token: '1383_abc' });
   });
 
   it('passes abort signal to page requests', async () => {

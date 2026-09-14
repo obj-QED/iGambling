@@ -1,4 +1,6 @@
-import { useCallback, useContext, useSyncExternalStore } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
+
+import { useRequiredContext } from '@/shared/hooks';
 
 import { SidebarDropdownContext } from './context';
 
@@ -6,10 +8,10 @@ export function useSidebarDropdown(menuKey: string): {
   opened: boolean;
   toggle: () => void;
 } {
-  const store = useContext(SidebarDropdownContext);
-  if (store === null) {
-    throw new Error('useSidebarDropdown must be used within SidebarDropdownProvider');
-  }
+  const store = useRequiredContext(
+    SidebarDropdownContext,
+    'useSidebarDropdown must be used within SidebarDropdownProvider',
+  );
 
   const subscribe = useCallback(
     (onStoreChange: () => void) => {

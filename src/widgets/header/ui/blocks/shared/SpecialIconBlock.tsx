@@ -29,6 +29,7 @@ function SpecialIconBlockComponent({
   fallbackIcon,
   className,
   disabled,
+  onClick,
 }: SpecialIconBlockProps) {
   const menuSizes = useHeaderMenuSizes();
   const iconRef = useRef<HTMLImageElement | HTMLSpanElement>(null);
@@ -36,7 +37,7 @@ function SpecialIconBlockComponent({
   const actionIconSize = resolveHeaderMenuActionIconSize(menuSizes);
   const { onImgError, showItemImg, hideImageControl, iconControlAttrs } = useMediaState(item);
   const label = resolveItemLabel(item);
-  const href = resolveItemHref(item.url);
+  const href = onClick !== undefined ? undefined : resolveItemHref(item.url);
   const icon = useMemo(
     () =>
       showItemImg ? (
@@ -73,6 +74,7 @@ function SpecialIconBlockComponent({
         active={item.active}
         matchRoute={item.matchRoute}
         activeMatch={item.activeMatch}
+        onClick={onClick}
         {...controlAttrs(item, resolveCmfScope(item, { widget: 'header' }))}
         {...iconControlAttrs}
       >

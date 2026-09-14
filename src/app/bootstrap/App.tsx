@@ -1,4 +1,4 @@
-import { ErrorBoundary } from '@/app/ErrorBoundary';
+import { ErrorBoundary } from '@pages/eager';
 
 import { AppBootstrap } from './AppBootstrap';
 

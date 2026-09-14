@@ -1,58 +1,28 @@
-// Mantine hover paints `background-color` (invalid for gradient tokens).
-// Use `background` shorthand so tokens may be a gradient *or* a solid color.
-//
-// Browsers cannot interpolate two `background` gradients — `transition: background`
-// (or `transition: all`) flickers / snaps. Smooth paint = opacity crossfade on a layer.
+// `data-variant="gradient"` tokens may be a solid color OR a CSS gradient.
+// Use `background` shorthand for both rest + hover (accepts either).
+// Beat Mantine hover `background-color: var(--*-hover)` which is invalid for gradients
+// and wrong when the token is a plain color under a forced transparent/image layer.
 @mixin gradient-variant-hover($prefix) {
   &[data-variant='gradient']:where(:not(:disabled, [data-disabled], [data-loading])) {
-    position: relative;
-    isolation: isolate;
-    background: var(--#{$prefix}-bg);
-    background-origin: border-box;
-
-    /* Only color eases on the host; paint morph is ::before opacity. */
+    background: var(--#{$prefix}-bg) border-box !important;
     transition: color 0.2s ease-in-out;
 
-    /*
-     * Hover paint layer. Replaces Mantine Button shine (::before) on gradient only.
-     * ::after stays free for CMF active rail (`data-cmf-active-type='element'`).
-     */
+    /* Drop Mantine shine layer — dual ::before hover looked bad on solid fills. */
     &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      border-radius: inherit;
-      background: var(--#{$prefix}-hover, var(--#{$prefix}-bg));
-      background-origin: border-box;
-      opacity: 0;
-      transition: opacity 0.2s ease-in-out;
-      pointer-events: none;
-    }
-
-    /* Keep label / sections / icons above the hover layer. */
-    > :where(*) {
-      position: relative;
-      z-index: 1;
+      content: none !important;
     }
 
     @media (hover: hover) {
       &:hover {
         color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
-
-        &::before {
-          opacity: 1;
-        }
+        background: var(--#{$prefix}-hover, var(--#{$prefix}-bg)) border-box !important;
       }
     }
 
     @media (hover: none) {
       &:active {
         color: var(--#{$prefix}-hover-color, var(--#{$prefix}-color));
-
-        &::before {
-          opacity: 1;
-        }
+        background: var(--#{$prefix}-hover, var(--#{$prefix}-bg)) border-box !important;
       }
     }
   }

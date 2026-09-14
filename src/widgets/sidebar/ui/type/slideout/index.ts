@@ -2,7 +2,7 @@ import type { SidebarTypePack } from '../types';
 
 import { Logo } from '../../blocks/Logo/Logo';
 import { PromoIconVariant } from '../../blocks/PromoBlock/variants/PromoIconVariant';
-import { SearchIconVariant } from '../../blocks/Search/variants/SearchIconVariant';
+import { Search } from '../../blocks/Search/Search';
 import { SIDEBAR_TYPE_TUNABLE_DEFAULTS } from '../tunableDefaults';
 import { SlideoutFooterLink } from './FooterLink';
 import { SlideoutHeaderLink } from './HeaderLink';
@@ -20,8 +20,8 @@ export const slideoutTypePack: SidebarTypePack = {
   HeaderLink: SlideoutHeaderLink,
   FooterLink: SlideoutFooterLink,
   blocks: {
-    /** Sync adapters — icon rail for search/promo while labels clip on row items. */
-    search_leftmenu: SearchIconVariant,
+    /** Search router wires AppSearch; chrome via blockVariants.search (icon for slideout). */
+    search_leftmenu: Search,
     timer: PromoIconVariant,
     wheel_mdl: PromoIconVariant,
     aside_header_logo: Logo,

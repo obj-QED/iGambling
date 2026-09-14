@@ -1,0 +1,13 @@
+@layer components {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mantine-spacing-md);
+  }
+
+  .body {
+    min-height: 8rem;
+    color: var(--mantine-color-dimmed);
+    font-size: var(--mantine-font-size-sm);
+  }
+}

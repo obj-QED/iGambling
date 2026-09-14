@@ -49,7 +49,18 @@
 
   .root
     :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
-    :where(a, button, [role='button']) {
+    :where(
+      a,
+      button,
+      [role='button'],
+      [data-cmf-key='search'],
+      [data-cmf-key='search_leftmenu'],
+      :global(.cmf-TextInput-wrapper):has(
+        [data-cmf-key='search'],
+        [data-cmf-key='search_leftmenu']
+      ),
+      :global(.cmf-Input-wrapper):has([data-cmf-key='search'], [data-cmf-key='search_leftmenu'])
+    ) {
     position: relative;
   }
 
@@ -63,6 +74,19 @@
     flex-shrink: 0;
     width: var(--adapter-fallback-width, var(--cmf-action-icon-header-size, 2.625rem));
     --skeleton-width: var(--adapter-fallback-width, var(--cmf-action-icon-header-size, 2.625rem));
+  }
+
+  /** Header search input slot — full field width, not ActionIcon square. */
+  .root [data-widget='header'] [data-search-slot='input'] [data-adapter-fallback] {
+    width: var(--adapter-fallback-width, min(12.5rem, 40vw));
+    --skeleton-width: var(--adapter-fallback-width, min(12.5rem, 40vw));
+    height: var(--adapter-fallback-height, var(--input-height-md, 2.625rem));
+  }
+
+  .root [data-widget='sidebar'] [data-search-slot='input'] [data-adapter-fallback] {
+    width: 100%;
+    --skeleton-width: 100%;
+    height: var(--adapter-fallback-height, var(--input-height-md, 2.625rem));
   }
 
   .root[data-shell-skeleton] .page {
@@ -111,6 +135,9 @@
  * Shell skeleton cover — UNLAYERED (`@layer page` loses to widget + CMF active).
  * Do not paint on control `::before` (Mantine Button shine: opacity 0 + translateY(-100%))
  * or `::after` (CMF active rail). Pulse the host background; hide descendants.
+ *
+ * Hosts: links/buttons **and** AppSearch TextInput triggers (`data-cmf-key=search|search_leftmenu`).
+ * Input-style search is not a button — without these keys it stays live while chrome pulses.
  */
 @keyframes shell-skel-pulse {
   0%,
@@ -131,7 +158,20 @@
 
 .root[data-shell-skeleton]
   :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
-  :where(a, button, [role='button']) {
+  :where(
+    a,
+    button,
+    [role='button'],
+    /* AppSearch TextInput: prefer wrapper host (`wrapperProps`) so icon/code are descendants. */
+    [data-cmf-key='search'],
+    [data-cmf-key='search_leftmenu'],
+    /* Fallback when data-cmf-* still lands on <input> — sections are siblings, not children. */
+    :global(.cmf-TextInput-wrapper):has(
+      [data-cmf-key='search'],
+      [data-cmf-key='search_leftmenu']
+    ),
+    :global(.cmf-Input-wrapper):has([data-cmf-key='search'], [data-cmf-key='search_leftmenu'])
+  ) {
   overflow: hidden;
   color: transparent;
   border-color: transparent;
@@ -141,9 +181,32 @@
   animation: shell-skel-pulse 1500ms linear infinite;
 }
 
+/*
+ * Search pulse host is Input.Wrapper / TextInput root — radius lives on <input>
+ * (`--input-radius`), which is visibility:hidden under skeleton. Mirror field radius.
+ */
 .root[data-shell-skeleton]
   :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
-  :where(a, button, [role='button'])
+  :where(
+    [data-cmf-key='search'],
+    [data-cmf-key='search_leftmenu'],
+    :global(.cmf-TextInput-wrapper):has([data-cmf-key='search'], [data-cmf-key='search_leftmenu']),
+    :global(.cmf-Input-wrapper):has([data-cmf-key='search'], [data-cmf-key='search_leftmenu'])
+  ) {
+  border-radius: var(--input-radius, var(--cmf-search-radius, var(--mantine-radius-md)));
+}
+
+.root[data-shell-skeleton]
+  :where([data-widget='header'], [data-widget='sidebar'], [data-widget='footer'])
+  :where(
+    a,
+    button,
+    [role='button'],
+    [data-cmf-key='search'],
+    [data-cmf-key='search_leftmenu'],
+    :global(.cmf-TextInput-wrapper):has([data-cmf-key='search'], [data-cmf-key='search_leftmenu']),
+    :global(.cmf-Input-wrapper):has([data-cmf-key='search'], [data-cmf-key='search_leftmenu'])
+  )
   * {
   visibility: hidden;
 }

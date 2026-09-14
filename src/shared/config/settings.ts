@@ -18,7 +18,8 @@ export type AppParams = {
     /**
      * Global element-skeleton switch (shell paint + adapter pulse + page skeleton).
      * `false` → no visible skeleton UI anywhere; use `ShellSkeletonGate` / `isShellSkeletonEnabled()`.
-     * Omit / `true` → on. Bootstrap `GlobalPreloader` is separate and still runs.
+     * Omit / `true` → on. Bootstrap `GlobalPreloader` covers translation→init while chrome
+     * mounts underneath; shell skeleton stays until API + paint ready.
      */
     skeleton?: boolean;
   };
@@ -50,6 +51,21 @@ export type AppParams = {
    * @see https://mantine.dev/core/menu/?t=props
    */
   menu?: import('./overlaySettings').MenuSettings;
+  /**
+   * Global Mantine Spotlight defaults (AppSearch `type: spotlight`).
+   * Cascade: `params.spotlight` → instance.
+   * @see https://mantine.dev/x/spotlight/?t=props
+   */
+  spotlight?: import('./overlaySettings').SpotlightSettings;
+  /**
+   * Global search behavior for all search triggers
+   * (header `search`, aside `search_leftmenu`, …).
+   * Override per block via `header|aside.blockVariants`.
+   * - `type`: `modal` | `spotlight` | `input`
+   * - `style`: `compact` | `icon` | `input`
+   * - `modal`: Modal overrides (`params.modal` → `params.search.modal`)
+   */
+  search?: import('./searchSettings').SearchSettings;
 };
 
 export type AppSettings = {

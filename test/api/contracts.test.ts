@@ -10,7 +10,7 @@ describe('toApiEnvelope', () => {
       meta: { revision: 7 },
       mt: 0.03,
     };
-    const envelope = toApiEnvelope(payload, value => value);
+    const envelope = toApiEnvelope(payload, (value) => value);
 
     expect(envelope.content).toEqual({ page: { blocks: [] } });
     expect(envelope.error).toBeNull();
@@ -20,9 +20,17 @@ describe('toApiEnvelope', () => {
 
   it('works with payloads without content field', () => {
     const payload = { page: { blocks: [{ type: 'banner' }] } };
-    const envelope = toApiEnvelope(payload, value => value);
+    const envelope = toApiEnvelope(payload, (value) => value);
 
     expect(envelope.content).toEqual(payload);
     expect(envelope.error).toBeUndefined();
+  });
+
+  it('rejects HTML / empty / unparsed JSON leftovers', () => {
+    expect(() => toApiEnvelope('<br />Parse error', (value) => value)).toThrow(
+      /Invalid API payload/,
+    );
+    expect(() => toApiEnvelope(null, (value) => value)).toThrow(/Invalid API payload/);
+    expect(() => toApiEnvelope(undefined, (value) => value)).toThrow(/Invalid API payload/);
   });
 });

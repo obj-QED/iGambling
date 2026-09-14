@@ -1,10 +1,10 @@
 import type { BlockProps } from '../../../types';
 
-import { createElement, memo, useMemo } from 'react';
+import { memo } from 'react';
 
 import { Text } from '@mantine/core';
 
-import { AdapterBoundary, preloadAdapters, useAdapter, useWrapper } from '@/shared/lib';
+import { AdapterBoundary, LazyHost, preloadAdapters, useAdapter, useWrapper } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useConfig } from '../../../context';
@@ -16,12 +16,12 @@ function WalletBlockComponent({ item }: BlockProps) {
   const Adapter = useAdapter(WALLET_ADAPTERS, blockVariants.wallet, WALLET_ADAPTER_KEYS);
   const wrapperMode = wrappers.wallet;
   const Wrapper = useWrapper(wrapperMode);
-  const label = useMemo(() => resolveItemLabel(item), [item]);
+  const label = resolveItemLabel(item);
   const enabled = isCapabilityEnabled(capabilities, 'wallet');
 
   if (!enabled || !Adapter) return null;
 
-  const adapterNode = createElement(Adapter, { item });
+  const adapterNode = <LazyHost component={Adapter} item={item} />;
 
   if (!wrapperMode || wrapperMode === 'none') {
     return (
@@ -39,11 +39,9 @@ function WalletBlockComponent({ item }: BlockProps) {
 
   return (
     <AdapterBoundary>
-      {createElement(Wrapper, {
-        target: adapterNode,
-        title: label,
-        children: <Text size="sm">{label}</Text>,
-      })}
+      <LazyHost component={Wrapper} target={adapterNode} title={label}>
+        <Text size="sm">{label}</Text>
+      </LazyHost>
     </AdapterBoundary>
   );
 }

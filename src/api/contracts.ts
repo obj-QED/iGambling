@@ -6,10 +6,19 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/** True when the payload is a JSON object (not HTML / parse leftovers / empty body). */
+export function isApiRecordPayload(payload: unknown): payload is Record<string, unknown> {
+  return isRecord(payload);
+}
+
 export function toApiEnvelope<TContent>(
   payload: unknown,
   normalize: (value: unknown) => TContent,
 ): ApiEnvelope<TContent> {
+  if (payload == null || typeof payload === 'string') {
+    throw new Error('Invalid API payload');
+  }
+
   if (isRecord(payload) && 'content' in payload) {
     const envelope: ApiEnvelope<TContent> = {
       content: normalize(payload.content),

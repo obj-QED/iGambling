@@ -4,3 +4,4 @@ export {
   type MenuExtractMode,
   type PageMenuExtractMode,
 } from './extractPageMenuFromInit';
+export { useAppLayout, type UseAppLayoutResult } from './useAppLayout';

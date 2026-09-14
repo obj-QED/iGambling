@@ -87,7 +87,7 @@
 
     &:hover {
       background: var(--modal-close-hover-bg, var(--mantine-color-default-hover));
-      color: var(--modal-close-color, var(--mantine-color-text));
+      color: var(--modal-close-color, var(--brand-color-7));
     }
   }
 
@@ -139,7 +139,7 @@
 
     &:hover {
       background: var(--_cmf-drawer-close-hover-bg, var(--mantine-color-default-hover));
-      color: var(--_cmf-drawer-close-color, var(--mantine-color-text));
+      color: var(--_cmf-drawer-close-color, var(--brand-color-7));
     }
   }
 
@@ -224,6 +224,109 @@
   }
 
   /*
+   * AppSearch TextInput (`data-cmf-*`): per-element paint
+   * (field / icon / code / clear) via `--input-*` from `resolveSearchInputRootVars`.
+   */
+  .searchInput {
+    :global(.cmf-Input-input),
+    :global(.cmf-TextInput-input) {
+      transition:
+        color 0.15s ease,
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    /* Left search icon size (color = `--input-section-color`). */
+    :global(.cmf-Input-section[data-position='left']) :global(svg),
+    :global(.cmf-TextInput-section[data-position='left']) :global(svg) {
+      width: var(--input-icon-size, 1rem);
+      height: var(--input-icon-size, 1rem);
+    }
+
+    /* Clear × — independent from section/icon tokens. */
+    :global(.cmf-CloseButton-root),
+    :global([data-search-part='clear']) {
+      --cb-size: var(--input-clear-size, var(--cb-size-sm, 1.375rem));
+      --cb-radius: var(--input-clear-radius, var(--mantine-radius-default));
+      --cb-icon-size: var(--input-clear-icon-size, 70%);
+      color: var(--input-clear-color, var(--input-section-color, var(--mantine-color-dimmed)));
+      background: var(--input-clear-bg, transparent);
+      transition:
+        color 0.15s ease,
+        background-color 0.15s ease;
+
+      @media (hover: hover) {
+        &:where(:not([data-disabled], :disabled)):hover {
+          color: var(--input-clear-hover-color, var(--input-clear-color));
+          background-color: var(--input-clear-hover-bg, transparent);
+        }
+      }
+
+      @media (hover: none) {
+        &:where(:not([data-disabled], :disabled)):active {
+          color: var(--input-clear-hover-color, var(--input-clear-color));
+          background-color: var(--input-clear-hover-bg, transparent);
+        }
+      }
+    }
+
+    :global(.cmf-Code-root),
+    :global([data-search-part='code']) {
+      color: var(--input-code-color, var(--mantine-color-text));
+      font-size: var(--input-code-fz, var(--mantine-font-size-xs));
+      border-radius: var(--input-code-radius, var(--mantine-radius-sm));
+      padding: var(--input-code-padding, 2px calc(var(--mantine-spacing-xs) / 2));
+      background: var(
+        --input-code-bg,
+        light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))
+      );
+      transition:
+        color 0.15s ease,
+        background-color 0.15s ease;
+    }
+
+    :global(.cmf-Input-section),
+    :global(.cmf-TextInput-section) {
+      transition: color 0.15s ease;
+    }
+
+    @media (hover: hover) {
+      &:hover:not(:focus-within) {
+        --input-section-color: var(--input-section-hover-color);
+
+        :global(.cmf-Input-input),
+        :global(.cmf-TextInput-input) {
+          background-color: var(--input-hover, var(--input-bg));
+          color: var(--input-hover-color, var(--input-color));
+          border-color: var(--input-hover-bd, var(--input-bd));
+        }
+
+        :global(.cmf-Code-root),
+        :global([data-search-part='code']) {
+          background: var(--input-code-hover-bg, var(--input-code-bg));
+          color: var(--input-code-hover-color, var(--input-code-color));
+        }
+      }
+    }
+
+    &:focus-within {
+      --input-section-color: var(--input-section-focus-color);
+
+      :global(.cmf-Input-input),
+      :global(.cmf-TextInput-input) {
+        background-color: var(--input-bg-focus, var(--input-bg));
+        color: var(--input-color-focus, var(--input-color));
+      }
+
+      :global(.cmf-Code-root),
+      :global([data-search-part='code']) {
+        background: var(--input-code-focus-bg, var(--input-code-bg));
+        color: var(--input-code-focus-color, var(--input-code-color));
+      }
+    }
+  }
+
+  /*
    * Mantine Button label uses `text-box-trim: trim-both` + `overflow: hidden` with
    * `line-height: 1` on root — clips glyph ink (esp. md+ / IBM Plex). Reset trim.
    */
@@ -281,7 +384,16 @@
     display: inline-flex;
     align-items: var(--button-align, center);
     justify-content: var(--button-justify, center);
-    transition: all 0.2s ease-in-out;
+    transition:
+      color 0.2s ease-in-out,
+      background-color 0.2s ease-in-out,
+      border-color 0.2s ease-in-out,
+      opacity 0.2s ease-in-out;
+
+    &:where([data-variant='gradient']) {
+      /* Gradient paint must not use `transition: all` / background — blanks or snaps. */
+      transition: color 0.2s ease-in-out;
+    }
 
     &:where([data-block]) {
       display: flex;
@@ -305,6 +417,7 @@
       @include cmfControl.cmf-control-disabled-radius('button');
     }
 
+    @include cmfControl.cmf-control-disabled-paint('button');
     @include gradient.gradient-variant-hover('button');
 
     /* Keep control height stable when section media is present */
@@ -350,12 +463,22 @@
     /* CMF padding (Mantine AI is size-only). Insets content inside `--ai-size`. */
     padding: var(--ai-padding, 0);
     box-sizing: border-box;
+    transition:
+      color 0.2s ease-in-out,
+      background-color 0.2s ease-in-out,
+      border-color 0.2s ease-in-out,
+      opacity 0.2s ease-in-out;
+
+    &:where([data-variant='gradient']) {
+      transition: color 0.2s ease-in-out;
+    }
 
     &:where([data-cmf-component], [data-cmf-key]) {
       @include cmfControl.cmf-control-shadow('ai');
       @include cmfControl.cmf-control-disabled-radius('ai');
     }
 
+    @include cmfControl.cmf-control-disabled-paint('ai');
     @include gradient.gradient-variant-hover('ai');
 
     /* Mantine contract: `--ai-bd` = full border shorthand (same as Button). */

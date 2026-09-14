@@ -13,6 +13,7 @@ export const DEFAULT_HEADER_CONFIG: HeaderSchema = {
   type: 'dropdown',
   blockVariants: {},
   wrappers: {},
+  behaviors: {},
   behavior: {
     sticky: false,
     transparent: false,

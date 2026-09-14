@@ -1,2 +1,3 @@
 /** Eager page exports for bootstrap / error shells (no Suspense). */
-export { ServerErrorPage } from './ServerError/ServerErrorPage';
+export { ErrorBoundary } from './errors/ErrorBoundary';
+export { ServerErrorPage } from './errors/ServerErrorPage';

@@ -45,6 +45,32 @@ describe('resolveHeaderConfig / resolveHeaderSchema', () => {
     expect(schema.wrappers.wallet).toBe('drawer');
   });
 
+  it('flattens { type, style } blockVariants into adapters + wrappers', () => {
+    const schema = resolveHeaderConfig({
+      header: {
+        blockVariants: {
+          search: { type: 'modal', style: 'input' },
+          wallet: { type: 'drawer', style: 'button' },
+        },
+      },
+    });
+
+    expect(schema.blockVariants.search).toBe('input');
+    expect(schema.blockVariants.wallet).toBe('compact');
+    expect(schema.wrappers.search).toBe('modal');
+    expect(schema.wrappers.wallet).toBe('drawer');
+  });
+
+  it('applies params.search defaults when header.blockVariants.search omitted', () => {
+    const schema = resolveHeaderConfig({
+      params: { search: { type: 'modal', style: 'icon' } },
+      header: {},
+    });
+
+    expect(schema.blockVariants.search).toBe('compact');
+    expect(schema.wrappers.search).toBe('modal');
+  });
+
   it('keeps arbitrary type strings; empty falls back', () => {
     expect(resolveHeaderConfig({ header: { type: 'mega' } }).type).toBe('mega');
     expect(resolveHeaderConfig({ header: { type: '   ' } }).type).toBe('dropdown');

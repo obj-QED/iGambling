@@ -3,9 +3,13 @@
 **Edit tokens, not the engine.**  
 Runtime SoT for widget controls (`data-cmf-*`): theme `vars()` **clear** Mantine inline vars, then **add** nested `var()` chains from `cmfCascadeResolve.ts` (`nestCssVars` / `buildCmf*PropToken`).
 
-Custom `data-variant` (not a Mantine built-in) uses the same paint bridge (`resolveButtonCustomVariantPaintVars`).
+**All** plain `<Button>` / `<ActionIcon>` (no `data-cmf-*`) also use the paint bridge:
 
-Plain Mantine `gradient` / `white` (no `data-cmf-*`) also use that paint bridge — native Mantine sets gradient hover≈bg and white text to black.
+```txt
+--cmf-button-{variant}-*  →  Mantine paint fallbacks (buttonVars / actionIconVars)
+```
+
+Custom `data-variant` (`hero`, `button-link`, …) uses the same paint bridge.
 
 ---
 
@@ -69,6 +73,9 @@ So `--cmf-button-sidebar-active-*` paints **all** aside controls; override with
 Variant paint (`white` / `gradient`) wins over widget `--cmf-button-sidebar-bg`.
 **Seed** `--cmf-button-gradient-*` / `--cmf-button-white-*` on `:root` (see `tokens/theme.scss`)
 so an unset variant layer cannot fall through to parent widget paint and break hover.
+**Disabled** uses the same cascade as hover: `--cmf-button|{action-icon}-{…}-disabled` /
+`-disabled-color` / `-disabled-bd` → `--button-disabled*` / `--ai-disabled*` (CSS mixin
+`cmf-control-disabled-paint`). Last resort = Mantine `--mantine-color-disabled*`.
 Active radius: `--*-active-radius` (all corners) and/or `--*-active-radius-{tl|tr|br|bl}`.
 Corner → shorthand → `--button-radius` / `--ai-radius`. Shorthand last-resort stays `0`
 (for the bar when nothing is set).
@@ -99,7 +106,51 @@ Modal (always — `themeComponents` + `modalVars`; optional `data-cmf-*`):
 4. Mantine / theme fallback
 ```
 
-Props: `radius` | `size` | `y-offset` | `x-offset` | `bg` | `color` | `padding` | `shadow` |
+AppSearch triggers (`SearchInputTrigger` / `SearchIconTrigger`, `data-cmf-key=search`):
+
+```txt
+1. --cmf-search-{header|sidebar}-search-{prop}
+2. --cmf-search-{header|sidebar}-{prop}
+3. --cmf-search-{prop}                         (shared look everywhere)
+4. Mantine Input / ActionIcon defaults
+```
+
+Seed shared paints on `:root` in `tokens/theme.scss`. Place overrides in
+`tokens/widgets/header|sidebar` (e.g. `--cmf-search-sidebar-bg`).
+
+**Radius:** shared `--cmf-search-radius` defaults to `--mantine-radius-md` (same as
+Button / ActionIcon CMF — not theme `defaultRadius` / sm). Header:
+`--cmf-search-header-radius` → `--cmf-button-header-radius`. Sidebar:
+`--cmf-search-sidebar-radius` → `--cmf-button-sidebar-radius`.
+
+Search props → `--input-*` on TextInput wrapper (`.searchInput`).
+
+| Element           | Token props (`--cmf-search-…`)                                                                                                        | Runtime                                           |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| **field**         | `bg` `color` `bd` `bd-focus` `hover` `hover-color` `hover-bd` `bg-focus` `color-focus` `radius` `height` `placeholder-color` `cursor` | `--input-*` on input                              |
+| **icon** (left)   | `icon-color` `icon-hover-color` `icon-focus-color` `icon-size` (legacy: `section-*`)                                                  | `--input-section-color` / `--input-icon-size`     |
+| **code** (hotkey) | `code-bg` `code-color` `code-hover-*` `code-focus-*` `code-fz` `code-radius` `code-padding`                                           | `.cmf-Code-root`                                  |
+| **clear** (×)     | `clear-color` `clear-bg` `clear-hover-color` `clear-hover-bg` `clear-size` `clear-radius` `clear-icon-size`                           | `.cmf-CloseButton-root` / `[data-cmf-role=clear]` |
+
+Scope examples:
+
+```scss
+/* everywhere */
+--cmf-search-clear-color: …;
+/* all header searches */
+--cmf-search-header-clear-color: …;
+/* header search key only */
+--cmf-search-header-search-clear-color: …;
+/* sidebar / modal */
+--cmf-search-sidebar-clear-color: …;
+--cmf-search-modal-search-clear-color: …; /* modal search */
+```
+
+Hotkey `Code` / clear `CloseButton` are painted only via search `--input-code-*` /
+`--input-clear-*` inside `.searchInput` (`data-search-part=code|clear`) — not via
+global `--cmf-code-*`.
+
+Modal props: `radius` | `size` | `y-offset` | `x-offset` | `bg` | `color` | `padding` | `shadow` |
 `header-padding` | `header-min-height` | `title-fz|fw|lh|color` | `close-size|icon-size|color|hover-bg|radius` |
 `overlay-opacity` | `overlay-blur`.  
 → `--modal-*` on root. Paint via `.modalContent` / `.modalHeader` / `.modalTitle` / `.modalClose` / `.modalBody` / `.modalOverlay`.

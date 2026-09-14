@@ -1165,6 +1165,41 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/modals@npm:9.5.0":
+  version: 9.5.0
+  resolution: "@mantine/modals@npm:9.5.0"
+  peerDependencies:
+    "@mantine/core": 9.5.0
+    "@mantine/hooks": 9.5.0
+    react: ^19.2.0
+    react-dom: ^19.2.0
+  checksum: 10c0/a791219f072bba8ef5768037df2d6daac4a4450f02e0e69ff1df809f5c89ab7749ece81b37b1692427c10364bdff4bc3bec0f80d5cc8448d40905b8dc5bd0b4d
+  languageName: node
+  linkType: hard
+
+"@mantine/spotlight@npm:9.5.0":
+  version: 9.5.0
+  resolution: "@mantine/spotlight@npm:9.5.0"
+  dependencies:
+    "@mantine/store": "npm:9.5.0"
+  peerDependencies:
+    "@mantine/core": 9.5.0
+    "@mantine/hooks": 9.5.0
+    react: ^19.2.0
+    react-dom: ^19.2.0
+  checksum: 10c0/59188b01253c511efcee7befe08215b7605f68c2605a260f9b4254093474d9a551bf1f9b48bd101e687b925a88e64ad35865b78ea8a4a729b958e12ab60e977a
+  languageName: node
+  linkType: hard
+
+"@mantine/store@npm:9.5.0":
+  version: 9.5.0
+  resolution: "@mantine/store@npm:9.5.0"
+  peerDependencies:
+    react: ^19.2.0
+  checksum: 10c0/9aa2493245e27693c09af08e02dc2348d1d582172ad4fb548360b0800109e77e48151bd76d6168e7847f44daec2c6c381d0f629cb8a79eb245298b2f5218f5a1
+  languageName: node
+  linkType: hard
+
 "@mdx-js/react@npm:^3.0.0":
   version: 3.1.1
   resolution: "@mdx-js/react@npm:3.1.1"
@@ -4667,6 +4702,8 @@ __metadata:
     "@eslint/js": "npm:^10.0.1"
     "@mantine/core": "npm:^9.5.0"
     "@mantine/hooks": "npm:^9.5.0"
+    "@mantine/modals": "npm:9.5.0"
+    "@mantine/spotlight": "npm:9.5.0"
     "@reduxjs/toolkit": "npm:^2.12.0"
     "@storybook/addon-a11y": "npm:^10.5.5"
     "@storybook/addon-docs": "npm:^10.5.5"

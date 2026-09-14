@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { isApiRecordPayload } from '@api/contracts';
 import { assertSafeRequestUrl, redactSecrets } from '@api/security';
 
 const baseURL = import.meta.env.VITE_APP_URL ?? '';
@@ -8,11 +9,18 @@ const lobbyBaseURL = '';
 
 export class ServerError extends Error {
   status: number;
-  constructor(status: number) {
-    super(`Server error: ${status}`);
+  constructor(status: number, message = `Server error: ${status}`) {
+    super(message);
     this.name = 'ServerError';
     this.status = status;
   }
+}
+
+/** Reject HTML / unparsed JSON so bootstrap shows 500 instead of an empty lobby. */
+export function assertJsonRecordResponse(data: unknown, status: number): void {
+  if (isApiRecordPayload(data)) return;
+  const code = status >= 400 ? status : 500;
+  throw new ServerError(code, 'Invalid JSON response');
 }
 
 function getRequestId(): string {
@@ -41,7 +49,14 @@ function attachSecurityInterceptors(
   });
 
   client.interceptors.response.use(
-    (r) => r,
+    (r) => {
+      try {
+        assertJsonRecordResponse(r.data, r.status);
+        return r;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     (err) => {
       if (err?.config) {
         // Prevent tokens leaking into console / error reporters via axios config.

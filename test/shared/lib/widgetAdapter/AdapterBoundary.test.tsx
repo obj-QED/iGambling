@@ -1,9 +1,9 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MantineProvider } from '@mantine/core';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { mantineTheme } from '@/assets/theme';
-import { AdapterBoundary } from '@/shared/lib/widgetAdapter';
+import { AdapterBoundary, LazyHost } from '@/shared/lib/widgetAdapter';
 
 const skeletonEnabled = vi.hoisted(() => ({ current: true }));
 const inViewState = vi.hoisted(() => ({ current: true }));
@@ -76,5 +76,14 @@ describe('AdapterBoundary', () => {
 
     expect(document.querySelector('[data-adapter-fallback]')).toBeNull();
     expect(document.querySelector('[data-inview-skeleton-host]')).toBeTruthy();
+  });
+
+  it('LazyHost renders a component passed as a prop', () => {
+    function Probe({ label }: { label: string }) {
+      return <span>{label}</span>;
+    }
+
+    render(<LazyHost component={Probe} label="hosted" />);
+    expect(screen.getByText('hosted')).toBeInTheDocument();
   });
 });

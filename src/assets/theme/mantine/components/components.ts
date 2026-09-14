@@ -10,6 +10,7 @@ import {
   Modal,
   Popover,
   Text,
+  TextInput,
   Title,
 } from '@mantine/core';
 import cx from 'clsx';
@@ -21,7 +22,6 @@ import {
 } from '@/shared/config';
 
 import { MANTINE_ACTION_ICON_VARIANTS } from '../cmf/cmfActionIconVars';
-import { MANTINE_BUTTON_VARIANTS } from '../cmf/cmfButtonVars';
 import { resolveActionIconRootVars } from '../vars/actionIconVars';
 import { resolveButtonCustomVariantPaintVars, resolveButtonRootVars } from '../vars/buttonVars';
 import { CLEAR_CODE_INLINE_VARS, resolveCodeRootVars } from '../vars/codeVars';
@@ -29,6 +29,10 @@ import { resolveDrawerRootVars } from '../vars/drawerVars';
 import { CLEAR_GROUP_INLINE_VARS, resolveGroupRootVars } from '../vars/groupVars';
 import { CLEAR_MODAL_INLINE_VARS, resolveModalRootVars } from '../vars/modalVars';
 import { CLEAR_POPOVER_INLINE_VARS, resolvePopoverDropdownVars } from '../vars/popoverVars';
+import {
+  CLEAR_SEARCH_INPUT_INLINE_VARS,
+  resolveSearchInputRootVars,
+} from '../vars/searchInputVars';
 import { CLEAR_TEXT_INLINE_VARS, resolveTextRootVars } from '../vars/textVars';
 
 import classes from '../styles/components.module.scss';
@@ -44,6 +48,9 @@ const CLEAR_BUTTON_PAINT_INLINE_VARS = {
   '--button-color': null,
   '--button-bd': null,
   '--button-hover-color': null,
+  '--button-disabled': null,
+  '--button-disabled-color': null,
+  '--button-disabled-bd': null,
 } as const;
 
 /**
@@ -61,6 +68,9 @@ const CLEAR_BUTTON_INLINE_VARS = {
   '--button-color': null,
   '--button-bd': null,
   '--button-hover-color': null,
+  '--button-disabled': null,
+  '--button-disabled-color': null,
+  '--button-disabled-bd': null,
 } as const;
 
 const CLEAR_ACTION_ICON_INLINE_VARS = {
@@ -72,6 +82,9 @@ const CLEAR_ACTION_ICON_INLINE_VARS = {
   '--ai-color': null,
   '--ai-bd': null,
   '--ai-hover-color': null,
+  '--ai-disabled': null,
+  '--ai-disabled-color': null,
+  '--ai-disabled-bd': null,
 } as const;
 
 /** Paint-only clear — size stays native Mantine (plain gradient/white bridge). */
@@ -81,6 +94,9 @@ const CLEAR_ACTION_ICON_PAINT_INLINE_VARS = {
   '--ai-color': null,
   '--ai-bd': null,
   '--ai-hover-color': null,
+  '--ai-disabled': null,
+  '--ai-disabled-color': null,
+  '--ai-disabled-bd': null,
 } as const;
 
 function pickActionIconPaintVars(root: Record<string, string>): Record<string, string> {
@@ -92,6 +108,9 @@ function pickActionIconPaintVars(root: Record<string, string>): Record<string, s
     '--ai-bd-width': root['--ai-bd-width'],
     '--ai-hover': root['--ai-hover'],
     '--ai-hover-color': root['--ai-hover-color'],
+    '--ai-disabled': root['--ai-disabled'],
+    '--ai-disabled-color': root['--ai-disabled-color'],
+    '--ai-disabled-bd': root['--ai-disabled-bd'],
   };
 }
 
@@ -101,27 +120,12 @@ function hasCmfScope(props: Record<string, unknown>): boolean {
   );
 }
 
-function isCustomButtonVariant(variant: unknown): variant is string {
-  return (
-    typeof variant === 'string' &&
-    variant.trim().length > 0 &&
-    (MANTINE_BUTTON_VARIANTS as readonly string[]).includes(variant) === false
-  );
-}
-
 function isCustomActionIconVariant(variant: unknown): variant is string {
   return (
     typeof variant === 'string' &&
     variant.trim().length > 0 &&
     (MANTINE_ACTION_ICON_VARIANTS as readonly string[]).includes(variant) === false
   );
-}
-
-/** Native Mantine paint is wrong/weak for these — bridge theme tokens without CMF scope. */
-const THEME_PAINT_BRIDGE_VARIANTS = new Set(['gradient', 'white']);
-
-function needsThemePaintBridge(variant: unknown): boolean {
-  return typeof variant === 'string' && THEME_PAINT_BRIDGE_VARIANTS.has(variant);
 }
 
 export const themeComponents: MantineThemeComponents = {
@@ -146,10 +150,9 @@ export const themeComponents: MantineThemeComponents = {
 
   /**
    * Button:
-   * - `data-cmf-*` → clear Mantine inline → `resolveButtonRootVars` (nestCssVars)
-   * - custom `variant` (`hero`, `button-link`, …) → clear paints + paint-only token bridge
-   * - `gradient` / `white` (no CMF) → theme paint bridge (Mantine hover≈bg / wrong white colors)
-   * - other plain Mantine variants → keep native paints
+   * - `data-cmf-*` → clear Mantine inline → `resolveButtonRootVars` (full nestCssVars)
+   * - plain / custom without scope → paint bridge:
+   *   `--cmf-button-{variant}-*` → Mantine paint fallbacks (`MANTINE_VARIANT_FALLBACKS`)
    */
   Button: Button.extend({
     classNames: {
@@ -160,15 +163,6 @@ export const themeComponents: MantineThemeComponents = {
     vars: (_theme, props) => {
       const record = props as Record<string, unknown>;
 
-      if (isCustomButtonVariant(props.variant)) {
-        return {
-          root: {
-            ...CLEAR_BUTTON_PAINT_INLINE_VARS,
-            ...resolveButtonCustomVariantPaintVars(record),
-          },
-        } as never;
-      }
-
       if (hasCmfScope(record)) {
         return {
           root: {
@@ -178,21 +172,19 @@ export const themeComponents: MantineThemeComponents = {
         } as never;
       }
 
-      // Native Mantine `gradient` sets hover===bg; `white` uses black text — bridge theme paints.
-      if (needsThemePaintBridge(props.variant)) {
-        return {
-          root: {
-            ...CLEAR_BUTTON_PAINT_INLINE_VARS,
-            ...resolveButtonCustomVariantPaintVars(record),
-          },
-        } as never;
-      }
-
-      return { root: {} } as never;
+      return {
+        root: {
+          ...CLEAR_BUTTON_PAINT_INLINE_VARS,
+          ...resolveButtonCustomVariantPaintVars(record),
+        },
+      } as never;
     },
   }),
 
-  /** ActionIcon — same gates as Button. */
+  /**
+   * ActionIcon — same gates as Button.
+   * Plain variants: `--cmf-action-icon-{variant}-*` → Mantine paint fallbacks.
+   */
   ActionIcon: ActionIcon.extend({
     classNames: {
       root: classes.actionIcon,
@@ -200,7 +192,7 @@ export const themeComponents: MantineThemeComponents = {
     vars: (_theme, props) => {
       const record = props as Record<string, unknown>;
 
-      if (isCustomActionIconVariant(props.variant)) {
+      if (isCustomActionIconVariant(props.variant) || hasCmfScope(record)) {
         return {
           root: {
             ...CLEAR_ACTION_ICON_INLINE_VARS,
@@ -209,25 +201,12 @@ export const themeComponents: MantineThemeComponents = {
         } as never;
       }
 
-      if (hasCmfScope(record)) {
-        return {
-          root: {
-            ...CLEAR_ACTION_ICON_INLINE_VARS,
-            ...resolveActionIconRootVars(record),
-          },
-        } as never;
-      }
-
-      if (needsThemePaintBridge(props.variant)) {
-        return {
-          root: {
-            ...CLEAR_ACTION_ICON_PAINT_INLINE_VARS,
-            ...pickActionIconPaintVars(resolveActionIconRootVars(record)),
-          },
-        } as never;
-      }
-
-      return { root: {} } as never;
+      return {
+        root: {
+          ...CLEAR_ACTION_ICON_PAINT_INLINE_VARS,
+          ...pickActionIconPaintVars(resolveActionIconRootVars(record)),
+        },
+      } as never;
     },
   }),
 
@@ -245,6 +224,33 @@ export const themeComponents: MantineThemeComponents = {
         root: {
           ...CLEAR_GROUP_INLINE_VARS,
           ...resolveGroupRootVars(record),
+        },
+      } as never;
+    },
+  }),
+
+  /**
+   * TextInput — AppSearch triggers with `data-cmf-*`:
+   * place+key → place → `--cmf-search-*` → Mantine Input defaults.
+   * Vars land on Input `wrapper` (Mantine rootSelector).
+   * Hover / focus / Code / section: `.searchInput` in components.module.scss.
+   */
+  TextInput: TextInput.extend({
+    classNames: (_theme, props) => {
+      if (!hasCmfScope(props as unknown as Record<string, unknown>)) {
+        return {};
+      }
+      return { wrapper: classes.searchInput };
+    },
+    vars: (_theme, props) => {
+      const record = props as Record<string, unknown>;
+      if (!hasCmfScope(record)) {
+        return { wrapper: {} } as never;
+      }
+      return {
+        wrapper: {
+          ...CLEAR_SEARCH_INPUT_INLINE_VARS,
+          ...resolveSearchInputRootVars(record),
         },
       } as never;
     },

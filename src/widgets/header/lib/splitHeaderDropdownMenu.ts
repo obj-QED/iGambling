@@ -1,6 +1,7 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
 
 import { HEADER_DROPDOWN_OUTSIDE_KEYS } from '@/shared/config';
+import { isNonEmptyArray } from '@/shared/lib';
 
 import { isDeepPanelItemEligible } from './itemUtils';
 
@@ -18,7 +19,7 @@ export function flattenHeaderDropdownItems(items: readonly HeaderMenuItem[]): He
     if (isHeaderDropdownOutsideKey(item.key)) continue;
 
     const nested = item.items;
-    if (nested !== undefined && nested.length > 0) {
+    if (isNonEmptyArray(nested)) {
       result.push(...flattenHeaderDropdownItems(nested));
       continue;
     }
@@ -44,7 +45,7 @@ export function collectHeaderDropdownOutsideItems(
     }
 
     const nested = item.items;
-    if (nested !== undefined && nested.length > 0) {
+    if (isNonEmptyArray(nested)) {
       result.push(...collectHeaderDropdownOutsideItems(nested));
     }
   }

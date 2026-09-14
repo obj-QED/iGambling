@@ -15,12 +15,15 @@ type BootGateProps = {
 };
 
 /**
- * Single fullscreen preloader for:
- * 1) translation → init bootstrap
- * 2) when `params.preloader.skeleton: false`, adapter warmup (no second mount)
+ * Single fullscreen preloader + early shell mount.
  *
- * Adapter hold is derived from pending flags; one `requestAnimationFrame` after
- * idle releases the hold (no synchronous setState in the effect body).
+ * Always mounts `children` so layout/chrome can paint under the overlay while
+ * translation → init runs (and adapters warm up).
+ *
+ * - `params.preloader.skeleton: true` → preloader only while bootstrap pending;
+ *   element skeleton on chrome continues until API + paint (see `useShellReveal`).
+ * - `skeleton: false` → hold preloader until bootstrap + adapters idle + one paint
+ *   frame (invisible warmup mount — no second GlobalPreloader).
  */
 export function BootGate({ bootstrapPending, children }: BootGateProps) {
   const skeletonOn = isShellSkeletonEnabled();
@@ -42,20 +45,19 @@ export function BootGate({ bootstrapPending, children }: BootGateProps) {
   }, [skeletonOn, busy]);
 
   const adapterHold = !skeletonOn && (busy || releaseGen === 0);
-  const showPreloader = bootstrapPending || adapterHold;
-  const warmup = !skeletonOn && adapterHold && !bootstrapPending;
+  const showPreloader = skeletonOn ? bootstrapPending : bootstrapPending || adapterHold;
+  const warmup = !skeletonOn && showPreloader;
 
   return (
     <>
       {showPreloader && <GlobalPreloader />}
-      {!bootstrapPending &&
-        (warmup ? (
-          <div className={styles.warmup} aria-hidden>
-            {children}
-          </div>
-        ) : (
-          children
-        ))}
+      {warmup ? (
+        <div className={styles.warmup} aria-hidden>
+          {children}
+        </div>
+      ) : (
+        children
+      )}
     </>
   );
 }

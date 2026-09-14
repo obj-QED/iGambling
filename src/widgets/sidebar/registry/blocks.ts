@@ -2,6 +2,8 @@ import type { BlockProps } from '../types';
 import type { HeaderMenuItem } from '@/widgets/header';
 import type { ComponentType } from 'react';
 
+import { isNonEmptyArray } from '@/shared/lib';
+
 import { DefaultItemBlock } from '../ui/blocks/DefaultItemBlock/DefaultItemBlock';
 import { DropdownBlock } from '../ui/blocks/DropdownBlock/DropdownBlock';
 import { Logo } from '../ui/blocks/Logo/Logo';
@@ -49,10 +51,9 @@ export function resolveBlockComponent(
   item: HeaderMenuItem,
   overlay?: TypePackBlockOverlay,
 ): ComponentType<BlockProps> {
-  const key: SidebarBlockRegistryKey =
-    item.items !== undefined && item.items.length > 0
-      ? 'menuDropdown'
-      : resolveBlockRegistryKey(item.key ?? '');
+  const key: SidebarBlockRegistryKey = isNonEmptyArray(item.items)
+    ? 'menuDropdown'
+    : resolveBlockRegistryKey(item.key ?? '');
 
   return overlay?.[key] ?? requireGlobalBlock(key);
 }

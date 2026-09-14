@@ -19,6 +19,15 @@ describe('resolveActionIconRootVars', () => {
     );
     expect(vars['--ai-hover']).toContain('var(--cmf-action-icon-default-hover');
     expect(vars['--ai-hover-color']).toContain('var(--cmf-action-icon-default-hover-color');
+    expect(vars['--ai-disabled']).toBe(
+      'var(--cmf-action-icon-default-disabled, var(--mantine-color-disabled))',
+    );
+    expect(vars['--ai-disabled-color']).toBe(
+      'var(--cmf-action-icon-default-disabled-color, var(--mantine-color-disabled-color))',
+    );
+    expect(vars['--ai-disabled-bd']).toBe(
+      'var(--cmf-action-icon-default-disabled-bd, transparent)',
+    );
     expect(vars['--ai-shadow']).toBe('var(--cmf-action-icon-default-shadow, none)');
     expect(vars['--ai-active-position']).toBe(
       'var(--cmf-action-icon-default-active-position, bottom)',

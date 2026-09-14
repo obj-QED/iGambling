@@ -1,6 +1,7 @@
 import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '../types';
 
 import { isHeaderSpecialBlockKey } from '@/shared/config/headerSpecialBlockKeys';
+import { isNonEmptyArray } from '@/shared/lib';
 
 import { HEADER_CONFIG_ONLY_BLOCK_KEYS } from '../types/items.types';
 
@@ -63,7 +64,7 @@ export function filterRenderableItems(items: HeaderMenuItem[]): HeaderMenuItem[]
 
   for (const item of items) {
     const nested = item.items;
-    if (nested !== undefined && nested.length > 0) {
+    if (isNonEmptyArray(nested)) {
       const children = filterRenderableItems(nested);
       if (children.length === 0 || !isRenderableItem(item)) continue;
       result.push({ ...item, items: children });

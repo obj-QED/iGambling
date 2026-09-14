@@ -1,4 +1,5 @@
 import type { DrawerProps, MenuProps, ModalProps, PopoverProps } from '@mantine/core';
+import type { SpotlightProps } from '@mantine/spotlight';
 
 import { isRecord } from '@/shared/lib/coercion';
 
@@ -33,8 +34,26 @@ export type PopoverSettings = Omit<Partial<PopoverProps>, 'opened' | 'onChange' 
  */
 export type MenuSettings = Omit<Partial<MenuProps>, 'opened' | 'onChange' | 'children'>;
 
+/**
+ * Global Spotlight tunables from `params.spotlight`.
+ * Any Spotlight prop except runtime-owned (`store` / `actions` / `children` / `filter`).
+ * @see https://mantine.dev/x/spotlight/?t=props
+ */
+export type SpotlightSettings = Omit<
+  Partial<SpotlightProps>,
+  'store' | 'actions' | 'children' | 'filter'
+>;
+
 const MODAL_DRAWER_STRIP = new Set(['opened', 'onClose', 'children']);
 const POPOVER_MENU_STRIP = new Set(['opened', 'onChange', 'children']);
+const SPOTLIGHT_STRIP = new Set([
+  'store',
+  'actions',
+  'children',
+  'filter',
+  'query',
+  'onQueryChange',
+]);
 
 const NESTED_PROP_KEYS = [
   'overlayProps',
@@ -43,6 +62,8 @@ const NESTED_PROP_KEYS = [
   'removeScrollProps',
   'portalProps',
   'middlewares',
+  'searchProps',
+  'scrollAreaProps',
 ] as const;
 
 function readOverlaySettings(raw: unknown, strip: ReadonlySet<string>): Record<string, unknown> {
@@ -60,6 +81,16 @@ export function getModalDefaultProps(settings = getSettings()): ModalSettings {
   return readOverlaySettings(settings.params?.modal, MODAL_DRAWER_STRIP) as ModalSettings;
 }
 
+/**
+ * Search modal overrides — `params.search.modal`.
+ * Cascade: `params.modal` → `params.search.modal` → instance.
+ */
+export function getSearchModalDefaultProps(settings = getSettings()): ModalSettings {
+  const search = settings.params?.search;
+  if (!isRecord(search)) return {};
+  return readOverlaySettings(search.modal, MODAL_DRAWER_STRIP) as ModalSettings;
+}
+
 /** Safe `params.drawer` → Mantine Drawer default props. */
 export function getDrawerDefaultProps(settings = getSettings()): DrawerSettings {
   return readOverlaySettings(settings.params?.drawer, MODAL_DRAWER_STRIP) as DrawerSettings;
@@ -73,6 +104,11 @@ export function getPopoverDefaultProps(settings = getSettings()): PopoverSetting
 /** Safe `params.menu` → Mantine Menu default props. */
 export function getMenuDefaultProps(settings = getSettings()): MenuSettings {
   return readOverlaySettings(settings.params?.menu, POPOVER_MENU_STRIP) as MenuSettings;
+}
+
+/** Safe `params.spotlight` → Mantine Spotlight default props. */
+export function getSpotlightDefaultProps(settings = getSettings()): SpotlightSettings {
+  return readOverlaySettings(settings.params?.spotlight, SPOTLIGHT_STRIP) as SpotlightSettings;
 }
 
 /**
@@ -102,4 +138,29 @@ export function mergeOverlayDefaultProps<T extends Record<string, unknown>>(
   }
 
   return out;
+}
+
+/** Cascade for AppSearch modal: global modal → search.modal → instance. */
+export function resolveSearchModalProps(
+  instance: ModalSettings = {},
+  settings = getSettings(),
+): ModalSettings {
+  return mergeOverlayDefaultProps(
+    mergeOverlayDefaultProps(
+      getModalDefaultProps(settings) as Record<string, unknown>,
+      getSearchModalDefaultProps(settings) as Record<string, unknown>,
+    ),
+    instance as Record<string, unknown>,
+  ) as ModalSettings;
+}
+
+/** Cascade for Spotlight: params.spotlight → instance. */
+export function resolveSpotlightProps(
+  instance: SpotlightSettings = {},
+  settings = getSettings(),
+): SpotlightSettings {
+  return mergeOverlayDefaultProps(
+    getSpotlightDefaultProps(settings) as Record<string, unknown>,
+    instance as Record<string, unknown>,
+  ) as SpotlightSettings;
 }

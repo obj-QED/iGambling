@@ -12,6 +12,11 @@ const MANTINE_BUTTON_BD_OUTLINE =
   'color-mix(in srgb, var(--brand-color-6) 55%, var(--mantine-color-default-border))';
 const MANTINE_BUTTON_BD_WIDTH = 'calc(0.0625rem * var(--mantine-scale))';
 
+/** Disabled paint last-resort (override via `--cmf-button-{variant|scope}-disabled*`). */
+const MANTINE_BUTTON_DISABLED_BG = 'var(--mantine-color-disabled)';
+const MANTINE_BUTTON_DISABLED_COLOR = 'var(--mantine-color-disabled-color)';
+const MANTINE_BUTTON_DISABLED_BD = 'transparent';
+
 /** Compose Mantine `--button-bd` from width token + color. */
 function buttonBdShorthand(colorToken: string, widthToken = 'var(--button-bd-width)'): string {
   return `${widthToken} solid ${colorToken}`;
@@ -77,10 +82,11 @@ const MANTINE_VARIANT_FALLBACKS = {
   },
   white: {
     bg: 'var(--mantine-color-white)',
-    color: 'var(--mantine-color-brand-filled)',
+    color: 'var(--brand-color-6)',
     bd: MANTINE_BUTTON_BD_TRANSPARENT,
+    /* No hover chrome in default — keep fill + text stable. */
     hover: 'var(--mantine-color-white)',
-    'hover-color': 'var(--mantine-color-brand-filled)',
+    'hover-color': 'var(--brand-color-7)',
   },
   gradient: {
     bg: `var(--app-gradient-default, ${APP_GRADIENT_DEFAULT})`,
@@ -256,6 +262,25 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       variant,
       tail: 'variant',
     }),
+    '--button-disabled': buildCmfButtonPropToken('disabled', MANTINE_BUTTON_DISABLED_BG, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-disabled-color': buildCmfButtonPropToken(
+      'disabled-color',
+      MANTINE_BUTTON_DISABLED_COLOR,
+      {
+        scope,
+        variant,
+        tail: 'variant',
+      },
+    ),
+    '--button-disabled-bd': buildCmfButtonPropToken('disabled-bd', MANTINE_BUTTON_DISABLED_BD, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
     '--button-shadow': buildCmfButtonPropToken('shadow', 'none', {
       scope,
       variant,
@@ -402,6 +427,25 @@ export function resolveButtonCustomVariantPaintVars(
       tail: 'variant',
     }),
     '--button-hover-color': buildCmfButtonPropToken('hover-color', paint['hover-color'], {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-disabled': buildCmfButtonPropToken('disabled', MANTINE_BUTTON_DISABLED_BG, {
+      scope,
+      variant,
+      tail: 'variant',
+    }),
+    '--button-disabled-color': buildCmfButtonPropToken(
+      'disabled-color',
+      MANTINE_BUTTON_DISABLED_COLOR,
+      {
+        scope,
+        variant,
+        tail: 'variant',
+      },
+    ),
+    '--button-disabled-bd': buildCmfButtonPropToken('disabled-bd', MANTINE_BUTTON_DISABLED_BD, {
       scope,
       variant,
       tail: 'variant',

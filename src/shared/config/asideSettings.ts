@@ -1,3 +1,4 @@
+import type { BlockVariantSettingsMap } from './blockVariantSpec';
 import type { CmfActiveSettings } from './cmfActiveSettings';
 import type {
   HeaderCustomBlockInput,
@@ -52,8 +53,8 @@ export type AsideRegionsSettings = {
   footer?: boolean;
 };
 
-/** Adapter variant keys per domain (`search` → `row` | `icon`). Open strings from settings boundary. */
-export type AsideBlockVariantSettings = Partial<Record<string, string>>;
+/** Adapter variant keys per domain. String or `{ type, style }` — flattened in resolve. */
+export type AsideBlockVariantSettings = BlockVariantSettingsMap;
 
 /** Per-type layout/blocks only — do not duplicate scrollArea/tooltip here. */
 export type AsideTypeTunablesSettings = {
@@ -82,7 +83,8 @@ export type AsideSettings = {
    */
   controlFit?: AsideControlFit;
   /**
-   * Plugin adapter variants (`search`: `row` | `icon`).
+   * Plugin adapter variants (`search` / special keys like `search_leftmenu`).
+   * Prefer `{ type, style }` (behavior + chrome). `search_leftmenu` aliases to `search`.
    * Nested `types.<type>.blockVariants` overrides when present.
    * Omit → derive from `type` (`compact` → search `icon`, else `row`).
    */
