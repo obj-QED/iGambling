@@ -1,26 +1,27 @@
 import axios from 'axios';
 
-import { isApiRecordPayload } from '@api/contracts';
 import { assertSafeRequestUrl, redactSecrets } from '@api/security';
+
+import { createInvalidResponseError, InvalidResponseError, ServerError } from './errors';
+import { reportInvalidResponse } from './invalidResponseStore';
+
+export { createInvalidResponseError, InvalidResponseError, ServerError } from './errors';
+export {
+  getInvalidResponse,
+  type InvalidResponseSnapshot,
+  reportInvalidResponse,
+  resetInvalidResponse,
+  subscribeInvalidResponse,
+} from './invalidResponseStore';
 
 const baseURL = import.meta.env.VITE_APP_URL ?? '';
 // Lobby: relative URL — same origin (prod) or Vite proxy (dev). Enables httpOnly cookies.
 const lobbyBaseURL = '';
 
-export class ServerError extends Error {
-  status: number;
-  constructor(status: number, message = `Server error: ${status}`) {
-    super(message);
-    this.name = 'ServerError';
-    this.status = status;
-  }
-}
-
-/** Reject HTML / unparsed JSON so bootstrap shows 500 instead of an empty lobby. */
+/** Reject HTML / unparsed JSON so the invalid-response page can replace the app. */
 export function assertJsonRecordResponse(data: unknown, status: number): void {
-  if (isApiRecordPayload(data)) return;
-  const code = status >= 400 ? status : 500;
-  throw new ServerError(code, 'Invalid JSON response');
+  const invalid = createInvalidResponseError(data, status);
+  if (invalid) throw invalid;
 }
 
 function getRequestId(): string {
@@ -54,6 +55,9 @@ function attachSecurityInterceptors(
         assertJsonRecordResponse(r.data, r.status);
         return r;
       } catch (error) {
+        if (error instanceof InvalidResponseError) {
+          reportInvalidResponse(error);
+        }
         return Promise.reject(error);
       }
     },
@@ -65,8 +69,16 @@ function attachSecurityInterceptors(
       if (err?.response?.data) {
         err.response.data = redactSecrets(err.response.data);
       }
-      if (err.response?.status >= 500) {
-        return Promise.reject(new ServerError(err.response.status));
+      const status = err.response?.status;
+      if (typeof status === 'number') {
+        const invalid = createInvalidResponseError(err.response.data, status);
+        if (invalid) {
+          reportInvalidResponse(invalid);
+          return Promise.reject(invalid);
+        }
+      }
+      if (typeof status === 'number' && status >= 500) {
+        return Promise.reject(new ServerError(status));
       }
       return Promise.reject(err);
     },
