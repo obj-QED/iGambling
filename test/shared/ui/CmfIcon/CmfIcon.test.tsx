@@ -26,6 +26,13 @@ describe('CmfIcon', () => {
     expect(image.className).toMatch(/hidden/);
   });
 
+  it('keeps non-critical raster icons lazy with normal browser priority', () => {
+    const { getByRole } = render(<CmfIcon src="/icon.png" alt="Icon" />);
+
+    expect(getByRole('img', { name: 'Icon' })).toHaveAttribute('loading', 'lazy');
+    expect(getByRole('img', { name: 'Icon' })).toHaveAttribute('fetchpriority', 'auto');
+  });
+
   it('does not report onError twice for the same src', () => {
     const onError = vi.fn();
     const { getByRole } = render(<CmfIcon src="/missing.png" alt="Logo" onError={onError} />);

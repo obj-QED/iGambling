@@ -1,5 +1,5 @@
 import type { CmfActionIconVariant, CmfButtonVariant } from '@/assets/theme';
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { MenuItem as HeaderMenuItem } from '@/entities/menu';
 
 type MenuItemVariantSource = Pick<HeaderMenuItem, 'key' | 'type' | 'variant'>;
 

@@ -1,4 +1,4 @@
-import type { HeaderMenuModel, HeaderSection } from '@/widgets/header';
+import type { MenuModel as HeaderMenuModel, MenuSection as HeaderSection } from '@/entities/menu';
 
 import { SIDEBAR_FOOTER_SECTION_KEY, SIDEBAR_HEADER_SECTION_KEY } from '../../config/sectionKeys';
 

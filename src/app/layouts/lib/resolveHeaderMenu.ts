@@ -1,4 +1,4 @@
-import type { HeaderMenuModel } from '@/widgets/header/types';
+import type { MenuModel as HeaderMenuModel } from '@/entities/menu';
 import type { InitV2Content } from '@api/lobby/types';
 
 import { getHeaderMenuMock } from '@/widgets/header/mocks';

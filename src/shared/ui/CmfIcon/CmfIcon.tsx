@@ -29,7 +29,16 @@ function assignRef<T>(ref: Ref<T> | undefined, node: T | null): void {
 
 export const CmfIcon = memo(
   forwardRef<HTMLImageElement | HTMLSpanElement | SVGSVGElement, CmfIconProps>(function CmfIcon(
-    { src, alt, shape = 'square', radius = 'sm', className, onError },
+    {
+      src,
+      alt,
+      shape = 'square',
+      radius = 'sm',
+      className,
+      loading = 'lazy',
+      fetchPriority = 'auto',
+      onError,
+    },
     ref,
   ) {
     const [failedSrc, setFailedSrc] = useState<string | null>(null);
@@ -94,9 +103,9 @@ export const CmfIcon = memo(
         className={rootClassName}
         src={src}
         alt={alt}
-        loading="eager"
+        loading={loading}
         decoding="async"
-        fetchPriority="high"
+        fetchPriority={fetchPriority}
         onError={handleError}
         {...dataAttrs}
       />

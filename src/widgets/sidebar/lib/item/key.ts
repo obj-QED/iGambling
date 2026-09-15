@@ -1,4 +1,4 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { MenuItem as HeaderMenuItem } from '@/entities/menu';
 
 export function itemKey(item: HeaderMenuItem): string {
   return item.key ?? '';

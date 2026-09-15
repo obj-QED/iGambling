@@ -30,6 +30,7 @@ function ItemImageComponent({ item, alt, className, onImgFailed }: ItemImageProp
       alt={alt}
       shape={resolveCmfIconShape(item, cmfStyle)}
       radius={resolveCmfIconRadius(item, cmfStyle)}
+      loading="eager"
       onError={handleError}
     />
   );

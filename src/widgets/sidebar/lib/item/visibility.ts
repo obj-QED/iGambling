@@ -1,4 +1,4 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { MenuItem as HeaderMenuItem } from '@/entities/menu';
 
 import {
   DEFAULT_SIDEBAR_SPECIAL_BLOCK_KEYS,

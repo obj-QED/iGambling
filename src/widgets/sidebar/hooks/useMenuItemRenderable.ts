@@ -1,4 +1,4 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { MenuItem as HeaderMenuItem } from '@/entities/menu';
 
 import { useMediaState } from '@/shared/hooks';
 

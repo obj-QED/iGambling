@@ -1,4 +1,4 @@
-import type { HeaderMenuModel } from '@/widgets/header';
+import type { MenuModel as HeaderMenuModel } from '@/entities/menu';
 
 import { publicAssetUrl } from '@/shared/lib/publicAssetUrl';
 

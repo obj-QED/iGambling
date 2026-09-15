@@ -5,9 +5,9 @@ import { memo, useCallback, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
 
+import { mergeMenuCustomBlock } from '@/entities/menu';
 import { LazyHost } from '@/shared/lib';
 import { CmfActiveIndicatorProvider } from '@/shared/ui/CmfActiveLine';
-import { mergeCustomBlock } from '@/widgets/header';
 
 import {
   AsideMenuSizeContext,
@@ -107,7 +107,7 @@ function RootComponent({ menu, config, className }: RootProps) {
 
     const merged =
       config.customBlocks?.reduce(
-        (currentMenu, customBlock) => mergeCustomBlock(currentMenu, customBlock),
+        (currentMenu, customBlock) => mergeMenuCustomBlock(currentMenu, customBlock),
         menu,
       ) ?? menu;
 

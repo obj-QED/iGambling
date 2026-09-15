@@ -1,4 +1,4 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { MenuItem as HeaderMenuItem } from '@/entities/menu';
 import type { MouseEventHandler, ReactNode } from 'react';
 
 export type ItemButtonProps = {

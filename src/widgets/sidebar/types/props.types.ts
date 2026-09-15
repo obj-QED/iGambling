@@ -1,6 +1,10 @@
 import type { SidebarLayoutModel } from '../lib';
 import type { SidebarSchema } from './config.types';
-import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '@/widgets/header';
+import type {
+  MenuItem as HeaderMenuItem,
+  MenuModel as HeaderMenuModel,
+  MenuSection as HeaderSection,
+} from '@/entities/menu';
 
 export type RootProps = {
   menu: HeaderMenuModel | null;

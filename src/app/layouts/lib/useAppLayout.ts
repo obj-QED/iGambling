@@ -1,4 +1,4 @@
-import type { HeaderMenuModel } from '@/widgets/header/types';
+import type { MenuModel as HeaderMenuModel } from '@/entities/menu';
 
 import { useMemo } from 'react';
 

@@ -1,4 +1,4 @@
-import type { HeaderMenuItem } from '@/widgets/header';
+import type { MenuItem as HeaderMenuItem } from '@/entities/menu';
 import type { ReactElement } from 'react';
 
 import { IconLogout, IconSwitchHorizontal } from '@tabler/icons-react';

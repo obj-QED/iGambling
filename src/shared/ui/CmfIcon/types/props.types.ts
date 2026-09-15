@@ -6,5 +6,7 @@ export type CmfIconProps = {
   shape?: CmfIconShape;
   radius?: CmfIconRadius;
   className?: string;
+  loading?: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'low' | 'auto';
   onError?: () => void;
 };

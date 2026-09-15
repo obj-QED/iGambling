@@ -1,8 +1,8 @@
 import type { SidebarBlockRegistryKey } from '../../registry/keys';
 import type { BlockProps, SidebarTypeStrategyProps } from '../../types';
 import type { SidebarTypeTunables } from './tunableDefaults';
+import type { MenuItem as HeaderMenuItem } from '@/entities/menu';
 import type { AsideTypeStrategyKey } from '@/shared/config';
-import type { HeaderMenuItem } from '@/widgets/header';
 import type { ComponentType, MouseEventHandler, ReactNode } from 'react';
 
 export type SidebarItemKind = 'button' | 'actionIcon';

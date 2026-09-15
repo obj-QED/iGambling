@@ -1,4 +1,8 @@
-import type { HeaderMenuItem, HeaderMenuModel, HeaderSection } from '@/widgets/header';
+import type {
+  MenuItem as HeaderMenuItem,
+  MenuModel as HeaderMenuModel,
+  MenuSection as HeaderSection,
+} from '@/entities/menu';
 
 import { isNonEmptyArray } from '@/shared/lib';
 

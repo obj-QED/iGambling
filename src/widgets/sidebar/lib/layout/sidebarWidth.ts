@@ -1,5 +1,3 @@
-import type { CSSProperties } from 'react';
-
 /** Desktop width from settings: px number or any CSS length (`30%`, `4.5rem`). */
 export type SidebarWidth = number | string;
 
@@ -23,8 +21,8 @@ export function toSidebarWidthCss(width: SidebarWidth | undefined): string | nul
 }
 
 /**
- * Live sidebar Root: settings width is the shell contract (no `max-content` growth).
- * Intersect with CSSProperties so custom props are assignable to `style`.
+ * Settings supply an arbitrary CSS length, so this runtime token remains the
+ * cascade boundary. Fixed structure and fallbacks stay in SCSS/theme.
  */
 export type SidebarRootWidthStyle = CSSProperties & {
   readonly '--app-layout-sidebar-width': string;
@@ -34,8 +32,6 @@ export function toSidebarRootWidthStyle(
   width: SidebarWidth | undefined,
 ): SidebarRootWidthStyle | undefined {
   const widthCss = toSidebarWidthCss(width);
-  if (widthCss == null) {
-    return undefined;
-  }
-  return { '--app-layout-sidebar-width': widthCss };
+  return widthCss === null ? undefined : { '--app-layout-sidebar-width': widthCss };
 }
+import type { CSSProperties } from 'react';

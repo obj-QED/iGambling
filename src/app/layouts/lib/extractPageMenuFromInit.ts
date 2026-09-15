@@ -1,9 +1,9 @@
-import type { HeaderMenuModel } from '@/widgets/header/types';
+import type { MenuModel as HeaderMenuModel } from '@/entities/menu';
 import type { InitV2Content } from '@api/lobby/types';
 
 import { findMenuRootInInit } from '@api/lobby/findPageMenuInInit';
 
-import { mapFlat, mapRoot } from '@/widgets/header/lib/mapMenu';
+import { mapFlatMenu, mapMenuRoot } from '@/entities/menu';
 
 export type MenuExtractMode = 'sections' | 'flat';
 
@@ -20,10 +20,10 @@ export function extractMenuFromInit(
   if (root === null) return null;
 
   if (mode === 'sections') {
-    return mapRoot(root);
+    return mapMenuRoot(root);
   }
 
-  return mapFlat(root, menuKey);
+  return mapFlatMenu(root, menuKey);
 }
 
 /** @deprecated Use `extractMenuFromInit`. */
