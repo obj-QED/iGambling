@@ -1,4 +1,10 @@
+import type { RootState } from '@store';
+
 import { useMemo } from 'react';
+
+import { useSelector } from 'react-redux';
+
+import { selectAppSearchQuery } from '@store/slices/contextSlice';
 
 import {
   isSearchInputBehavior,
@@ -7,11 +13,14 @@ import {
 } from '@/shared/config';
 
 import { appSearch } from './searchStore';
-import { useSearchQuery } from './useSearchState';
 
 /** Wire header/aside search triggers to the global AppSearch host. */
 export function useAppSearchTrigger(behavior: string | undefined) {
-  const searchQuery = useSearchQuery();
+  const inputMode = isSearchInputBehavior(behavior);
+  /** Overlay triggers must not subscribe to query — typing in the modal would re-render every search chrome. */
+  const searchQuery = useSelector((state: RootState) =>
+    inputMode ? selectAppSearchQuery(state) : '',
+  );
 
   const onActivate = useMemo(() => {
     if (!isSearchOverlayBehavior(behavior)) return undefined;
@@ -21,12 +30,12 @@ export function useAppSearchTrigger(behavior: string | undefined) {
   }, [behavior]);
 
   const onSearchQueryChange = useMemo(() => {
-    if (!isSearchInputBehavior(behavior)) return undefined;
+    if (!inputMode) return undefined;
     return (query: string) => {
       appSearch.enableInputMode();
       appSearch.setQuery(query);
     };
-  }, [behavior]);
+  }, [inputMode]);
 
   return {
     searchQuery,

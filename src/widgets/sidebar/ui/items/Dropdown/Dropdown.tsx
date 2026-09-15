@@ -36,7 +36,7 @@ function DropdownComponent({ item, className }: DropdownProps) {
       {...(hasActiveChild ? { 'data-sidebar-dropdown-child-active': 'true' } : {})}
     >
       <DropdownTrigger item={item} opened={opened} onToggle={onToggle} />
-      <Collapse expanded={opened}>
+      <Collapse expanded={opened} transitionDuration={500}>
         <ul className={styles.list} role="menu">
           {children.map((child) => (
             <DropdownItem key={child.key} item={child} />

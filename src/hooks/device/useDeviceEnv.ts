@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import {
   type DeviceEnv,
+  deviceEnvEqual,
   getIsMobileMediaQuery,
   readDeviceEnv,
   subscribeFullscreenChange,
@@ -11,6 +12,9 @@ import {
 /**
  * Reactive device environment: viewport, UA (ua-parser-js), fullscreen.
  * Keeps `<body>` classes in sync (`is-mobile`, `is-ios`, `is-browser-safari`, …).
+ *
+ * Modal scroll-lock often fires `resize` (scrollbar width). We only commit state
+ * when flags actually change — otherwise AppLayout / header / sidebar re-render.
  */
 export function useDeviceEnv(): DeviceEnv {
   const [env, setEnv] = useState(readDeviceEnv);
@@ -20,12 +24,16 @@ export function useDeviceEnv(): DeviceEnv {
 
     const sync = (): void => {
       const next = readDeviceEnv();
-      setEnv(next);
-      syncDeviceBodyClasses(next);
+      setEnv((prev) => {
+        if (deviceEnvEqual(prev, next)) return prev;
+        syncDeviceBodyClasses(next);
+        return next;
+      });
     };
 
     sync();
     mediaQuery.addEventListener('change', sync);
+    // Breakpoint edges between mobile/tablet still need width samples.
     window.addEventListener('resize', sync);
     const unsubscribeFullscreen = subscribeFullscreenChange(sync);
 

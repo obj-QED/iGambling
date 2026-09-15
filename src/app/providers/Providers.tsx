@@ -49,6 +49,19 @@ function QueryDevtools() {
   );
 }
 
+/**
+ * Modals host is a **sibling** of the app tree — not a parent.
+ * `@mantine/modals` ModalsProvider re-renders on open; wrapping `{children}`
+ * would reconcile the whole SPA. Events API (`modals.open*`) still works.
+ */
+function AppModalsHost() {
+  return (
+    <ModalsProvider modals={appModals} modalProps={getModalDefaultProps()}>
+      {null}
+    </ModalsProvider>
+  );
+}
+
 export function Providers({ children }: ProvidersProps) {
   return (
     <Provider store={store}>
@@ -60,11 +73,10 @@ export function Providers({ children }: ProvidersProps) {
           cssVariablesResolver={mantineCssVariablesResolver}
           deduplicateInlineStyles
         >
-          <ModalsProvider modals={appModals} modalProps={getModalDefaultProps()}>
-            <DeviceBodySync />
-            <ScrollFullscreenSync />
-            {children}
-          </ModalsProvider>
+          <DeviceBodySync />
+          <ScrollFullscreenSync />
+          {children}
+          <AppModalsHost />
         </MantineProvider>
         <QueryDevtools />
       </QueryClientProvider>

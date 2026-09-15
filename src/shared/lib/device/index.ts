@@ -7,6 +7,7 @@ export {
   syncDeviceBodyClasses,
 } from './deviceBodyClasses';
 export type { DeviceEnv } from './deviceEnv.types';
+export { deviceEnvEqual } from './deviceEnvEqual';
 export {
   FULLSCREEN_CHANGE_EVENTS,
   getFullscreenElement,
