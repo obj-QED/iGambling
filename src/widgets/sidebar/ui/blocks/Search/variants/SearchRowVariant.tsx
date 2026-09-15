@@ -6,7 +6,7 @@ import { IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
 
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
-import { SearchInputTrigger } from '@/shared/ui';
+import { SearchInputTrigger } from '@/shared/ui/AppSearch/ui/input';
 
 import { isRenderableItem, resolveItemLabel } from '../../../../lib';
 import { SidebarExceptionButton } from '../../../items/SidebarExceptionButton/SidebarExceptionButton';

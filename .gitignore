@@ -85,3 +85,5 @@ PROJECT_CONTEXT.md
 ts_errors.txt
 .worktrees/
 .cursor/*
+.agents/*
+.codex/*

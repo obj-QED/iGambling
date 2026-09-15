@@ -19,6 +19,7 @@ export {
   appSpotlight,
   appSpotlightStore,
   getSearchState,
+  preloadSearchType,
   type SearchOpenMode,
   type SearchPageMode,
   type SearchState,

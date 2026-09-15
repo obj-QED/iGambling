@@ -4,7 +4,14 @@ import { memo } from 'react';
 
 import { Text } from '@mantine/core';
 
-import { AdapterBoundary, LazyHost, preloadAdapters, useAdapter, useWrapper } from '@/shared/lib';
+import {
+  AdapterBoundary,
+  LazyHost,
+  preloadAdapters,
+  preloadWrapper,
+  useAdapter,
+  useWrapper,
+} from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
 
 import { useConfig } from '../../../context';
@@ -21,27 +28,28 @@ function WalletBlockComponent({ item }: BlockProps) {
 
   if (!enabled || !Adapter) return null;
 
+  const warmSelected = () => {
+    preloadAdapters(WALLET_ADAPTERS, blockVariants.wallet, WALLET_ADAPTER_KEYS);
+    preloadWrapper(wrapperMode);
+  };
+
   const adapterNode = <LazyHost component={Adapter} item={item} />;
 
   if (!wrapperMode || wrapperMode === 'none') {
     return (
       <AdapterBoundary>
-        <span
-          onPointerEnter={() => {
-            preloadAdapters(WALLET_ADAPTERS, 'compact');
-          }}
-        >
-          {adapterNode}
-        </span>
+        <span onPointerEnter={warmSelected}>{adapterNode}</span>
       </AdapterBoundary>
     );
   }
 
   return (
     <AdapterBoundary>
-      <LazyHost component={Wrapper} target={adapterNode} title={label}>
-        <Text size="sm">{label}</Text>
-      </LazyHost>
+      <span onPointerEnter={warmSelected}>
+        <LazyHost component={Wrapper} target={adapterNode} title={label}>
+          <Text size="sm">{label}</Text>
+        </LazyHost>
+      </span>
     </AdapterBoundary>
   );
 }

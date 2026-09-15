@@ -41,4 +41,25 @@ describe('useAdapter', () => {
     await Promise.resolve();
     expect(called).toBe(true);
   });
+
+  it('preloadAdapters warms only the selected key', async () => {
+    const compactCalls: number[] = [];
+    const inputCalls: number[] = [];
+    const map = {
+      compact: async () => {
+        compactCalls.push(1);
+        return { default: () => null };
+      },
+      input: async () => {
+        inputCalls.push(1);
+        return { default: () => null };
+      },
+    };
+
+    preloadAdapters(map, 'input', ['compact', 'input']);
+    await Promise.resolve();
+
+    expect(inputCalls).toHaveLength(1);
+    expect(compactCalls).toHaveLength(0);
+  });
 });

@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import { AdapterBoundary, LazyHost, preloadAdapters, useAdapter } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
-import { useAppSearchTrigger } from '@/shared/ui';
+import { preloadSearchType, useAppSearchTrigger } from '@/shared/ui';
 
 import { useConfig } from '../../../context';
 import { SEARCH_ADAPTER_KEYS, SEARCH_ADAPTERS } from './adapters';
@@ -32,7 +32,8 @@ function SearchBlockComponent({ item }: BlockProps) {
       <AdapterBoundary>
         <span
           onPointerEnter={() => {
-            preloadAdapters(SEARCH_ADAPTERS, 'compact');
+            preloadAdapters(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
+            preloadSearchType(behaviors.search);
           }}
         >
           <LazyHost

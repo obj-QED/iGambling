@@ -6,5 +6,5 @@ export {
 } from './adapterPending';
 export { getLazyAdapter } from './lazyAdapter';
 export type { AdapterRegistry, WidgetAdapterLoader, WidgetAdapters } from './types';
-export { preloadAdapters, useAdapter } from './useAdapter';
-export { useWrapper } from './useWrapper';
+export { preloadAdapters, resolveAdapterKey, useAdapter } from './useAdapter';
+export { preloadWrapper, useWrapper } from './useWrapper';

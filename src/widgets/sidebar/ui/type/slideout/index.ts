@@ -1,7 +1,6 @@
 import type { SidebarTypePack } from '../types';
 
 import { Logo } from '../../blocks/Logo/Logo';
-import { PromoIconVariant } from '../../blocks/PromoBlock/variants/PromoIconVariant';
 import { Search } from '../../blocks/Search/Search';
 import { SIDEBAR_TYPE_TUNABLE_DEFAULTS } from '../tunableDefaults';
 import { SlideoutFooterLink } from './FooterLink';
@@ -22,8 +21,6 @@ export const slideoutTypePack: SidebarTypePack = {
   blocks: {
     /** Search router wires AppSearch; chrome via blockVariants.search (icon for slideout). */
     search_leftmenu: Search,
-    timer: PromoIconVariant,
-    wheel_mdl: PromoIconVariant,
     aside_header_logo: Logo,
   },
   defaults: SIDEBAR_TYPE_TUNABLE_DEFAULTS.slideout,

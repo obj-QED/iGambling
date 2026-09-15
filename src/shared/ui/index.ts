@@ -20,6 +20,7 @@ export {
   appSpotlightStore,
   DEFAULT_SEARCH_SCHEMA,
   getSearchState,
+  preloadSearchType,
   resolveSearchSchema,
   SEARCH_STYLE_COMPACT,
   SEARCH_STYLE_ICON,

@@ -11,7 +11,7 @@ import {
   resolveCmfScope,
   subscribePathname,
 } from '@/shared/lib';
-import { SearchIconTrigger } from '@/shared/ui';
+import { SearchIconTrigger } from '@/shared/ui/AppSearch/ui/icon';
 
 import { useHeaderMenuSizes } from '../../../../context';
 import {

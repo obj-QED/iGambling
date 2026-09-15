@@ -13,3 +13,9 @@ export function useWrapper(mode: WrapperMode | undefined): ComponentType<Overlay
     return getLazyAdapter(loader);
   }, [mode]);
 }
+
+/** Warm the selected overlay only — not every WRAPPER_REGISTRY entry. */
+export function preloadWrapper(mode: WrapperMode | undefined): void {
+  if (!mode || mode === 'none') return;
+  void resolveWrapperLoader(mode)();
+}

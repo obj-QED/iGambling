@@ -1,11 +1,15 @@
 import type { ContextModalProps } from '@mantine/modals';
-import type { FC } from 'react';
+import type { ComponentType } from 'react';
 
-import { SearchModalContext } from '@/shared/ui/AppSearch/type/modal';
+import { lazy } from 'react';
 
 export const appModals = {
-  search: SearchModalContext,
-} as const satisfies Record<string, FC<ContextModalProps>>;
+  search: lazy(() =>
+    import('@/shared/ui/AppSearch/type/modal/SearchModalType').then((module) => ({
+      default: module.SearchModalContent,
+    })),
+  ),
+} as const satisfies Record<string, ComponentType<ContextModalProps>>;
 
 declare module '@mantine/modals' {
   export interface MantineModalsOverride {

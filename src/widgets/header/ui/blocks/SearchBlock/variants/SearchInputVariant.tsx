@@ -5,7 +5,7 @@ import { memo } from 'react';
 import { IconSearch } from '@tabler/icons-react';
 
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
-import { SearchInputTrigger } from '@/shared/ui';
+import { SearchInputTrigger } from '@/shared/ui/AppSearch/ui/input';
 
 import { useHeaderMenuSizes } from '../../../../context';
 import { isRenderableItem, resolveHeaderMenuButtonSize, resolveItemLabel } from '../../../../lib';

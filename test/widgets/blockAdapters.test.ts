@@ -31,4 +31,15 @@ describe('block adapters maps', () => {
     expect([...PROMO_ADAPTER_KEYS]).toEqual(['row', 'icon']);
     expect(Object.keys(PROMO_ADAPTERS)).toEqual(['row', 'icon']);
   });
+
+  it('adapter maps are loaders, not eager components', () => {
+    for (const loader of [
+      ...Object.values(SEARCH_ADAPTERS),
+      ...Object.values(WALLET_ADAPTERS),
+      ...Object.values(SIDEBAR_SEARCH),
+      ...Object.values(PROMO_ADAPTERS),
+    ]) {
+      expect(typeof loader).toBe('function');
+    }
+  });
 });

@@ -21,7 +21,7 @@ import { useSidebarTypePack } from './type';
  * Precedence:
  * 1. dropdown items → typePack.blocks.menuDropdown | DropdownBlock
  * 2. key not in `schema.specialBlockKeys` → DefaultItemBlock
- * 3. typePack.blocks[key] overlay (e.g. compact SearchIconVariant)
+ * 3. typePack.blocks[key] overlay (e.g. compact Search router)
  * 4. switch on known keys → Search | Promo | Logo | DefaultItemBlock
  */
 function BlockComponent({ item, className }: BlockProps) {

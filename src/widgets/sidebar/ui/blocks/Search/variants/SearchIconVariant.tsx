@@ -6,7 +6,8 @@ import { IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
 
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
-import { AppTooltip, SearchIconTrigger } from '@/shared/ui';
+import { SearchIconTrigger } from '@/shared/ui/AppSearch/ui/icon';
+import { AppTooltip } from '@/shared/ui/AppTooltip';
 
 import { useSidebarConfig } from '../../../../context';
 import { useAsideMenuButtonSize } from '../../../../hooks';
