@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { resolveHeaderConfig } from '@/widgets/header/config/resolve';
 import { ConfigProvider } from '@/widgets/header/context/provider';
 
-import '@/widgets/header/registry/registerBlocks';
+import '@/widgets/header/registry/blocks';
 
 type HeaderMenuControlsShellProps = {
   children: ReactNode;

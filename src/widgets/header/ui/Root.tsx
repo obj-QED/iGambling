@@ -15,8 +15,6 @@ import { resolveHeaderTypePack } from './type';
 
 import styles from '../styles/base/Root.module.scss';
 
-import '../registry/registerBlocks';
-
 function RootComponent({ menu, config, className }: RootProps) {
   const [headerEl, setHeaderEl] = useState<HTMLElement | null>(null);
   const menuSizes = useHeaderMenuSizesFromElement(headerEl);

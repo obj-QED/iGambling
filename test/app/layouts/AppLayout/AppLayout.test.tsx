@@ -13,10 +13,6 @@ vi.mock('@/app/layouts/lib/useAppLayout', () => ({
   useAppLayout: (...args: unknown[]) => useAppLayoutMock(...args),
 }));
 
-vi.mock('@hooks/useLanguage', () => ({
-  useLanguage: () => 'en',
-}));
-
 vi.mock('@/shared/config', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/shared/config')>();
   return {

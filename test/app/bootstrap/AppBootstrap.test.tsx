@@ -64,36 +64,49 @@ function renderBootstrap() {
   );
 }
 
+const idleInit = {
+  content: undefined,
+  extra: undefined,
+  loading: true,
+  error: null,
+  query: { status: 'pending' as const },
+};
+
+function mockBootstrap(status: 'pending' | 'ready' | 'error', error?: Error) {
+  useAppBootstrapMock.mockReturnValue({
+    bootstrapRouteState:
+      status === 'error'
+        ? { status: 'error', error: error ?? new Error('init failed') }
+        : { status },
+    init: idleInit,
+    translation: idleInit,
+    initKey: ['lobby', 'init', 'en', '/'],
+    translationKey: ['lobby', 'translation', 'en'],
+  });
+}
+
 describe('AppBootstrap', () => {
   beforeEach(() => {
     useAppBootstrapMock.mockReset();
+    mockBootstrap('pending');
   });
 
   it('shows preloader while bootstrap is pending', () => {
-    useAppBootstrapMock.mockReturnValue({
-      bootstrapRouteState: { status: 'pending' },
-    });
-
+    mockBootstrap('pending');
     renderBootstrap();
 
     expect(screen.getByRole('status', { name: /loading/i })).toBeInTheDocument();
   });
 
   it('shows server error page when bootstrap fails', () => {
-    useAppBootstrapMock.mockReturnValue({
-      bootstrapRouteState: { status: 'error', error: new Error('init failed') },
-    });
-
+    mockBootstrap('error');
     renderBootstrap();
 
     expect(screen.getByText('500')).toBeInTheDocument();
   });
 
   it('renders routes when bootstrap is ready', () => {
-    useAppBootstrapMock.mockReturnValue({
-      bootstrapRouteState: { status: 'ready' },
-    });
-
+    mockBootstrap('ready');
     renderBootstrap();
 
     expect(screen.getByText('routes-ready')).toBeInTheDocument();

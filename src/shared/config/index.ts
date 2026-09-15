@@ -104,6 +104,7 @@ export {
   resolveSearchModalProps,
   resolveSpotlightProps,
 } from './overlaySettings';
+export { parseAppSettings } from './parseAppSettings';
 export type { SearchSettings } from './searchSettings';
 export {
   getSearchDefaultSpec,
@@ -121,6 +122,7 @@ export {
   getSettings,
   isScrollFullscreenEnabled,
   isShellSkeletonEnabled,
+  resetSettingsCache,
 } from './settings';
 export type { TooltipConfig, TooltipPosition, TooltipSettings } from './tooltipSettings';
 export { DEFAULT_TOOLTIP_CONFIG, TOOLTIP_POSITIONS } from './tooltipSettings';

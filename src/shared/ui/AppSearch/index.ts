@@ -29,26 +29,12 @@ export {
   useSearchQuery,
   useSearchState,
 } from './lib';
+export type { SearchInputTypeProps as SearchResultsProps } from './type/input/SearchInputType';
+export { shouldShowSearchResults } from './type/input/shouldShowSearchResults';
+export { SearchIconTrigger, type SearchIconTriggerProps } from './ui/icon';
 export {
-  SEARCH_TYPE_REGISTRY,
-  SearchInputType,
-  type SearchInputTypeProps,
-  SearchModalContent,
-  SearchModalContext,
-  SearchModalType,
-  SearchResults,
-  type SearchResultsProps,
-  SearchSpotlight,
-  type SearchSpotlightProps,
-  SearchSpotlightType,
-  type SearchSpotlightTypeProps,
-  shouldShowSearchResults,
-} from './type';
-export {
-  SearchIconTrigger,
-  type SearchIconTriggerProps,
   SearchInputStyle,
   type SearchInputStyleProps,
   SearchInputTrigger,
   type SearchInputTriggerProps,
-} from './ui';
+} from './ui/input';

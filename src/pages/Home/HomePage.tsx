@@ -14,14 +14,11 @@ import {
 } from '@mantine/core';
 
 import { getAppHrefKind } from '@/shared/lib';
-import {
-  AppButton,
-  AppLink,
-  DrawerWrapper,
-  ModalWrapper,
-  PopoverWrapper,
-  TooltipWrapper,
-} from '@/shared/ui';
+import { AppButton, AppLink } from '@/shared/ui';
+import { DrawerWrapper } from '@/shared/ui/overlay/DrawerWrapper';
+import { ModalWrapper } from '@/shared/ui/overlay/ModalWrapper';
+import { PopoverWrapper } from '@/shared/ui/overlay/PopoverWrapper';
+import { TooltipWrapper } from '@/shared/ui/overlay/TooltipWrapper';
 
 const HEADING_ORDERS = [1, 2, 3, 4, 5, 6] as const;
 

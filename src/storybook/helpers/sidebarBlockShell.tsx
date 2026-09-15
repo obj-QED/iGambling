@@ -11,7 +11,7 @@ import {
 import { DEFAULT_ASIDE_MENU_BUTTON_SIZE } from '@/widgets/sidebar/lib';
 import { resolveSidebarTypePack } from '@/widgets/sidebar/ui/type';
 
-import '@/widgets/sidebar/registry/registerBlocks';
+import '@/widgets/sidebar/registry/blocks';
 
 type SidebarBlockShellProps = {
   children: ReactNode;

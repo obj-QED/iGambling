@@ -1,5 +1,7 @@
 import type { RouteObject } from 'react-router-dom';
 
+import { createElement } from 'react';
+
 import { createBrowserRouter } from 'react-router-dom';
 
 import { AppLayout } from '@/app/layouts/AppLayout';
@@ -18,6 +20,7 @@ import {
   RegisterPage,
   ServerErrorPage,
 } from '@pages';
+import { RouterErrorPage } from '@pages/eager';
 
 /**
  * All app routes live under `AppLayout` so header/sidebar stay mounted across
@@ -27,6 +30,7 @@ import {
 const appRouteObjects: RouteObject[] = [
   {
     Component: AppLayout,
+    errorElement: createElement(RouterErrorPage),
     children: [
       {
         Component: DefaultPageLayout,

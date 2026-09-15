@@ -1,6 +1,6 @@
 import type { PageLayoutMatch } from '../../lib/resolvePageLayout';
 
-import { memo, Suspense } from 'react';
+import { lazy, memo, Suspense } from 'react';
 
 import { Container } from '@mantine/core';
 import clsx from 'clsx';
@@ -8,7 +8,6 @@ import { Outlet, useMatches } from 'react-router-dom';
 
 import {
   resolveSearchSchema,
-  SearchResults,
   shouldShowSearchResults,
   useSearchPageMode,
   useSearchQuery,
@@ -18,6 +17,12 @@ import { resolvePageLayoutFromMatches } from '../../lib/resolvePageLayout';
 import { AppPageSkeleton } from './AppPageSkeleton';
 
 import styles from './AppLayout.module.scss';
+
+const SearchResults = lazy(() =>
+  import('@/shared/ui/AppSearch/type/input/SearchInputType').then((module) => ({
+    default: module.SearchInputType,
+  })),
+);
 
 /**
  * Only the page shell subscribes to route matches — keeps header/aside off the
@@ -33,7 +38,9 @@ function AppLayoutMainComponent() {
   const showResults = shouldShowSearchResults({ query, pageMode, globalType });
 
   const page = showResults ? (
-    <SearchResults query={query} />
+    <Suspense fallback={<AppPageSkeleton />}>
+      <SearchResults query={query} />
+    </Suspense>
   ) : (
     <Suspense fallback={<AppPageSkeleton />}>
       <Outlet />

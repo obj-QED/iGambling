@@ -9,11 +9,13 @@ import { useLanguage } from '@hooks/useLanguage';
 import { AdapterPendingProvider } from '@/shared/lib';
 
 import { BootGate } from './BootGate';
+import { InitDataProvider } from './InitDataContext';
 import { useAppBootstrap } from './useAppBootstrap';
 
 function AppBootstrapComponent() {
   const language = useLanguage();
-  const { bootstrapRouteState } = useAppBootstrap(language);
+  const { bootstrapRouteState, init, translation, initKey, translationKey } =
+    useAppBootstrap(language);
 
   if (bootstrapRouteState.status === 'error') {
     return (
@@ -30,13 +32,15 @@ function AppBootstrapComponent() {
   const bootstrapPending = bootstrapRouteState.status === 'pending';
 
   return (
-    <AdapterPendingProvider>
-      <BootGate bootstrapPending={bootstrapPending}>
-        <Suspense fallback={null}>
-          <AppRoutes />
-        </Suspense>
-      </BootGate>
-    </AdapterPendingProvider>
+    <InitDataProvider value={{ language, init, translation, initKey, translationKey }}>
+      <AdapterPendingProvider>
+        <BootGate bootstrapPending={bootstrapPending}>
+          <Suspense fallback={null}>
+            <AppRoutes />
+          </Suspense>
+        </BootGate>
+      </AdapterPendingProvider>
+    </InitDataProvider>
   );
 }
 

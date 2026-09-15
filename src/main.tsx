@@ -12,7 +12,7 @@ import { setInitialPath } from '@/app/routing/state/initialPath';
 
 import { prefetchInitData, setLobbySessionDevToken } from '@api/lobby';
 import { queryClient } from '@api/queryClient';
-import { getBrowserLanguage } from '@hooks/useLanguage';
+import { resolveAppLanguage } from '@hooks/useLanguage';
 
 import { initDeviceBodyClasses } from '@/shared/lib/device';
 import { resolveLobbyInitPage } from '@/shared/lib/routing';
@@ -20,7 +20,7 @@ import { resolveLobbyInitPage } from '@/shared/lib/routing';
 const root = createRoot(document.getElementById('root')!);
 
 (function bootstrap() {
-  const language = getBrowserLanguage();
+  const language = resolveAppLanguage();
   const pathname =
     typeof window !== 'undefined'
       ? window.location.pathname.length > 0

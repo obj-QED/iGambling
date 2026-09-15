@@ -1,7 +1,5 @@
 import { memo } from 'react';
 
-import { useLanguage } from '@hooks/useLanguage';
-
 import { useAppLayout, type UseAppLayoutResult } from '../lib/useAppLayout';
 import { useShellReveal } from './hooks';
 import { AppLayoutChrome } from './ui';
@@ -36,8 +34,7 @@ function AppLayoutReady(layout: UseAppLayoutResult) {
 }
 
 function AppLayoutComponent() {
-  const language = useLanguage();
-  const layout = useAppLayout(language);
+  const layout = useAppLayout();
 
   return <AppLayoutReady {...layout} />;
 }

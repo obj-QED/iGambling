@@ -47,5 +47,5 @@ export function useAppBootstrap(language: string) {
     translation,
   });
 
-  return { bootstrapRouteState, init, translation };
+  return { bootstrapRouteState, init, translation, initKey, translationKey };
 }

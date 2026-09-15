@@ -29,8 +29,6 @@ import { resolveSidebarTypePack } from './type';
 
 import styles from '../styles/base/Root.module.scss';
 
-import '../registry/registerBlocks';
-
 type SidebarAsideShellProps = {
   className?: string;
   layout: string;

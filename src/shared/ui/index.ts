@@ -36,11 +36,8 @@ export {
   type SearchInputTriggerProps,
   type SearchOpenMode,
   type SearchPageMode,
-  SearchResults,
   type SearchResultsProps,
   type SearchSchema,
-  SearchSpotlight,
-  type SearchSpotlightProps,
   type SearchState,
   type SearchStyleKey,
   type SearchTypeKey,
@@ -66,14 +63,10 @@ export {
 } from './CmfActiveLine';
 export { CmfIcon, type CmfIconProps } from './CmfIcon';
 export { MenuToggle, type MenuToggleProps } from './MenuToggle';
-export {
-  DrawerWrapper,
-  ModalWrapper,
-  type OverlayTargetProps,
-  PopoverWrapper,
-  type PopoverWrapperProps,
-  resolveWrapperLoader,
-  TooltipWrapper,
-  WRAPPER_REGISTRY,
-  type WrapperLoader,
+export type {
+  DrawerWrapperProps,
+  ModalWrapperProps,
+  OverlayTargetProps,
+  PopoverWrapperProps,
 } from './overlay';
+export { resolveWrapperLoader, WRAPPER_REGISTRY, type WrapperLoader } from './overlay';

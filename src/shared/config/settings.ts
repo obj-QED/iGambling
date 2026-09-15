@@ -3,12 +3,18 @@ import type { BannerSettings } from './bannerSettings';
 import type { FooterSettings } from './footerSettings';
 import type { HeaderSettings } from './headerSettings';
 
+import { parseAppSettings } from './parseAppSettings';
+
 export type { AsideSettings } from './asideSettings';
 export type { BannerSettings } from './bannerSettings';
 export type { FooterSettings } from './footerSettings';
 export type { HeaderSettings } from './headerSettings';
 
 export type AppParams = {
+  /**
+   * Lobby / i18n language (`en`, `ru`). Wins over `AppSettings.language` and the document.
+   */
+  language?: string;
   /**
    * Mobile/tablet: request document fullscreen on first scroll.
    * Set `false` to disable.
@@ -71,6 +77,8 @@ export type AppParams = {
 export type AppSettings = {
   appName?: string;
   version?: string;
+  /** Site language when `params.language` is omitted. */
+  language?: string;
   params?: AppParams;
   /**
    * Optional anonymous lobby token injected with HTML (not in Redux).
@@ -89,9 +97,21 @@ declare global {
   }
 }
 
+let cachedRaw: AppSettings | undefined;
+let cachedParsed: AppSettings = {};
+
+export function resetSettingsCache(): void {
+  cachedRaw = undefined;
+  cachedParsed = {};
+}
+
 export function getSettings(): AppSettings {
   if (typeof globalThis === 'undefined') return {};
-  return (globalThis as unknown as Window).__SETTINGS__ ?? {};
+  const raw = (globalThis as unknown as Window).__SETTINGS__;
+  if (raw === cachedRaw) return cachedParsed;
+  cachedRaw = raw;
+  cachedParsed = parseAppSettings(raw);
+  return cachedParsed;
 }
 
 export function isScrollFullscreenEnabled(settings = getSettings()): boolean {

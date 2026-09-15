@@ -4,10 +4,9 @@ import { useMemo } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { useInitData } from '@api/lobby/queries/useInitData';
+import { useInitDataContext } from '@/app/bootstrap/InitDataContext';
 
 import { getSettings } from '@/shared/config';
-import { getInitialPath } from '@/shared/lib/routing';
 import { selectIsAuthenticated } from '@/store/slices/authSlice';
 import {
   type AppBannerModel,
@@ -35,9 +34,9 @@ export type UseAppLayoutResult = {
   isReady: boolean;
 };
 
-/** Layout data for chrome — lives in `layouts/lib`, not in `AppLayout` UI. */
-export function useAppLayout(language: string, page = getInitialPath()): UseAppLayoutResult {
-  const { init } = useInitData(language, page);
+/** Layout chrome data — init comes from bootstrap (`InitDataProvider`), not a second query. */
+export function useAppLayout(): UseAppLayoutResult {
+  const { init } = useInitDataContext();
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const headerMenu = useMemo(() => {
