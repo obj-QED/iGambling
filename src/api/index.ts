@@ -32,6 +32,7 @@ export {
   useCurrentPageData,
   useInitData,
   useInvalidateInit,
+  useTranslation,
 } from './lobby';
 export { queryClient } from './queryClient';
 export type { ApiEnvelope } from './types';

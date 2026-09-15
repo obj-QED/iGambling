@@ -1,10 +1,37 @@
+import type { GetPageContent } from './types';
+
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useApiMutation } from '../hooks/useApiMutation';
+import { runGetPageNav } from './lib/pageNavStore';
 
 type InvalidateInitResponse = {
   value: boolean;
 };
+
+export type GetPageMutationVars = {
+  language: string;
+  page: string;
+};
+
+/**
+ * Client navigation: always POST `getPage` through {@link runGetPageNav}
+ * (shared store — one network call even if several hooks subscribe).
+ */
+export function useGetPageMutation() {
+  const queryClient = useQueryClient();
+
+  return useApiMutation<GetPageContent, GetPageMutationVars>({
+    mutationKey: ['lobby', 'getPage'],
+    mutationFn: async ({ language, page }) => {
+      const envelope = await runGetPageNav({ language, page, queryClient });
+      if (envelope === undefined) {
+        throw new Error('getPage nav superseded');
+      }
+      return envelope;
+    },
+  });
+}
 
 /**
  * Мутация «обновить init»: данные уже есть в кэше, но нужно перезапросить (например после смены языка/страницы или по действию пользователя).

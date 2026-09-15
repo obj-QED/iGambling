@@ -76,6 +76,17 @@ describe('lobby query functions', () => {
     await pageQueryFn(queryContext(lobbyQueryKeys.page('en', '/games', 0), signal));
 
     expect(mockedGetPage).toHaveBeenCalledWith({ language: 'en', page: '/games' }, signal);
+    expect(mockedGetPage.mock.calls[0]?.[0]).not.toHaveProperty('token');
+  });
+
+  it('omits empty/whitespace token for getPage', async () => {
+    mockedGetLobbySessionTokenSnapshot.mockReturnValue('   ');
+    const signal = new AbortController().signal;
+
+    await pageQueryFn(queryContext(lobbyQueryKeys.page('en', '/terms', 0), signal));
+
+    expect(mockedGetPage).toHaveBeenCalledWith({ language: 'en', page: '/terms' }, signal);
+    expect(mockedGetPage.mock.calls[0]?.[0]).not.toHaveProperty('token');
   });
 
   it('passes snapshot token into getPage (not from query key)', async () => {

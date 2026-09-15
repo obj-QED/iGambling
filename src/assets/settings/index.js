@@ -69,7 +69,7 @@
       layout: 'container',
       type: 'dropdown', // omit / empty → 'dropdown'; 'default' | 'custom' | 'dropdown' | …
       /** `true` → header menu from `src/widgets/header/mocks` */
-      mockMenu: true,
+      mockMenu: false,
       active: {
         type: 'line', // type: 'line' | 'element'
         // dropdown type → left rail (tokens `--cmf-button-header-dropdown-active-*`)

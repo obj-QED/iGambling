@@ -10,6 +10,7 @@ export {
   useAppDrawer,
   useAppDrawerContext,
 } from './AppDrawer';
+export { AppearWipe, type AppearWipeProps } from './AppearWipe';
 export { AppLink, type AppLinkProps } from './AppLink';
 export { AppLogo, type AppLogoProps } from './AppLogo';
 export {

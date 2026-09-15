@@ -1,5 +1,6 @@
 import { memo } from 'react';
 
+import { PageDataSync } from '../lib/PageDataSync';
 import { useAppLayout, type UseAppLayoutResult } from '../lib/useAppLayout';
 import { useShellReveal } from './hooks';
 import { AppLayoutChrome } from './ui';
@@ -36,7 +37,12 @@ function AppLayoutReady(layout: UseAppLayoutResult) {
 function AppLayoutComponent() {
   const layout = useAppLayout();
 
-  return <AppLayoutReady {...layout} />;
+  return (
+    <>
+      <PageDataSync />
+      <AppLayoutReady {...layout} />
+    </>
+  );
 }
 
 export const AppLayout = memo(AppLayoutComponent);

@@ -25,11 +25,20 @@ vi.mock('@/app/routing/routes', () => ({
   AppRoutes: () => <div>routes-ready</div>,
 }));
 
-// Mock useInitData hook to prevent it from trying to use react-query
 vi.mock('@/api/lobby/queries/useInitData', () => ({
   useInitData: () => ({
     init: { status: 'idle', data: undefined },
+    initKey: ['lobby', 'init', 'en', '/'],
+  }),
+}));
+
+vi.mock('@/api/lobby/queries/useTranslation', () => ({
+  useTranslation: () => ({
     translation: { status: 'idle', data: undefined },
+    translationKey: ['lobby', 'translation', 'en'],
+    language: 'en',
+    isReady: false,
+    t: (key: string) => key,
   }),
 }));
 
@@ -82,6 +91,8 @@ function mockBootstrap(status: 'pending' | 'ready' | 'error', error?: Error) {
     translation: idleInit,
     initKey: ['lobby', 'init', 'en', '/'],
     translationKey: ['lobby', 'translation', 'en'],
+    language: 'en',
+    t: (key: string) => key,
   });
 }
 

@@ -124,6 +124,19 @@
     padding-block: var(--page-padding-block);
   }
 
+  /** Search ↔ page swap host — clips horizontal travel. */
+  .stage {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    min-height: 1px;
+  }
+
+  .stagePanel {
+    width: 100%;
+    will-change: transform, opacity;
+  }
+
   .infoPageContent {
     max-width: var(--app-info-page-max-width, 48rem);
     margin-inline: auto;

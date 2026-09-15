@@ -5,6 +5,7 @@ export * from './device';
 export * from './href';
 export * from './mantine';
 export * from './menu';
+export * from './motion';
 export * from './routing';
 export * from './shellSkeleton';
 export * from './widgetAdapter';

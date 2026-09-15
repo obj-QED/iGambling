@@ -1,51 +1,23 @@
 import type { PageLayoutMatch } from '../../lib/resolvePageLayout';
 
-import { lazy, memo, Suspense } from 'react';
+import { memo } from 'react';
 
 import { Container } from '@mantine/core';
 import clsx from 'clsx';
-import { Outlet, useMatches } from 'react-router-dom';
-
-import {
-  resolveSearchSchema,
-  shouldShowSearchResults,
-  useSearchPageMode,
-  useSearchQuery,
-} from '@/shared/ui';
+import { useMatches } from 'react-router-dom';
 
 import { resolvePageLayoutFromMatches } from '../../lib/resolvePageLayout';
-import { AppPageSkeleton } from './AppPageSkeleton';
+import { AppLayoutMainStage } from './AppLayoutMainStage';
 
 import styles from './AppLayout.module.scss';
 
-const SearchResults = lazy(() =>
-  import('@/shared/ui/AppSearch/type/input/SearchInputType').then((module) => ({
-    default: module.SearchInputType,
-  })),
-);
-
 /**
- * Only the page shell subscribes to route matches — keeps header/aside off the
- * navigation re-render path.
- * Page Suspense must NOT use `AdapterPendingFallback` — that would hold shell
- * skeleton / BootGate until the whole route chunk loads.
+ * Layout chrome for the page column — layout kind only.
+ * Search query / outlet live in `AppLayoutMainStage` so layout size does not
+ * re-render on every search keystroke.
  */
 function AppLayoutMainComponent() {
   const pageLayout = resolvePageLayoutFromMatches(useMatches() as unknown as PageLayoutMatch[]);
-  const query = useSearchQuery();
-  const pageMode = useSearchPageMode();
-  const globalType = resolveSearchSchema().type;
-  const showResults = shouldShowSearchResults({ query, pageMode, globalType });
-
-  const page = showResults ? (
-    <Suspense fallback={<AppPageSkeleton />}>
-      <SearchResults query={query} />
-    </Suspense>
-  ) : (
-    <Suspense fallback={<AppPageSkeleton />}>
-      <Outlet />
-    </Suspense>
-  );
 
   return (
     <Container
@@ -53,7 +25,13 @@ function AppLayoutMainComponent() {
       component="main"
       size={pageLayout === 'info' ? 'md' : 'responsive'}
     >
-      {pageLayout === 'info' ? <div className={styles.infoPageContent}>{page}</div> : page}
+      {pageLayout === 'info' ? (
+        <div className={styles.infoPageContent}>
+          <AppLayoutMainStage />
+        </div>
+      ) : (
+        <AppLayoutMainStage />
+      )}
     </Container>
   );
 }

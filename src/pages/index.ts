@@ -13,3 +13,6 @@ export const ServerErrorPage = lazy(() => import('./errors/ServerErrorPage'));
 export const ProfileActivationPage = lazy(
   () => import('./ProfileActivation/ProfileActivationPage'),
 );
+
+/** Eager — info↔info must not Suspense-flash `AppPageSkeleton` over the mask wipe. */
+export { InfoPage } from './Info/InfoPage';

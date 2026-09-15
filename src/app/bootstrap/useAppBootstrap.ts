@@ -1,4 +1,3 @@
-import type { InitKey, TranslationKey } from '@api/lobby/queryFns';
 import type { AppDispatch } from '@store';
 
 import { useEffect } from 'react';
@@ -8,32 +7,35 @@ import { useDispatch } from 'react-redux';
 
 import { resolveBootstrapRouteState } from '@/app/routing/resolveBootstrapRouteState';
 
+import { mergeKnownAppPathsFromPage } from '@api/lobby/lib/knownAppPathsStore';
 import { applyLobbySessionFromInitContent, hasAuthIdentity } from '@api/lobby/lobbySession';
 import { useInitData } from '@api/lobby/queries/useInitData';
-import { lobbyQueryKeys } from '@api/lobby/queryKeys';
+import { useTranslation } from '@api/lobby/queries/useTranslation';
 import { setAuthenticated } from '@store/slices/authSlice';
 
-import { getInitialPath } from '@/shared/lib/routing';
-
-export function useAppBootstrap(language: string) {
+export function useAppBootstrap() {
   const dispatch = useDispatch<AppDispatch>();
   const queryClient = useQueryClient();
-  const page = getInitialPath();
-  const initKey: InitKey = lobbyQueryKeys.init(language, page);
-  const translationKey: TranslationKey = lobbyQueryKeys.translation(language);
+
+  const {
+    translation,
+    translationKey,
+    language,
+    isReady: isTranslationReady,
+    t,
+  } = useTranslation();
+  const { init, initKey } = useInitData({ enabled: isTranslationReady });
+
   const hasCachedInit = queryClient.getQueryData(initKey) !== undefined;
-  const translationState = queryClient.getQueryState(translationKey);
-
-  const { init, translation } = useInitData(language, page);
-
-  const isTranslationReady =
-    translation.query.status === 'success' || translationState?.status === 'success';
 
   useEffect(() => {
     const content = init.content;
     if (content === undefined) return;
     applyLobbySessionFromInitContent(content);
     dispatch(setAuthenticated(hasAuthIdentity(content)));
+    if (content.page !== undefined) {
+      mergeKnownAppPathsFromPage(content.page);
+    }
   }, [init.content, dispatch]);
 
   const bootstrapRouteState = resolveBootstrapRouteState({
@@ -47,5 +49,13 @@ export function useAppBootstrap(language: string) {
     translation,
   });
 
-  return { bootstrapRouteState, init, translation, initKey, translationKey };
+  return {
+    bootstrapRouteState,
+    init,
+    translation,
+    initKey,
+    translationKey,
+    language,
+    t,
+  };
 }

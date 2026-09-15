@@ -8,7 +8,8 @@ export const LOBBY_QUERY_POLICY = {
     gcTime: 30 * 60 * 1000,
   },
   page: {
-    staleTime: 60 * 1000,
+    /** Always re-hit getPage on navigation / revisit — lobby page payloads change. */
+    staleTime: 0,
     gcTime: 30 * 60 * 1000,
   },
 } as const;

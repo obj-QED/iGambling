@@ -14,6 +14,7 @@ import { GuestRoute } from '@/app/routing/guards/GuestRoute';
 
 import {
   HomePage,
+  InfoPage,
   LoginPage,
   NotFoundPage,
   ProfileActivationPage,
@@ -23,9 +24,8 @@ import {
 import { RouterErrorPage } from '@pages/eager';
 
 /**
- * All app routes live under `AppLayout` so header/sidebar stay mounted across
- * navigations (including unknown paths → NotFound). A sibling `*` catch-all
- * would unmount chrome and remount icons on every miss.
+ * Static shells under Default; catch-all `*` → InfoPage (menu allowlist → lobby/CMS/404).
+ * Multi-segment menu urls (`/tag/top`, `/provider/x`) must not hit a bare NotFound splat.
  */
 const appRouteObjects: RouteObject[] = [
   {
@@ -46,7 +46,7 @@ const appRouteObjects: RouteObject[] = [
               { path: '/register', Component: RegisterPage },
             ],
           },
-          { path: '*', Component: NotFoundPage },
+          { path: '*', Component: InfoPage },
         ],
       },
       {

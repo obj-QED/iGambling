@@ -27,6 +27,10 @@ vi.mock('@/app/layouts/AppLayout/ui', () => ({
   ),
 }));
 
+vi.mock('@/app/layouts/lib/PageDataSync', () => ({
+  PageDataSync: () => null,
+}));
+
 const layoutStub: UseAppLayoutResult = {
   headerMenu: { sections: [] },
   headerConfig: {} as UseAppLayoutResult['headerConfig'],

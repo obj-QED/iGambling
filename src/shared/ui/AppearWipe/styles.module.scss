@@ -1,0 +1,11 @@
+@layer components {
+  .root {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .panel {
+    width: 100%;
+    will-change: clip-path;
+  }
+}

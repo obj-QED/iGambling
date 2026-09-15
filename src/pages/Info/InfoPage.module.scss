@@ -1,0 +1,29 @@
+@layer page {
+  .root {
+    width: 100%;
+    min-height: 8rem;
+  }
+
+  .root[data-page-kind='info'] {
+    max-width: var(--app-info-page-max-width, 48rem);
+    margin-inline: auto;
+    line-height: 1.6;
+  }
+
+  .title {
+    margin-bottom: var(--mantine-spacing-md, 1rem);
+  }
+
+  .body {
+    width: 100%;
+
+    :global(h2),
+    :global(h3) {
+      margin-block: 1em 0.5em;
+    }
+
+    :global(p) {
+      margin-block: 0.75em;
+    }
+  }
+}
