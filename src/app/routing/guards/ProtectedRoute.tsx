@@ -7,7 +7,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuthSession } from '@hooks/auth';
 
 /**
- * При отсутствии токена (isAuthenticated === false) редирект на /auth.
+ * При отсутствии токена (isAuthenticated === false) редирект на /signIn.
  * Токен на клиенте не храним; isAuthenticated выставляется из ответа init/сессии.
  */
 function ProtectedRouteComponent({ children }: ProtectedRouteProps) {
@@ -15,7 +15,7 @@ function ProtectedRouteComponent({ children }: ProtectedRouteProps) {
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/auth" state={{ from: location }} replace />;
+    return <Navigate to="/signIn" state={{ from: location }} replace />;
   }
 
   return <>{children ?? <Outlet />}</>;

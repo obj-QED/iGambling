@@ -7,7 +7,7 @@ function NotFoundPageComponent() {
     <main>
       <h1>404</h1>
       <p>Page not found.</p>
-      <AppLink href="/auth">Sign in</AppLink>
+      <AppLink href="/signIn">Sign in</AppLink>
     </main>
   );
 }

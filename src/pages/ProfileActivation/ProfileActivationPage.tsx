@@ -8,7 +8,7 @@ function ProfileActivationPageComponent() {
   const navigate = useNavigate();
 
   const redirectToAuth = useCallback(() => {
-    navigate('/auth', { replace: true });
+    navigate('/signIn', { replace: true });
   }, [navigate]);
 
   useEffect(() => {

@@ -23,7 +23,7 @@ import { lobbyQueryKeys } from '../queryKeys';
 import { sanitizePageData, toPageData } from '../sanitize';
 
 /** SPA shells — do not call `getPage`. */
-const SKIP_GET_PAGE_PATHS = new Set(['/auth', '/register', '/profile/activation', '/404', '/500']);
+const SKIP_GET_PAGE_PATHS = new Set(['/signIn', '/signUp', '/profile/activation', '/404', '/500']);
 
 /**
  * Entry path: page payload from bootstrap `initV2` cache (no second fetch).

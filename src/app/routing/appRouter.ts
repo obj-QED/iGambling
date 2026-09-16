@@ -42,8 +42,8 @@ const appRouteObjects: RouteObject[] = [
           {
             Component: GuestRoute,
             children: [
-              { path: '/auth', Component: LoginPage },
-              { path: '/register', Component: RegisterPage },
+              { path: '/signIn', Component: LoginPage },
+              { path: '/signUp', Component: RegisterPage },
             ],
           },
           { path: '*', Component: InfoPage },

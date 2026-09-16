@@ -1,7 +1,7 @@
 /** SPA shell routes that are not lobby `initV2` pages — bootstrap with `/` instead. */
 const LOBBY_INIT_FALLBACK_PATHS = new Set([
-  '/auth',
-  '/register',
+  '/signIn',
+  '/signUp',
   '/profile/activation',
   '/404',
   '/500',

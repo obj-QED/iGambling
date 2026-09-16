@@ -15,7 +15,7 @@ function ServerErrorPageComponent({ detail }: ServerErrorPageProps) {
       return;
     }
     event.preventDefault();
-    navigateAppHref('/auth');
+    navigateAppHref('/signIn');
   }, []);
 
   return (
@@ -38,7 +38,7 @@ function ServerErrorPageComponent({ detail }: ServerErrorPageProps) {
           {detail}
         </pre>
       )}
-      <a href="/auth" onClick={onSignInClick}>
+      <a href="/signIn" onClick={onSignInClick}>
         Sign in
       </a>
     </main>

@@ -15,7 +15,7 @@ function InvalidResponsePageComponent({ status, message, snippet }: InvalidRespo
       return;
     }
     event.preventDefault();
-    navigateAppHref('/auth');
+    navigateAppHref('/signIn');
   }, []);
 
   const body = snippet != null && snippet.length > 0 ? `${message}\n\n${snippet}` : message;
@@ -40,7 +40,7 @@ function InvalidResponsePageComponent({ status, message, snippet }: InvalidRespo
       >
         {body}
       </pre>
-      <a href="/auth" onClick={onSignInClick}>
+      <a href="/signIn" onClick={onSignInClick}>
         Sign in
       </a>
     </main>

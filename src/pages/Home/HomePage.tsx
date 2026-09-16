@@ -52,7 +52,7 @@ const ACTION_ICON_SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 const VALID_LINK_SAMPLES = [
   { href: '/', label: 'internal-home' },
-  { href: '/auth', label: 'internal' },
+  { href: '/signIn', label: 'internal' },
   { href: 'https://example.com', label: 'external' },
   { href: '#promo', label: 'hash' },
 ] as const;
