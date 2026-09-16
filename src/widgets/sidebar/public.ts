@@ -4,6 +4,7 @@ export {
   resolveSidebarSchema,
   type SidebarSchemaLayer,
 } from './config';
+export { toSidebarWidthCss } from './lib/layout/sidebarWidth';
 export { getSidebarMenuMock } from './mocks/getSidebarMenuMock';
 export type { AppSidebarProps } from './types';
 export type {

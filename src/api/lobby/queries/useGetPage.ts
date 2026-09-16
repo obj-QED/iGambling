@@ -1,5 +1,5 @@
-import type { PageKey } from '../queryFns';
-import type { GetPageContent, PageData } from '../types';
+import type { InitKey, PageKey } from '../queryFns';
+import type { GetPageContent, InitV2Content, PageData } from '../types';
 
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
 
@@ -18,16 +18,15 @@ import {
 import { mergeKnownAppPathsFromPage } from '../lib/knownAppPathsStore';
 import { getLobbySessionRevision, subscribeLobbySession } from '../lobbySession';
 import { LOBBY_QUERY_POLICY } from '../policy';
-import { pageQueryFn } from '../queryFns';
+import { initQueryFn, pageQueryFn } from '../queryFns';
 import { lobbyQueryKeys } from '../queryKeys';
 import { sanitizePageData, toPageData } from '../sanitize';
-import { useInitData } from './useInitData';
 
 /** SPA shells — do not call `getPage`. */
 const SKIP_GET_PAGE_PATHS = new Set(['/auth', '/register', '/profile/activation', '/404', '/500']);
 
 /**
- * Entry path: page payload from `initV2` (foundation).
+ * Entry path: page payload from bootstrap `initV2` cache (no second fetch).
  * After first SPA navigation: `getPage` via TanStack Query on every pathname
  * (`staleTime: 0`, `refetchOnMount: 'always'`).
  */
@@ -57,7 +56,15 @@ export function useGetPage(): {
 
   const onEntryInit = !skip && !hasLeftEntryPath() && page === initialPath;
 
-  const { init } = useInitData({ enabled: Boolean(language) && onEntryInit });
+  // Observe bootstrap init cache only — `enabled: false` never starts a second request.
+  const initKey: InitKey = lobbyQueryKeys.init(language, initialPath);
+  const initObserver = useApiQuery<InitV2Content, InitKey>({
+    queryKey: initKey,
+    queryFn: initQueryFn,
+    enabled: false,
+    staleTime: LOBBY_QUERY_POLICY.init.staleTime,
+    gcTime: LOBBY_QUERY_POLICY.init.gcTime,
+  });
 
   const pageKey: PageKey = lobbyQueryKeys.page(language, page, sessionRevision);
   const pageQuery = useApiQuery<GetPageContent, PageKey>({
@@ -72,8 +79,8 @@ export function useGetPage(): {
   });
 
   const initData = useMemo(
-    () => sanitizePageData(toPageData(init.content?.page)),
-    [init.content?.page],
+    () => sanitizePageData(toPageData(initObserver.content?.page)),
+    [initObserver.content?.page],
   );
   const getPageData = useMemo(
     () => sanitizePageData(toPageData(pageQuery.content?.page)),
@@ -88,13 +95,17 @@ export function useGetPage(): {
     }
   }, [data]);
 
+  const initLoading =
+    initObserver.content === undefined &&
+    (initObserver.query.status === 'pending' || initObserver.query.isFetching);
+
   const loading = skip
     ? false
     : onEntryInit
-      ? init.loading
+      ? initLoading
       : pageQuery.loading || (pageQuery.query.isFetching && data === undefined);
 
-  const error = skip ? null : onEntryInit ? init.error : pageQuery.error;
+  const error = skip ? null : onEntryInit ? (initObserver.query.error ?? null) : pageQuery.error;
 
   return { data, loading, error };
 }

@@ -114,6 +114,14 @@ export function getSettings(): AppSettings {
   return cachedParsed;
 }
 
+/** Optional anonymous lobby token from settings HTML (not Redux / storage). */
+export function getLobbyBootstrapToken(settings = getSettings()): string | null {
+  const token = settings.lobbyToken;
+  if (typeof token !== 'string') return null;
+  const trimmed = token.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
 export function isScrollFullscreenEnabled(settings = getSettings()): boolean {
   return settings.params?.fullscreen === true;
 }

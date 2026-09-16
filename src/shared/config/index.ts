@@ -119,6 +119,7 @@ export {
 export {
   type AppParams,
   type AppSettings,
+  getLobbyBootstrapToken,
   getSettings,
   isScrollFullscreenEnabled,
   isShellSkeletonEnabled,

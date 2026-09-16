@@ -1,5 +1,7 @@
 import { isRecord } from '@shared/lib';
 
+import { getLobbyBootstrapToken } from '@/shared/config';
+
 function isNonEmptyTrimmedString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
@@ -37,11 +39,7 @@ export function hasAuthIdentity(value: unknown): boolean {
 }
 
 function readSettingsLobbyToken(): string | null {
-  if (typeof globalThis === 'undefined') return null;
-  const settings = (globalThis as { __SETTINGS__?: { lobbyToken?: string } }).__SETTINGS__;
-  const token = settings?.lobbyToken;
-  if (isNonEmptyTrimmedString(token)) return token.trim();
-  return null;
+  return getLobbyBootstrapToken();
 }
 
 /**

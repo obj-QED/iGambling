@@ -136,12 +136,6 @@
     width: 100%;
     will-change: transform, opacity;
   }
-
-  .infoPageContent {
-    max-width: var(--app-info-page-max-width, 48rem);
-    margin-inline: auto;
-    line-height: 1.6;
-  }
 }
 
 /*

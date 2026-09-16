@@ -1,22 +1,20 @@
 import type { MenuModel as HeaderMenuModel } from '@/entities/menu';
 
-import { Activity, memo, useEffect, useLayoutEffect, useRef } from 'react';
+import { Activity, memo, useLayoutEffect, useRef } from 'react';
 
 import clsx from 'clsx';
 
 import { useIsMobile } from '@hooks/useIsMobile';
 
-import { useCloseOnPathnameChange } from '@/shared/hooks';
-import { AppDrawer, AppDrawerProvider, AppSearch, useAppDrawerContext } from '@/shared/ui';
+import { AppDrawerProvider, AppSearch } from '@/shared/ui';
 import { AppBanner } from '@/widgets/banner';
 import { AppFooter } from '@/widgets/footer';
 import { AppHeader } from '@/widgets/header';
-import { AppSidebar } from '@/widgets/sidebar';
-import { toSidebarWidthCss } from '@/widgets/sidebar/lib';
 
 import { type UseAppLayoutResult } from '../../lib/useAppLayout';
 import { lockSidebarWidth, unlockSidebarWidth } from '../lib';
 import { AppLayoutMain } from './AppLayoutMain';
+import { SidebarSlot } from './SidebarSlot';
 
 import styles from './AppLayout.module.scss';
 
@@ -41,64 +39,6 @@ function resolvedMenu(menu: HeaderMenuModel | null): HeaderMenuModel {
   return menu;
 }
 
-type SidebarSlotProps = {
-  sidebarMenu: AppLayoutChromeProps['sidebarMenu'];
-  sidebarConfig: AppLayoutChromeProps['sidebarConfig'];
-  isMobile: boolean;
-};
-
-function SidebarSlot({ sidebarMenu, sidebarConfig, isMobile }: SidebarSlotProps) {
-  const { opened, close } = useAppDrawerContext();
-
-  // Pathname store — not `useLocation` — so this slot stays off the RR re-render path.
-  useCloseOnPathnameChange(close);
-
-  useEffect(() => {
-    if (!isMobile) {
-      close();
-    }
-  }, [isMobile, close]);
-
-  const asideClassName = [styles.aside, isMobile ? styles.asideDrawer : null]
-    .filter(Boolean)
-    .join(' ');
-
-  const sidebar = (
-    <AppSidebar
-      menu={sidebarMenu}
-      config={sidebarConfig}
-      className={clsx(asideClassName, 'cmf-Sidebar')}
-    />
-  );
-
-  /**
-   * Only pass Mantine `size` when settings set it (aside.drawer.size / width).
-   * Otherwise omit — AppDrawer CSS nest owns width via
-   * `--cmf-drawer-layout-sidebar-size-{band|}` on `:root` (Mantine `size` would
-   * paint `--drawer-size` and fight the token cascade).
-   */
-  const drawerSize = sidebarConfig.drawer?.size ?? toSidebarWidthCss(sidebarConfig.width);
-
-  return isMobile ? (
-    <AppDrawer
-      opened={opened}
-      onClose={close}
-      position="left"
-      title={false}
-      withCloseButton={false}
-      keepMounted
-      defaults={sidebarConfig.drawer}
-      {...(drawerSize != null ? { size: drawerSize } : {})}
-      data-cmf-component="layout"
-      data-cmf-key="sidebar"
-    >
-      {sidebar}
-    </AppDrawer>
-  ) : (
-    sidebar
-  );
-}
-
 function AppLayoutChromeComponent({
   headerMenu,
   headerConfig,
@@ -111,19 +51,19 @@ function AppLayoutChromeComponent({
   skeleton = false,
 }: AppLayoutChromeProps) {
   const isMobile = useIsMobile();
+  const sidebarChrome = isMobile ? 'drawer' : 'rail';
   const rootRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (isMobile) {
+    if (sidebarChrome === 'drawer') {
       return;
     }
-    // Freeze only while shell skeleton paints; unlock so CSS tokens own live width.
     if (skeleton) {
       lockSidebarWidth(rootRef.current);
       return;
     }
     unlockSidebarWidth(rootRef.current);
-  }, [skeleton, sidebarMenu, isMobile]);
+  }, [skeleton, sidebarMenu, sidebarChrome]);
 
   return (
     <AppDrawerProvider>
@@ -132,6 +72,7 @@ function AppLayoutChromeComponent({
         ref={rootRef}
         className={clsx(styles.root, 'cmf-Layout')}
         data-cmf-component="layout"
+        data-sidebar-chrome={sidebarChrome}
         {...(skeleton
           ? {
               'data-shell-skeleton': '',
@@ -142,13 +83,12 @@ function AppLayoutChromeComponent({
           : {})}
       >
         <SidebarSlot
+          chrome={sidebarChrome}
           sidebarMenu={resolvedMenu(sidebarMenu)}
           sidebarConfig={sidebarConfig}
-          isMobile={isMobile}
         />
 
         <div className={clsx(styles.content, 'cmf-Layout-content')}>
-          {/* Keep header mounted during shell skeleton (empty API menus + customBlocks). */}
           <Activity mode={activityMode(skeleton || headerMenu !== null)}>
             <AppHeader
               menu={resolvedMenu(headerMenu)}
@@ -161,8 +101,6 @@ function AppLayoutChromeComponent({
 
           <AppLayoutMain />
 
-          {/* Keep footer out of the first viewport during skeleton — short page → bottom
-              footer would teleport below the fold when Home commits. */}
           <Activity mode={activityMode(footerMenu !== null && !skeleton)}>
             <AppFooter
               menu={resolvedMenu(footerMenu)}
