@@ -1,4 +1,10 @@
 @layer widget.element {
+  .root {
+    /* Ellipsis SoT: theme `.buttonLabel` / `.button`. */
+    min-width: 0;
+    max-width: 100%;
+  }
+
   .dropdownTrigger {
     /* Flex lives on root (`.cmf-Button-inner` is `display: contents`). */
     /* Width SoT: `[data-control-fit]` tokens → `--aside-control-width`. */
@@ -7,8 +13,6 @@
     min-width: 0;
 
     :global(.cmf-Button-label) {
-      flex: 1 1 auto;
-      min-width: 0;
       text-align: start;
     }
 

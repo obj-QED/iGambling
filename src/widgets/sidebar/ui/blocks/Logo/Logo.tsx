@@ -148,6 +148,8 @@ function LogoComponent({ item, className }: BlockProps) {
       aria-label={ariaLabel}
       className={className}
       {...logoAttrs}
+      active={false}
+      matchRoute={false}
     >
       <LogoMark
         label={ariaLabel}

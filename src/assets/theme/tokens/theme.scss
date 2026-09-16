@@ -56,8 +56,8 @@
     /* Anchor decoration SoT — consumed by `Anchor.extend` styles (not underline enum). */
     --root-anchor-underline: none;
     --root-color-brand-text: #fff;
-    --root-container-padding-desktop: var(--spacing-md);
-    --root-container-padding-mobile: var(--spacing-xs);
+    --root-container-padding-desktop: var(--mantine-spacing-md);
+    --root-container-padding-mobile: var(--mantine-spacing-xs);
 
     --cmf-icon-radius: var(--radius-sm);
     --cmf-icon-radius-sm: var(--radius-sm);
@@ -128,7 +128,7 @@
      */
     --cmf-drawer-bg: light-dark(var(--mantine-color-body), #1a1a1a);
     --cmf-drawer-color: var(--mantine-color-text);
-    --cmf-drawer-padding: var(--spacing-md);
+    --cmf-drawer-padding: var(--mantine-spacing-md);
     --cmf-drawer-inset: 0px;
     --cmf-drawer-size: auto;
     --cmf-drawer-size-mobile: 100%;
@@ -162,7 +162,7 @@
     --cmf-button-link-bg: var(--cmf-anchor-color, var(--mantine-color-anchor));
     --cmf-button-link-color: var(--mantine-primary-color-contrast);
     --cmf-button-link-bd: transparent;
-    --cmf-button-link-hover: var(--mantine-primary-color-light-hover);
+    --cmf-button-link-hover: var(--mantine-color-anchor-hover);
     --cmf-button-link-hover-color: var(--mantine-primary-color-contrast);
 
     /*

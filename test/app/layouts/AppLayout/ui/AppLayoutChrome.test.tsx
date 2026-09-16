@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MantineProvider } from '@mantine/core';
 import { describe, expect, it, vi } from 'vitest';
 
-import { AppLayoutChrome } from '@/app/layouts/AppLayout/ui/AppLayoutChrome';
+import { AppLayoutChrome } from '@/app/layouts/AppLayout/ui/chrome';
 import { mantineTheme } from '@/assets/theme';
 import { resolveBannerSchema } from '@/widgets/banner';
 import { resolveFooterSchema } from '@/widgets/footer';
@@ -13,7 +13,7 @@ vi.mock('@hooks/useIsMobile', () => ({
   useIsMobile: () => false,
 }));
 
-vi.mock('@/app/layouts/AppLayout/ui/AppLayoutMain', () => ({
+vi.mock('@/app/layouts/AppLayout/ui/main', () => ({
   AppLayoutMain: () => <main>page</main>,
 }));
 

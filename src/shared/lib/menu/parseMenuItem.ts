@@ -30,8 +30,14 @@ function coerceMenuItem(raw: unknown): MenuItemDto | null {
   const cleaned = cleanApiPayload(raw);
   if (!isRecord(cleaned)) return null;
 
+  // Non-string `key` is garbage — do not silently derive (e.g. `key: 123`).
+  if ('key' in cleaned && cleaned.key != null && typeof cleaned.key !== 'string') {
+    return null;
+  }
+
   const name = readString(cleaned.name);
-  const url = readString(cleaned.url);
+  // Settings/customBlocks sometimes use `href` (HTML-ish); API uses `url`.
+  const url = readString(cleaned.url) || readString(cleaned.href);
   let key = readString(cleaned.key);
   if (key.length === 0) {
     key = deriveMenuItemKey(url, name);

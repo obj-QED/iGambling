@@ -1,0 +1,16 @@
+@layer widget.component {
+  /*
+   * Aside search `style: icon` — square ActionIcon matching menu control height.
+   * Height SoT: `--ai-size` ← `--cmf-search-sidebar-*-height` ← button / rail size.
+   */
+  .root {
+    box-sizing: border-box;
+    width: var(--ai-size);
+    min-width: var(--ai-size);
+    max-width: var(--ai-size);
+    height: var(--ai-size);
+    min-height: var(--ai-size);
+    flex-shrink: 0;
+    aspect-ratio: 1;
+  }
+}

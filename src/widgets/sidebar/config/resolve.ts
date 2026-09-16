@@ -298,13 +298,18 @@ function resolveBlockVariantsAndWrappers(
   }
 
   return {
-    blockVariants: mergeBlockVariantLayers(
-      {
-        search: adapter,
-        promo: adapter,
-      },
-      flattenedLayers,
-    ),
+    blockVariants: {
+      ...mergeBlockVariantLayers(
+        {
+          search: adapter,
+          promo: adapter,
+        },
+        flattenedLayers,
+      ),
+      // Compact / slideout rail cannot host row TextInput — chrome stays icon.
+      // Behavior (`type`: modal|spotlight|input) still comes from settings.
+      ...(adapter === 'icon' ? { search: 'icon', promo: 'icon' } : {}),
+    },
     wrappers,
     behaviors,
   };

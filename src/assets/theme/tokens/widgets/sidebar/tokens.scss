@@ -23,17 +23,29 @@
 @mixin sidebar-root-tokens {
   --app-layout-sidebar-width: 15rem;
   --aside-shell-bg: light-dark(var(--mantine-color-gray-1), #000);
-  --aside-shell-border-color: #111;
-  --aside-footer-border-color: #111;
-  --aside-header-border-color: #111;
+  --aside-shell-border-color: #636363;
+  --aside-footer-border-color: #636363;
+  --aside-header-border-color: #636363;
   --cmf-button-sidebar-bd-width: 10px;
 
   /* AppSearch TextInput — same radius as sidebar buttons */
   --cmf-search-sidebar-radius: var(--cmf-button-sidebar-radius, var(--cmf-search-radius));
 
+  /*
+   * Icon search ActionIcon size.
+   * `--button-height` lives on Button nodes only — use the md size table on the aside host.
+   * Compact overrides via `--cmf-action-icon-sidebar-size` (rail square).
+   */
+  --cmf-search-sidebar-height: var(
+    --cmf-action-icon-sidebar-size,
+    var(--button-height-md, calc(2.625rem * var(--mantine-scale, 1)))
+  );
+  --cmf-search-sidebar-search-height: var(--cmf-search-sidebar-height);
+  --cmf-search-sidebar-search_leftmenu-height: var(--cmf-search-sidebar-height);
+
   /* Header region chrome */
   --header-logo-width: 120px;
-  --aside-header-gap: var(--spacing-xs, 0.375rem);
+  --aside-header-gap: var(--mantine-spacing-xs, 0.25rem);
   --aside-header-color: inherit;
   --aside-header-avatar-size: 1.5rem;
   --cmf-button-sidebar-header-logo-bg: light-dark(#111, transparent);
@@ -119,7 +131,7 @@
     --app-layout-sidebar-width: calc(3.75rem * var(--mantine-scale));
     --scrollarea-padding-inline: var(--mantine-spacing-xs);
     --aside-scrollbar-size: 1px;
-    --aside-shell-padding: var(--mantine-spacing-xs);
+    --aside-shell-padding: var(--mantine-spacing-sm);
     --cmf-action-icon-sidebar-radius: var(--mantine-radius-sm);
     --cmf-action-icon-icon-scale: 0.5;
     --aside-menu-dropdown-indicator-position: relative;
@@ -127,8 +139,10 @@
     --aside-menu-dropdown-indent: 0;
     --cmf-group-sidebar-header-logo-justify: center;
     --aside-footer-justify: center;
+    --aside-footer-align: center;
     --aside-shell-align: center;
-    --aside-shell-footer-padding: var(--mantine-spacing-xs);
+    --aside-shell-footer-padding: var(--mantine-spacing-sm) var(--mantine-spacing-xs)
+      var(--mantine-spacing-xs);
     --aside-footer-gap: var(--mantine-spacing-xs);
     --cmf-action-icon-sidebar-padding: var(--mantine-spacing-xs) 0;
 
@@ -141,12 +155,15 @@
         var(--scrollarea-padding-inline, 4px)
     );
 
-    .cmf-ActionIcon-icon {
+    --cmf-action-icon-sidebar-header-logo-bg: var(--brand-color-6);
+
+    [class~='cmf-ActionIcon-icon'] {
       flex-flow: column nowrap;
       gap: var(--mantine-spacing-xs);
     }
 
-    [type='button'] {
+    /* Dropdown trigger only — leaf squares keep `--ai-size` height. */
+    [data-sidebar-dropdown-trigger][type='button'] {
       height: auto;
     }
   }

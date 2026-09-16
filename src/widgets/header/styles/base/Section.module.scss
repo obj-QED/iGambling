@@ -4,7 +4,7 @@
     flex-wrap: var(--header-block-wrap, wrap);
     align-items: var(--header-block-align, center);
     justify-content: var(--header-block-justify, flex-start);
-    gap: var(--header-block-gap, var(--spacing-xs, 0.25rem));
+    gap: var(--header-block-gap, var(--mantine-spacing-sm, 0.5rem));
     flex-shrink: var(--header-block-shrink, 1);
   }
 }

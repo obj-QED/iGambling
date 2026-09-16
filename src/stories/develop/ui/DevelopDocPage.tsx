@@ -45,7 +45,7 @@ export function DevelopDocPage({
         background: 'var(--color-bg-body)',
         border: '1px solid var(--color-border)',
         borderRadius: 12,
-        padding: 'var(--spacing-md, 1rem)',
+        padding: 'var(--mantine-spacing-md, 1rem)',
       }}
     >
       <Stack gap={6}>

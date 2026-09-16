@@ -1,15 +1,15 @@
 import { normalizeAppPathname } from '@/shared/lib/menu';
 
 /**
- * Extra allowlist paths beyond menus from init/getPage.
- * Add special app routes here as they ship.
+ * Extra discovery paths for Spotlight (beyond menus / page.url from API).
+ * Not a hard router gate — InfoPage existence is decided by init/getPage.
  */
 export const EXTRA_KNOWN_APP_PATHS = [
   // '/some-special',
 ] as const;
 
 /**
- * @deprecated Prefer menu allowlist + lobby shell for paths without `page.info`.
+ * @deprecated Prefer API page payload for shells without `page.info`.
  * Kept for explicit feature shells if needed later.
  */
 export const SPECIAL_APP_PATHS_WITHOUT_INFO = [

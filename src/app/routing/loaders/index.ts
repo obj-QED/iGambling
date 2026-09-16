@@ -1,0 +1,1 @@
+export { loadLobbyPage } from './loadLobbyPage';

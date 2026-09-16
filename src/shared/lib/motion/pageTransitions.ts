@@ -4,16 +4,8 @@ export const PAGE_STAGE_TRANSITION = {
   ease: [0.22, 1, 0.36, 1] as const,
 };
 
-/** Search: current exits left, next enters from the right. */
-export const SEARCH_STAGE_SLIDE = {
-  initial: { x: '28%', opacity: 0 },
-  animate: { x: 0, opacity: 1 },
-  exit: { x: '-28%', opacity: 0 },
-  transition: PAGE_STAGE_TRANSITION,
-} as const;
-
 /**
- * Info CMS wipe — Motion page-mask style (exit right←, enter ←right).
+ * Info CMS / search↔page wipe — Motion page-mask style (exit right←, enter ←right).
  * @see https://examples.motion.dev/ui/sections/page-mask-transitions
  */
 export const INFO_CONTENT_MASK = {

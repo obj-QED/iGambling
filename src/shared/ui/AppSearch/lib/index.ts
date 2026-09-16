@@ -1,3 +1,4 @@
+export { buildSpotlightPageActions, SPOTLIGHT_FEATURED_PAGES } from './buildSpotlightPageActions';
 export { preloadSearchType } from './preloadSearchType';
 export type { SearchOpenMode, SearchPageMode, SearchState } from './searchStore';
 export { appSearch, getSearchState, subscribeSearch } from './searchStore';

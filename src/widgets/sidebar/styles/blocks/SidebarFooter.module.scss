@@ -5,7 +5,7 @@
     align-items: var(--aside-footer-align, center);
     justify-content: var(--aside-footer-justify, flex-start);
     flex-shrink: 0;
-    gap: var(--aside-footer-gap, var(--spacing-sm, 0.5rem));
+    gap: var(--aside-footer-gap, var(--mantine-spacing-sm, 1rem));
 
     /*
      * `--aside-shell-footer-spacing` → margin + padding together.

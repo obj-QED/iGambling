@@ -12,5 +12,12 @@ export type AppLogoProps = {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 } & Omit<
   ButtonProps,
-  'children' | 'leftSection' | 'rightSection' | 'label' | 'component' | 'renderRoot'
+  | 'children'
+  | 'leftSection'
+  | 'rightSection'
+  | 'label'
+  | 'component'
+  | 'renderRoot'
+  /** Logo never participates in nav-active cascade. */
+  | 'active'
 >;

@@ -24,6 +24,12 @@ function AppLogoComponent({
   // No usable img (missing or onError) and no name → do not render.
   if (!hasImg && !hasName) return null;
 
+  // Brand mark is never a nav-active target — ignore route/`active` from callers.
+  const logoNavProps = {
+    active: false as const,
+    matchRoute: false as const,
+  };
+
   if (!hasImg) {
     return (
       <AppButton
@@ -33,6 +39,7 @@ function AppLogoComponent({
         className={clsx(styles.textLogo, className)}
         aria-label={alt}
         {...buttonProps}
+        {...logoNavProps}
       />
     );
   }
@@ -56,6 +63,7 @@ function AppLogoComponent({
         />
       }
       {...buttonProps}
+      {...logoNavProps}
     />
   );
 }

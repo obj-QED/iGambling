@@ -5,7 +5,7 @@
     align-items: var(--header-sections-align, center);
     flex-wrap: var(--header-sections-wrap, wrap);
     min-width: 0;
-    gap: var(--header-section-gap, var(--spacing-md, 1rem));
+    gap: var(--header-section-gap, var(--mantine-spacing-md, 1rem));
     justify-content: var(--header-sections-justify, space-between);
   }
 }

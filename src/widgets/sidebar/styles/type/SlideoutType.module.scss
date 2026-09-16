@@ -330,7 +330,7 @@
         gap: var(--aside-slideout-chevron-gap, 0.125rem);
         height: auto;
         min-height: var(--aside-slideout-control-size);
-        padding-block: var(--spacing-3xs, 0.125rem);
+        padding-block: var(--mantine-spacing-3xs, 0.125rem);
       }
 
       :global([data-sidebar-dropdown-trigger] .cmf-Button-section.cmf-Button-section-chevron) {

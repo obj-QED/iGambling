@@ -1,13 +1,7 @@
 @layer widget.element {
   .root {
-    flex-wrap: nowrap;
+    /* Ellipsis SoT: theme `.buttonLabel` / `.button`. */
     min-width: 0;
-
-    :global(.cmf-Button-label) {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      min-width: 0;
-    }
+    max-width: 100%;
   }
 }

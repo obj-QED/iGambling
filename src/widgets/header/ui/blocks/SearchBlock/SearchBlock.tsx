@@ -1,6 +1,6 @@
 import type { BlockProps } from '../../../types';
 
-import { memo } from 'react';
+import { memo, useLayoutEffect } from 'react';
 
 import { AdapterBoundary, LazyHost, preloadAdapters, useAdapter } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
@@ -19,6 +19,12 @@ function SearchBlockComponent({ item }: BlockProps) {
   const { searchQuery, onActivate, onSearchQueryChange, showHotkeyBadge } = useAppSearchTrigger(
     behaviors.search,
   );
+
+  useLayoutEffect(() => {
+    if (!enabled) return;
+    preloadAdapters(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
+    preloadSearchType(behaviors.search);
+  }, [enabled, blockVariants.search, behaviors.search]);
 
   if (!enabled || !Adapter) return null;
 

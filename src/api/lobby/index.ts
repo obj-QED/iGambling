@@ -1,4 +1,5 @@
 export {
+  collectKnownMenuPathCatalog,
   collectKnownMenuPaths,
   collectKnownMenuPathsFromInitContent,
   collectUrlsFromMenuTree,
@@ -6,8 +7,11 @@ export {
   KNOWN_ROUTE_BLOCK_TYPES,
   normalizeMenuRoutePath,
 } from './lib/collectKnownMenuPaths';
+export { hasLeftEntryPath } from './lib/entryPathGate';
 export {
+  getKnownAppPathLabelsSnapshot,
   getKnownAppPathsSnapshot,
+  getKnownAppPathsVersion,
   isKnownAppPath,
   mergeKnownAppPathsFromPage,
   subscribeKnownAppPaths,

@@ -46,7 +46,7 @@ describe('resolveSidebarConfig', () => {
     });
   });
 
-  it('merges aside.blockVariants and types[type].blockVariants', () => {
+  it('forces search/promo icon chrome for compact and slideout rails', () => {
     expect(
       resolveSidebarConfig({
         aside: {
@@ -54,7 +54,16 @@ describe('resolveSidebarConfig', () => {
           blockVariants: { search: 'row' },
         },
       }).blockVariants.search,
-    ).toBe('row');
+    ).toBe('icon');
+
+    expect(
+      resolveSidebarConfig({
+        aside: {
+          type: 'slideout',
+          blockVariants: { search_leftmenu: { type: 'input', style: 'input' } },
+        },
+      }).blockVariants.search,
+    ).toBe('icon');
 
     expect(
       resolveSidebarConfig({

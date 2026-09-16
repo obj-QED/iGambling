@@ -80,7 +80,7 @@ function resolveRadius(radius: unknown, cmfFallback: string): string {
  */
 const CODE_BG_FALLBACK = 'light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))';
 const CODE_HOVER_BG_FALLBACK =
-  'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6))';
+  'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4))';
 const CODE_PADDING_FALLBACK = 'var(--mantine-spacing-xs) var(--mantine-spacing-sm)';
 
 type SearchScope = ReturnType<typeof resolveCmfScope>;

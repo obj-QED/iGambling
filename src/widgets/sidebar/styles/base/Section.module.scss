@@ -7,7 +7,7 @@
     flex-direction: var(--aside-section-flex-direction, column);
     align-items: var(--aside-section-align, stretch);
     justify-content: var(--aside-section-justify, flex-start);
-    gap: var(--aside-section-gap, var(--spacing-xs, 0.5rem));
+    gap: var(--aside-section-gap, var(--mantine-spacing-xs, 0.25rem));
   }
 
   .item {
@@ -18,5 +18,7 @@
 
   .itemContent {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
   }
 }

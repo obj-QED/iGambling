@@ -1,9 +1,9 @@
 import { lazy, memo, Suspense } from 'react';
 
 import { AnimatePresence, motion } from 'motion/react';
-import { Outlet } from 'react-router-dom';
+import { useOutlet } from 'react-router-dom';
 
-import { SEARCH_STAGE_SLIDE } from '@/shared/lib/motion';
+import { INFO_CONTENT_MASK } from '@/shared/lib/motion';
 import {
   resolveSearchSchema,
   shouldShowSearchResults,
@@ -11,9 +11,7 @@ import {
   useSearchQuery,
 } from '@/shared/ui';
 
-import { AppPageSkeleton } from './AppPageSkeleton';
-
-import styles from './AppLayout.module.scss';
+import styles from '../styles/AppLayout.module.scss';
 
 const SearchResults = lazy(() =>
   import('@/shared/ui/AppSearch/type/input/SearchInputType').then((module) => ({
@@ -22,12 +20,15 @@ const SearchResults = lazy(() =>
 );
 
 /**
- * Page body only — search ↔ outlet swap.
- * `mode="wait"`: current exits left, then next enters from the right.
+ * Page body only — search ↔ route swap.
+ * Per-pathname wipes live in `AppearWipe` (Info CMS). Keying this stage by
+ * pathname remounted every nav → double wipe + info HTML flashing on Home.
+ * Loader still holds the previous route until `getPage` settles (no empty flash).
  */
 function AppLayoutMainStageComponent() {
   const query = useSearchQuery();
   const pageMode = useSearchPageMode();
+  const outlet = useOutlet();
   const globalType = resolveSearchSchema().type;
   const showResults = shouldShowSearchResults({ query, pageMode, globalType });
   const stageKey = showResults ? 'search' : 'page';
@@ -38,20 +39,17 @@ function AppLayoutMainStageComponent() {
         <motion.div
           key={stageKey}
           className={styles.stagePanel}
-          initial={SEARCH_STAGE_SLIDE.initial}
-          animate={SEARCH_STAGE_SLIDE.animate}
-          exit={SEARCH_STAGE_SLIDE.exit}
-          transition={SEARCH_STAGE_SLIDE.transition}
+          initial={INFO_CONTENT_MASK.initial}
+          animate={INFO_CONTENT_MASK.animate}
+          exit={INFO_CONTENT_MASK.exit}
+          transition={INFO_CONTENT_MASK.transition}
         >
           {showResults ? (
-            <Suspense fallback={<AppPageSkeleton />}>
+            <Suspense fallback={null}>
               <SearchResults query={query} />
             </Suspense>
           ) : (
-            /* null — not AppPageSkeleton: info mask / getPage must keep prior HTML visible */
-            <Suspense fallback={null}>
-              <Outlet />
-            </Suspense>
+            <Suspense fallback={null}>{outlet}</Suspense>
           )}
         </motion.div>
       </AnimatePresence>

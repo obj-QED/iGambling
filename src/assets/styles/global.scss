@@ -2,4 +2,12 @@
   svg {
     stroke: currentcolor;
   }
+
+  a {
+    color: var(--mantine-color-anchor);
+
+    &:hover {
+      color: var(--mantine-color-anchor-hover);
+    }
+  }
 }

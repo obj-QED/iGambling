@@ -1,4 +1,5 @@
 export { AppLayout } from './AppLayout';
+export { BlankLayout } from './BlankLayout';
 export {
   extractMenuFromInit,
   extractPageMenuFromInit,

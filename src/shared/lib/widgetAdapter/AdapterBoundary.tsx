@@ -4,6 +4,7 @@ import { memo, Suspense } from 'react';
 
 import { Skeleton } from '@mantine/core';
 
+import { isShellSkeletonEnabled } from '@/shared/config';
 import { InViewSkeletonGate, ShellSkeletonGate } from '@/shared/lib/shellSkeleton';
 
 import { AdapterPendingFallback } from './adapterPending';
@@ -31,12 +32,10 @@ function PulseFallback() {
 }
 
 function DefaultFallback() {
-  // `skeleton: false` → null; off-screen → null; in-view pulse only.
+  // `skeleton: false` → null. Viewport deferral lives in AdapterBoundary.
   return (
     <ShellSkeletonGate fallback={null}>
-      <InViewSkeletonGate fallback={null}>
-        <PulseFallback />
-      </InViewSkeletonGate>
+      <PulseFallback />
     </ShellSkeletonGate>
   );
 }
@@ -48,11 +47,22 @@ function DefaultFallback() {
  */
 function AdapterBoundaryComponent({ children, fallback }: AdapterBoundaryProps) {
   const resolvedFallback = fallback ?? <DefaultFallback />;
-
-  return (
+  const boundary = (
     <Suspense fallback={<AdapterPendingFallback>{resolvedFallback}</AdapterPendingFallback>}>
       {children}
     </Suspense>
+  );
+
+  // Global skeleton off must never leave reserved, empty slots. In that mode
+  // BootGate keeps the single startup preloader and adapters mount normally.
+  if (!isShellSkeletonEnabled()) {
+    return boundary;
+  }
+
+  return (
+    <InViewSkeletonGate fallback={null} preserveSpace>
+      {boundary}
+    </InViewSkeletonGate>
   );
 }
 

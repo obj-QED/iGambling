@@ -12,7 +12,7 @@
       fullscreen: true,
       preloader: {
         /** Global: false → no skeleton on shell/adapters/page. true / omit → on. */
-        skeleton: true,
+        skeleton: false,
       },
       /**
        * Global Mantine Modal defaults — any prop except opened/onClose/children.
@@ -61,8 +61,16 @@
        */
       search: {
         type: 'spotlight',
-        style: 'input',
+        style: 'input', // compact | icon | input
         modal: {},
+      },
+      /**
+       * Main page column inside AppLayout.
+       * `container` → bounded Mantine Container; `container-fluid` → full width.
+       * Omit → `container`.
+       */
+      outlet: {
+        layout: 'container',
       },
     },
     header: {
@@ -125,7 +133,7 @@
 
     aside: {
       /** Shell width is fixed — do not pair a compact calc with `type: 'default'` (labels need room). */
-      type: 'default', // 'default' | 'compact' | 'slideout'
+      type: 'slideout', // 'default' | 'compact' | 'slideout'
       /**
        * Control width: `max` (hug / capped) | `fill` (full track, flat).
        * Tokens: compact + non-compact `[data-control-fit]` blocks separately.
@@ -147,12 +155,14 @@
       /**
        * Per special-block override (`search_leftmenu` → search adapters).
        * Same `{ type, style }` as header; falls back to `params.search`.
-       * search type → AppSearch; style → trigger (compact|icon|input → icon|row).
+       * search type → AppSearch behavior; style → trigger (compact|icon|input → icon|row).
+       * Note: `type: compact|slideout` always forces search/promo chrome to `icon`
+       * (row TextInput does not fit the rail).
        */
       blockVariants: {
         search_leftmenu: {
-          type: 'input', // modal | spotlight | input
-          style: 'input', // compact | icon | input
+          type: 'input', // modal | spotlight | input (behavior)
+          style: 'icon', // compact|icon|input — ignored for compact/slideout chrome (forced icon)
         },
       },
       /**
@@ -227,6 +237,7 @@
                 'Tooltip content can be hovered, for example to follow <a href="/" target="_blank">this link</a>',
               type: 'link',
               variant: 'transparent',
+              url: '/',
             },
           ],
         },

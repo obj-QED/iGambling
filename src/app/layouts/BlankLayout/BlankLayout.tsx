@@ -5,12 +5,12 @@ import { Outlet } from 'react-router-dom';
 import styles from './BlankLayout.module.scss';
 
 /**
- * Пустой layout без sidebar.
- * Используется для auth, ошибок (404/500) и системных страниц.
+ * Empty shell without header/sidebar/footer.
+ * Auth / activation / system pages that must not mount lobby chrome.
  */
 function BlankLayoutComponent() {
   return (
-    <div className={styles.root}>
+    <div className={styles.root} data-cmf-component="blank-layout">
       <Outlet />
     </div>
   );

@@ -254,20 +254,6 @@
       transition:
         color 0.15s ease,
         background-color 0.15s ease;
-
-      @media (hover: hover) {
-        &:where(:not([data-disabled], :disabled)):hover {
-          color: var(--input-clear-hover-color, var(--input-clear-color));
-          background-color: var(--input-clear-hover-bg, transparent);
-        }
-      }
-
-      @media (hover: none) {
-        &:where(:not([data-disabled], :disabled)):active {
-          color: var(--input-clear-hover-color, var(--input-clear-color));
-          background-color: var(--input-clear-hover-bg, transparent);
-        }
-      }
     }
 
     :global(.cmf-Code-root),
@@ -290,25 +276,6 @@
       transition: color 0.15s ease;
     }
 
-    @media (hover: hover) {
-      &:hover:not(:focus-within) {
-        --input-section-color: var(--input-section-hover-color);
-
-        :global(.cmf-Input-input),
-        :global(.cmf-TextInput-input) {
-          background-color: var(--input-hover, var(--input-bg));
-          color: var(--input-hover-color, var(--input-color));
-          border-color: var(--input-hover-bd, var(--input-bd));
-        }
-
-        :global(.cmf-Code-root),
-        :global([data-search-part='code']) {
-          background: var(--input-code-hover-bg, var(--input-code-bg));
-          color: var(--input-code-hover-color, var(--input-code-color));
-        }
-      }
-    }
-
     &:focus-within {
       --input-section-color: var(--input-section-focus-color);
 
@@ -326,13 +293,59 @@
     }
   }
 
+  @media (hover: hover) {
+    .searchInput :global(.cmf-CloseButton-root):where(:not([data-disabled], :disabled)):hover,
+    .searchInput :global([data-search-part='clear']):where(:not([data-disabled], :disabled)):hover {
+      color: var(--input-clear-hover-color, var(--input-clear-color));
+      background-color: var(--input-clear-hover-bg, transparent);
+    }
+
+    .searchInput:hover:not(:focus-within) {
+      --input-section-color: var(--input-section-hover-color);
+    }
+
+    .searchInput:hover:not(:focus-within) :global(.cmf-Input-input),
+    .searchInput:hover:not(:focus-within) :global(.cmf-TextInput-input) {
+      background-color: var(--input-hover, var(--input-bg));
+      color: var(--input-hover-color, var(--input-color));
+      border-color: var(--input-hover-bd, var(--input-bd));
+    }
+
+    .searchInput:hover:not(:focus-within) :global(.cmf-Code-root),
+    .searchInput:hover:not(:focus-within) :global([data-search-part='code']) {
+      background: var(--input-code-hover-bg, var(--input-code-bg));
+      color: var(--input-code-hover-color, var(--input-code-color));
+    }
+  }
+
+  @media (hover: none) {
+    .searchInput :global(.cmf-CloseButton-root):where(:not([data-disabled], :disabled)):active,
+    .searchInput
+      :global([data-search-part='clear']):where(:not([data-disabled], :disabled)):active {
+      color: var(--input-clear-hover-color, var(--input-clear-color));
+      background-color: var(--input-clear-hover-bg, transparent);
+    }
+  }
+
   /*
-   * Mantine Button label uses `text-box-trim: trim-both` + `overflow: hidden` with
-   * `line-height: 1` on root — clips glyph ink (esp. md+ / IBM Plex). Reset trim.
+   * Mantine Button label: `display:flex` + `height:100%` + `align-items:center`.
+   * Ellipsis needs a block BFC (`text-overflow` ignores flex containers), but
+   * `display:block` alone leaves Mantine `height:100%` → text sticks to the top.
+   * Reset height and self-align so the label hugs the line box again.
    */
   .buttonLabel {
     text-box-trim: none;
     text-box-edge: auto;
+    display: block;
+    height: auto;
+    align-self: center;
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: start;
   }
 
   /*
@@ -384,6 +397,11 @@
     display: inline-flex;
     align-items: var(--button-align, center);
     justify-content: var(--button-justify, center);
+    min-width: 0;
+    max-width: 100%;
+
+    /* Mantine Button.css sets `text-align: center` — override for start-aligned menus. */
+    text-align: start;
     transition:
       color 0.2s ease-in-out,
       background-color 0.2s ease-in-out,
@@ -398,6 +416,17 @@
     &:where([data-block]) {
       display: flex;
       width: 100%;
+    }
+
+    /*
+     * Full-width / icon+label rows: label fills leftover space so ellipsis can clip.
+     * Keep `text-align: start` so stretched labels do not look centered.
+     */
+    &:where([data-block], [data-with-left-section], [data-with-right-section]) {
+      :global(.cmf-Button-label) {
+        flex: 1 1 0%;
+        text-align: start;
+      }
     }
 
     /* Loading used to fade `.inner`; with `contents` hide real children instead. */

@@ -12,6 +12,14 @@ describe('parseMenuItemDto (Zod boundary)', () => {
     });
   });
 
+  it('maps href alias to url', () => {
+    expect(parseMenuItemDto({ key: 'aside_header_logo', href: '/', name: 'Logo' })).toMatchObject({
+      key: 'aside_header_logo',
+      url: '/',
+      name: 'Logo',
+    });
+  });
+
   it('parses menu item type', () => {
     expect(parseMenuItemDto({ key: 'promo', url: '/promo', name: 'Promo', type: 'link' })).toEqual({
       key: 'promo',

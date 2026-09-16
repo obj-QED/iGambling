@@ -2,7 +2,7 @@
   .root {
     display: flex;
     flex-direction: column;
-    gap: var(--aside-block-gap, var(--spacing-xs, 0.5rem));
+    gap: var(--aside-block-gap, var(--mantine-spacing-xs, 0.25rem));
     align-items: stretch;
 
     /* Child route active → `data-sidebar-dropdown-child-active="true"` on this node. */
@@ -10,11 +10,11 @@
 
   .list {
     margin: 0;
-    padding: 0 0 0 var(--aside-menu-dropdown-indent, var(--spacing-sm, 0.5rem));
+    padding: 0 0 0 var(--aside-menu-dropdown-indent, var(--mantine-spacing-sm, 0.5rem));
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--aside-block-gap, var(--spacing-xs, 0.5rem));
+    gap: var(--aside-block-gap, var(--mantine-spacing-xs, 0.25rem));
     align-items: stretch;
   }
 }

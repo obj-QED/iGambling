@@ -16,7 +16,7 @@ export type AppButtonProps = Omit<ButtonProps, 'children' | 'fullWidth'> & {
   fullscreen?: boolean;
   /** Native `<button>` only — skip href click navigation (dropdown trigger, etc.). */
   native?: boolean;
-  /** Explicit active from API/schema — overrides URL matching. */
+  /** Explicit active from API/schema — overrides URL matching. `false` disables active cascade. */
   active?: boolean;
   /** When `false`, skip route active matching. Default: `true`. */
   matchRoute?: boolean;

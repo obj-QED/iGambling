@@ -86,6 +86,8 @@ export {
   HEADER_MOCK_AUTH_KEYS,
   HEADER_TYPE_KEYS,
 } from './headerSettings';
+export type { OutletLayoutKey, OutletSettings } from './outletSettings';
+export { OUTLET_LAYOUT_KEYS, resolveOutletLayout } from './outletSettings';
 export type {
   DrawerSettings,
   MenuSettings,

@@ -1,6 +1,6 @@
 import type { BlockProps } from '../../../types';
 
-import { memo } from 'react';
+import { memo, useLayoutEffect } from 'react';
 
 import {
   AdapterBoundary,
@@ -27,6 +27,12 @@ function PromoBlockComponent({ item, className }: BlockProps) {
   const Wrapper = useWrapper(wrapperMode);
   const label = resolveItemLabel(item);
   const enabled = isCapabilityEnabled(capabilities, 'promo');
+
+  useLayoutEffect(() => {
+    if (!enabled) return;
+    preloadAdapters(PROMO_ADAPTERS, blockVariants.promo, PROMO_ADAPTER_KEYS);
+    preloadWrapper(wrapperMode);
+  }, [enabled, blockVariants.promo, wrapperMode]);
 
   if (!enabled || !Adapter) return null;
 

@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 const scss = readFileSync(
   resolve(
     dirname(fileURLToPath(import.meta.url)),
-    '../../../../../src/app/layouts/AppLayout/ui/AppLayout.module.scss',
+    '../../../../../src/app/layouts/AppLayout/ui/styles/AppLayout.module.scss',
   ),
   'utf8',
 );

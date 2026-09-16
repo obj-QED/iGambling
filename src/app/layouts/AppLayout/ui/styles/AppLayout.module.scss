@@ -112,11 +112,11 @@
   .pageSkeleton {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md, 1rem);
+    gap: var(--mantine-spacing-md, 1rem);
   }
 
   .page {
-    --page-padding-block: var(--spacing-lg, 1.5rem);
+    --page-padding-block: var(--mantine-spacing-lg, 1.5rem);
     --page-padding-inline: var(--mantine-spacing-md, 1rem);
     position: relative;
     width: 100%;
@@ -124,7 +124,7 @@
     padding-block: var(--page-padding-block);
   }
 
-  /** Search ↔ page swap host — clips horizontal travel. */
+  /** Search ↔ page wipe host — same mask as Info (`AppearWipe`). */
   .stage {
     position: relative;
     overflow: hidden;
@@ -134,7 +134,7 @@
 
   .stagePanel {
     width: 100%;
-    will-change: transform, opacity;
+    will-change: clip-path;
   }
 }
 
@@ -183,7 +183,6 @@
   color: transparent;
   border-color: transparent;
   box-shadow: none;
-  background-image: none;
   background: var(--shell-skel-from);
   animation: shell-skel-pulse 1500ms linear infinite;
 }
@@ -249,7 +248,7 @@
   position: absolute;
 
   /* Match Container padding-inline + .page padding-block — not flush to chrome. */
-  inset: var(--page-padding-block, var(--spacing-lg, 1.5rem))
+  inset: var(--page-padding-block, var(--mantine-spacing-lg, 1.5rem))
     var(--page-padding-inline, var(--mantine-spacing-md, 1rem));
   z-index: 1;
   border-radius: var(--radius-md, 0.5rem);

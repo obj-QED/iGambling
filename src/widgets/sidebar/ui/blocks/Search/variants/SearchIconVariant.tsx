@@ -12,17 +12,18 @@ import { AppTooltip } from '@/shared/ui/AppTooltip';
 import { useSidebarConfig } from '../../../../context';
 import { useAsideMenuButtonSize } from '../../../../hooks';
 import {
-  hasItemName,
   isRenderableItem,
   resolveItemHref,
   resolveItemLabel,
   resolveMenuItemActionIconVariant,
 } from '../../../../lib';
 
+import searchIconStyles from '../../../../styles/blocks/SearchIcon.module.scss';
 import itemActionIconStyles from '../../../../styles/items/ItemActionIcon.module.scss';
 
 /**
- * Compact rail search — ActionIcon chrome via shared SearchIconTrigger.
+ * Aside search `style: icon` — ActionIcon square matching menu button height.
+ * Glyph only (`IconSearch`); no menu img / name initial.
  */
 function SearchIconVariantComponent({
   item,
@@ -33,24 +34,21 @@ function SearchIconVariantComponent({
   const { tooltip } = useSidebarConfig();
   const size = useAsideMenuButtonSize();
   const searchGlyph = useMemo(
-    () => <IconSearch className="cmf-ActionIcon-icon-svg" stroke={1.75} aria-hidden />,
+    () => <IconSearch className="cmf-ActionIcon-icon-svg" stroke={1.5} aria-hidden />,
     [],
   );
 
   if (!isRenderableItem(item)) return null;
 
   const isAction = onActivate !== undefined || onSearchQueryChange !== undefined;
-  const placeholder = item.name ?? 'Search';
-  const href = isAction ? undefined : resolveItemHref(item.url);
   const label = resolveItemLabel(item);
-  const ariaLabel = label.length > 0 ? label : placeholder;
+  const ariaLabel = label.length > 0 ? label : (item.name ?? 'Search');
 
   const control = (
     <SearchIconTrigger
-      name={item.name}
-      img={item.img}
-      href={href}
-      className={clsx(itemActionIconStyles.root, className)}
+      // No name/img — chrome is search glyph only.
+      href={isAction ? undefined : resolveItemHref(item.url)}
+      className={clsx(itemActionIconStyles.root, searchIconStyles.root, className)}
       variant={resolveMenuItemActionIconVariant(item)}
       size={size}
       aria-label={ariaLabel}
@@ -59,13 +57,14 @@ function SearchIconVariantComponent({
       activeMatch={item.activeMatch}
       onActivate={onActivate}
       onSearchQueryChange={onSearchQueryChange}
-      {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar', key: 'search' }))}
+      {...controlAttrs(
+        item,
+        resolveCmfScope(item, { widget: 'sidebar', key: item.key ?? 'search_leftmenu' }),
+      )}
     >
       {searchGlyph}
     </SearchIconTrigger>
   );
-
-  if (!hasItemName(item)) return control;
 
   return (
     <AppTooltip

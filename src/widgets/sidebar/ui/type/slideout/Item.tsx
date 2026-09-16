@@ -84,7 +84,7 @@ function SlideoutItemComponent({
     <AppButton
       label={displayLabel}
       aria-label={iconOnly || !showItemImg ? ariaLabel : undefined}
-      className={clsx(dropdownTrigger && itemStyles.dropdownTrigger, className)}
+      className={clsx(itemStyles.root, dropdownTrigger && itemStyles.dropdownTrigger, className)}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
       fullscreen

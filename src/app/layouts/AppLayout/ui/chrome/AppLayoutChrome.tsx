@@ -11,12 +11,12 @@ import { AppBanner } from '@/widgets/banner';
 import { AppFooter } from '@/widgets/footer';
 import { AppHeader } from '@/widgets/header';
 
-import { type UseAppLayoutResult } from '../../lib/useAppLayout';
-import { lockSidebarWidth, unlockSidebarWidth } from '../lib';
-import { AppLayoutMain } from './AppLayoutMain';
+import { type UseAppLayoutResult } from '../../../lib/useAppLayout';
+import { lockSidebarWidth, unlockSidebarWidth } from '../../lib';
+import { AppLayoutMain } from '../main';
 import { SidebarSlot } from './SidebarSlot';
 
-import styles from './AppLayout.module.scss';
+import styles from '../styles/AppLayout.module.scss';
 
 const EMPTY_HEADER_MENU: HeaderMenuModel = { sections: [] };
 

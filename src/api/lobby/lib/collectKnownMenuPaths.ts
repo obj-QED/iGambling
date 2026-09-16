@@ -8,6 +8,12 @@ export type KnownRouteBlockType = (typeof KNOWN_ROUTE_BLOCK_TYPES)[number];
 
 const KNOWN_ROUTE_BLOCK_TYPE_SET: ReadonlySet<string> = new Set(KNOWN_ROUTE_BLOCK_TYPES);
 
+export type KnownMenuPathCatalog = {
+  paths: ReadonlySet<string>;
+  /** First non-empty `name` per path from menu trees. */
+  labels: ReadonlyMap<string, string>;
+};
+
 /**
  * Normalize a menu `url` to an internal pathname for allowlisting.
  * Relative API urls (`tag/new`, `provider/x`) get a leading `/`.
@@ -33,53 +39,89 @@ export function normalizeMenuRoutePath(raw: string | undefined): string | null {
   return normalizeAppPathname(withSlash);
 }
 
+function rememberPath(
+  path: string,
+  name: string | undefined,
+  out: Set<string>,
+  labels: Map<string, string>,
+): void {
+  out.add(path);
+  if (name === undefined) return;
+  const trimmed = name.trim();
+  if (trimmed.length === 0 || labels.has(path)) return;
+  labels.set(path, trimmed);
+}
+
+function readMenuNodePath(node: Record<string, unknown>): string | null {
+  return normalizeMenuRoutePath(readString(node.url) || readString(node.href));
+}
+
 /** Recursively collect every navigable `url` from menu trees (`items` / nested `menu`). */
-export function collectUrlsFromMenuTree(node: unknown, out: Set<string>): void {
+export function collectUrlsFromMenuTree(
+  node: unknown,
+  out: Set<string>,
+  labels: Map<string, string> = new Map(),
+): void {
   if (Array.isArray(node)) {
-    for (const entry of node) collectUrlsFromMenuTree(entry, out);
+    for (const entry of node) collectUrlsFromMenuTree(entry, out, labels);
     return;
   }
   if (!isRecord(node)) return;
 
-  const path = normalizeMenuRoutePath(readString(node.url));
-  if (path !== null) out.add(path);
+  const path = readMenuNodePath(node);
+  if (path !== null) {
+    rememberPath(path, readString(node.name), out, labels);
+  }
 
   if (Array.isArray(node.items)) {
-    collectUrlsFromMenuTree(node.items, out);
+    collectUrlsFromMenuTree(node.items, out, labels);
   }
   if (Array.isArray(node.menu)) {
-    collectUrlsFromMenuTree(node.menu, out);
+    collectUrlsFromMenuTree(node.menu, out, labels);
   }
 }
 
-function collectUrlsFromFooterBlock(block: Record<string, unknown>, out: Set<string>): void {
+function collectUrlsFromFooterBlock(
+  block: Record<string, unknown>,
+  out: Set<string>,
+  labels: Map<string, string>,
+): void {
   if (Array.isArray(block.menu)) {
-    collectUrlsFromMenuTree(block.menu, out);
+    collectUrlsFromMenuTree(block.menu, out, labels);
   }
   if (!Array.isArray(block.blocks)) return;
   for (const nested of block.blocks) {
     if (!isRecord(nested)) continue;
     if (Array.isArray(nested.menu)) {
-      collectUrlsFromMenuTree(nested.menu, out);
+      collectUrlsFromMenuTree(nested.menu, out, labels);
     }
     if (Array.isArray(nested.list)) {
       for (const row of nested.list) {
         if (!isRecord(row)) continue;
-        const path = normalizeMenuRoutePath(readString(row.url));
-        if (path !== null) out.add(path);
+        const path = readMenuNodePath(row);
+        if (path !== null) {
+          rememberPath(path, readString(row.name), out, labels);
+        }
       }
     }
   }
 }
 
 /**
- * Paths allowed by lobby chrome from `initV2` / `getPage` `page`:
+ * Paths + labels from lobby chrome menus on `initV2` / `getPage` `page`:
  * - `page.blocks[]` where `type` ∈ menuHeaderTop | menuHeader | footer
  * - `page.menu` (aside / gamesMenu / footer roots, etc.)
  */
-export function collectKnownMenuPaths(page: unknown): ReadonlySet<string> {
+export function collectKnownMenuPathCatalog(page: unknown): KnownMenuPathCatalog {
   const out = new Set<string>(['/']);
-  if (!isRecord(page)) return out;
+  const labels = new Map<string, string>([['/', 'Home']]);
+  if (!isRecord(page)) return { paths: out, labels };
+
+  // Current page URL is always navigable (deep-link / getPage target), not only menus.
+  const selfPath = readMenuNodePath(page);
+  if (selfPath !== null) {
+    rememberPath(selfPath, readString(page.name) ?? readString(page.title), out, labels);
+  }
 
   if (Array.isArray(page.blocks)) {
     for (const block of page.blocks) {
@@ -88,22 +130,25 @@ export function collectKnownMenuPaths(page: unknown): ReadonlySet<string> {
       if (type === undefined || !KNOWN_ROUTE_BLOCK_TYPE_SET.has(type)) continue;
 
       if (type === 'footer') {
-        collectUrlsFromFooterBlock(block, out);
+        collectUrlsFromFooterBlock(block, out, labels);
         continue;
       }
 
-      // menuHeaderTop / menuHeader
       if (Array.isArray(block.menu)) {
-        collectUrlsFromMenuTree(block.menu, out);
+        collectUrlsFromMenuTree(block.menu, out, labels);
       }
     }
   }
 
   if (Array.isArray(page.menu)) {
-    collectUrlsFromMenuTree(page.menu, out);
+    collectUrlsFromMenuTree(page.menu, out, labels);
   }
 
-  return out;
+  return { paths: out, labels };
+}
+
+export function collectKnownMenuPaths(page: unknown): ReadonlySet<string> {
+  return collectKnownMenuPathCatalog(page).paths;
 }
 
 export function isPathInKnownMenuPaths(pathname: string, known: ReadonlySet<string>): boolean {

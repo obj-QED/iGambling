@@ -72,6 +72,11 @@ export type AppParams = {
    * - `modal`: Modal overrides (`params.modal` → `params.search.modal`)
    */
   search?: import('./searchSettings').SearchSettings;
+  /**
+   * Main page column (`AppLayout` outlet shell).
+   * `layout`: `container` | `container-fluid` (default `container`).
+   */
+  outlet?: import('./outletSettings').OutletSettings;
 };
 
 export type AppSettings = {

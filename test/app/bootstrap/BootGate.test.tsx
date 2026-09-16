@@ -1,8 +1,10 @@
+import type { ReactNode } from 'react';
+
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { BootGate } from '@/app/bootstrap/BootGate';
-import { AdapterPendingProvider } from '@/shared/lib/widgetAdapter';
+import { AdapterPendingFallback, AdapterPendingProvider } from '@/shared/lib/widgetAdapter';
 
 const skeletonEnabled = vi.hoisted(() => ({ current: true }));
 
@@ -14,12 +16,10 @@ vi.mock('@/shared/config', async (importOriginal) => {
   };
 });
 
-function renderGate(bootstrapPending: boolean) {
+function renderGate(bootstrapPending: boolean, child: ReactNode = <div>app-shell</div>) {
   return render(
     <AdapterPendingProvider>
-      <BootGate bootstrapPending={bootstrapPending}>
-        <div>app-shell</div>
-      </BootGate>
+      <BootGate bootstrapPending={bootstrapPending}>{child}</BootGate>
     </AdapterPendingProvider>,
   );
 }
@@ -55,13 +55,36 @@ describe('BootGate', () => {
     expect(screen.getByText('app-shell')).toBeInTheDocument();
   });
 
+  it('holds preloader while chrome adapters are pending (skeleton off)', async () => {
+    skeletonEnabled.current = false;
+    renderGate(
+      false,
+      <AdapterPendingFallback>
+        <div>pending-adapter</div>
+      </AdapterPendingFallback>,
+    );
+
+    await act(async () => {
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => resolve());
+        });
+      });
+    });
+
+    expect(screen.getByRole('status', { name: /loading/i })).toBeInTheDocument();
+    expect(screen.getByText('pending-adapter')).toBeInTheDocument();
+  });
+
   it('hides preloader after adapters idle when skeleton is off', async () => {
     skeletonEnabled.current = false;
     renderGate(false);
 
     await act(async () => {
       await new Promise<void>((resolve) => {
-        requestAnimationFrame(() => resolve());
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => resolve());
+        });
       });
     });
 

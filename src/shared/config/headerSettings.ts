@@ -44,6 +44,8 @@ export type HeaderCustomBlockPlacement =
 /** Raw custom block item from `window.__SETTINGS__` — parsed in `resolveHeaderConfig`. */
 export type HeaderCustomBlockInput = {
   url?: unknown;
+  /** Alias for `url` (HTML-style settings). */
+  href?: unknown;
   name?: unknown;
   key?: unknown;
   img?: unknown;

@@ -1,6 +1,6 @@
 import type { BlockProps } from '../../../types';
 
-import { memo } from 'react';
+import { memo, useLayoutEffect } from 'react';
 
 import { Text } from '@mantine/core';
 
@@ -25,6 +25,12 @@ function WalletBlockComponent({ item }: BlockProps) {
   const Wrapper = useWrapper(wrapperMode);
   const label = resolveItemLabel(item);
   const enabled = isCapabilityEnabled(capabilities, 'wallet');
+
+  useLayoutEffect(() => {
+    if (!enabled) return;
+    preloadAdapters(WALLET_ADAPTERS, blockVariants.wallet, WALLET_ADAPTER_KEYS);
+    preloadWrapper(wrapperMode);
+  }, [enabled, blockVariants.wallet, wrapperMode]);
 
   if (!enabled || !Adapter) return null;
 

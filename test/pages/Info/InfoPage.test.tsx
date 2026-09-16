@@ -3,10 +3,6 @@ import { MantineProvider } from '@mantine/core';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  mergeKnownAppPathsFromPage,
-  resetKnownAppPathsForTests,
-} from '@/api/lobby/lib/knownAppPathsStore';
 import { mantineTheme } from '@/assets/theme';
 import { InfoPage } from '@/pages/Info/InfoPage';
 
@@ -54,9 +50,8 @@ function renderInfo(entry = '/terms') {
   );
 }
 
-describe('InfoPage menu allowlist + page.info', () => {
+describe('InfoPage API-driven routing', () => {
   beforeEach(() => {
-    resetKnownAppPathsForTests();
     pageState.pathname = '/terms';
     pageState.current = {
       data: undefined,
@@ -66,9 +61,6 @@ describe('InfoPage menu allowlist + page.info', () => {
   });
 
   it('shows loading while getPage for this path is in flight', () => {
-    mergeKnownAppPathsFromPage({
-      menu: [{ url: '/terms', key: 'terms' }],
-    });
     pageState.current = {
       ...pageState.current,
       data: undefined,
@@ -79,27 +71,20 @@ describe('InfoPage menu allowlist + page.info', () => {
     expect(screen.queryByText('not-found')).not.toBeInTheDocument();
   });
 
-  it('navigates to /404 when path is not in menu allowlist', () => {
-    mergeKnownAppPathsFromPage({
-      menu: [{ url: '/terms', key: 'terms' }],
-    });
-    pageState.pathname = '/not-a-real-page';
+  it('renders CMS from API even when path was never in a menu allowlist', () => {
+    pageState.pathname = '/jackpots';
     pageState.current = {
       ...pageState.current,
-      data: {
-        url: '/not-a-real-page',
-        info: { title: 'X', content: '<p>x</p>' },
-      },
+      data: { url: '/jackpots', info: { title: 'Jackpots', content: '<p>hi</p>' } },
       loading: false,
     };
-    renderInfo('/not-a-real-page');
-    expect(screen.getByText('not-found')).toBeInTheDocument();
+    renderInfo('/jackpots');
+    expect(screen.queryByText('not-found')).not.toBeInTheDocument();
+    expect(screen.getByText('Jackpots')).toBeInTheDocument();
+    expect(document.querySelector('[data-page-kind="info"]')).toBeTruthy();
   });
 
-  it('keeps lobby shell for sidebar-known path without page.info', () => {
-    mergeKnownAppPathsFromPage({
-      menu: [{ url: '/jackpots', key: 'jackpots' }],
-    });
+  it('keeps lobby shell for API page without page.info (deep-link /jackpots)', () => {
     pageState.pathname = '/jackpots';
     pageState.current = {
       ...pageState.current,
@@ -112,9 +97,6 @@ describe('InfoPage menu allowlist + page.info', () => {
   });
 
   it('keeps lobby shell when info fields are all empty strings', () => {
-    mergeKnownAppPathsFromPage({
-      menu: [{ url: '/tournaments', key: 'tournaments' }],
-    });
     pageState.pathname = '/tournaments';
     pageState.current = {
       ...pageState.current,
@@ -129,18 +111,25 @@ describe('InfoPage menu allowlist + page.info', () => {
     expect(document.querySelector('[data-page-kind="lobby"]')).toBeTruthy();
   });
 
-  it('renders CMS when title is set', () => {
-    mergeKnownAppPathsFromPage({
-      menu: [{ url: '/jackpots', key: 'jackpots' }],
-    });
-    pageState.pathname = '/jackpots';
+  it('navigates to /404 when settled with no page payload', () => {
+    pageState.pathname = '/ghost';
     pageState.current = {
-      ...pageState.current,
-      data: { url: '/jackpots', info: { title: 'Jackpots', content: '' } },
+      data: undefined,
       loading: false,
+      error: null,
     };
-    renderInfo('/jackpots');
-    expect(screen.queryByText('not-found')).not.toBeInTheDocument();
-    expect(screen.getByText('Jackpots')).toBeInTheDocument();
+    renderInfo('/ghost');
+    expect(screen.getByText('not-found')).toBeInTheDocument();
+  });
+
+  it('navigates to /404 when getPage errors and there is no page data', () => {
+    pageState.pathname = '/broken';
+    pageState.current = {
+      data: undefined,
+      loading: false,
+      error: new Error('getPage failed'),
+    };
+    renderInfo('/broken');
+    expect(screen.getByText('not-found')).toBeInTheDocument();
   });
 });

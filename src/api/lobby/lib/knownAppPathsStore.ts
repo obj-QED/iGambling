@@ -1,10 +1,12 @@
-import { collectKnownMenuPaths } from './collectKnownMenuPaths';
+import { collectKnownMenuPathCatalog } from './collectKnownMenuPaths';
 import { EXTRA_KNOWN_APP_PATH_SET, isExtraKnownAppPath } from './specialAppPaths';
 
 type Listener = () => void;
 
 /** Accumulated allowlist — merged from every initV2 / getPage `page` payload. */
 let knownPaths = new Set<string>(['/', ...EXTRA_KNOWN_APP_PATH_SET]);
+/** First non-empty menu `name` per path (Spotlight / UI labels). */
+let knownLabels = new Map<string, string>([['/', 'Home']]);
 let version = 0;
 const listeners = new Set<Listener>();
 
@@ -15,6 +17,10 @@ function emit(): void {
 
 export function getKnownAppPathsSnapshot(): ReadonlySet<string> {
   return knownPaths;
+}
+
+export function getKnownAppPathLabelsSnapshot(): ReadonlyMap<string, string> {
+  return knownLabels;
 }
 
 /** Version bump on merge — safe `useSyncExternalStore` snapshot (Set identity is stable). */
@@ -29,13 +35,19 @@ export function subscribeKnownAppPaths(listener: Listener): () => void {
   };
 }
 
-/** Merge menu URLs from a page payload (init or getPage). Never shrinks the set. */
+/** Merge menu URLs + labels from a page payload (init or getPage). Never shrinks the set. */
 export function mergeKnownAppPathsFromPage(page: unknown): void {
-  const next = collectKnownMenuPaths(page);
+  const { paths: next, labels: nextLabels } = collectKnownMenuPathCatalog(page);
   let changed = false;
   for (const path of next) {
     if (!knownPaths.has(path)) {
       knownPaths.add(path);
+      changed = true;
+    }
+  }
+  for (const [path, label] of nextLabels) {
+    if (!knownLabels.has(path)) {
+      knownLabels.set(path, label);
       changed = true;
     }
   }
@@ -45,6 +57,7 @@ export function mergeKnownAppPathsFromPage(page: unknown): void {
 /** Test helper — reset between cases. */
 export function resetKnownAppPathsForTests(): void {
   knownPaths = new Set<string>(['/', ...EXTRA_KNOWN_APP_PATH_SET]);
+  knownLabels = new Map<string, string>([['/', 'Home']]);
   emit();
 }
 

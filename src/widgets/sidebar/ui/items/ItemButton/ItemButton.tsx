@@ -68,7 +68,7 @@ function ItemButtonComponent({
     <AppButton
       label={displayLabel}
       aria-label={iconOnly ? ariaLabel : undefined}
-      className={clsx(dropdownTrigger && styles.dropdownTrigger, className)}
+      className={clsx(styles.root, dropdownTrigger && styles.dropdownTrigger, className)}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
       fullscreen

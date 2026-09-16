@@ -1,4 +1,2 @@
-export { AppLayoutChrome } from './AppLayoutChrome';
-export { AppLayoutMain } from './AppLayoutMain';
-export { AppLayoutMainStage } from './AppLayoutMainStage';
-export { AppPageSkeleton } from './AppPageSkeleton';
+export { AppLayoutChrome, SidebarSlot } from './chrome';
+export { AppLayoutMain, AppLayoutMainStage, AppPageSkeleton } from './main';

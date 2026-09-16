@@ -1,13 +1,8 @@
-import { memo, useMemo, useSyncExternalStore } from 'react';
+import { memo, useMemo } from 'react';
 
 import { Title } from '@mantine/core';
 import { Navigate, useParams } from 'react-router-dom';
 
-import {
-  getKnownAppPathsVersion,
-  isKnownAppPath,
-  subscribeKnownAppPaths,
-} from '@api/lobby/lib/knownAppPathsStore';
 import {
   hasPageInfo,
   pageDataMatchesPath,
@@ -45,38 +40,19 @@ const InfoBody = memo(function InfoBody({ html, title, contentKey }: InfoBodyPro
 InfoBody.displayName = 'InfoBody';
 
 /**
- * Catch-all (`*`). Page from init (entry) or getPage (after navigation).
+ * Catch-all (`*`). Page existence is decided by lobby `init` / `getPage` for this
+ * pathname — not by a client menu allowlist (menus are discovery only).
  */
 function InfoPageComponent() {
   const { info } = useParams<{ info?: string }>();
   const pathname = usePathname();
   const { data, loading } = useGetPage();
 
-  useSyncExternalStore(subscribeKnownAppPaths, getKnownAppPathsVersion, getKnownAppPathsVersion);
-
-  const known = isKnownAppPath(pathname);
   const page = pageDataMatchesPath(data, pathname) ? data : undefined;
   const html = useMemo(() => readPageInfoHtml(page) ?? '', [page]);
   const title = useMemo(() => readPageInfoTitle(page), [page]);
   const contentKey = useMemo(() => readPageUrl(page) ?? pathname, [page, pathname]);
   const infoPresent = hasPageInfo(page);
-
-  if (!loading && !known) {
-    return <Navigate to="/404" replace />;
-  }
-
-  if (infoPresent) {
-    return (
-      <article
-        className={styles.root}
-        data-info-slug={info}
-        data-page-kind="info"
-        aria-busy={loading || undefined}
-      >
-        <InfoBody html={html} title={title} contentKey={contentKey} />
-      </article>
-    );
-  }
 
   if (loading) {
     return (
@@ -89,20 +65,39 @@ function InfoPageComponent() {
     );
   }
 
-  return (
-    <div
-      className={styles.root}
-      data-info-slug={info}
-      data-page-kind="lobby"
-      data-pathname={pathname}
-    >
-      {title !== undefined && (
-        <Title order={1} className={styles.title}>
-          {title}
-        </Title>
-      )}
-    </div>
-  );
+  if (infoPresent) {
+    return (
+      <article
+        className={styles.root}
+        data-info-slug={info}
+        data-page-kind="info"
+        data-pathname={pathname}
+      >
+        <InfoBody html={html} title={title} contentKey={contentKey} />
+      </article>
+    );
+  }
+
+  // Matching page payload without CMS info → lobby shell (e.g. /jackpots).
+  if (page !== undefined) {
+    return (
+      <div
+        className={styles.root}
+        data-info-slug={info}
+        data-page-kind="lobby"
+        data-pathname={pathname}
+      >
+        {title !== undefined && (
+          <Title order={1} className={styles.title}>
+            {title}
+          </Title>
+        )}
+      </div>
+    );
+  }
+
+  // Settled with no matching page for this path (missing payload or request error).
+  return <Navigate to="/404" replace />;
 }
 
 export const InfoPage = memo(InfoPageComponent);

@@ -16,7 +16,7 @@ export type ShellReveal = {
 /**
  * Element skeleton on live chrome (including before init settles).
  * When `params.preloader.skeleton: false`, always `{ skeleton: false }` —
- * adapter warmup is held by `BootGate` (single GlobalPreloader).
+ * `BootGate` holds `GlobalPreloader` until chrome adapters idle (search/specials).
  *
  * Lift only after `isReady` (init) + adapters idle + shell paint.
  * After the first successful reveal, late adapter mounts (e.g. opening the

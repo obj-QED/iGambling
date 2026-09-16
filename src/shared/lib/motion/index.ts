@@ -1,1 +1,1 @@
-export { INFO_CONTENT_MASK, PAGE_STAGE_TRANSITION, SEARCH_STAGE_SLIDE } from './pageTransitions';
+export { INFO_CONTENT_MASK, PAGE_STAGE_TRANSITION } from './pageTransitions';

@@ -6,7 +6,7 @@ import { useEffect, useMemo, useSyncExternalStore } from 'react';
 import { useLanguage } from '@hooks/useLanguage';
 
 import { usePathname } from '@/shared/hooks';
-import { getInitialPath } from '@/shared/lib/routing';
+import { getInitialPath, resolveLobbyInitPage } from '@/shared/lib/routing';
 
 import { useApiQuery } from '../../hooks/useApiQuery';
 import {
@@ -23,12 +23,12 @@ import { lobbyQueryKeys } from '../queryKeys';
 import { sanitizePageData, toPageData } from '../sanitize';
 
 /** SPA shells — do not call `getPage`. */
-const SKIP_GET_PAGE_PATHS = new Set(['/signIn', '/signUp', '/profile/activation', '/404', '/500']);
+const SKIP_GET_PAGE_PATHS = new Set(['/profile/activation', '/404', '/500']);
 
 /**
  * Entry path: page payload from bootstrap `initV2` cache (no second fetch).
- * After first SPA navigation: `getPage` via TanStack Query on every pathname
- * (`staleTime: 0`, `refetchOnMount: 'always'`).
+ * After first SPA navigation the data-router loader owns `getPage`; this hook
+ * only observes the path-scoped Query cache populated before route commit.
  */
 export function useGetPage(): {
   data: PageData | undefined;
@@ -54,7 +54,11 @@ export function useGetPage(): {
     }
   }, [page, initialPath]);
 
-  const onEntryInit = !skip && !hasLeftEntryPath() && page === initialPath;
+  const onEntryInit =
+    !skip &&
+    !hasLeftEntryPath() &&
+    page === initialPath &&
+    page === resolveLobbyInitPage(initialPath);
 
   // Observe bootstrap init cache only — `enabled: false` never starts a second request.
   const initKey: InitKey = lobbyQueryKeys.init(language, initialPath);
@@ -70,10 +74,12 @@ export function useGetPage(): {
   const pageQuery = useApiQuery<GetPageContent, PageKey>({
     queryKey: pageKey,
     queryFn: pageQueryFn,
-    enabled: Boolean(language) && !skip && !onEntryInit,
+    // `loadLobbyPage` fetches before pathname changes. Keeping this observer
+    // disabled prevents a second request and prevents a route from rendering
+    // with a pending, empty query after its loader has resolved.
+    enabled: false,
     staleTime: LOBBY_QUERY_POLICY.page.staleTime,
     gcTime: LOBBY_QUERY_POLICY.page.gcTime,
-    refetchOnMount: 'always',
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });

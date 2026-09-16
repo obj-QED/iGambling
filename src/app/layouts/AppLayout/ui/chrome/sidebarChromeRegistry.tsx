@@ -7,7 +7,7 @@ import { useCloseOnPathnameChange } from '@/shared/hooks';
 import { AppDrawer, useAppDrawerContext } from '@/shared/ui';
 import { AppSidebar, toSidebarWidthCss } from '@/widgets/sidebar';
 
-import styles from './AppLayout.module.scss';
+import styles from '../styles/AppLayout.module.scss';
 
 export type SidebarChromeProps = {
   sidebarMenu: HeaderMenuModel;

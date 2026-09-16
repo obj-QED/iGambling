@@ -49,4 +49,17 @@ describe('InViewSkeletonGate', () => {
     expect(screen.queryByText('pulse')).not.toBeInTheDocument();
     expect(document.querySelector('[data-inview-skeleton-host]')).toBeTruthy();
   });
+
+  it('reserves adapter geometry while its lazy content is below the viewport', () => {
+    inViewState.current = false;
+    render(
+      <InViewSkeletonGate preserveSpace>
+        <span>pulse</span>
+      </InViewSkeletonGate>,
+    );
+
+    expect(document.querySelector('[data-inview-skeleton-host]')).toHaveStyle({
+      height: 'var(--adapter-fallback-height, var(--button-height, 2.625rem))',
+    });
+  });
 });

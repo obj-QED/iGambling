@@ -4,6 +4,6 @@
     flex-direction: var(--aside-shell-flex-direction, column);
     align-items: var(--aside-shell-align, stretch);
     justify-content: var(--aside-shell-justify, flex-start);
-    gap: var(--aside-section-gap, var(--spacing-xs, 0.5rem));
+    gap: var(--aside-section-gap, var(--mantine-spacing-xs, 0.25rem));
   }
 }

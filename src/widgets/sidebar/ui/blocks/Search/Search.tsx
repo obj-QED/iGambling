@@ -1,6 +1,6 @@
 import type { BlockProps } from '../../../types';
 
-import { memo } from 'react';
+import { memo, useLayoutEffect } from 'react';
 
 import { AdapterBoundary, LazyHost, preloadAdapters, useAdapter } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
@@ -13,7 +13,7 @@ import styles from '../../../styles/blocks/SearchRow.module.scss';
 
 /**
  * Aside search trigger (`search_leftmenu`) — opens global AppSearch.
- * Compact/slideout chrome via blockVariants.search (icon | row).
+ * `blockVariants.search`: `icon` → ActionIcon; `row` → TextInput slot.
  */
 function SearchComponent({ item, className }: BlockProps) {
   const { blockVariants, behaviors, capabilities } = useSidebarConfig();
@@ -23,34 +23,44 @@ function SearchComponent({ item, className }: BlockProps) {
     behaviors.search,
   );
 
+  useLayoutEffect(() => {
+    if (!enabled) return;
+    preloadAdapters(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
+    preloadSearchType(behaviors.search);
+  }, [enabled, blockVariants.search, behaviors.search]);
+
   if (!enabled || !Adapter) return null;
 
   const isInputSlot = blockVariants.search === 'row';
 
-  return (
-    <div
-      className={isInputSlot ? styles.slot : undefined}
-      {...(isInputSlot ? { 'data-search-slot': 'input' } : {})}
+  const host = (
+    <span
+      onPointerEnter={() => {
+        preloadAdapters(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
+        preloadSearchType(behaviors.search);
+      }}
     >
-      <AdapterBoundary>
-        <span
-          onPointerEnter={() => {
-            preloadAdapters(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
-            preloadSearchType(behaviors.search);
-          }}
-        >
-          <LazyHost
-            component={Adapter}
-            item={item}
-            className={className}
-            onActivate={onActivate}
-            showHotkeyBadge={showHotkeyBadge}
-            {...(onSearchQueryChange !== undefined ? { searchQuery, onSearchQueryChange } : {})}
-          />
-        </span>
-      </AdapterBoundary>
-    </div>
+      <LazyHost
+        component={Adapter}
+        item={item}
+        className={className}
+        onActivate={onActivate}
+        showHotkeyBadge={showHotkeyBadge}
+        {...(onSearchQueryChange !== undefined ? { searchQuery, onSearchQueryChange } : {})}
+      />
+    </span>
   );
+
+  if (isInputSlot) {
+    return (
+      <div className={styles.slot} data-search-slot="input">
+        <AdapterBoundary>{host}</AdapterBoundary>
+      </div>
+    );
+  }
+
+  // Icon chrome — no width-100% slot wrapper (must match sibling ActionIcons).
+  return <AdapterBoundary>{host}</AdapterBoundary>;
 }
 
 export const Search = memo(SearchComponent);

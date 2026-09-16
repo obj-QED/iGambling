@@ -22,10 +22,10 @@ describe('AppLogo', () => {
     expect(screen.getByText('Brand')).toBeInTheDocument();
   });
 
-  it('renders image logo when img is set', () => {
+  it('never sets data-active from route (brand mark is not a nav target)', () => {
     renderLogo(<AppLogo href="/" label="Brand" img="/uploads/logo.png" />);
 
-    expect(screen.getByRole('img', { name: 'Brand' })).toHaveAttribute('src', '/uploads/logo.png');
+    expect(screen.getByRole('button', { name: 'Brand' })).not.toHaveAttribute('data-active');
   });
 
   it('returns null when label and img are empty', () => {

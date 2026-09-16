@@ -10,7 +10,7 @@ export type AppActionIconProps = Omit<ActionIconProps, 'children'> & {
   hidden?: boolean;
   /** Native `<button>` only — skip href click navigation. */
   native?: boolean;
-  /** Explicit active from API/schema — overrides URL matching. */
+  /** Explicit active from API/schema — overrides URL matching. `false` disables active cascade. */
   active?: boolean;
   /** When `false`, skip route active matching. Default: `true`. */
   matchRoute?: boolean;

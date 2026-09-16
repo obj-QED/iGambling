@@ -2,7 +2,7 @@ import { Skeleton } from '@mantine/core';
 
 import { InViewSkeletonGate, ShellSkeletonGate } from '@/shared/lib';
 
-import styles from './AppLayout.module.scss';
+import styles from '../styles/AppLayout.module.scss';
 
 export function AppPageSkeleton() {
   return (
