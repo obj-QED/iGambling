@@ -189,9 +189,10 @@ function mergeBlockVariants(
 }
 
 function adapterForType(type: string): string {
-  if (type === 'compact' || type === 'slideout') {
+  if (type === 'compact') {
     return 'icon';
   }
+  // `slideout` expanded matches `default` (row buttons + search input); CSS compresses to rail.
   return 'row';
 }
 
@@ -306,9 +307,9 @@ function resolveBlockVariantsAndWrappers(
         },
         flattenedLayers,
       ),
-      // Compact / slideout rail cannot host row TextInput — chrome stays icon.
-      // Behavior (`type`: modal|spotlight|input) still comes from settings.
-      ...(adapter === 'icon' ? { search: 'icon', promo: 'icon' } : {}),
+      // Compact rail cannot host row TextInput — chrome stays icon.
+      // Slideout keeps `row` when expanded and compresses via CSS.
+      ...(type === 'compact' ? { search: 'icon', promo: 'icon' } : {}),
     },
     wrappers,
     behaviors,

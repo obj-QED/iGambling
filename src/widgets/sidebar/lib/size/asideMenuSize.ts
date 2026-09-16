@@ -9,7 +9,7 @@ export const DEFAULT_ASIDE_MENU_BUTTON_SIZE: CmfButtonSize = 'md';
 
 /** First-paint size before the sidebar node exists — same as theme tokens. */
 export function asideMenuButtonSizeForType(type: string): CmfButtonSize {
-  if (type === 'compact' || type === 'slideout') {
+  if (type === 'compact') {
     return 'md';
   }
   return DEFAULT_ASIDE_MENU_BUTTON_SIZE;

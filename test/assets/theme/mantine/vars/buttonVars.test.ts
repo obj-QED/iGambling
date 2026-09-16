@@ -16,6 +16,9 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-padding-x']).toBe(
       'var(--cmf-button-default-padding-x, var(--button-padding-x-sm))',
     );
+    expect(vars['--button-gap']).toBe(
+      'var(--cmf-button-default-gap, var(--cmf-button-gap, var(--mantine-spacing-xs)))',
+    );
     expect(vars['--button-bg']).toBe('var(--cmf-button-default-bg, var(--mantine-color-default))');
     expect(vars['--button-color']).toBe(
       'var(--cmf-button-default-color, var(--mantine-color-default-color))',
@@ -113,6 +116,9 @@ describe('resolveButtonRootVars', () => {
     );
     expect(vars['--button-padding-x']).toBe(
       'var(--cmf-button-header-sign_in-padding-x, var(--cmf-button-header-padding-x, var(--cmf-button-filled-padding-x, var(--button-padding-x-xs))))',
+    );
+    expect(vars['--button-gap']).toBe(
+      'var(--cmf-button-header-sign_in-gap, var(--cmf-button-header-gap, var(--cmf-button-gap, var(--mantine-spacing-xs))))',
     );
     expect(vars['--button-bd-width']).toBe(
       'var(--cmf-button-header-sign_in-bd-width, var(--cmf-button-header-bd-width, var(--cmf-button-filled-bd-width, calc(0.0625rem * var(--mantine-scale)))))',

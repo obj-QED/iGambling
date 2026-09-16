@@ -228,6 +228,8 @@
    * (field / icon / code / clear) via `--input-*` from `resolveSearchInputRootVars`.
    */
   .searchInput {
+    display: flex;
+
     :global(.cmf-Input-input),
     :global(.cmf-TextInput-input) {
       transition:
@@ -382,8 +384,8 @@
   }
 
   /*
-   * Mantine always emits `.cmf-Button-inner`. Collapse it so the only layout wrappers
-   * inside the control are `.cmf-Button-section` / `.cmf-Button-label` (flex on root).
+   * Mantine always emits `.cmf-Button-inner`. Collapse it so section + label
+   * are flex children of `.button` — `gap` / justify live on the root.
    */
   .buttonInner {
     display: contents;
@@ -397,8 +399,21 @@
     display: inline-flex;
     align-items: var(--button-align, center);
     justify-content: var(--button-justify, center);
+    gap: var(--button-gap, 0);
     min-width: 0;
     max-width: 100%;
+
+    /*
+     * Mantine Button section margins (left `margin-inline-end` / right `margin-inline-start`).
+     * Spacing = `--button-gap` from CMF cascade — kill hardcoded section margins.
+     */
+    :global(.cmf-Button-section[data-position='left']) {
+      margin-inline-end: 0;
+    }
+
+    :global(.cmf-Button-section[data-position='right']) {
+      margin-inline-start: 0;
+    }
 
     /* Mantine Button.css sets `text-align: center` — override for start-aligned menus. */
     text-align: start;

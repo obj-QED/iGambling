@@ -56,17 +56,17 @@ function SidebarAsideShell({
   children,
   sidebarRef,
 }: SidebarAsideShellProps) {
-  const { enabled, expanded, settled, markSettled } = useSidebarSlideout();
+  const { enabled, expanded, settled, phase, markSettled } = useSidebarSlideout();
+  const isSlideoutType = type === 'slideout';
 
   const onTransitionEnd = useCallback(
     (event: TransitionEvent<HTMLElement>) => {
       if (!enabled) return;
       if (event.target !== event.currentTarget) return;
       if (event.propertyName !== 'width') return;
-      if (expanded) return;
       markSettled();
     },
-    [enabled, expanded, markSettled],
+    [enabled, markSettled],
   );
 
   return (
@@ -81,11 +81,12 @@ function SidebarAsideShell({
       data-control-size={menuButtonSize}
       data-cmf-active-type={activeType}
       data-cmf-active-position={activePosition}
-      {...(enabled
+      {...(isSlideoutType
         ? {
             'data-aside-slideout-expanded': expanded ? 'true' : 'false',
             'data-aside-slideout-settled': settled ? 'true' : 'false',
-            onTransitionEnd,
+            'data-aside-slideout-phase': phase,
+            ...(enabled ? { onTransitionEnd } : {}),
           }
         : {})}
       aria-label="Sidebar menu"

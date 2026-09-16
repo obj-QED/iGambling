@@ -221,6 +221,12 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       variant,
       tail: 'variant',
     }),
+    /* Section ↔ label / trailing — replaces Mantine section `margin-inline-*`. */
+    '--button-gap': buildCmfButtonPropToken('gap', 'var(--mantine-spacing-xs)', {
+      scope,
+      variant,
+      tail: 'shared',
+    }),
     '--button-fz': buildCmfButtonPropToken('fz', MANTINE_SIZE_FZ[size], {
       scope,
       variant,

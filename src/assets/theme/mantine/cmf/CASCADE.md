@@ -282,7 +282,8 @@ Aside _widget_ tokens (`--aside-*`) stay in `tokens/widgets/sidebar/tokens.scss`
 
 ActionIcon uses `--cmf-action-icon-*`, prop **`size`**, and CMF **`padding`** → `--ai-padding`
 (Mantine has no native AI padding; we paint it in `components.module.scss`).  
-Button uses `--cmf-button-*` and **`height`** / **`padding-x`** / **`fz`**.
+Button uses `--cmf-button-*` and **`height`** / **`padding-x`** / **`fz`** / **`gap`**
+(section ↔ label; replaces Mantine section `margin-inline-*`).
 
 ---
 

@@ -5,6 +5,7 @@
  * - `layout/`   — split header/main/footer, width CSS
  * - `size/`     — `--aside-size-button` reader
  * - `dropdown/` — localStorage open-keys
+ * - `slideout/` — localStorage expanded flag
  * - `variant/`  — Button / ActionIcon variant from item
  * - `footer/`   — known footer Tabler glyphs
  *
@@ -49,6 +50,13 @@ export {
   DEFAULT_ASIDE_MENU_BUTTON_SIZE,
   readAsideMenuButtonSize,
 } from './size';
+export {
+  readSidebarSlideoutExpanded,
+  resolveSidebarSlideoutPhase,
+  SIDEBAR_SLIDEOUT_EXPANDED_DEFAULT,
+  type SidebarSlideoutPhase,
+  writeSidebarSlideoutExpanded,
+} from './slideout';
 export {
   resolveLogoControlVariant,
   resolveMenuItemActionIconVariant,

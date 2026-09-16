@@ -36,12 +36,6 @@
    * `--button-height` lives on Button nodes only — use the md size table on the aside host.
    * Compact overrides via `--cmf-action-icon-sidebar-size` (rail square).
    */
-  --cmf-search-sidebar-height: var(
-    --cmf-action-icon-sidebar-size,
-    var(--button-height-md, calc(2.625rem * var(--mantine-scale, 1)))
-  );
-  --cmf-search-sidebar-search-height: var(--cmf-search-sidebar-height);
-  --cmf-search-sidebar-search_leftmenu-height: var(--cmf-search-sidebar-height);
 
   /* Header region chrome */
   --header-logo-width: 120px;
@@ -165,6 +159,31 @@
     /* Dropdown trigger only — leaf squares keep `--ai-size` height. */
     [data-sidebar-dropdown-trigger][type='button'] {
       height: auto;
+    }
+  }
+
+  /*
+   * Slideout — expanded uses default `--app-layout-sidebar-width`.
+   * Collapsed rail width + transition; same Button/TextInput markup (no ActionIcon swap).
+   * Search paint by phase: collapsing+collapsed (and expanding) can override tokens.
+   */
+  &[data-type='slideout'] {
+    --aside-slideout-transition: 0.4s;
+    --aside-slideout-timing: cubic-bezier(0.4, 0, 0.2, 1);
+    --aside-slideout-settled-timing: ease;
+    --aside-slideout-collapsed-width: 4.5rem;
+    --aside-shell-padding: var(--mantine-spacing-sm);
+    --scrollarea-padding-inline: var(--mantine-spacing-xs);
+    --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
+    --cmf-button-sidebar-padding-x: var(--mantine-spacing-sm);
+
+    /* Compress / rail / expand-in-progress — search stays brand until fully open. */
+    &:where(
+      [data-aside-slideout-phase='collapsing'],
+      [data-aside-slideout-phase='collapsed'],
+      [data-aside-slideout-phase='expanding']
+    ) {
+      --cmf-search-sidebar-bg: var(--brand-color-6);
     }
   }
 

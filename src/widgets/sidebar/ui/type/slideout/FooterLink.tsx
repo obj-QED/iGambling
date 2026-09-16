@@ -2,12 +2,14 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { useSidebarTypePack } from '../../../context';
+import { SidebarFooterLink } from '../../blocks/SidebarFooter/FooterLink';
 
-/** Slideout footer row — pack Item (tooltip + button with label clip). */
+/**
+ * Slideout footer — same button rows as `default` when expanded.
+ * Collapse / rail chrome is handled by `SlideoutType` CSS.
+ */
 function SlideoutFooterLinkComponent({ item }: BlockProps) {
-  const { Item } = useSidebarTypePack();
-  return <Item item={item} chrome="footer" />;
+  return <SidebarFooterLink item={item} />;
 }
 
 export const SlideoutFooterLink = memo(SlideoutFooterLinkComponent);

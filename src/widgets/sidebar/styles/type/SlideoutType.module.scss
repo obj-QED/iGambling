@@ -1,23 +1,16 @@
 /**
- * Slideout phases (driven by Root data attrs):
+ * Slideout — same row markup as `default` (Button / TextInput).
+ * Width + labels compress; `phase=collapsed` centers icons in the control.
  *
- * 1. expanded=true — full width, labels, logo mark, chevron on the right
- * 2. expanded=false + settled=false — width compressing; labels ellipsis; no rail chrome yet
- * 3. expanded=false + settled=true — after width transitionend: square grid, label gone,
- *    name-initial (no img), logo group centered, chevron under icon
- *
- * Duration SoT: `--aside-slideout-transition` (tokens).
+ * Phases (`data-aside-slideout-phase`): expanded | collapsing | collapsed | expanding
+ * Duration SoT: `--aside-slideout-transition` (sidebar tokens).
  */
 
 @layer widget.variant {
   .root {
-    --aside-slideout-duration: var(--aside-slideout-transition, 4s);
-    --aside-slideout-ease: var(--aside-slideout-timing, ease);
+    --aside-slideout-duration: var(--aside-slideout-transition, 0.4s);
+    --aside-slideout-ease: var(--aside-slideout-timing, cubic-bezier(0.4, 0, 0.2, 1));
     --aside-slideout-expanded-width: var(--app-layout-sidebar-width, 15rem);
-    --aside-slideout-control-size: var(
-      --cmf-action-icon-sidebar-size,
-      calc(2.625rem * var(--mantine-scale, 1))
-    );
     --aside-slideout-rail-ease: var(--aside-slideout-settled-timing, ease);
     align-items: stretch;
     width: var(--aside-slideout-collapsed-width, 4.5rem);
@@ -36,7 +29,7 @@
       }
     }
 
-    /* ---- Shared row geometry (stable during width phase — no center jumps) ---- */
+    /* ---- Same row geometry as default (stable during width phase) ---- */
     :global([data-sidebar-region='header']),
     :global([data-sidebar-region='footer']) {
       align-items: stretch;
@@ -65,15 +58,13 @@
       padding-left: 0;
     }
 
-    /* ---- Logo group ---- */
+    /* ---- Logo group — mark compresses away; trigger stays ---- */
     :global([data-cmf-component='sidebar-header'][data-cmf-key='logo']) {
       flex-wrap: nowrap;
-      justify-content: flex-start;
       width: 100%;
       min-width: 0;
       max-width: 100%;
       overflow: hidden;
-      transition: justify-content 0s;
     }
 
     :global(
@@ -88,7 +79,7 @@
       transition:
         flex-basis var(--aside-slideout-duration) var(--aside-slideout-ease),
         max-width var(--aside-slideout-duration) var(--aside-slideout-ease),
-        opacity calc(var(--aside-slideout-duration) * 0.35) var(--aside-slideout-ease);
+        opacity calc(var(--aside-slideout-duration) * 0.5) var(--aside-slideout-ease);
     }
 
     :global(
@@ -97,10 +88,11 @@
     ) {
       flex: 0 0 auto;
       margin-inline-start: 0;
-      transition: margin-inline-start 0.35s var(--aside-slideout-rail-ease);
+      transition: margin-inline-start calc(var(--aside-slideout-duration) * 0.5)
+        var(--aside-slideout-rail-ease);
     }
 
-    &:not([data-aside-slideout-expanded='true'])
+    &[data-aside-slideout-expanded='false']
       :global(
         [data-cmf-component='sidebar-header'][data-cmf-key='logo']
           > :is(a, button)[data-cmf-key='logo']
@@ -114,7 +106,7 @@
       pointer-events: none;
     }
 
-    /* ---- Buttons: full shell width while compressing / expanded ---- */
+    /* ---- Buttons stay full-track rows (not square ActionIcon) ---- */
     :global(.cmf-Button-root) {
       display: flex;
       flex-flow: row nowrap;
@@ -125,11 +117,8 @@
       max-width: 100%;
       overflow: hidden;
       transition:
-        width var(--aside-slideout-duration) var(--aside-slideout-ease),
-        max-width var(--aside-slideout-duration) var(--aside-slideout-ease),
-        min-width var(--aside-slideout-duration) var(--aside-slideout-ease),
-        flex-direction 0s,
-        padding 0.25s var(--aside-slideout-rail-ease);
+        justify-content 0s,
+        padding-inline var(--aside-slideout-duration) var(--aside-slideout-ease);
     }
 
     :global(.cmf-Button-root[data-cmf-key='logo']) {
@@ -141,10 +130,16 @@
       flex: 0 0 auto;
     }
 
-    /*
-     * Labels — block + 1 1 0% for ellipsis while width moves.
-     * When not expanded: collapse label fully (no leftover glyphs).
-     */
+    :global(.cmf-Button-label [class*='mainLinkTitle']),
+    :global(.cmf-Button-label [class*='mainLinkSubtitle']),
+    :global(.cmf-Button-label [class*='mainLinkText']) {
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     :global(.cmf-Button-root > .cmf-Button-label),
     :global(.cmf-Button-root .cmf-Button-label) {
       display: block;
@@ -159,10 +154,11 @@
       line-height: 1.25;
       opacity: 1;
       transition:
-        flex-basis calc(var(--aside-slideout-duration) * 0.45) var(--aside-slideout-ease),
-        max-width calc(var(--aside-slideout-duration) * 0.45) var(--aside-slideout-ease),
-        opacity calc(var(--aside-slideout-duration) * 0.25) var(--aside-slideout-ease),
-        visibility 0s;
+        flex-basis var(--aside-slideout-duration) var(--aside-slideout-ease),
+        max-width var(--aside-slideout-duration) var(--aside-slideout-ease),
+        width var(--aside-slideout-duration) var(--aside-slideout-ease),
+        opacity calc(var(--aside-slideout-duration) * 0.65) var(--aside-slideout-ease),
+        visibility 0s linear 0s;
     }
 
     :global(.cmf-Button-label > *) {
@@ -180,8 +176,8 @@
       white-space: nowrap;
     }
 
-    &:not([data-aside-slideout-expanded='true']) :global(.cmf-Button-root > .cmf-Button-label),
-    &:not([data-aside-slideout-expanded='true']) :global(.cmf-Button-root .cmf-Button-label) {
+    &[data-aside-slideout-expanded='false'] :global(.cmf-Button-root > .cmf-Button-label),
+    &[data-aside-slideout-expanded='false'] :global(.cmf-Button-root .cmf-Button-label) {
       flex: 0 0 0;
       flex-basis: 0;
       width: 0;
@@ -191,157 +187,137 @@
       padding: 0;
       opacity: 0;
       visibility: hidden;
-
-      /* Hide after most of the width compress so ellipsis plays first */
       transition:
-        flex-basis calc(var(--aside-slideout-duration) * 0.35) var(--aside-slideout-ease)
-          calc(var(--aside-slideout-duration) * 0.55),
-        max-width calc(var(--aside-slideout-duration) * 0.35) var(--aside-slideout-ease)
-          calc(var(--aside-slideout-duration) * 0.55),
-        width calc(var(--aside-slideout-duration) * 0.35) var(--aside-slideout-ease)
-          calc(var(--aside-slideout-duration) * 0.55),
-        opacity calc(var(--aside-slideout-duration) * 0.2) var(--aside-slideout-ease)
-          calc(var(--aside-slideout-duration) * 0.7),
-        visibility 0s linear calc(var(--aside-slideout-duration) * 0.9);
+        flex-basis var(--aside-slideout-duration) var(--aside-slideout-ease),
+        max-width var(--aside-slideout-duration) var(--aside-slideout-ease),
+        width var(--aside-slideout-duration) var(--aside-slideout-ease),
+        opacity calc(var(--aside-slideout-duration) * 0.55) var(--aside-slideout-ease),
+        visibility 0s linear var(--aside-slideout-duration);
     }
 
     &[data-aside-slideout-expanded='true'] :global(.cmf-Button-root > .cmf-Button-label),
     &[data-aside-slideout-expanded='true'] :global(.cmf-Button-root .cmf-Button-label) {
       visibility: visible;
-      transition-delay: calc(var(--aside-slideout-duration) * 0.2);
+      transition-delay: 0s, 0s, 0s, calc(var(--aside-slideout-duration) * 0.15), 0s;
     }
 
-    /* Chevron — right side while expanded / compressing */
-    :global(.cmf-Button-section.cmf-Button-section-chevron) {
+    /* Chevron / trailing sections — hide when collapsed (same row, no column stack) */
+    :global(.cmf-Button-section.cmf-Button-section-chevron),
+    :global(.cmf-Button-root > .cmf-Button-section:last-child:not(.cmf-Button-section-icon)) {
       flex: 0 0 auto;
       margin-inline-start: auto;
       max-width: 2rem;
       opacity: 1;
       overflow: hidden;
       transition:
-        max-width 0.3s var(--aside-slideout-rail-ease),
-        opacity 0.3s var(--aside-slideout-rail-ease),
-        margin 0.3s var(--aside-slideout-rail-ease);
+        max-width calc(var(--aside-slideout-duration) * 0.6) var(--aside-slideout-rail-ease),
+        opacity calc(var(--aside-slideout-duration) * 0.6) var(--aside-slideout-rail-ease),
+        margin calc(var(--aside-slideout-duration) * 0.6) var(--aside-slideout-rail-ease);
     }
 
-    &:not([data-aside-slideout-expanded='true'], [data-aside-slideout-settled='true'])
-      :global(.cmf-Button-section.cmf-Button-section-chevron) {
+    &[data-aside-slideout-expanded='false'] :global(.cmf-Button-section.cmf-Button-section-chevron),
+    &[data-aside-slideout-expanded='false']
+      :global(.cmf-Button-root > .cmf-Button-section:last-child:not(.cmf-Button-section-icon)) {
       max-width: 0;
       margin: 0;
       opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ---- Search TextInput stays TextInput — field fades, left icon remains ---- */
+    :global(.cmf-TextInput-root),
+    :global([data-search-part='field']) {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    :global(.cmf-TextInput-wrapper) {
+      overflow: hidden;
+    }
+
+    :global(.cmf-TextInput-input),
+    :global([data-search-part='field'] input) {
+      min-width: 0;
+      transition:
+        opacity calc(var(--aside-slideout-duration) * 0.55) var(--aside-slideout-ease),
+        padding-inline var(--aside-slideout-duration) var(--aside-slideout-ease);
+    }
+
+    :global([data-search-part='code']),
+    :global([data-search-part='clear']) {
+      opacity: 1;
+      max-width: 4rem;
+      overflow: hidden;
+      transition:
+        opacity calc(var(--aside-slideout-duration) * 0.4) var(--aside-slideout-ease),
+        max-width calc(var(--aside-slideout-duration) * 0.4) var(--aside-slideout-ease);
+    }
+
+    &[data-aside-slideout-expanded='false'] {
+      :global(.cmf-TextInput-input),
+      :global([data-search-part='field'] input) {
+        opacity: 0;
+        color: transparent;
+        caret-color: transparent;
+      }
+
+      :global([data-search-part='code']),
+      :global([data-search-part='clear']) {
+        opacity: 0;
+        max-width: 0;
+        pointer-events: none;
+      }
     }
 
     /*
-     * Name initial (no img) — hidden until settled rail, then fade in as the icon glyph.
+     * Collapsed idle — center remaining chrome (icon) in the same Button/TextInput.
+     * Still the same markup; only justify/padding.
      */
-    :global([data-aside-slideout-initial]) {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-      min-width: 0;
-      max-width: 0;
-      width: 0;
-      opacity: 0;
-      overflow: hidden;
-      font-weight: 600;
-      line-height: 1;
-      transform: scale(0.85);
-      transition:
-        opacity 0.35s var(--aside-slideout-rail-ease),
-        max-width 0.35s var(--aside-slideout-rail-ease),
-        width 0.35s var(--aside-slideout-rail-ease),
-        min-width 0.35s var(--aside-slideout-rail-ease),
-        transform 0.35s var(--aside-slideout-rail-ease);
-    }
-
-    /* ========================================================================
-     * SETTLED RAIL — only after width transitionend
-     * ======================================================================== */
-    &[data-aside-slideout-settled='true'] {
-      align-items: center;
-
-      :global([data-sidebar-region='header']),
-      :global([data-sidebar-region='footer']) {
-        align-items: center;
-      }
-
-      :global(nav[data-section-key] ul) {
-        align-items: center;
-      }
-
-      :global(nav[data-section-key] li),
-      :global(nav[data-section-key] li > *) {
-        justify-content: center;
-        width: auto;
-      }
-
-      :global([data-sidebar-dropdown]) {
-        align-items: center;
-      }
-
-      :global([data-sidebar-dropdown] ul[role='menu']) {
-        align-items: center;
-      }
-
-      /* Logo block — center burger after compress */
+    &[data-aside-slideout-phase='collapsed'] {
       :global([data-cmf-component='sidebar-header'][data-cmf-key='logo']) {
         justify-content: center;
       }
 
       :global(.cmf-Button-root:not([data-cmf-key='logo'])) {
-        width: var(--aside-slideout-control-size);
-        min-width: var(--aside-slideout-control-size);
-        max-width: var(--aside-slideout-control-size);
-        padding-inline: 0;
         justify-content: center;
+        padding-inline: 0;
+        --button-justify: center;
+        --button-padding-x: 0;
       }
 
-      /* Labels fully out of flow */
-      :global(.cmf-Button-root > .cmf-Button-label),
-      :global(.cmf-Button-root .cmf-Button-label) {
-        flex: 0 0 0;
+      :global(.cmf-Button-section.cmf-Button-section-icon),
+      :global(.cmf-Button-section[data-position='left']) {
+        margin-inline: 0;
+      }
+
+      :global(.cmf-TextInput-wrapper) {
+        justify-content: center;
+        padding-inline: 0;
+      }
+
+      :global(.cmf-TextInput-section[data-position='left']) {
+        position: static;
+        inset: auto;
+        transform: none;
+        margin-inline: 0;
+        pointer-events: none;
+      }
+
+      :global(.cmf-TextInput-input),
+      :global([data-search-part='field'] input) {
         width: 0;
         min-width: 0;
         max-width: 0;
-        margin: 0;
+        flex: 0 0 0;
         padding: 0;
         opacity: 0;
-        visibility: hidden;
-        transition-delay: 0s;
+        pointer-events: none;
       }
 
-      /* Initial glyph — appear after label is gone */
-      :global([data-aside-slideout-initial]) {
-        min-width: 1em;
-        width: auto;
-        max-width: 2rem;
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      /*
-       * Dropdown trigger — icon on top, chevron below (compact-like), no row shift.
-       */
-      :global([data-sidebar-dropdown-trigger].cmf-Button-root) {
-        flex-flow: column nowrap;
-        justify-content: center;
-        align-items: center;
-        gap: var(--aside-slideout-chevron-gap, 0.125rem);
-        height: auto;
-        min-height: var(--aside-slideout-control-size);
-        padding-block: var(--mantine-spacing-3xs, 0.125rem);
-      }
-
-      :global([data-sidebar-dropdown-trigger] .cmf-Button-section.cmf-Button-section-chevron) {
-        margin-inline-start: 0;
-        max-width: none;
-        opacity: 1;
-        order: 3;
-      }
-
-      :global([data-sidebar-dropdown-trigger] .cmf-Button-section.cmf-Button-section-icon) {
-        order: 1;
+      :global(.cmf-TextInput-section[data-position='right']) {
+        display: none;
       }
     }
   }

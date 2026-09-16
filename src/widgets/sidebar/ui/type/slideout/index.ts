@@ -19,7 +19,7 @@ export const slideoutTypePack: SidebarTypePack = {
   HeaderLink: SlideoutHeaderLink,
   FooterLink: SlideoutFooterLink,
   blocks: {
-    /** Search router wires AppSearch; chrome via blockVariants.search (icon for slideout). */
+    /** Search router wires AppSearch; chrome via blockVariants.search (row when expanded). */
     search_leftmenu: Search,
     aside_header_logo: Logo,
   },

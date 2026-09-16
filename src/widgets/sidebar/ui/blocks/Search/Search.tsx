@@ -1,6 +1,6 @@
 import type { BlockProps } from '../../../types';
 
-import { memo, useLayoutEffect } from 'react';
+import { memo, useCallback, useLayoutEffect } from 'react';
 
 import { AdapterBoundary, LazyHost, preloadAdapters, useAdapter } from '@/shared/lib';
 import { isCapabilityEnabled } from '@/shared/schema';
@@ -23,44 +23,45 @@ function SearchComponent({ item, className }: BlockProps) {
     behaviors.search,
   );
 
-  useLayoutEffect(() => {
-    if (!enabled) return;
+  const preload = useCallback(() => {
     preloadAdapters(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
     preloadSearchType(behaviors.search);
-  }, [enabled, blockVariants.search, behaviors.search]);
+  }, [blockVariants.search, behaviors.search]);
+
+  useLayoutEffect(() => {
+    if (!enabled) return;
+    preload();
+  }, [enabled, preload]);
 
   if (!enabled || !Adapter) return null;
 
   const isInputSlot = blockVariants.search === 'row';
 
   const host = (
-    <span
-      onPointerEnter={() => {
-        preloadAdapters(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
-        preloadSearchType(behaviors.search);
-      }}
-    >
-      <LazyHost
-        component={Adapter}
-        item={item}
-        className={className}
-        onActivate={onActivate}
-        showHotkeyBadge={showHotkeyBadge}
-        {...(onSearchQueryChange !== undefined ? { searchQuery, onSearchQueryChange } : {})}
-      />
-    </span>
+    <LazyHost
+      component={Adapter}
+      item={item}
+      className={className}
+      onActivate={onActivate}
+      showHotkeyBadge={showHotkeyBadge}
+      {...(onSearchQueryChange !== undefined ? { searchQuery, onSearchQueryChange } : {})}
+    />
   );
 
   if (isInputSlot) {
     return (
-      <div className={styles.slot} data-search-slot="input">
+      <div className={styles.slot} data-search-slot="input" onPointerEnter={preload}>
         <AdapterBoundary>{host}</AdapterBoundary>
       </div>
     );
   }
 
   // Icon chrome — no width-100% slot wrapper (must match sibling ActionIcons).
-  return <AdapterBoundary>{host}</AdapterBoundary>;
+  return (
+    <div className={styles.iconHost} onPointerEnter={preload}>
+      <AdapterBoundary>{host}</AdapterBoundary>
+    </div>
+  );
 }
 
 export const Search = memo(SearchComponent);

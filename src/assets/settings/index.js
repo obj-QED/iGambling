@@ -139,9 +139,10 @@
        * Tokens: compact + non-compact `[data-control-fit]` blocks separately.
        */
       /**
-       * slideout — logo-trigger toggles width (4s). During compress: ellipsis labels.
-       * After width ends (`data-aside-slideout-settled`): square rail, name initial (no img),
-       * logo group centered, dropdown chevron under icon.
+       * slideout — logo-trigger toggles width (~0.4s), desktop only (`> 1024` / tablet).
+       * Open/closed in localStorage (`igambling:sidebar:slideout-expanded`); default open.
+       * Phases on aside: `data-aside-slideout-phase` = expanded|collapsing|collapsed|expanding.
+       * Same row markup as `default` (Button / TextInput) — CSS compresses labels/field only.
        */
       layout: 'aside',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
@@ -156,13 +157,13 @@
        * Per special-block override (`search_leftmenu` → search adapters).
        * Same `{ type, style }` as header; falls back to `params.search`.
        * search type → AppSearch behavior; style → trigger (compact|icon|input → icon|row).
-       * Note: `type: compact|slideout` always forces search/promo chrome to `icon`
-       * (row TextInput does not fit the rail).
+       * Note: `type: compact` forces search/promo chrome to `icon`.
+       * `slideout` keeps `row` when expanded and compresses via CSS.
        */
       blockVariants: {
         search_leftmenu: {
           type: 'input', // modal | spotlight | input (behavior)
-          style: 'icon', // compact|icon|input — ignored for compact/slideout chrome (forced icon)
+          style: 'input', // compact|icon|input — ignored for compact/slideout chrome (forced icon)
         },
       },
       /**

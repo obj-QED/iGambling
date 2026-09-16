@@ -2,13 +2,11 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { useSidebarTypePack } from '../../../context';
+import { SidebarHeaderLink } from '../../blocks/SidebarHeader/HeaderLink';
 
-import headerStyles from '../../../styles/blocks/SidebarHeader.module.scss';
-
+/** Same header rows as `default` — collapse is CSS-only on the shared Button markup. */
 function SlideoutHeaderLinkComponent({ item }: BlockProps) {
-  const { Item } = useSidebarTypePack();
-  return <Item item={item} className={headerStyles.mainLinkCompact} chrome="header" />;
+  return <SidebarHeaderLink item={item} />;
 }
 
 export const SlideoutHeaderLink = memo(SlideoutHeaderLinkComponent);

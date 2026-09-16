@@ -1,17 +1,24 @@
+import type { SidebarSlideoutPhase } from '../../lib/slideout';
+
 import { createContext } from 'react';
 
 export type SidebarSlideoutApi = {
-  /** True when `aside.type === 'slideout'`. */
+  /**
+   * True when `aside.type === 'slideout'` and viewport is above tablet (1024).
+   * Below tablet: false — no toggle / rail chrome (always expanded look).
+   */
   enabled: boolean;
   expanded: boolean;
   /**
-   * True after collapse `width` transition finishes.
-   * Cleared immediately on expand so rail chrome (center logo, chevron column, initial) undoes first.
+   * True when width transition is idle (mount, or after `transitionend`).
+   * Cleared on toggle until the next width `transitionend`.
    */
   settled: boolean;
+  /** `expanded` | `collapsed` | `expanding` | `collapsing` — CSS SoT on the aside. */
+  phase: SidebarSlideoutPhase;
   toggle: () => void;
   setExpanded: (next: boolean) => void;
-  /** Call from aside `transitionend` (width) when collapsed. */
+  /** Call from aside `transitionend` (width) — both expand and collapse. */
   markSettled: () => void;
 };
 
@@ -19,6 +26,7 @@ export const SIDEBAR_SLIDEOUT_IDLE: SidebarSlideoutApi = {
   enabled: false,
   expanded: false,
   settled: false,
+  phase: 'expanded',
   toggle: () => {},
   setExpanded: () => {},
   markSettled: () => {},

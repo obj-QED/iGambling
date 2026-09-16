@@ -41,12 +41,12 @@ describe('resolveSidebarConfig', () => {
       promo: 'icon',
     });
     expect(resolveSidebarConfig({ aside: { type: 'slideout' } }).blockVariants).toEqual({
-      search: 'icon',
-      promo: 'icon',
+      search: 'row',
+      promo: 'row',
     });
   });
 
-  it('forces search/promo icon chrome for compact and slideout rails', () => {
+  it('forces search/promo icon chrome for compact rail only', () => {
     expect(
       resolveSidebarConfig({
         aside: {
@@ -63,7 +63,7 @@ describe('resolveSidebarConfig', () => {
           blockVariants: { search_leftmenu: { type: 'input', style: 'input' } },
         },
       }).blockVariants.search,
-    ).toBe('icon');
+    ).toBe('row');
 
     expect(
       resolveSidebarConfig({
