@@ -15,8 +15,6 @@ export type PageNavState = {
   status: PageNavStatus;
   data: PageData | undefined;
   error: unknown | null;
-  /** True after the first SPA path change — all hooks must use getPage, not entry init. */
-  clientNavigated: boolean;
   /** Bumps on every navigation request (React subscribe). */
   version: number;
 };
@@ -27,7 +25,6 @@ const INITIAL: PageNavState = {
   status: 'idle',
   data: undefined,
   error: null,
-  clientNavigated: false,
   version: 0,
 };
 
@@ -60,12 +57,6 @@ export function subscribePageNav(listener: () => void): () => void {
   };
 }
 
-/** Mark first client navigation — shared across PageDataSync + InfoPage remounts. */
-export function markClientNavigated(): void {
-  if (state.clientNavigated) return;
-  setState({ clientNavigated: true });
-}
-
 function nonEmptyToken(value: string | null | undefined): string | undefined {
   if (value == null) return undefined;
   const trimmed = value.trim();
@@ -77,8 +68,8 @@ function navKey(language: string, page: string): string {
 }
 
 /**
- * Always POST `getPage` for the given path (client navigation / revisit).
- * Concurrent callers for the same language+path share one in-flight request;
+ * Always POST `getPage` for the given path (incl. revisit).
+ * Concurrent same language+path share one in-flight request;
  * a newer path ignores the older response.
  */
 export async function runGetPageNav(params: {
@@ -113,7 +104,6 @@ export async function runGetPageNav(params: {
       status: 'pending',
       data: keepSamePath,
       error: null,
-      clientNavigated: true,
     });
 
     try {

@@ -1,18 +1,12 @@
 import { memo } from 'react';
 
-import { useCurrentPageDataState } from '@api/lobby/queries/useCurrentPageData';
-import { useLanguage } from '@hooks/useLanguage';
-
-import { usePathname } from '@/shared/hooks';
+import { useGetPage } from '@api/lobby/queries/useGetPage';
 
 /**
- * Keeps lobby getPage (client nav) / entry init wired to the active pathname.
- * Allowlist merge happens inside those requests — not here.
+ * Entry: init page payload. After SPA navigation: getPage for active pathname.
  */
 function PageDataSyncComponent() {
-  const language = useLanguage();
-  const pathname = usePathname();
-  useCurrentPageDataState(language, pathname);
+  useGetPage();
   return null;
 }
 

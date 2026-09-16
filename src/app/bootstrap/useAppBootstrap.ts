@@ -1,6 +1,6 @@
 import type { AppDispatch } from '@store';
 
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
@@ -28,7 +28,8 @@ export function useAppBootstrap() {
 
   const hasCachedInit = queryClient.getQueryData(initKey) !== undefined;
 
-  useEffect(() => {
+  // Before paint — allowlist ready so InfoPage does not 404 on entry deep-links.
+  useLayoutEffect(() => {
     const content = init.content;
     if (content === undefined) return;
     applyLobbySessionFromInitContent(content);

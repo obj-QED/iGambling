@@ -29,7 +29,7 @@ export {
   initV2,
   lobbyQueryKeys,
   prefetchInitData,
-  useCurrentPageData,
+  useGetPage,
   useInitData,
   useInvalidateInit,
   useTranslation,

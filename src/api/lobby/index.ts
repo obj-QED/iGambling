@@ -34,13 +34,7 @@ export {
   subscribeLobbySession,
 } from './lobbySession';
 export { useGetPageMutation, useInvalidateInit } from './mutations';
-export {
-  prefetchInitData,
-  useCurrentPageData,
-  useCurrentPageDataState,
-  useInitData,
-  useTranslation,
-} from './queries';
+export { prefetchInitData, useGetPage, useInitData, useTranslation } from './queries';
 export { lobbyQueryKeys } from './queryKeys';
 export { fetchTranslation, getPage, initV2 } from './requests';
 export type {

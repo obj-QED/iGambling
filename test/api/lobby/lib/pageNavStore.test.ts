@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
   getPageNavSnapshot,
-  markClientNavigated,
   resetPageNavStoreForTests,
   runGetPageNav,
 } from '@/api/lobby/lib/pageNavStore';
@@ -65,13 +64,5 @@ describe('pageNavStore', () => {
     await runGetPageNav({ language: 'en', page: '/home' });
 
     expect(getPageMock).toHaveBeenCalledTimes(2);
-  });
-
-  it('markClientNavigated sticks for remounted consumers', () => {
-    expect(getPageNavSnapshot().clientNavigated).toBe(false);
-    markClientNavigated();
-    expect(getPageNavSnapshot().clientNavigated).toBe(true);
-    markClientNavigated();
-    expect(getPageNavSnapshot().clientNavigated).toBe(true);
   });
 });

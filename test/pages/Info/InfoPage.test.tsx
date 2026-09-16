@@ -10,12 +10,9 @@ import {
 import { mantineTheme } from '@/assets/theme';
 import { InfoPage } from '@/pages/Info/InfoPage';
 
-type PageState = {
+type GetPageState = {
   data: { url?: string; info?: { title?: string; content?: string } } | undefined;
   loading: boolean;
-  isFetching: boolean;
-  isPlaceholderData: boolean;
-  isSettled: boolean;
   error: unknown;
 };
 
@@ -23,16 +20,13 @@ const pageState = vi.hoisted(() => ({
   current: {
     data: undefined,
     loading: false,
-    isFetching: false,
-    isPlaceholderData: false,
-    isSettled: false,
     error: null,
-  } as PageState,
+  } as GetPageState,
   pathname: '/terms',
 }));
 
-vi.mock('@api/lobby/queries/useCurrentPageData', () => ({
-  useCurrentPageDataState: () => pageState.current,
+vi.mock('@api/lobby/queries/useGetPage', () => ({
+  useGetPage: () => pageState.current,
 }));
 
 vi.mock('@hooks/useLanguage', () => ({
@@ -67,9 +61,6 @@ describe('InfoPage menu allowlist + page.info', () => {
     pageState.current = {
       data: undefined,
       loading: false,
-      isFetching: false,
-      isPlaceholderData: false,
-      isSettled: false,
       error: null,
     };
   });
@@ -79,12 +70,9 @@ describe('InfoPage menu allowlist + page.info', () => {
       menu: [{ url: '/terms', key: 'terms' }],
     });
     pageState.current = {
+      ...pageState.current,
       data: undefined,
       loading: true,
-      isFetching: true,
-      isPlaceholderData: true,
-      isSettled: false,
-      error: null,
     };
     renderInfo('/terms');
     expect(document.querySelector('[data-page-kind="loading"]')).toBeTruthy();
@@ -97,15 +85,12 @@ describe('InfoPage menu allowlist + page.info', () => {
     });
     pageState.pathname = '/not-a-real-page';
     pageState.current = {
+      ...pageState.current,
       data: {
         url: '/not-a-real-page',
         info: { title: 'X', content: '<p>x</p>' },
       },
       loading: false,
-      isFetching: false,
-      isPlaceholderData: false,
-      isSettled: true,
-      error: null,
     };
     renderInfo('/not-a-real-page');
     expect(screen.getByText('not-found')).toBeInTheDocument();
@@ -117,12 +102,9 @@ describe('InfoPage menu allowlist + page.info', () => {
     });
     pageState.pathname = '/jackpots';
     pageState.current = {
+      ...pageState.current,
       data: { url: '/jackpots' },
       loading: false,
-      isFetching: false,
-      isPlaceholderData: false,
-      isSettled: true,
-      error: null,
     };
     renderInfo('/jackpots');
     expect(screen.queryByText('not-found')).not.toBeInTheDocument();
@@ -135,15 +117,12 @@ describe('InfoPage menu allowlist + page.info', () => {
     });
     pageState.pathname = '/tournaments';
     pageState.current = {
+      ...pageState.current,
       data: {
         url: '/tournaments',
         info: { title: '', description: '', name: '', content: '' },
       },
       loading: false,
-      isFetching: false,
-      isPlaceholderData: false,
-      isSettled: true,
-      error: null,
     };
     renderInfo('/tournaments');
     expect(screen.queryByText('not-found')).not.toBeInTheDocument();
@@ -156,12 +135,9 @@ describe('InfoPage menu allowlist + page.info', () => {
     });
     pageState.pathname = '/jackpots';
     pageState.current = {
+      ...pageState.current,
       data: { url: '/jackpots', info: { title: 'Jackpots', content: '' } },
       loading: false,
-      isFetching: false,
-      isPlaceholderData: false,
-      isSettled: true,
-      error: null,
     };
     renderInfo('/jackpots');
     expect(screen.queryByText('not-found')).not.toBeInTheDocument();
