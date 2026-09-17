@@ -85,13 +85,7 @@ const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerPr
       ...(typeof cmfRole === 'string' ? { 'data-cmf-role': cmfRole } : {}),
     };
 
-    const {
-      wrapperProps: restWrapperProps,
-      style: restStyle,
-      value: _ignoredValue,
-      defaultValue: _ignoredDefaultValue,
-      ...restProps
-    } = rest;
+    const { wrapperProps: restWrapperProps, style: restStyle, ...restProps } = rest;
 
     const measureText = isInlineInput ? (hasQuery ? query : placeholder) : placeholder;
     const hotkeyText = showHotkeyBadge && !(isInlineInput && hasQuery) ? `${modKey}+K` : '';

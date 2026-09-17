@@ -9,8 +9,9 @@ export function lockSidebarWidth(root: HTMLElement | null): void {
     return;
   }
 
-  // Slideout owns animated width — freezing would kill expand/collapse.
-  if (aside.getAttribute('data-type') === 'slideout') {
+  // Expand shells own animated width — freezing would kill expand/collapse.
+  const type = aside.getAttribute('data-type');
+  if (type === 'slideout' || type === 'slidein') {
     return;
   }
 

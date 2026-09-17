@@ -59,6 +59,7 @@ export {
   readSidebarSlideoutExpanded,
   resolveSidebarSlideoutPhase,
   SIDEBAR_SLIDEOUT_EXPANDED_DEFAULT,
+  type SidebarExpandPersistMode,
   type SidebarSlideoutPhase,
   writeSidebarSlideoutExpanded,
 } from './slideout';

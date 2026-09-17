@@ -133,16 +133,20 @@
 
     aside: {
       /** Shell width is fixed — do not pair a compact calc with `type: 'default'` (labels need room). */
-      type: 'slideout', // 'default' | 'compact' | 'slideout'
+      type: 'slidein', // 'default' | 'compact' | 'slideout' | 'slidein'
       /**
        * Control width: `max` (hug / capped) | `fill` (full track, flat).
        * Tokens: compact + non-compact `[data-control-fit]` blocks separately.
        */
       /**
-       * slideout — logo-trigger toggles width (~4s), desktop only (`> tablet`).
+       * slideout — logo-trigger toggles width, desktop only (`> tablet`).
        * Open/closed in localStorage (`igambling:sidebar:slideout-expanded`); default open.
        * Phases on aside: `data-aside-slideout-phase` = expanded|collapsing|collapsed|expanding.
-       * Same row markup as `default` (Button / TextInput) — CSS compresses labels/field only.
+       * Same row markup as `default` — CSS compresses labels/field only.
+       *
+       * slidein — default ↔ compact morph (logo-trigger), desktop only.
+       * Open/closed in localStorage (`igambling:sidebar:slidein-expanded`); default open.
+       * Phases: `data-aside-slidein-phase`. Labels slide left; width tweens to compact.
        */
       layout: 'aside',
       /** `true` → sidebar menu from `src/widgets/sidebar/mocks` */
@@ -158,7 +162,7 @@
        * Same `{ type, style }` as header; falls back to `params.search`.
        * search type → AppSearch behavior; style → trigger (compact|icon|input → icon|row).
        * Note: `type: compact` forces search/promo chrome to `icon`.
-       * `slideout` keeps `row` when expanded and compresses via CSS.
+       * `slideout` / `slidein` keep `row` when expanded and compress via CSS.
        */
       blockVariants: {
         search_leftmenu: {

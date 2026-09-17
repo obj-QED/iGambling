@@ -7,17 +7,21 @@ import {
 } from '@/widgets/sidebar/lib';
 
 describe('asideMenuButtonSizeForType', () => {
-  it('matches default sidebar token sm', () => {
-    expect(DEFAULT_ASIDE_MENU_BUTTON_SIZE).toBe('sm');
-    expect(asideMenuButtonSizeForType('default')).toBe('sm');
+  it('matches default sidebar token md', () => {
+    expect(DEFAULT_ASIDE_MENU_BUTTON_SIZE).toBe('md');
+    expect(asideMenuButtonSizeForType('default')).toBe('md');
   });
 
   it('matches compact sidebar token md', () => {
     expect(asideMenuButtonSizeForType('compact')).toBe('md');
   });
 
-  it('matches slideout sidebar token sm (same as default)', () => {
-    expect(asideMenuButtonSizeForType('slideout')).toBe('sm');
+  it('matches slideout sidebar token md (same as default)', () => {
+    expect(asideMenuButtonSizeForType('slideout')).toBe('md');
+  });
+
+  it('matches slidein sidebar token md (same as default)', () => {
+    expect(asideMenuButtonSizeForType('slidein')).toBe('md');
   });
 });
 

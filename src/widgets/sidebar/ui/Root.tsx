@@ -57,7 +57,8 @@ function SidebarAsideShell({
   sidebarRef,
 }: SidebarAsideShellProps) {
   const { enabled, expanded, settled, phase, markSettled } = useSidebarSlideout();
-  const isSlideoutType = type === 'slideout';
+  const expandShell = type === 'slideout' || type === 'slidein';
+  const expandAttr = type === 'slidein' ? 'slidein' : 'slideout';
 
   const onTransitionEnd = useCallback(
     (event: TransitionEvent<HTMLElement>) => {
@@ -81,11 +82,11 @@ function SidebarAsideShell({
       data-control-size={menuButtonSize}
       data-cmf-active-type={activeType}
       data-cmf-active-position={activePosition}
-      {...(isSlideoutType
+      {...(expandShell
         ? {
-            'data-aside-slideout-expanded': expanded ? 'true' : 'false',
-            'data-aside-slideout-settled': settled ? 'true' : 'false',
-            'data-aside-slideout-phase': phase,
+            [`data-aside-${expandAttr}-expanded`]: expanded ? 'true' : 'false',
+            [`data-aside-${expandAttr}-settled`]: settled ? 'true' : 'false',
+            [`data-aside-${expandAttr}-phase`]: phase,
             ...(enabled ? { onTransitionEnd } : {}),
           }
         : {})}
@@ -102,7 +103,8 @@ function RootComponent({ menu, config, className }: RootProps) {
   const menuButtonSize = useAsideMenuButtonSizeFromElement(sidebarEl, config.type);
   const typePack = resolveSidebarTypePack(config.type);
   const { Strategy, styles: typeStyles } = typePack;
-  const slideoutEnabled = config.type === 'slideout';
+  const expandEnabled = config.type === 'slideout' || config.type === 'slidein';
+  const expandPersistMode = config.type === 'slidein' ? 'slidein' : 'slideout';
   const chromeLayout = useMemo(() => {
     if (!menu) return null;
 
@@ -127,7 +129,7 @@ function RootComponent({ menu, config, className }: RootProps) {
         <SidebarTypePackContext.Provider value={typePack}>
           <AsideMenuSizeContext.Provider value={menuButtonSize}>
             <SidebarDropdownProvider defaultOpenKeys={config.openedDropdowns}>
-              <SidebarSlideoutProvider enabled={slideoutEnabled}>
+              <SidebarSlideoutProvider enabled={expandEnabled} persistMode={expandPersistMode}>
                 <SidebarAsideShell
                   sidebarRef={setSidebarEl}
                   className={clsx(styles.root, typeStyles.root, className)}

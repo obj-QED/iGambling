@@ -192,7 +192,7 @@ function adapterForType(type: string): string {
   if (type === 'compact') {
     return 'icon';
   }
-  // `slideout` expanded matches `default` (row buttons + search input); CSS compresses to rail.
+  // `slideout` / `slidein` expanded match `default` (row buttons + search input); CSS compresses to rail.
   return 'row';
 }
 

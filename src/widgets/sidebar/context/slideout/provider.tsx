@@ -8,33 +8,41 @@ import {
   readSidebarSlideoutExpanded,
   resolveSidebarSlideoutPhase,
   SIDEBAR_SLIDEOUT_EXPANDED_DEFAULT,
+  type SidebarExpandPersistMode,
   writeSidebarSlideoutExpanded,
 } from '../../lib/slideout';
 import { type SidebarSlideoutApi, SidebarSlideoutContext } from './context';
 
-/** Matches `--aside-slideout-transition` default — fallback if `transitionend` is missed. */
+/** Matches `--aside-slideout-transition` / `--aside-slidein-transition` — fallback if `transitionend` is missed. */
 const SLIDEOUT_SETTLE_FALLBACK_MS = 500;
 
 export type SidebarSlideoutProviderProps = {
-  /** `aside.type === 'slideout'`. */
+  /** `aside.type` is an expand shell (`slideout` | `slidein`). */
   enabled: boolean;
+  /** localStorage key namespace — default `slideout`. */
+  persistMode?: SidebarExpandPersistMode;
   children: ReactNode;
 };
 
 /**
- * Slideout open/closed — desktop only (`> tablet`).
- * Persists in localStorage; default open. Below tablet: always expanded (no rail).
+ * Expand/collapse open/closed — desktop only (`> tablet`).
+ * Used by `slideout` and `slidein`. Persists in localStorage; default open.
+ * Below tablet: always expanded (no rail).
  *
  * Phases: `expanded` | `collapsed` | `expanding` | `collapsing`
- * (`data-aside-slideout-phase` on the aside).
+ * (data attrs on the aside: `data-aside-slideout-*` or `data-aside-slidein-*`).
  */
-export function SidebarSlideoutProvider({ enabled, children }: SidebarSlideoutProviderProps) {
+export function SidebarSlideoutProvider({
+  enabled,
+  persistMode = 'slideout',
+  children,
+}: SidebarSlideoutProviderProps) {
   const isMobile = useIsMobile();
   /** Collapse/expand only above tablet breakpoint. */
   const viewportActive = enabled && !isMobile;
 
   const [expanded, setExpandedState] = useState(() =>
-    readSidebarSlideoutExpanded(SIDEBAR_SLIDEOUT_EXPANDED_DEFAULT),
+    readSidebarSlideoutExpanded(SIDEBAR_SLIDEOUT_EXPANDED_DEFAULT, persistMode),
   );
   /** Idle on mount — phase is expanded|collapsed, not mid-transition. */
   const [settled, setSettled] = useState(true);
@@ -67,9 +75,9 @@ export function SidebarSlideoutProvider({ enabled, children }: SidebarSlideoutPr
       setSettled(false);
       armSettleFallback();
       setExpandedState(next);
-      writeSidebarSlideoutExpanded(next);
+      writeSidebarSlideoutExpanded(next, persistMode);
     },
-    [viewportActive, armSettleFallback],
+    [viewportActive, armSettleFallback, persistMode],
   );
 
   const toggle = useCallback(() => {
@@ -78,10 +86,10 @@ export function SidebarSlideoutProvider({ enabled, children }: SidebarSlideoutPr
       const next = !prev;
       setSettled(false);
       armSettleFallback();
-      writeSidebarSlideoutExpanded(next);
+      writeSidebarSlideoutExpanded(next, persistMode);
       return next;
     });
-  }, [viewportActive, armSettleFallback]);
+  }, [viewportActive, armSettleFallback, persistMode]);
 
   useEffect(
     () => () => {

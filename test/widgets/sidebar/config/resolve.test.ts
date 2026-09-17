@@ -44,6 +44,10 @@ describe('resolveSidebarConfig', () => {
       search: 'row',
       promo: 'row',
     });
+    expect(resolveSidebarConfig({ aside: { type: 'slidein' } }).blockVariants).toEqual({
+      search: 'row',
+      promo: 'row',
+    });
   });
 
   it('forces search/promo icon chrome for compact rail only', () => {

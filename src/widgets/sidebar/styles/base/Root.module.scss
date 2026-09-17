@@ -15,11 +15,15 @@
     background: var(--aside-shell-bg, var(--mantine-color-body));
 
     /*
-     * Slideout owns animated `width` endpoints in SlideoutType — do not also
-     * bind width to `--app-layout-sidebar-width` (custom props snap, dual drivers jerk).
+     * Expand shells own animated `width` endpoints in SlideoutType / SlideinType —
+     * do not also bind width to `--app-layout-sidebar-width` (custom props snap, dual drivers jerk).
      */
     &:where([data-type='slideout']) {
       width: var(--aside-slideout-expanded-width, 15rem);
+    }
+
+    &:where([data-type='slidein']) {
+      width: var(--aside-slidein-expanded-width, 15rem);
     }
 
     @media (max-width: $tablet) {

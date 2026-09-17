@@ -1,0 +1,452 @@
+/**
+ * Slidein — default ↔ compact morph.
+ * Duration / easing SoT: `--aside-slidein-transition` / `-timing`.
+ * Desktop only: `@media (max-width: $tablet)` kills rail (JS: `useIsMobile` ≤ tablet).
+ *
+ * Distinct from slideout:
+ * - Collapsed width matches compact (`--aside-slidein-collapsed-width`).
+ * - Labels slide left behind the clip (transform + opacity), not only width:0.
+ * - Settled collapsed centers like compact (not square aspect-ratio rail).
+ *
+ * Smoothness rules (shared with slideout):
+ * - Animate ONLY `width` (never `--app-layout-sidebar-width` / `@property`).
+ * - Collapsing + expanding share expanded chrome (labels ellipsize / slide with track).
+ * - Settled collapsed only: compact-rail chrome, rail marks, search modal look.
+ */
+
+@layer widget.variant {
+  .root {
+    --aside-slidein-ease: var(--aside-slidein-timing, cubic-bezier(0.22, 1, 0.36, 1));
+    --aside-slidein-duration: var(--aside-slidein-transition, 0.4s);
+    align-items: stretch;
+    width: var(--aside-slidein-expanded-width, 15rem);
+    overflow: hidden;
+    transform-origin: left center;
+    transition: width var(--aside-slidein-duration) var(--aside-slidein-ease);
+
+    &:where([data-aside-slidein-phase='collapsed']),
+    &:where([data-aside-slidein-phase='collapsing']) {
+      width: var(--aside-slidein-collapsed-width);
+    }
+
+    @media (max-width: $tablet) {
+      width: 100%;
+      transition: none;
+
+      &:where([data-aside-slidein-phase='collapsed']),
+      &:where([data-aside-slidein-phase='collapsing']) {
+        width: 100%;
+      }
+    }
+
+    :global([data-sidebar-region='header']),
+    :global([data-sidebar-region='footer']),
+    :global(.cmf-ScrollArea-root),
+    :global(.cmf-ScrollArea-viewport),
+    :global(.cmf-ScrollArea-content),
+    :global(nav[data-section-key]),
+    :global(nav[data-section-key] ul),
+    :global(nav[data-section-key] li),
+    :global(nav[data-section-key] li > *),
+    :global([data-sidebar-dropdown]),
+    :global(.cmf-TextInput-root),
+    :global(.cmf-TextInput-wrapper),
+    :global(.cmf-Group-root) {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    :global(nav[data-section-key] li) {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    :global(nav[data-section-key] li > :not(.cmf-Button-root)) {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      box-sizing: border-box;
+    }
+
+    :global(nav[data-section-key] li > .cmf-Button-root) {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    :global([data-sidebar-region='header'] > *),
+    :global([data-sidebar-region='footer'] > *) {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    :global(
+      [data-sidebar-region='header'] [data-cmf-component='sidebar-header'][data-cmf-key='logo']
+    ) {
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      gap: var(
+        --cmf-group-sidebar-header-logo-gap,
+        var(--cmf-group-sidebar-header-gap, var(--mantine-spacing-sm))
+      );
+    }
+
+    :global(
+      [data-sidebar-region='header']
+        [data-cmf-component='sidebar-header'][data-cmf-key='logo']
+        [data-cmf-key='logo-trigger']
+    ) {
+      flex: 0 0 auto;
+    }
+
+    :global(
+      [data-sidebar-region='header']
+        [data-cmf-component='sidebar-header'][data-cmf-key='logo']
+        [data-key='aside_header_logo']
+    ) {
+      flex: 0 1 auto;
+      max-width: 100%;
+      width: auto;
+      height: var(--logo-height, var(--aside-slidein-rail-button));
+      min-height: var(--logo-height, var(--aside-slidein-rail-button));
+      max-height: var(--logo-height, var(--aside-slidein-rail-button));
+      min-width: 0;
+      flex-shrink: 1;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      :global(.cmf-Button-section) {
+        flex: 1 1 auto;
+        justify-content: center;
+        align-items: center;
+        min-width: 0;
+        min-height: 0;
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
+      }
+
+      :global(.cmf-Button-image),
+      :global(img) {
+        width: auto;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        object-position: center;
+        flex-shrink: 1;
+      }
+    }
+
+    /* Collapse direction — wrap from click; stable while width tweens. */
+    &:where([data-aside-slidein-phase='collapsed']),
+    &:where([data-aside-slidein-phase='collapsing']) {
+      :global(
+        [data-sidebar-region='header'] [data-cmf-component='sidebar-header'][data-cmf-key='logo']
+      ) {
+        flex-flow: row wrap;
+        justify-content: center;
+      }
+
+      :global(
+        [data-sidebar-region='header']
+          [data-cmf-component='sidebar-header'][data-cmf-key='logo']
+          [data-key='aside_header_logo']
+      ) {
+        flex: 1 1 100%;
+        flex-basis: 100%;
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    :global(.cmf-Button-root):not([data-key='aside_header_logo']),
+    :global(.cmf-TextInput-root),
+    :global(.cmf-TextInput-wrapper) {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      flex: 0 0 auto;
+      align-self: stretch;
+      box-sizing: border-box;
+      overflow: hidden;
+      transition:
+        border-color calc(var(--aside-slidein-duration) * 0.5) var(--aside-slidein-ease),
+        border-radius calc(var(--aside-slidein-duration) * 0.5) var(--aside-slidein-ease);
+    }
+
+    &:where([data-aside-slidein-phase='collapsed']) {
+      :global(
+        .cmf-Button-root[data-active='true']:where(
+            :not(:disabled, [data-disabled], [aria-disabled='true'], [data-variant='button-link'])
+          )
+      ) {
+        border-color: var(--aside-slidein-active-bd, var(--brand-color-6));
+        border-width: var(
+          --aside-slidein-active-bd-width,
+          var(--button-bd-width, calc(0.0625rem * var(--mantine-scale)))
+        );
+        border-style: solid;
+        border-radius: var(
+          --aside-slidein-active-radius,
+          var(--button-radius, var(--mantine-radius-sm))
+        );
+
+        &::after {
+          content: none;
+        }
+
+        :global([data-cmf-active-line]) {
+          display: none;
+        }
+      }
+    }
+
+    :global(.cmf-Button-root):not([data-key='aside_header_logo']) {
+      container-type: inline-size;
+      height: auto;
+      min-height: var(--button-height, var(--aside-slidein-rail-button, 2.625rem));
+      max-height: none;
+
+      :global(.cmf-Button-inner) {
+        min-width: 0;
+        max-width: 100%;
+        height: 100%;
+        max-height: none;
+        overflow: hidden;
+      }
+
+      :global(.cmf-Button-section.cmf-Button-section-icon:empty) {
+        display: none;
+        width: 0;
+        height: 0;
+        min-width: 0;
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      :global(.cmf-Button-section.cmf-Button-section-icon),
+      :global(
+        .cmf-Button-section[data-position='left']:has(
+            [data-cmf-icon-src],
+            .cmf-Button-icon,
+            [data-sidebar-item-label],
+            svg,
+            img
+          )
+      ) {
+        box-sizing: border-box;
+        flex: 0 0 auto;
+        width: calc(
+          var(--button-height, var(--aside-slidein-rail-button, 2.625rem)) *
+            var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
+        );
+        height: calc(
+          var(--button-height, var(--aside-slidein-rail-button, 2.625rem)) *
+            var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
+        );
+        max-width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      :global(.cmf-Button-icon),
+      :global([data-cmf-icon-src]),
+      :global(.cmf-Button-section-icon svg),
+      :global(.cmf-ActionIcon-icon-svg) {
+        box-sizing: border-box;
+        flex-shrink: 1;
+        overflow: hidden;
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    /*
+     * Labels — slide left behind the clip while width narrows.
+     * Mid-tween keeps ellipsis; settled collapsed fully parks off-track.
+     */
+    :global(.cmf-Button-root .cmf-Button-label) {
+      display: block;
+      align-self: var(--button-align, center);
+      flex: 1 1 0%;
+      min-width: 0;
+      max-width: 100%;
+      width: auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+      transition:
+        opacity var(--aside-slidein-duration) var(--aside-slidein-ease),
+        transform var(--aside-slidein-duration) var(--aside-slidein-ease),
+        max-width var(--aside-slidein-duration) var(--aside-slidein-ease),
+        flex-basis var(--aside-slidein-duration) var(--aside-slidein-ease);
+    }
+
+    &:where([data-aside-slidein-phase='collapsing']),
+    &:where([data-aside-slidein-phase='expanding']) {
+      :global(.cmf-Button-root .cmf-Button-label) {
+        flex: 1 1 0%;
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-0.35rem);
+      }
+
+      :global(.cmf-Button-root):not([data-key='aside_header_logo']) :global(.cmf-Button-inner) {
+        min-width: 0;
+        overflow: hidden;
+      }
+    }
+
+    &:where([data-aside-slidein-phase='collapsed']) {
+      :global(.cmf-Button-root .cmf-Button-label) {
+        flex: 0 0 0;
+        flex-basis: 0;
+        width: 0;
+        max-width: 0;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        visibility: hidden;
+        text-overflow: clip;
+        transform: translateX(-100%);
+      }
+    }
+
+    :global([data-sidebar-item-label]) {
+      opacity: 0;
+    }
+
+    &:where([data-aside-slidein-phase='collapsed'][data-aside-slidein-settled='true'])
+      :global([data-sidebar-item-label]) {
+      opacity: 1;
+    }
+
+    /*
+     * Compact-like rail — settled collapsed: center controls, hug track.
+     * No aspect-ratio squares (that is slideout); width follows compact shell.
+     */
+    &:where([data-aside-slidein-phase='collapsed']) {
+      align-items: center;
+
+      :global([data-sidebar-region='header']),
+      :global([data-sidebar-region='footer']) {
+        align-items: center;
+      }
+
+      :global(nav[data-section-key] ul) {
+        align-items: center;
+        padding: 0;
+      }
+
+      :global(nav[data-section-key] li) {
+        display: flex;
+        justify-content: center;
+      }
+
+      :global(.cmf-Button-root):not([data-key='aside_header_logo']) {
+        width: 100%;
+        height: auto;
+        min-height: var(--aside-slidein-rail-button);
+        max-height: none;
+        align-self: center;
+        align-items: var(--button-align, center);
+        justify-content: center;
+      }
+
+      :global(button.cmf-Button-root[data-sidebar-dropdown-trigger]) {
+        height: auto;
+        min-height: var(--aside-slidein-rail-button);
+        max-height: none;
+
+        :global(.cmf-Button-inner) {
+          flex-flow: row wrap;
+          justify-content: center;
+          align-items: var(--button-align, center);
+          height: auto;
+          max-height: none;
+          overflow: visible;
+        }
+
+        :global(.cmf-Button-section.cmf-Button-section-chevron) {
+          flex: 0 0 auto;
+          margin-inline-start: 0;
+          width: auto;
+          height: auto;
+          max-width: none;
+          max-height: none;
+        }
+      }
+
+      :global(.cmf-TextInput-root),
+      :global(.cmf-TextInput-wrapper) {
+        height: var(--aside-slidein-rail-button);
+        min-height: var(--aside-slidein-rail-button);
+        max-height: var(--aside-slidein-rail-button);
+      }
+    }
+
+    /* Search modal look — settled compact rail only. */
+    &:where([data-aside-slidein-phase='collapsed']) {
+      :global([data-search-slot='input']),
+      :global(.cmf-TextInput-root),
+      :global(.cmf-TextInput-wrapper),
+      :global([data-search-part='field']),
+      :global(.cmf-TextInput-input),
+      :global([data-search-part='field'] input) {
+        cursor: pointer;
+      }
+
+      :global(.cmf-TextInput-wrapper) {
+        justify-content: center;
+        padding-inline: 0;
+      }
+
+      :global(.cmf-TextInput-section[data-position='left']) {
+        inset-inline-start: 50%;
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+
+      :global(.cmf-TextInput-input),
+      :global([data-search-part='field'] input) {
+        color: transparent;
+        caret-color: transparent;
+        opacity: 0;
+        user-select: none;
+      }
+
+      :global([data-search-part='code']),
+      :global([data-search-part='clear']),
+      :global(.cmf-TextInput-section[data-position='right']) {
+        opacity: 0;
+        max-width: 0;
+        overflow: hidden;
+        pointer-events: none;
+        visibility: hidden;
+      }
+    }
+  }
+}

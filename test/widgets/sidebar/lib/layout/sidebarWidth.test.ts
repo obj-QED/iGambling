@@ -17,6 +17,12 @@ describe('sidebar width normalization', () => {
     });
   });
 
+  it('maps slidein settings width to expanded token only (phase can switch compact)', () => {
+    expect(toSidebarRootWidthStyle(320, { type: 'slidein' })).toEqual({
+      '--aside-slidein-expanded-width': '320px',
+    });
+  });
+
   it('omits an invalid width and preserves the theme token', () => {
     expect(toSidebarWidthCss(resolveSidebarWidth('   '))).toBeNull();
   });

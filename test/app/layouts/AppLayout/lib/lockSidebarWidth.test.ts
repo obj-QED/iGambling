@@ -50,6 +50,22 @@ describe('lockSidebarWidth', () => {
     expect(aside.style.getPropertyValue('--app-layout-sidebar-width')).toBe('');
   });
 
+  it('skips slidein so width can animate', () => {
+    const root = document.createElement('div');
+    const aside = document.createElement('aside');
+    aside.setAttribute('data-widget', 'sidebar');
+    aside.setAttribute('data-type', 'slidein');
+    Object.defineProperty(aside, 'getBoundingClientRect', {
+      value: () => ({ width: 72, height: 800, top: 0, left: 0, bottom: 800, right: 72 }),
+    });
+    root.append(aside);
+
+    lockSidebarWidth(root);
+
+    expect(aside.dataset.shellBoxLock).toBeUndefined();
+    expect(aside.style.getPropertyValue('--app-layout-sidebar-width')).toBe('');
+  });
+
   it('unlock clears the token freeze and legacy px locks', () => {
     const root = document.createElement('div');
     const aside = document.createElement('aside');

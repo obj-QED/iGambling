@@ -18,7 +18,7 @@ export type AsideTypeKey = string;
 
 export const ASIDE_LAYOUT_KEYS = ['container', 'container-fluid'] as const;
 
-export const ASIDE_TYPE_KEYS = ['default', 'compact', 'slideout'] as const;
+export const ASIDE_TYPE_KEYS = ['default', 'compact', 'slideout', 'slidein'] as const;
 
 /** Compact rail control width: `max` = capped square; `fill` = stretch to content track. */
 export const ASIDE_CONTROL_FITS = ['max', 'fill'] as const;

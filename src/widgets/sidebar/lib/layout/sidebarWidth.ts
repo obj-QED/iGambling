@@ -12,7 +12,7 @@ export function resolveSidebarWidth(raw: number | string | undefined): SidebarWi
 }
 
 /**
- * CSS value for `--app-layout-sidebar-width` / `--aside-slideout-expanded-width`.
+ * CSS value for `--app-layout-sidebar-width` / expand-shell expanded tokens.
  * Invalid / missing → `null` (keep token).
  */
 export function toSidebarWidthCss(width: SidebarWidth | undefined): string | null {
@@ -26,16 +26,17 @@ export function toSidebarWidthCss(width: SidebarWidth | undefined): string | nul
  * Settings supply an arbitrary CSS length, so this runtime token remains the
  * cascade boundary. Fixed structure and fallbacks stay in SCSS/theme.
  *
- * Slideout: set `--aside-slideout-expanded-width` only — phase tokens map
- * `--app-layout-sidebar-width` so collapsing still switches to the calc rail.
+ * Expand shells (`slideout` / `slidein`): set expanded-width token only — phase
+ * tokens map `--app-layout-sidebar-width` so collapsing still switches to the rail.
  */
 export type SidebarRootWidthStyle = CSSProperties & {
   readonly '--app-layout-sidebar-width'?: string;
   readonly '--aside-slideout-expanded-width'?: string;
+  readonly '--aside-slidein-expanded-width'?: string;
 };
 
 export type SidebarRootWidthOptions = {
-  /** `aside.type` — slideout uses expanded-width token for phase switching. */
+  /** `aside.type` — expand shells use expanded-width token for phase switching. */
   type?: string;
 };
 
@@ -47,6 +48,9 @@ export function toSidebarRootWidthStyle(
   if (widthCss === null) return undefined;
   if (options?.type === 'slideout') {
     return { '--aside-slideout-expanded-width': widthCss };
+  }
+  if (options?.type === 'slidein') {
+    return { '--aside-slidein-expanded-width': widthCss };
   }
   return { '--app-layout-sidebar-width': widthCss };
 }
