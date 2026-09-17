@@ -58,7 +58,7 @@ function SidebarHeaderLinkComponent({
   const isAccountProfile = hasAccountSubtitle(subtitle);
 
   const leftSection = useMemo(() => {
-    const media = showItemImg && (
+    const media = showItemImg ? (
       <ItemMedia
         item={item}
         alt={label}
@@ -69,7 +69,7 @@ function SidebarHeaderLinkComponent({
           parkItemMedia && leftSectionExtra !== undefined && itemStyles.mediaParked,
         )}
       />
-    );
+    ) : null;
 
     if (media !== null && leftSectionExtra !== undefined) {
       return (

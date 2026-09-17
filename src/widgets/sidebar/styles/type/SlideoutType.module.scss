@@ -248,6 +248,17 @@
         overflow: visible;
       }
 
+      :global(.cmf-Button-section.cmf-Button-section-icon:empty) {
+        display: none;
+        width: 0;
+        height: 0;
+        min-width: 0;
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
       :global(.cmf-Button-section.cmf-Button-section-icon),
       :global(
         .cmf-Button-section[data-position='left']:has(

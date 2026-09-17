@@ -59,16 +59,18 @@ function ItemButtonComponent({
   const railNonImg = railMark && railKind !== 'img';
 
   const leftSection = useMemo(() => {
-    const media = showItemImg && (
+    // Use `? : null` — NOT `&&`. `false` is !== null and created empty <> fragments
+    // (empty cmf-Button-section-icon holes for items without img).
+    const media = showItemImg ? (
       <ItemMedia
         item={item}
         alt={ariaLabel}
         onImgError={onImgError}
         className={clsx(CMF_BUTTON_ICON, railNonImg && styles.mediaParked)}
       />
-    );
+    ) : null;
 
-    const mark = railNonImg && (
+    const mark = railNonImg ? (
       <ItemRailMark
         item={item}
         kind={railKind}
@@ -77,7 +79,7 @@ function ItemButtonComponent({
         className={CMF_BUTTON_ICON}
         initialClassName={clsx(styles.nameLabel, CMF_BUTTON_ICON)}
       />
-    );
+    ) : null;
 
     if (media !== null && mark !== null) {
       return (
