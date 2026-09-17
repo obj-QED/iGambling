@@ -5,7 +5,13 @@
     justify-content: var(--cmf-icon-justify, center);
     flex-shrink: 0;
     box-sizing: border-box;
-    overflow: hidden;
+
+    /* Outline SVG stroke paints past path edges / viewBox — never clip glyphs. */
+    overflow: visible;
+
+    &:where(img) {
+      overflow: hidden;
+    }
 
     /*
      * Box = --ai-size | --button-height (not Button row width).

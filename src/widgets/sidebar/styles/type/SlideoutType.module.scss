@@ -1,32 +1,41 @@
 /**
  * Slideout — same row markup as `default` (Button / TextInput).
- * Width + labels compress; `phase=collapsed` centers icons in the control.
+ * Width follows `--app-layout-sidebar-width` (phase tokens); labels compress.
  *
  * Phases (`data-aside-slideout-phase`): expanded | collapsing | collapsed | expanding
  * Duration SoT: `--aside-slideout-transition` (sidebar tokens).
  */
 
+@keyframes aside-slideout-rail-blink-in {
+  0% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 @layer widget.variant {
   .root {
     --aside-slideout-duration: var(--aside-slideout-transition, 0.4s);
     --aside-slideout-ease: var(--aside-slideout-timing, cubic-bezier(0.4, 0, 0.2, 1));
-    --aside-slideout-expanded-width: var(--app-layout-sidebar-width, 15rem);
     --aside-slideout-rail-ease: var(--aside-slideout-settled-timing, ease);
     align-items: stretch;
-    width: var(--aside-slideout-collapsed-width, 4.5rem);
+    width: var(--app-layout-sidebar-width);
     overflow: hidden;
     transition: width var(--aside-slideout-duration) var(--aside-slideout-ease);
 
-    &[data-aside-slideout-expanded='true'] {
-      width: var(--aside-slideout-expanded-width);
-    }
-
     @media (max-width: $tablet) {
       width: 100%;
-
-      &[data-aside-slideout-expanded='true'] {
-        width: 100%;
-      }
     }
 
     /* ---- Same row geometry as default (stable during width phase) ---- */
@@ -116,6 +125,10 @@
       min-width: 0;
       max-width: 100%;
       overflow: hidden;
+
+      /* Size → min-height; all-sides `--button-padding` can grow the box. */
+      height: auto;
+      min-height: var(--button-height);
       transition:
         justify-content 0s,
         padding-inline var(--aside-slideout-duration) var(--aside-slideout-ease);
@@ -201,7 +214,7 @@
       transition-delay: 0s, 0s, 0s, calc(var(--aside-slideout-duration) * 0.15), 0s;
     }
 
-    /* Chevron / trailing sections — hide when collapsed (same row, no column stack) */
+    /* Chevron / trailing sections — row when expanded; hide while collapsing */
     :global(.cmf-Button-section.cmf-Button-section-chevron),
     :global(.cmf-Button-root > .cmf-Button-section:last-child:not(.cmf-Button-section-icon)) {
       flex: 0 0 auto;
@@ -215,6 +228,7 @@
         margin calc(var(--aside-slideout-duration) * 0.6) var(--aside-slideout-rail-ease);
     }
 
+    /* Hide trailing chrome while collapsed/collapsing; settled dropdown restores below. */
     &[data-aside-slideout-expanded='false'] :global(.cmf-Button-section.cmf-Button-section-chevron),
     &[data-aside-slideout-expanded='false']
       :global(.cmf-Button-root > .cmf-Button-section:last-child:not(.cmf-Button-section-icon)) {
@@ -222,6 +236,63 @@
       margin: 0;
       opacity: 0;
       pointer-events: none;
+    }
+
+    /*
+     * Settled collapsed rail — dropdown chevron below icon (column), blink-in.
+     * Do not leave chevron forever hidden when collapsed.
+     */
+    &[data-aside-slideout-phase='collapsed'][data-aside-slideout-settled='true'] {
+      :global(.cmf-Button-root[data-sidebar-dropdown-trigger]) {
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        gap: var(--mantine-spacing-xs, 0.25rem);
+      }
+
+      /* Mantine sections live in `.cmf-Button-inner` — column there, not only on root. */
+      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-inner) {
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: var(--mantine-spacing-xs, 0.25rem);
+      }
+
+      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-section-icon),
+      :global(
+        .cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-section[data-position='left']
+      ) {
+        order: 1;
+        margin-inline: 0;
+      }
+
+      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] > .cmf-Button-label),
+      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-label) {
+        order: 2;
+      }
+
+      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-section-chevron),
+      :global(
+        .cmf-Button-root[data-sidebar-dropdown-trigger]
+          > .cmf-Button-section:last-child:not(.cmf-Button-section-icon)
+      ) {
+        order: 3;
+        max-width: none;
+        margin: 0;
+        opacity: 1;
+        pointer-events: auto;
+        animation: aside-slideout-rail-blink-in calc(var(--aside-slideout-duration) * 0.75)
+          var(--aside-slideout-rail-ease) both;
+      }
+
+      /* Account IconUserScan (leftSection swap) — same blink-in */
+      :global([data-cmf-key='account'] .cmf-Button-section-icon),
+      :global([data-cmf-key='account'] .cmf-Button-section[data-position='left']) {
+        animation: aside-slideout-rail-blink-in calc(var(--aside-slideout-duration) * 0.75)
+          var(--aside-slideout-rail-ease) both;
+      }
     }
 
     /* ---- Search TextInput stays TextInput — field fades, left icon remains ---- */
@@ -278,13 +349,6 @@
     &[data-aside-slideout-phase='collapsed'] {
       :global([data-cmf-component='sidebar-header'][data-cmf-key='logo']) {
         justify-content: center;
-      }
-
-      :global(.cmf-Button-root:not([data-cmf-key='logo'])) {
-        justify-content: center;
-        padding-inline: 0;
-        --button-justify: center;
-        --button-padding-x: 0;
       }
 
       :global(.cmf-Button-section.cmf-Button-section-icon),

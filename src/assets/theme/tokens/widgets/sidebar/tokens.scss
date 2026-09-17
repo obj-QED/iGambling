@@ -26,16 +26,6 @@
   --aside-shell-border-color: #636363;
   --aside-footer-border-color: #636363;
   --aside-header-border-color: #636363;
-  --cmf-button-sidebar-bd-width: 10px;
-
-  /* AppSearch TextInput — same radius as sidebar buttons */
-  --cmf-search-sidebar-radius: var(--cmf-button-sidebar-radius, var(--cmf-search-radius));
-
-  /*
-   * Icon search ActionIcon size.
-   * `--button-height` lives on Button nodes only — use the md size table on the aside host.
-   * Compact overrides via `--cmf-action-icon-sidebar-size` (rail square).
-   */
 
   /* Header region chrome */
   --header-logo-width: 120px;
@@ -82,25 +72,6 @@
     calc(-1 * var(--cmf-button-sidebar-bd-width, 0px));
   --cmf-button-sidebar-active-width: var(--cmf-button-sidebar-active-size);
   --cmf-button-sidebar-active-height: calc(100% + 2 * var(--cmf-button-sidebar-bd-width, 0px));
-
-  /*
-   * ActionIcon left rail — geometry is inset + width + height (not position alone).
-   */
-  --cmf-action-icon-sidebar-active-position: var(--cmf-button-sidebar-active-position);
-  --cmf-action-icon-sidebar-active-size: var(--cmf-button-sidebar-active-size);
-  --cmf-action-icon-sidebar-active-color: var(--cmf-button-sidebar-active-color);
-
-  /* Compact rail — same shorthand / per-corner contract as Button. */
-  --cmf-action-icon-sidebar-active-radius-tl: 0;
-  --cmf-action-icon-sidebar-active-radius-bl: 0;
-
-  --cmf-action-icon-sidebar-active-inset: calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px))
-    auto calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px))
-    calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px));
-  --cmf-action-icon-sidebar-active-width: var(--cmf-action-icon-sidebar-active-size);
-  --cmf-action-icon-sidebar-active-height: calc(
-    100% + 2 * var(--cmf-action-icon-sidebar-bd-width, 0px)
-  );
 
   --cmf-action-icon-sidebar-header-drawer-close-icon-scale: 1;
   --cmf-action-icon-sidebar-header-drawer-close-icon-bg: transparent;
@@ -151,6 +122,25 @@
 
     --cmf-action-icon-sidebar-header-logo-bg: var(--brand-color-6);
 
+    /*
+   * ActionIcon left rail — geometry is inset + width + height (not position alone).
+   */
+    --cmf-action-icon-sidebar-active-position: var(--cmf-button-sidebar-active-position);
+    --cmf-action-icon-sidebar-active-size: var(--cmf-button-sidebar-active-size);
+    --cmf-action-icon-sidebar-active-color: var(--cmf-button-sidebar-active-color);
+
+    /* Compact rail — same shorthand / per-corner contract as Button. */
+    --cmf-action-icon-sidebar-active-radius-tl: 0;
+    --cmf-action-icon-sidebar-active-radius-bl: 0;
+
+    --cmf-action-icon-sidebar-active-inset: calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px))
+      auto calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px))
+      calc(-1 * var(--cmf-action-icon-sidebar-bd-width, 0px));
+    --cmf-action-icon-sidebar-active-width: var(--cmf-action-icon-sidebar-active-size);
+    --cmf-action-icon-sidebar-active-height: calc(
+      100% + 2 * var(--cmf-action-icon-sidebar-bd-width, 0px)
+    );
+
     [class~='cmf-ActionIcon-icon'] {
       flex-flow: column nowrap;
       gap: var(--mantine-spacing-xs);
@@ -163,32 +153,55 @@
   }
 
   /*
-   * Slideout — expanded uses default `--app-layout-sidebar-width`.
-   * Collapsed rail width + transition; same Button/TextInput markup (no ActionIcon swap).
-   * Search paint by phase: collapsing+collapsed (and expanding) can override tokens.
+   * Slideout — expanded width is a fixed token (not `var(--app-layout-…)` — avoids circular ref).
+   * Collapsed = rail icon + 2×shell pad + 2×scrollarea inline pad.
+   * `--app-layout-sidebar-width` switches by phase so aside + layout stay in sync.
    */
   &[data-type='slideout'] {
     --aside-slideout-transition: 0.4s;
     --aside-slideout-timing: cubic-bezier(0.4, 0, 0.2, 1);
     --aside-slideout-settled-timing: ease;
-    --aside-slideout-collapsed-width: 4.5rem;
     --aside-shell-padding: var(--mantine-spacing-sm);
     --scrollarea-padding-inline: var(--mantine-spacing-xs);
     --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
-    --cmf-button-sidebar-padding-x: var(--mantine-spacing-sm);
 
-    /* Compress / rail / expand-in-progress — search stays brand until fully open. */
-    &:where(
-      [data-aside-slideout-phase='collapsing'],
-      [data-aside-slideout-phase='collapsed'],
-      [data-aside-slideout-phase='expanding']
-    ) {
-      --cmf-search-sidebar-bg: var(--brand-color-6);
+    --aside-slideout-expanded-width: 15rem;
+    --aside-slideout-collapsed-width: 3rem;
+    --app-layout-sidebar-width: var(--aside-slideout-expanded-width);
+
+    /* Collapsed / collapsing — rail width + search glyph brand. */
+    &:where([data-aside-slideout-phase='collapsed']),
+    &:where([data-aside-slideout-phase='collapsing']) {
+      --app-layout-sidebar-width: var(--aside-slideout-collapsed-width);
+      --cmf-button-sidebar-gap: 0;
+
+      [data-key='aside_header_logo'] {
+        display: none;
+      }
+    }
+
+    &:where([data-aside-slideout-phase='collapsed']) {
+      --cmf-search-sidebar-icon-color: var(--brand-color-6);
+      --cmf-search-sidebar-section-color: var(--brand-color-6);
+      --cmf-action-icon-sidebar-header-logo-trigger-bg: var(--brand-color-6);
+
+      /* Theme layer — overrides widget CSS. Thick transparent bd ate the rail squares. */
+      --cmf-button-sidebar-bd-width: 1px;
+      --cmf-action-icon-sidebar-bd-width: 1px;
+
+      /* CmfIcon: box = button-height × scale (stroke needs room; overflow fixed in SlideoutType). */
+      --cmf-button-sidebar-icon-scale: 0.8;
+      --cmf-button-sidebar-footer-icon-scale: 0.8;
     }
   }
 
   @media (max-width: $laptop) {
     --app-layout-sidebar-width: 25vw;
+
+    &[data-type='slideout'] {
+      --aside-slideout-expanded-width: 25vw;
+      --app-layout-sidebar-width: var(--aside-slideout-expanded-width);
+    }
   }
 
   @media (max-width: $tablet) {

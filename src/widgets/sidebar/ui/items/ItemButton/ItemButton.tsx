@@ -19,6 +19,7 @@ import {
   isRenderableItem,
   resolveItemHref,
   resolveItemLabel,
+  resolveItemNameInitial,
   resolveMenuItemButtonVariant,
 } from '../../../lib';
 import { ItemMedia } from '../ItemMedia/ItemMedia';
@@ -48,18 +49,27 @@ function ItemButtonComponent({
   const iconOnly = isIconOnlyItem(item);
   const displayLabel = hasItemName(item) ? item.name : undefined;
   const ariaLabel = resolveItemLabel(item);
-  const leftSection = useMemo(
-    () =>
-      showItemImg ? (
+  const leftSection = useMemo(() => {
+    if (showItemImg) {
+      return (
         <ItemMedia
           item={item}
           alt={ariaLabel}
           onImgError={onImgError}
           className={CMF_BUTTON_ICON}
         />
-      ) : undefined,
-    [showItemImg, item, ariaLabel, onImgError],
-  );
+      );
+    }
+
+    const initial = resolveItemNameInitial(item);
+    if (!initial) return undefined;
+
+    return (
+      <span className={clsx(styles.nameLabel, CMF_BUTTON_ICON)} data-sidebar-item-label>
+        {initial}
+      </span>
+    );
+  }, [showItemImg, item, ariaLabel, onImgError]);
   const justify: 'flex-start' | 'space-between' = dropdownTrigger ? 'space-between' : 'flex-start';
 
   if (!isRenderableItem(item) || !visible) return null;

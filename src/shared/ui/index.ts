@@ -19,6 +19,8 @@ export {
   type AppSearchProps,
   appSpotlight,
   appSpotlightStore,
+  DATA_SEARCH,
+  type DataSearchAttr,
   DEFAULT_SEARCH_SCHEMA,
   getSearchState,
   preloadSearchType,

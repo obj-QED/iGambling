@@ -16,6 +16,9 @@ describe('resolveButtonRootVars', () => {
     expect(vars['--button-padding-x']).toBe(
       'var(--cmf-button-default-padding-x, var(--button-padding-x-sm))',
     );
+    expect(vars['--button-padding']).toBe(
+      'var(--cmf-button-default-padding, var(--cmf-button-padding, 0 var(--button-padding-x)))',
+    );
     expect(vars['--button-gap']).toBe(
       'var(--cmf-button-default-gap, var(--cmf-button-gap, var(--mantine-spacing-xs)))',
     );

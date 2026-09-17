@@ -8,6 +8,8 @@ import clsx from 'clsx';
 
 import { AppActionIcon } from '@/shared/ui/AppActionIcon';
 
+import { DATA_SEARCH } from '../../lib/searchDataAttrs';
+
 import styles from '../../styles/ui/icon.module.scss';
 
 export type SearchIconTriggerProps = Omit<AppActionIconProps, 'children' | 'onClick'> & {
@@ -55,6 +57,7 @@ const SearchIconTriggerBase = forwardRef<HTMLButtonElement, SearchIconTriggerPro
         className={clsx(className, isOverlay && styles.overlay)}
         native={native ?? isAction}
         onClick={handleClick}
+        {...DATA_SEARCH}
         {...rest}
       >
         {children ?? <IconSearch size={18} stroke={1.75} aria-hidden />}

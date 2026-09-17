@@ -224,14 +224,41 @@
   }
 
   /*
-   * AppSearch TextInput (`data-cmf-*`): per-element paint
-   * (field / icon / code / clear) via `--input-*` from `resolveSearchInputRootVars`.
+   * AppSearch TextInput (`data-cmf-*`): field chrome on the wrapper.
+   * Mantine paints bg/bd on the `<input>` — slideout fades that node (`opacity: 0`),
+   * so chrome must live on `.searchInput` or border/bg vanish while the icon remains.
    */
   .searchInput {
+    width: 100%;
+    max-width: var(--cmf-search-max-width, none);
     display: flex;
+    box-sizing: border-box;
+    background-color: var(--input-bg);
+    border: calc(0.0625rem * var(--mantine-scale)) solid var(--input-bd);
+    border-radius: var(--input-radius, var(--mantine-radius-md));
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+
+    /*
+     * Header: grow with placeholder / query (`--cmf-search-content-ch` from trigger).
+     * Sidebar keeps `width: 100%` (no component=header on aside field).
+     */
+    &:where([data-cmf-component='header']) {
+      width: calc(
+        var(--cmf-search-content-ch, 10) * 1ch + var(--input-left-section-size, 2.625rem) +
+          var(--input-right-section-size, 0px) + 1.25rem
+      );
+      min-width: var(--cmf-search-header-min-width, 10rem);
+      max-width: min(var(--cmf-search-header-max-width, 28rem), 100%);
+    }
 
     :global(.cmf-Input-input),
     :global(.cmf-TextInput-input) {
+      /* Field paint moved to wrapper — keep input fill/stroke invisible. */
+      background-color: transparent;
+      border-color: transparent;
       transition:
         color 0.15s ease,
         background-color 0.15s ease,
@@ -264,6 +291,7 @@
       font-size: var(--input-code-fz, var(--mantine-font-size-xs));
       border-radius: var(--input-code-radius, var(--mantine-radius-sm));
       padding: var(--input-code-padding, 2px calc(var(--mantine-spacing-xs) / 2));
+      white-space: nowrap;
       background: var(
         --input-code-bg,
         light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))
@@ -280,10 +308,11 @@
 
     &:focus-within {
       --input-section-color: var(--input-section-focus-color);
+      background-color: var(--input-bg-focus, var(--input-bg));
+      border-color: var(--input-bd-focus, var(--input-bd));
 
       :global(.cmf-Input-input),
       :global(.cmf-TextInput-input) {
-        background-color: var(--input-bg-focus, var(--input-bg));
         color: var(--input-color-focus, var(--input-color));
       }
 
@@ -304,19 +333,19 @@
 
     .searchInput:hover:not(:focus-within) {
       --input-section-color: var(--input-section-hover-color);
-    }
-
-    .searchInput:hover:not(:focus-within) :global(.cmf-Input-input),
-    .searchInput:hover:not(:focus-within) :global(.cmf-TextInput-input) {
       background-color: var(--input-hover, var(--input-bg));
-      color: var(--input-hover-color, var(--input-color));
       border-color: var(--input-hover-bd, var(--input-bd));
-    }
 
-    .searchInput:hover:not(:focus-within) :global(.cmf-Code-root),
-    .searchInput:hover:not(:focus-within) :global([data-search-part='code']) {
-      background: var(--input-code-hover-bg, var(--input-code-bg));
-      color: var(--input-code-hover-color, var(--input-code-color));
+      :global(.cmf-Input-input),
+      :global(.cmf-TextInput-input) {
+        color: var(--input-hover-color, var(--input-color));
+      }
+
+      :global(.cmf-Code-root),
+      :global([data-search-part='code']) {
+        background: var(--input-code-hover-bg, var(--input-code-bg));
+        color: var(--input-code-hover-color, var(--input-code-color));
+      }
     }
   }
 
@@ -402,6 +431,12 @@
     gap: var(--button-gap, 0);
     min-width: 0;
     max-width: 100%;
+
+    /*
+     * CMF `--button-padding` (all sides) when set via tokens; else block 0 +
+     * Mantine `--button-padding-x` (overrides Mantine `padding-inline` only).
+     */
+    padding: var(--button-padding, 0 var(--button-padding-x, var(--button-padding-x-sm)));
 
     /*
      * Mantine Button section margins (left `margin-inline-end` / right `margin-inline-start`).
@@ -499,6 +534,12 @@
       max-height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-box)));
       object-fit: var(--cmf-icon-object-fit, contain);
       flex-shrink: 0;
+
+      /* Stroke icons must paint past viewBox; raster keeps clip for radius. */
+      overflow: visible;
+    }
+
+    :where(img[data-cmf-icon-src]) {
       overflow: hidden;
     }
   }
@@ -531,7 +572,7 @@
     :where(svg, [data-cmf-icon-src]):not([data-menu-chevron]) {
       box-sizing: border-box;
       flex-shrink: 0;
-      overflow: hidden;
+      overflow: visible;
       --_cmf-icon-box: var(--ai-size, 1.25rem);
       --_cmf-icon-s: var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7));
       --_cmf-icon-a: max(0.001, var(--cmf-control-icon-aspect, var(--cmf-icon-aspect, 1)));
@@ -546,6 +587,10 @@
       max-width: var(--cmf-control-icon-width, var(--cmf-icon-width, var(--_cmf-icon-box)));
       max-height: var(--cmf-control-icon-height, var(--cmf-icon-height, var(--_cmf-icon-box)));
       object-fit: var(--cmf-icon-object-fit, contain);
+    }
+
+    :where(img[data-cmf-icon-src]) {
+      overflow: hidden;
     }
   }
 }

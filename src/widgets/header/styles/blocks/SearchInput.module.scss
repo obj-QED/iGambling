@@ -1,13 +1,16 @@
 @layer widget.base {
-  /** AdapterBoundary slot — sizes Suspense fallback to the input field, not AI square. */
+  /** AdapterBoundary slot — width follows field content (not a fixed 200px rail). */
   .slot {
-    width: min(12.5rem, 40vw);
+    width: max-content;
+    max-width: min(var(--cmf-search-header-max-width, 28rem), 50vw);
+    min-width: var(--cmf-search-header-min-width, 10rem);
     flex-shrink: 0;
-    --adapter-fallback-width: min(12.5rem, 40vw);
+    --adapter-fallback-width: min(var(--cmf-search-header-max-width, 28rem), 50vw);
     --adapter-fallback-height: var(--cmf-search-height, var(--input-height-md, 2.625rem));
   }
 
   .root {
-    width: 100%;
+    width: max-content;
+    max-width: 100%;
   }
 }

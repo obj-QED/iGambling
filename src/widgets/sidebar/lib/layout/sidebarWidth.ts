@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react';
+
 /** Desktop width from settings: px number or any CSS length (`30%`, `4.5rem`). */
 export type SidebarWidth = number | string;
 
@@ -10,7 +12,7 @@ export function resolveSidebarWidth(raw: number | string | undefined): SidebarWi
 }
 
 /**
- * CSS value for `--app-layout-sidebar-width`.
+ * CSS value for `--app-layout-sidebar-width` / `--aside-slideout-expanded-width`.
  * Invalid / missing → `null` (keep token).
  */
 export function toSidebarWidthCss(width: SidebarWidth | undefined): string | null {
@@ -23,15 +25,28 @@ export function toSidebarWidthCss(width: SidebarWidth | undefined): string | nul
 /**
  * Settings supply an arbitrary CSS length, so this runtime token remains the
  * cascade boundary. Fixed structure and fallbacks stay in SCSS/theme.
+ *
+ * Slideout: set `--aside-slideout-expanded-width` only — phase tokens map
+ * `--app-layout-sidebar-width` so collapsing still switches to the calc rail.
  */
 export type SidebarRootWidthStyle = CSSProperties & {
-  readonly '--app-layout-sidebar-width': string;
+  readonly '--app-layout-sidebar-width'?: string;
+  readonly '--aside-slideout-expanded-width'?: string;
+};
+
+export type SidebarRootWidthOptions = {
+  /** `aside.type` — slideout uses expanded-width token for phase switching. */
+  type?: string;
 };
 
 export function toSidebarRootWidthStyle(
   width: SidebarWidth | undefined,
+  options?: SidebarRootWidthOptions,
 ): SidebarRootWidthStyle | undefined {
   const widthCss = toSidebarWidthCss(width);
-  return widthCss === null ? undefined : { '--app-layout-sidebar-width': widthCss };
+  if (widthCss === null) return undefined;
+  if (options?.type === 'slideout') {
+    return { '--aside-slideout-expanded-width': widthCss };
+  }
+  return { '--app-layout-sidebar-width': widthCss };
 }
-import type { CSSProperties } from 'react';

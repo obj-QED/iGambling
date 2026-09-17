@@ -124,6 +124,8 @@ Button / ActionIcon CMF — not theme `defaultRadius` / sm). Header:
 `--cmf-search-sidebar-radius` → `--cmf-button-sidebar-radius`.
 
 Search props → `--input-*` on TextInput wrapper (`.searchInput`).
+Field **bg / bd / radius** paint on the wrapper (not the `<input>`), so slideout
+can fade the input (`opacity: 0`) without losing chrome.
 
 | Element           | Token props (`--cmf-search-…`)                                                                                                        | Runtime                                           |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |

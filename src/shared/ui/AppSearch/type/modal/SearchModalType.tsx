@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { selectAppSearchQuery, setAppSearchQuery } from '@store/slices/contextSlice';
 
+import { DATA_SEARCH } from '../../lib/searchDataAttrs';
+
 import styles from '../../styles/type/modal.module.scss';
 
 /** Body for `@mantine/modals` context modal `search`. */
@@ -32,12 +34,18 @@ function SearchModalContentComponent({ id, context }: ContextModalProps) {
   }, [dispatch]);
 
   const cmfAttrs = {
+    ...DATA_SEARCH,
     'data-cmf-component': 'modal',
     'data-cmf-key': 'search',
   } as const;
 
   return (
-    <div className={styles.root} data-cmf-component="search" data-search-type="modal">
+    <div
+      className={styles.root}
+      {...DATA_SEARCH}
+      data-cmf-component="search"
+      data-search-type="modal"
+    >
       <TextInput
         ref={inputRef}
         placeholder="Search..."

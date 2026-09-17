@@ -18,6 +18,8 @@ export {
   appSearch,
   appSpotlight,
   appSpotlightStore,
+  DATA_SEARCH,
+  type DataSearchAttr,
   getSearchState,
   preloadSearchType,
   type SearchOpenMode,

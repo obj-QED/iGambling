@@ -12,10 +12,7 @@ import {
   PROMO_ADAPTER_KEYS,
   PROMO_ADAPTERS,
 } from '@/widgets/sidebar/ui/blocks/PromoBlock/adapters';
-import {
-  SEARCH_ADAPTER_KEYS as SIDEBAR_SEARCH_KEYS,
-  SEARCH_ADAPTERS as SIDEBAR_SEARCH,
-} from '@/widgets/sidebar/ui/blocks/Search/adapters';
+import { SEARCH_STYLE_KEYS as SIDEBAR_SEARCH_KEYS } from '@/widgets/sidebar/ui/blocks/Search/searchKeys';
 
 describe('block adapters maps', () => {
   it('header search/wallet expose expected keys', () => {
@@ -25,9 +22,8 @@ describe('block adapters maps', () => {
     expect(Object.keys(WALLET_ADAPTERS)).toEqual(['compact', 'full']);
   });
 
-  it('sidebar search/promo expose expected keys', () => {
+  it('sidebar promo exposes adapters; search is sync style keys only', () => {
     expect([...SIDEBAR_SEARCH_KEYS]).toEqual(['row', 'icon']);
-    expect(Object.keys(SIDEBAR_SEARCH)).toEqual(['row', 'icon']);
     expect([...PROMO_ADAPTER_KEYS]).toEqual(['row', 'icon']);
     expect(Object.keys(PROMO_ADAPTERS)).toEqual(['row', 'icon']);
   });
@@ -36,7 +32,6 @@ describe('block adapters maps', () => {
     for (const loader of [
       ...Object.values(SEARCH_ADAPTERS),
       ...Object.values(WALLET_ADAPTERS),
-      ...Object.values(SIDEBAR_SEARCH),
       ...Object.values(PROMO_ADAPTERS),
     ]) {
       expect(typeof loader).toBe('function');

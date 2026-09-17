@@ -91,6 +91,8 @@ export const CmfIcon = memo(
           className={rootClassName}
           role="img"
           aria-label={alt}
+          /* Presentation attr — CSS alone still loses to UA SVG viewport clip. */
+          overflow="visible"
           onError={handleError}
           {...dataAttrs}
         />

@@ -5,6 +5,14 @@
     max-width: 100%;
   }
 
+  /* Name initial — label text in leftSection when no img (slideout rail). */
+  .nameLabel {
+    font-size: var(--aside-menu-fz, var(--mantine-font-size-md, 1rem));
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: normal;
+  }
+
   .dropdownTrigger {
     /* Flex lives on root (`.cmf-Button-inner` is `display: contents`). */
     /* Width SoT: `[data-control-fit]` tokens → `--aside-control-width`. */

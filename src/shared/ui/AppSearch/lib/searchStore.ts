@@ -12,6 +12,7 @@ import {
 
 import { resolveSearchModalProps } from '@/shared/config';
 
+import { DATA_SEARCH } from './searchDataAttrs';
 import { appSpotlight } from './spotlightStore';
 
 export type { SearchOpenMode, SearchPageMode, SearchState } from './searchTypes';
@@ -51,6 +52,7 @@ export const appSearch = {
     const modalId = modals.openContextModal({
       modal: 'search',
       ...modalProps,
+      ...DATA_SEARCH,
       'data-cmf-component': 'search',
       'data-cmf-key': 'modal',
       'data-search-type': 'modal',

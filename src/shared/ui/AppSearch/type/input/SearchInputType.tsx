@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import { Text, Title } from '@mantine/core';
 
-import { useSearchQuery } from '../../lib';
+import { DATA_SEARCH, useSearchQuery } from '../../lib';
 
 import styles from '../../styles/type/input.module.scss';
 
@@ -18,6 +18,7 @@ function SearchInputTypeComponent({ query: queryProp }: SearchInputTypeProps) {
   return (
     <div
       className={styles.root}
+      {...DATA_SEARCH}
       data-cmf-component="search"
       data-cmf-key="results"
       data-search-type="input"

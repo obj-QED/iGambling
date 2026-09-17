@@ -1,4 +1,5 @@
 import type { BlockProps } from '../../../types';
+import type { ReactNode } from 'react';
 
 import { memo, useMemo } from 'react';
 
@@ -19,8 +20,16 @@ function hasAccountSubtitle(subtitle: string | undefined): subtitle is string {
   return subtitle !== undefined && subtitle.length > 0;
 }
 
+export type SidebarHeaderLinkProps = BlockProps & {
+  /** Override left chrome (e.g. slideout collapsed `IconUserScan`). */
+  leftSection?: ReactNode;
+};
+
 /** Default-type header row. Compact overrides via typePack.HeaderLink. */
-function SidebarHeaderLinkComponent({ item }: BlockProps) {
+function SidebarHeaderLinkComponent({
+  item,
+  leftSection: leftSectionOverride,
+}: SidebarHeaderLinkProps) {
   const { onImgError, showItemImg } = useMediaState(item);
   const size = useAsideMenuButtonSize();
   const href = resolveItemHref(item.url);
@@ -29,18 +38,17 @@ function SidebarHeaderLinkComponent({ item }: BlockProps) {
   const subtitle = item.subtitle;
   const badge = item.badge;
   const isAccountProfile = hasAccountSubtitle(subtitle);
-  const avatar = useMemo(
-    () =>
-      showItemImg ? (
-        <ItemMedia
-          item={item}
-          alt={label}
-          onImgError={onImgError}
-          className={isAccountProfile ? styles.mainLinkAvatar : styles.mainLinkIcon}
-        />
-      ) : undefined,
-    [showItemImg, item, label, onImgError, isAccountProfile],
-  );
+  const avatar = useMemo(() => {
+    if (leftSectionOverride !== undefined) return leftSectionOverride;
+    return showItemImg ? (
+      <ItemMedia
+        item={item}
+        alt={label}
+        onImgError={onImgError}
+        className={isAccountProfile ? styles.mainLinkAvatar : styles.mainLinkIcon}
+      />
+    ) : undefined;
+  }, [leftSectionOverride, showItemImg, item, label, onImgError, isAccountProfile]);
 
   const labelContent = isAccountProfile ? (
     <div className={styles.mainLinkText}>

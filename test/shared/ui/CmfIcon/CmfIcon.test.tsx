@@ -50,6 +50,7 @@ describe('CmfIcon', () => {
     );
 
     expect(getByTestId('inline-svg')).toHaveAttribute('data-cmf-icon-src', '/uploads/web.svg');
+    expect(getByTestId('inline-svg')).toHaveAttribute('overflow', 'visible');
     expect(getByRole('img', { name: 'Web' })).toHaveAttribute(
       'data-cmf-icon-src',
       '/uploads/web.svg',

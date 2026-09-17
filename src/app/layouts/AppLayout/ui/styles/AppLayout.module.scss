@@ -76,10 +76,13 @@
     --skeleton-width: var(--adapter-fallback-width, var(--cmf-action-icon-header-size, 2.625rem));
   }
 
-  /** Header search input slot — full field width, not ActionIcon square. */
+  /** Header search input slot — content width, not ActionIcon square. */
   .root [data-widget='header'] [data-search-slot='input'] [data-adapter-fallback] {
-    width: var(--adapter-fallback-width, min(12.5rem, 40vw));
-    --skeleton-width: var(--adapter-fallback-width, min(12.5rem, 40vw));
+    width: var(--adapter-fallback-width, min(var(--cmf-search-header-max-width, 24rem), 50vw));
+    --skeleton-width: var(
+      --adapter-fallback-width,
+      min(var(--cmf-search-header-max-width, 24rem), 50vw)
+    );
     height: var(--adapter-fallback-height, var(--input-height-md, 2.625rem));
   }
 

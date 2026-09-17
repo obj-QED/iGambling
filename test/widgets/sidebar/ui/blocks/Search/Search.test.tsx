@@ -39,15 +39,13 @@ function renderSearch(config: Partial<typeof DEFAULT_SIDEBAR_CONFIG> = {}) {
 }
 
 describe('Sidebar Search block', () => {
-  it('renders row adapter by default', async () => {
+  it('renders row chrome by default', async () => {
     renderSearch();
     expect(await screen.findByRole('button', { name: 'Search' })).toBeInTheDocument();
   });
 
-  it('renders compact SearchIconVariant chrome when typePack overlays search', async () => {
+  it('renders icon chrome when blockVariants.search is icon', async () => {
     renderSearch({ type: 'compact', blockVariants: { search: 'icon' } });
-    // Global Search router still used in unit test (no typePack blocks overlay here) —
-    // icon adapter must render an accessible control named Search.
     expect(await screen.findByRole('button', { name: 'Search' })).toBeInTheDocument();
   });
 

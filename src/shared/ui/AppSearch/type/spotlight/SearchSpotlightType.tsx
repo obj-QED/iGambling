@@ -15,7 +15,7 @@ import {
 
 import { resolveSpotlightProps } from '@/shared/config';
 
-import { appSpotlightStore } from '../../lib';
+import { appSpotlightStore, DATA_SEARCH } from '../../lib';
 import { buildSpotlightPageActions } from '../../lib/buildSpotlightPageActions';
 
 export type SearchSpotlightTypeProps = {
@@ -56,8 +56,13 @@ function SearchSpotlightTypeComponent({
     limit: 7,
     shortcut: shortcutEnabled ? ['mod + K'] : null,
     searchProps: {
+      ...DATA_SEARCH,
       leftSection: <IconSearch size={20} stroke={1.75} aria-hidden />,
       placeholder: 'Search pages...',
+      wrapperProps: {
+        ...DATA_SEARCH,
+        'data-search-part': 'field',
+      },
     },
   });
 
@@ -67,6 +72,8 @@ function SearchSpotlightTypeComponent({
       actions={actionsProp ?? pageActions}
       query={query}
       onQueryChange={setQuery}
+      {...DATA_SEARCH}
+      data-search-type="spotlight"
       {...spotlightProps}
     />
   );

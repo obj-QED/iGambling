@@ -1,5 +1,6 @@
 export {
   resolveSidebarWidth,
+  type SidebarRootWidthOptions,
   type SidebarRootWidthStyle,
   type SidebarWidth,
   toSidebarRootWidthStyle,

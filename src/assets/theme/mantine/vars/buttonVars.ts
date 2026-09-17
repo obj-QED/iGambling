@@ -221,6 +221,16 @@ export function resolveButtonRootVars(props: ButtonVarsProps): Record<string, st
       variant,
       tail: 'variant',
     }),
+    /*
+     * Optional all-sides padding (e.g. `--cmf-button-sidebar-padding`).
+     * Fallback keeps Mantine model: block 0 + inline `--button-padding-x`.
+     */
+    '--button-padding': buildCmfButtonPropToken('padding', '0 var(--button-padding-x)', {
+      scope,
+      variant,
+      /* Prefer widget/chrome `padding` over variant `padding-x` only. */
+      tail: 'shared',
+    }),
     /* Section ↔ label / trailing — replaces Mantine section `margin-inline-*`. */
     '--button-gap': buildCmfButtonPropToken('gap', 'var(--mantine-spacing-xs)', {
       scope,

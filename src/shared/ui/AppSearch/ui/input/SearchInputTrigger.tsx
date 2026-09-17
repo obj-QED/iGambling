@@ -8,6 +8,8 @@ import clsx from 'clsx';
 
 import { useOs } from '@hooks/device';
 
+import { DATA_SEARCH } from '../../lib/searchDataAttrs';
+
 import styles from '../../styles/ui/input.module.scss';
 
 export type SearchInputTriggerProps = Omit<
@@ -31,6 +33,7 @@ export type SearchInputTriggerProps = Omit<
  * Shared search TextInput trigger + OS hotkey badge (`⌘+K` / `Ctrl+K`).
  * Inline mode: typing hides left search icon and shows a clear (×) on the right.
  * Schema key: `style: input`. Widget paint: header/aside `styles/blocks/*`.
+ * Always emits global `data-search="true"` (see `DATA_SEARCH`).
  */
 const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerProps>(
   function SearchInputTrigger(
@@ -67,16 +70,22 @@ const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerPr
     );
 
     const cmfAttrs = {
+      ...DATA_SEARCH,
       ...(typeof cmfComponent === 'string' ? { 'data-cmf-component': cmfComponent } : {}),
       ...(typeof cmfKey === 'string' ? { 'data-cmf-key': cmfKey } : {}),
       ...(typeof cmfRole === 'string' ? { 'data-cmf-role': cmfRole } : {}),
     };
 
-    const { wrapperProps: restWrapperProps, ...restProps } = rest;
+    const { wrapperProps: restWrapperProps, style: restStyle, ...restProps } = rest;
+
+    const measureText = isInlineInput ? (hasQuery ? query : placeholder) : placeholder;
+    const hotkeyText = showHotkeyBadge && !(isInlineInput && hasQuery) ? `${modKey}+K` : '';
+    const contentCh = Math.max(measureText.length, 1);
+    const codeCh = hotkeyText.length;
 
     const defaultLeft = leftSection ?? <IconSearch size={16} stroke={1.75} aria-hidden />;
     const hotkeyBadge = showHotkeyBadge ? (
-      <Code data-search-part="code">{`${modKey}+K`}</Code>
+      <Code data-search-part="code">{hotkeyText}</Code>
     ) : undefined;
     const clearButton = (
       <CloseButton
@@ -86,6 +95,8 @@ const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerPr
         onClick={handleClear}
       />
     );
+
+    const { style: restWrapperStyle, ...restWrapperRest } = restWrapperProps ?? {};
 
     return (
       <TextInput
@@ -125,6 +136,7 @@ const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerPr
                 }
               : undefined
         }
+        style={restStyle}
         /* Top-level: theme vars / hasCmfScope. Wrapper: shell skeleton host (hides icon/code). */
         {...cmfAttrs}
         {...(isOverlay ? { 'data-search-overlay': 'true' as const } : {})}
@@ -132,7 +144,18 @@ const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerPr
           ...cmfAttrs,
           ...(isOverlay ? { 'data-search-overlay': 'true' } : {}),
           'data-search-part': 'field',
-          ...restWrapperProps,
+          ...restWrapperRest,
+          style: {
+            ...(restWrapperStyle && typeof restWrapperStyle === 'object' ? restWrapperStyle : null),
+            ['--cmf-search-content-ch' as string]: String(contentCh),
+            ['--cmf-search-code-ch' as string]: String(codeCh),
+            ...(codeCh > 0
+              ? {
+                  ['--input-right-section-width' as string]:
+                    'calc(var(--cmf-search-code-ch) * 1ch + var(--mantine-spacing-md, 1rem))',
+                }
+              : {}),
+          },
         }}
         {...restProps}
       />

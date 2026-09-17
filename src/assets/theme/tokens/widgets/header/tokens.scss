@@ -47,8 +47,10 @@
   --cmf-button-header-radius: var(--cmf-button-radius, var(--mantine-radius-md));
   --cmf-button-header-justify: center;
 
-  /* AppSearch TextInput — same radius as header buttons */
+  /* AppSearch TextInput — same radius as header buttons; width follows label */
   --cmf-search-header-radius: var(--cmf-button-header-radius);
+  --cmf-search-header-min-width: 10rem;
+  --cmf-search-header-max-width: 28rem;
 
   /* ActionIcon CMF (component scope) */
   --cmf-action-icon-header-home-color: var(--brand-color-6);
