@@ -38,7 +38,7 @@ export function useAppSearchTrigger(behavior: string | undefined) {
   }, [inputMode]);
 
   return {
-    searchQuery,
+    searchQuery: searchQuery ?? '',
     onActivate,
     onSearchQueryChange,
     showHotkeyBadge: isSpotlightSearchBehavior(behavior),

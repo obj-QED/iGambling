@@ -58,13 +58,22 @@ const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerPr
     const isOverlay = onActivate !== undefined;
     const isInlineInput = onSearchQueryChange !== undefined;
     const modKey = os === 'macos' || os === 'ios' ? '⌘' : 'Ctrl';
-    const query = isInlineInput ? (searchQuery ?? '') : '';
-    const hasQuery = query.length > 0;
+    /* Always a string — slideout toggles overlay ↔ inline on the same TextInput. */
+    const query = searchQuery ?? '';
+    const hasQuery = isInlineInput && query.length > 0;
 
     const handleClear = useCallback(
       (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         onSearchQueryChange?.('');
+      },
+      [onSearchQueryChange],
+    );
+
+    const handleChange = useCallback(
+      (event: { currentTarget: { value: string } }) => {
+        if (onSearchQueryChange === undefined) return;
+        onSearchQueryChange(event.currentTarget.value);
       },
       [onSearchQueryChange],
     );
@@ -76,7 +85,13 @@ const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerPr
       ...(typeof cmfRole === 'string' ? { 'data-cmf-role': cmfRole } : {}),
     };
 
-    const { wrapperProps: restWrapperProps, style: restStyle, ...restProps } = rest;
+    const {
+      wrapperProps: restWrapperProps,
+      style: restStyle,
+      value: _ignoredValue,
+      defaultValue: _ignoredDefaultValue,
+      ...restProps
+    } = rest;
 
     const measureText = isInlineInput ? (hasQuery ? query : placeholder) : placeholder;
     const hotkeyText = showHotkeyBadge && !(isInlineInput && hasQuery) ? `${modKey}+K` : '';
@@ -108,34 +123,6 @@ const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerPr
         leftSection={isInlineInput && hasQuery ? undefined : defaultLeft}
         rightSection={isInlineInput && hasQuery ? clearButton : hotkeyBadge}
         rightSectionPointerEvents={isInlineInput && hasQuery ? 'all' : 'none'}
-        readOnly={isOverlay}
-        value={isInlineInput ? query : undefined}
-        onChange={
-          isInlineInput
-            ? (event) => {
-                onSearchQueryChange(event.currentTarget.value);
-              }
-            : undefined
-        }
-        onClick={
-          isOverlay
-            ? () => {
-                onActivate();
-              }
-            : undefined
-        }
-        onFocus={
-          isOverlay
-            ? (event) => {
-                event.currentTarget.blur();
-                onActivate();
-              }
-            : isInlineInput
-              ? () => {
-                  onSearchQueryChange(searchQuery ?? '');
-                }
-              : undefined
-        }
         style={restStyle}
         /* Top-level: theme vars / hasCmfScope. Wrapper: shell skeleton host (hides icon/code). */
         {...cmfAttrs}
@@ -158,6 +145,29 @@ const SearchInputTriggerBase = forwardRef<HTMLInputElement, SearchInputTriggerPr
           },
         }}
         {...restProps}
+        /* Controlled props LAST — never let rest override with undefined. */
+        readOnly={isOverlay}
+        value={query}
+        onChange={handleChange}
+        onClick={
+          isOverlay
+            ? () => {
+                onActivate();
+              }
+            : undefined
+        }
+        onFocus={
+          isOverlay
+            ? (event) => {
+                event.currentTarget.blur();
+                onActivate();
+              }
+            : isInlineInput
+              ? () => {
+                  onSearchQueryChange(query);
+                }
+              : undefined
+        }
       />
     );
   },

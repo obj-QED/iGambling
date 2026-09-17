@@ -67,7 +67,7 @@ function SearchModalContentComponent({ id, context }: ContextModalProps) {
           ) : undefined
         }
         rightSectionPointerEvents={hasQuery ? 'all' : 'none'}
-        value={query}
+        value={query ?? ''}
         onChange={(event) => {
           dispatch(setAppSearchQuery(event.currentTarget.value));
         }}
