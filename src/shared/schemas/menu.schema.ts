@@ -2,6 +2,8 @@ import type { MenuItemDto, MenuRootDto } from '@/shared/types/menu';
 
 import { z } from 'zod';
 
+const menuItemRailMediaSchema = z.enum(['img', 'initial', 'glyph']);
+
 /** API menu DTO — strings pass through as backend sends them (no trim/transform). */
 export const menuItemDtoSchema: z.ZodType<MenuItemDto> = z.lazy(() =>
   z.object({
@@ -15,6 +17,7 @@ export const menuItemDtoSchema: z.ZodType<MenuItemDto> = z.lazy(() =>
     variant: z.string().optional(),
     label: z.string().optional(),
     menuIcon: z.boolean().optional(),
+    railMedia: menuItemRailMediaSchema.optional(),
     badge: z.union([z.string(), z.number()]).optional(),
     subtitle: z.string().optional(),
     items: z.array(menuItemDtoSchema).min(1).optional(),

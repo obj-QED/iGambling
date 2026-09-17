@@ -20,10 +20,11 @@ import {
   isRenderableItem,
   resolveItemHref,
   resolveItemLabel,
-  resolveItemNameInitial,
   resolveMenuItemButtonVariant,
+  resolveSidebarRailMedia,
 } from '../../../lib';
 import { ItemMedia } from '../ItemMedia/ItemMedia';
+import { ItemRailMark } from '../ItemRailMark/ItemRailMark';
 
 import styles from '../../../styles/items/ItemButton.module.scss';
 
@@ -51,9 +52,24 @@ function ItemButtonComponent({
   const iconOnly = isIconOnlyItem(item);
   const displayLabel = hasItemName(item) ? item.name : undefined;
   const ariaLabel = resolveItemLabel(item);
-  /** Letter fallback only on settled collapsed rail — not mid collapsing (avoids flash). */
-  const showNameInitial = slideoutOn && slideoutPhase === 'collapsed';
+  /** Rail mark on settled collapsed only — expanding mirrors collapsing (labels + img). */
+  const railMark = slideoutOn && slideoutPhase === 'collapsed';
+  const railKind = resolveSidebarRailMedia(item, showItemImg);
+
   const leftSection = useMemo(() => {
+    if (railMark) {
+      return (
+        <ItemRailMark
+          item={item}
+          kind={railKind}
+          alt={ariaLabel}
+          onImgError={onImgError}
+          className={CMF_BUTTON_ICON}
+          initialClassName={clsx(styles.nameLabel, CMF_BUTTON_ICON)}
+        />
+      );
+    }
+
     if (showItemImg) {
       return (
         <ItemMedia
@@ -65,17 +81,8 @@ function ItemButtonComponent({
       );
     }
 
-    if (!showNameInitial) return undefined;
-
-    const initial = resolveItemNameInitial(item);
-    if (!initial) return undefined;
-
-    return (
-      <span className={clsx(styles.nameLabel, CMF_BUTTON_ICON)} data-sidebar-item-label>
-        {initial}
-      </span>
-    );
-  }, [showItemImg, showNameInitial, item, ariaLabel, onImgError]);
+    return undefined;
+  }, [railMark, railKind, showItemImg, item, ariaLabel, onImgError]);
   const justify: 'flex-start' | 'space-between' = dropdownTrigger ? 'space-between' : 'flex-start';
 
   if (!isRenderableItem(item) || !visible) return null;

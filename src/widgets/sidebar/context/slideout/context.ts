@@ -4,7 +4,7 @@ import { createContext } from 'react';
 
 export type SidebarSlideoutApi = {
   /**
-   * True when `aside.type === 'slideout'` and viewport is above tablet (1024).
+   * True when `aside.type === 'slideout'` and viewport is above tablet.
    * Below tablet: false — no toggle / rail chrome (always expanded look).
    */
   enabled: boolean;

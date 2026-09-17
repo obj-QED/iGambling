@@ -23,6 +23,7 @@ export const SIDEBAR_MENU_MOCK: HeaderMenuModel = {
           type: 'link',
           subtitle: 'ID 10482',
           badge: 'VIP',
+          railMedia: 'glyph',
         },
       ],
     },

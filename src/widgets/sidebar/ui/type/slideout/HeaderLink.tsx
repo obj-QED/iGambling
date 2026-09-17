@@ -2,35 +2,42 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
-import { IconUserScan } from '@tabler/icons-react';
+import { useMediaState } from '@/shared/hooks';
 
 import { useSidebarSlideout } from '../../../context';
-import { itemKey } from '../../../lib';
+import { resolveItemLabel, resolveSidebarRailMedia } from '../../../lib';
 import { SidebarHeaderLink } from '../../blocks/SidebarHeader/HeaderLink';
+import { ItemRailMark } from '../../items/ItemRailMark/ItemRailMark';
 
 import headerStyles from '../../../styles/blocks/SidebarHeader.module.scss';
 
-function isAccountHeaderItem(item: BlockProps['item']): boolean {
-  const subtitle = item.subtitle;
-  if (subtitle !== undefined && subtitle.length > 0) return true;
-  return itemKey(item) === 'account';
-}
-
-/** Same header rows as `default`; collapsed account → `IconUserScan`, no chevron. */
+/**
+ * Header rows for slideout — rail mark only when settled collapsed.
+ * Expanding mirrors collapsing (full header row + labels).
+ */
 function SlideoutHeaderLinkComponent({ item }: BlockProps) {
-  const { phase, settled } = useSidebarSlideout();
-  const isAccount = isAccountHeaderItem(item);
-  const rail = phase === 'collapsed' || phase === 'collapsing';
-  const railAccount = phase === 'collapsed' && settled && isAccount;
+  const { phase } = useSidebarSlideout();
+  const { showItemImg, onImgError } = useMediaState(item);
+  const rail = phase === 'collapsed';
+  const railKind = resolveSidebarRailMedia(item, showItemImg);
+  const label = resolveItemLabel(item);
 
   return (
     <SidebarHeaderLink
       item={item}
-      hideRightSection={rail && isAccount}
-      railIconOnly={railAccount}
+      hideRightSection={rail}
+      railIconOnly={rail}
       leftSection={
-        railAccount ? (
-          <IconUserScan className={headerStyles.mainLinkIcon} size={22} stroke={1.5} aria-hidden />
+        rail ? (
+          <ItemRailMark
+            item={item}
+            kind={railKind}
+            alt={label}
+            onImgError={onImgError}
+            imgClassName={headerStyles.mainLinkIcon}
+            className={headerStyles.mainLinkIcon}
+            glyphSize={22}
+          />
         ) : undefined
       }
     />

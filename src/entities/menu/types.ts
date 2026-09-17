@@ -1,10 +1,16 @@
 /** UI-ready navigation model shared by application chrome widgets. */
+import type { MenuItemRailMedia } from '@/shared/types/menu';
+
+export type { MenuItemRailMedia };
+
 export type MenuItem = {
   key?: string;
   url?: string;
   name?: string;
   label?: string;
   menuIcon?: boolean;
+  /** Compact / slideout-rail mark — see `MenuItemRailMedia`. */
+  railMedia?: MenuItemRailMedia;
   img?: string;
   imgShape?: string;
   imgRadius?: string;

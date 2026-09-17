@@ -1,8 +1,7 @@
-// Sass breakpoint SoT for `@media` / mixins.
-// Keep aligned with `breakpoints.ts` and `tokens/theme.scss` `--breakpoint-*`.
-// Loaded via `@use` (token modules do not receive Vite `additionalData`).
+// AUTO-GENERATED from breakpoints.ts — edit that file, not this one.
+// Runtime JS: theme.scss `--breakpoint-*` ← these vars. Mantine: breakpointsEm.
 
 $mobile: 767px;
-$tablet: 1024px;
+$tablet: 1040px;
 $laptop: 1440px;
 $pc: 1441px;

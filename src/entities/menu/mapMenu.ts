@@ -20,6 +20,7 @@ export function mapMenuItem(item: MenuItemDto): MenuItem {
   if (item.subtitle !== undefined) mapped.subtitle = item.subtitle;
   if (item.label !== undefined) mapped.label = item.label;
   if (item.menuIcon === true) mapped.menuIcon = true;
+  if (item.railMedia !== undefined) mapped.railMedia = item.railMedia;
   if (item.variant !== undefined) mapped.variant = item.variant;
   if (item.type !== undefined) mapped.type = item.type;
   return mapped;

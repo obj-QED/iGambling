@@ -36,14 +36,15 @@
     --h6-font-size: 0.875rem;
 
     /*
-     * Viewport bands (max-width, px) — runtime JS SoT via `readBreakpointsPx()`.
-     * Fallback / SCSS `@media` / Mantine: `assets/theme/breakpoints.ts` (keep aligned).
-     * Note: CSS vars cannot drive `@media` queries; `$mobile/$tablet` stay build-injected.
+     * Viewport bands (max-width) — runtime JS via `readBreakpointsPx()`.
+     * Values come from `breakpoints.scss` ($mobile/…) which is generated from
+     * `breakpoints.ts` — change numbers only in that TS file.
+     * CSS vars cannot drive `@media`; Sass `$tablet` and these must stay identical.
      */
-    --breakpoint-mobile: 767px;
-    --breakpoint-tablet: 1024px;
-    --breakpoint-laptop: 1440px;
-    --breakpoint-pc: 1441px;
+    --breakpoint-mobile: #{$mobile};
+    --breakpoint-tablet: #{$tablet};
+    --breakpoint-laptop: #{$laptop};
+    --breakpoint-pc: #{$pc};
 
     --container-max-mobile: 100%;
     --container-max-tablet: 768px;
@@ -201,9 +202,9 @@
 
   /*
    * Shared size in @media (panel reads `--cmf-drawer-layout-sidebar-size`).
-   * `$mobile` = ≤767px (`data-viewport=mobile`). Drawer also opens on tablet
-   * (≤1024) — edit `$tablet` block or use `--cmf-drawer-layout-sidebar-size-mobile`.
-   */
+ * `$mobile` = ≤767px (`data-viewport=mobile`). Drawer also opens on tablet
+ * (≤ `$tablet`) — edit `breakpoints.ts` or use `--cmf-drawer-layout-sidebar-size-mobile`.
+ */
   @media (max-width: $tablet) {
     :root {
       --cmf-drawer-layout-sidebar-padding: 0;

@@ -1,6 +1,12 @@
 /** Parsed menu item DTO — validated at API/config boundary only. */
 export type MenuItemApiType = 'button' | 'link';
 
+/**
+ * Mark when the row label is unavailable (compact ActionIcon / slideout rail).
+ * Omit → default chain: `img` → `glyph` (known key) → `initial`.
+ */
+export type MenuItemRailMedia = 'img' | 'initial' | 'glyph';
+
 export type MenuItemDto = {
   key: string;
   name: string;
@@ -15,6 +21,12 @@ export type MenuItemDto = {
   label?: string;
   /** Sidebar logo rail — show burger/menu trigger next to the mark. */
   menuIcon?: boolean;
+  /**
+   * Compact + slideout-collapsed mark override.
+   * Use when the default img→initial→glyph chain is wrong for this item
+   * (e.g. account prefers `glyph` over avatar `img` on the rail).
+   */
+  railMedia?: MenuItemRailMedia;
   badge?: string | number;
   subtitle?: string;
   items?: MenuItemDto[];

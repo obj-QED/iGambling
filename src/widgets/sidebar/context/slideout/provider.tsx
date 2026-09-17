@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useIsMobile } from '@hooks/useIsMobile';
 
@@ -12,6 +12,9 @@ import {
 } from '../../lib/slideout';
 import { type SidebarSlideoutApi, SidebarSlideoutContext } from './context';
 
+/** Matches `--aside-slideout-transition` default — fallback if `transitionend` is missed. */
+const SLIDEOUT_SETTLE_FALLBACK_MS = 500;
+
 export type SidebarSlideoutProviderProps = {
   /** `aside.type === 'slideout'`. */
   enabled: boolean;
@@ -19,7 +22,7 @@ export type SidebarSlideoutProviderProps = {
 };
 
 /**
- * Slideout open/closed — desktop only (`> tablet` / 1024).
+ * Slideout open/closed — desktop only (`> tablet`).
  * Persists in localStorage; default open. Below tablet: always expanded (no rail).
  *
  * Phases: `expanded` | `collapsed` | `expanding` | `collapsing`
@@ -35,15 +38,38 @@ export function SidebarSlideoutProvider({ enabled, children }: SidebarSlideoutPr
   );
   /** Idle on mount — phase is expanded|collapsed, not mid-transition. */
   const [settled, setSettled] = useState(true);
+  const settleFallbackRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearSettleFallback = useCallback(() => {
+    if (settleFallbackRef.current !== null) {
+      clearTimeout(settleFallbackRef.current);
+      settleFallbackRef.current = null;
+    }
+  }, []);
+
+  const markSettled = useCallback(() => {
+    if (!viewportActive) return;
+    clearSettleFallback();
+    setSettled(true);
+  }, [viewportActive, clearSettleFallback]);
+
+  const armSettleFallback = useCallback(() => {
+    clearSettleFallback();
+    settleFallbackRef.current = setTimeout(() => {
+      settleFallbackRef.current = null;
+      setSettled(true);
+    }, SLIDEOUT_SETTLE_FALLBACK_MS);
+  }, [clearSettleFallback]);
 
   const setExpanded = useCallback(
     (next: boolean) => {
       if (!viewportActive) return;
       setSettled(false);
+      armSettleFallback();
       setExpandedState(next);
       writeSidebarSlideoutExpanded(next);
     },
-    [viewportActive],
+    [viewportActive, armSettleFallback],
   );
 
   const toggle = useCallback(() => {
@@ -51,15 +77,18 @@ export function SidebarSlideoutProvider({ enabled, children }: SidebarSlideoutPr
     setExpandedState((prev) => {
       const next = !prev;
       setSettled(false);
+      armSettleFallback();
       writeSidebarSlideoutExpanded(next);
       return next;
     });
-  }, [viewportActive]);
+  }, [viewportActive, armSettleFallback]);
 
-  const markSettled = useCallback(() => {
-    if (!viewportActive) return;
-    setSettled(true);
-  }, [viewportActive]);
+  useEffect(
+    () => () => {
+      clearSettleFallback();
+    },
+    [clearSettleFallback],
+  );
 
   const value = useMemo<SidebarSlideoutApi>(() => {
     const open = enabled ? (viewportActive ? expanded : true) : false;

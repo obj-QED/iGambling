@@ -15,50 +15,14 @@ import { AppActionIcon } from '@/shared/ui';
 
 import { useAsideMenuButtonSize } from '../../../hooks';
 import {
-  hasItemImg,
-  hasItemName,
-  renderSidebarFooterIcon,
   resolveItemHref,
   resolveItemLabel,
-  resolveItemNameInitial,
   resolveMenuItemActionIconVariant,
+  resolveSidebarRailMedia,
 } from '../../../lib';
-import { SidebarPhotoFallback } from '../icons/SidebarPhotoFallback';
-import { ItemMedia } from '../ItemMedia/ItemMedia';
+import { ItemRailMark } from '../ItemRailMark/ItemRailMark';
 
 import styles from '../../../styles/items/ItemActionIcon.module.scss';
-
-function resolveActionIconContent(
-  item: ItemActionIconProps['item'],
-  label: string,
-  showItemImg: boolean,
-  onImgError: (() => void) | undefined,
-  chrome: ItemActionIconProps['chrome'],
-) {
-  if (showItemImg && hasItemImg(item)) {
-    return <ItemMedia item={item} alt={label} onImgError={onImgError} />;
-  }
-
-  if (chrome === 'footer') {
-    const footerIcon = renderSidebarFooterIcon(item, {
-      className: 'cmf-ActionIcon-icon-svg',
-      stroke: 1.5,
-      'aria-hidden': true,
-    });
-    if (footerIcon) return footerIcon;
-  }
-
-  if (hasItemName(item)) {
-    const initial = resolveItemNameInitial(item) ?? label.slice(0, 1).toUpperCase();
-    return (
-      <span className={styles.nameLabel} data-sidebar-item-label>
-        {initial}
-      </span>
-    );
-  }
-
-  return <SidebarPhotoFallback />;
-}
 
 function ItemActionIconComponent({
   item,
@@ -74,9 +38,19 @@ function ItemActionIconComponent({
   const { onImgError, iconControlAttrs, showItemImg } = useMediaState(item);
   const size = useAsideMenuButtonSize();
   const label = resolveItemLabel(item);
+  const railKind = resolveSidebarRailMedia(item, showItemImg);
   const content = useMemo(
-    () => resolveActionIconContent(item, label, showItemImg, onImgError, chrome),
-    [item, label, showItemImg, onImgError, chrome],
+    () => (
+      <ItemRailMark
+        item={item}
+        kind={railKind}
+        alt={label}
+        onImgError={onImgError}
+        initialClassName={styles.nameLabel}
+        glyphSize={18}
+      />
+    ),
+    [item, railKind, label, onImgError],
   );
 
   return (

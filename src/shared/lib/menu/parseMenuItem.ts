@@ -92,6 +92,12 @@ function coerceMenuItem(raw: unknown): MenuItemDto | null {
     coerced.menuIcon = true;
   }
 
+  const railMediaRaw =
+    readRecordField(cleaned, 'railMedia') ?? readRecordField(cleaned, 'rail_media');
+  if (railMediaRaw === 'img' || railMediaRaw === 'initial' || railMediaRaw === 'glyph') {
+    coerced.railMedia = railMediaRaw;
+  }
+
   const result = menuItemDtoSchema.safeParse(coerced);
   return result.success ? result.data : null;
 }
