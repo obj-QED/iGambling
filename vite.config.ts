@@ -4,13 +4,13 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 
 import { scssAdditionalData } from './build/scss-config.ts';
-import { syncBreakpointsScss } from './build/sync-breakpoints-scss.ts';
+import { syncBreakpointsFromScss } from './build/sync-breakpoints-scss.ts';
 import { themeBuildPlugin } from './vite-plugin-assets-build.ts';
 import { cssCascadeFullReloadPlugin } from './vite-plugin-css-cascade-full-reload.ts';
 import { fontsStylesheetPlugin } from './vite-plugin-fonts-stylesheet.ts';
 
-/** Keep `breakpoints.scss` aligned with `breakpoints.ts` before Sass compiles. */
-syncBreakpointsScss();
+/** Sync JS `BREAKPOINTS_PX` from Sass SoT (`breakpoints.scss`) before compile. */
+syncBreakpointsFromScss();
 
 /** Non-empty trim; CI / missing keys stay safe. */
 function envUrl(env: Record<string, string>, key: string): string {

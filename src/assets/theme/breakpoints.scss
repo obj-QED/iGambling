@@ -1,7 +1,8 @@
-// AUTO-GENERATED from breakpoints.ts — edit that file, not this one.
-// Runtime JS: theme.scss `--breakpoint-*` ← these vars. Mantine: breakpointsEm.
+// Sass breakpoint SoT for `@media` / mixins — edit values here.
+// Vite/Storybook sync → `breakpoints.values.ts` (JS / Mantine).
+// Runtime CSS vars: `theme.scss` `--breakpoint-*` ← `#{$mobile|$tablet|…}`.
 
 $mobile: 767px;
-$tablet: 1040px;
+$tablet: 1024px;
 $laptop: 1440px;
 $pc: 1441px;

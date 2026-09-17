@@ -37,9 +37,8 @@
 
     /*
      * Viewport bands (max-width) — runtime JS via `readBreakpointsPx()`.
-     * Values come from `breakpoints.scss` ($mobile/…) which is generated from
-     * `breakpoints.ts` — change numbers only in that TS file.
-     * CSS vars cannot drive `@media`; Sass `$tablet` and these must stay identical.
+     * Values from `breakpoints.scss` (`$mobile` / `$tablet` / …).
+     * JS fallback / Mantine: synced `breakpoints.values.ts`. Change numbers only in the scss file.
      */
     --breakpoint-mobile: #{$mobile};
     --breakpoint-tablet: #{$tablet};

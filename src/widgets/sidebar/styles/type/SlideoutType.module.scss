@@ -2,7 +2,7 @@
  * Slideout — aside width transition + rail chrome.
  * Duration / easing SoT: `--aside-slideout-transition` / `-timing`.
  * Desktop only: `@media (max-width: $tablet)` kills rail (JS: `useIsMobile` ≤ tablet).
- * Breakpoint SoT: `breakpoints.ts` → `breakpoints.scss` / `--breakpoint-tablet`.
+ * Breakpoint SoT: `breakpoints.scss` → `--breakpoint-tablet` / JS sync.
  *
  * Smoothness rules:
  * - Animate ONLY `width` (never `--app-layout-sidebar-width` / `@property`).

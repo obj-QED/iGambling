@@ -4,10 +4,10 @@ import { fileURLToPath } from 'node:url';
 import { mergeConfig } from 'vite';
 
 import { scssAdditionalData } from '../build/scss-config.ts';
-import { syncBreakpointsScss } from '../build/sync-breakpoints-scss.ts';
+import { syncBreakpointsFromScss } from '../build/sync-breakpoints-scss.ts';
 
-/** Keep `breakpoints.scss` aligned with `breakpoints.ts` before Sass compiles. */
-syncBreakpointsScss();
+/** Sync JS `BREAKPOINTS_PX` from Sass SoT (`breakpoints.scss`) before compile. */
+syncBreakpointsFromScss();
 
 const srcDir = fileURLToPath(new URL('../src', import.meta.url));
 

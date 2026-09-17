@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
+import { parseBreakpointsScss } from '../../../build/sync-breakpoints-scss';
 import { BREAKPOINTS_PX } from '@/assets/theme/breakpoints';
 
 const SCSS_PATH = fileURLToPath(
@@ -10,10 +11,8 @@ const SCSS_PATH = fileURLToPath(
 );
 
 describe('breakpoints SoT sync', () => {
-  it('breakpoints.scss matches BREAKPOINTS_PX (edit breakpoints.ts, run Vite)', () => {
-    const scss = readFileSync(SCSS_PATH, 'utf8');
-    for (const [name, px] of Object.entries(BREAKPOINTS_PX)) {
-      expect(scss).toMatch(new RegExp(`\\$${name}:\\s*${px}px`));
-    }
+  it('BREAKPOINTS_PX matches breakpoints.scss (edit scss, run Vite)', () => {
+    const fromScss = parseBreakpointsScss(readFileSync(SCSS_PATH, 'utf8'));
+    expect(BREAKPOINTS_PX).toEqual(fromScss);
   });
 });
