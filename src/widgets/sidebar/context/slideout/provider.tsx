@@ -15,6 +15,7 @@ import { type SidebarSlideoutApi, SidebarSlideoutContext } from './context';
 
 /** Matches `--aside-slideout-transition` / `--aside-slidein-transition` — fallback if `transitionend` is missed. */
 const SLIDEOUT_SETTLE_FALLBACK_MS = 500;
+const SLIDEIN_SETTLE_FALLBACK_MS = 1000;
 
 export type SidebarSlideoutProviderProps = {
   /** `aside.type` is an expand shell (`slideout` | `slidein`). */
@@ -63,11 +64,13 @@ export function SidebarSlideoutProvider({
 
   const armSettleFallback = useCallback(() => {
     clearSettleFallback();
+    const settleMs =
+      persistMode === 'slidein' ? SLIDEIN_SETTLE_FALLBACK_MS : SLIDEOUT_SETTLE_FALLBACK_MS;
     settleFallbackRef.current = setTimeout(() => {
       settleFallbackRef.current = null;
       setSettled(true);
-    }, SLIDEOUT_SETTLE_FALLBACK_MS);
-  }, [clearSettleFallback]);
+    }, settleMs);
+  }, [clearSettleFallback, persistMode]);
 
   const setExpanded = useCallback(
     (next: boolean) => {

@@ -64,10 +64,12 @@ function SidebarAsideShell({
     (event: TransitionEvent<HTMLElement>) => {
       if (!enabled) return;
       if (event.target !== event.currentTarget) return;
+      /* Slidein settles on overlay `transform` (Strategy) — width is post-settle only. */
+      if (type === 'slidein') return;
       if (event.propertyName !== 'width') return;
       markSettled();
     },
-    [enabled, markSettled],
+    [enabled, markSettled, type],
   );
 
   return (

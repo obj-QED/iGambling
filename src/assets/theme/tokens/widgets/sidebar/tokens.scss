@@ -292,7 +292,7 @@
 
     --cmf-button-sidebar-icon-scale: 0.5;
 
-    --aside-slidein-transition: 0.4s;
+    --aside-slidein-transition: 0.85s;
     --aside-slidein-timing: cubic-bezier(0.22, 1, 0.36, 1);
 
     --aside-slidein-expanded-width: 15rem;
@@ -304,24 +304,33 @@
     --aside-slidein-rail-shell-pad: var(--mantine-spacing-sm);
     --aside-shell-padding: var(--aside-slidein-rail-shell-pad);
 
+    /* Width tokens follow shell during collapse direction (synced with track). */
     &:where([data-aside-slidein-phase='collapsed']),
     &:where([data-aside-slidein-phase='collapsing']) {
       --app-layout-sidebar-width: var(--aside-slidein-collapsed-width);
+      --aside-scrollbar-size: 1px;
+      --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
+      --scrollarea-padding-inline: var(--mantine-spacing-xs);
+
+      --cmf-action-icon-sidebar-size: calc(
+        var(--app-layout-sidebar-width) - 2 *
+          var(--aside-shell-padding-x, var(--aside-shell-padding, var(--mantine-spacing-sm))) - 2 *
+          var(--scrollarea-padding-inline, 4px)
+      );
     }
 
     &:where([data-aside-slidein-phase='collapsed']),
     &:where([data-aside-slidein-phase='collapsing']) {
-      --aside-scrollbar-size: 1px;
-      --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
-      --scrollarea-padding-inline: var(--mantine-spacing-xs);
-    }
-
-    &:where([data-aside-slidein-phase='collapsed']) {
-      --cmf-button-sidebar-header-account-height: var(--aside-slidein-rail-button);
-      --cmf-button-sidebar-header-height: var(--aside-slidein-rail-button);
-      --cmf-search-sidebar-height: var(--aside-slidein-rail-button);
-      --cmf-search-sidebar-search-height: var(--aside-slidein-rail-button);
-      --cmf-search-sidebar-search_leftmenu-height: var(--aside-slidein-rail-button);
+      --aside-slidein-control: var(--cmf-action-icon-sidebar-size);
+      --logo-height: var(--aside-slidein-control);
+      --logo-width: var(--aside-slidein-control);
+      --cmf-button-sidebar-header-account-height: var(--aside-slidein-control);
+      --cmf-button-sidebar-header-height: var(--aside-slidein-control);
+      --cmf-search-sidebar-height: var(--aside-slidein-control);
+      --cmf-search-sidebar-search-height: var(--aside-slidein-control);
+      --cmf-search-sidebar-search_leftmenu-height: var(--aside-slidein-control);
+      --cmf-action-icon-sidebar-header-logo-size: var(--aside-slidein-control);
+      --cmf-action-icon-sidebar-header-logo-trigger-size: var(--aside-slidein-control);
 
       --cmf-button-sidebar-timer-bg: var(--mantine-color-dark-6);
       --cmf-button-sidebar-wheel_mdl-bg: var(--mantine-color-dark-6);

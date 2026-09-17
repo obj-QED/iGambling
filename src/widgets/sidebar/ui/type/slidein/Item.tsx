@@ -4,18 +4,17 @@ import { memo } from 'react';
 
 import { AppTooltip } from '@/shared/ui';
 
-import { useSidebarConfig, useSidebarSlideout } from '../../../context';
+import { useSidebarConfig } from '../../../context';
 import { ItemButton } from '../../items/ItemButton/ItemButton';
 
 /**
- * Same row markup as `default` (`ItemButton`).
- * Tooltip only while collapsed (labels slide off left via CSS).
+ * Expanded-face rows — labels stay visible (panel slides as a whole).
+ * Tooltips off; collapsed face uses CompactItem tooltips.
  */
 function SlideinItemComponent(props: SidebarItemPresentationProps) {
   const { tooltip } = useSidebarConfig();
-  const { expanded, enabled: expandOn } = useSidebarSlideout();
   const { chrome, item } = props;
-  const tooltipConfig = expandOn && expanded ? { ...tooltip, enabled: false as const } : tooltip;
+  const tooltipConfig = { ...tooltip, enabled: false as const };
 
   return (
     <AppTooltip
