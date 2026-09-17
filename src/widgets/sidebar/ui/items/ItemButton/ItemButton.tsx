@@ -52,37 +52,44 @@ function ItemButtonComponent({
   const iconOnly = isIconOnlyItem(item);
   const displayLabel = hasItemName(item) ? item.name : undefined;
   const ariaLabel = resolveItemLabel(item);
-  /** Rail mark on settled collapsed only — expanding mirrors collapsing (labels + img). */
+  /** Rail mark chrome on settled collapsed only — expanding mirrors collapsing. */
   const railMark = slideoutOn && slideoutPhase === 'collapsed';
   const railKind = resolveSidebarRailMedia(item, showItemImg);
+  /** Glyph/initial replace the visible mark; img stays mounted (parked) to avoid SVG refetch. */
+  const railNonImg = railMark && railKind !== 'img';
 
   const leftSection = useMemo(() => {
-    if (railMark) {
+    const media = showItemImg && (
+      <ItemMedia
+        item={item}
+        alt={ariaLabel}
+        onImgError={onImgError}
+        className={clsx(CMF_BUTTON_ICON, railNonImg && styles.mediaParked)}
+      />
+    );
+
+    const mark = railNonImg && (
+      <ItemRailMark
+        item={item}
+        kind={railKind}
+        alt={ariaLabel}
+        onImgError={onImgError}
+        className={CMF_BUTTON_ICON}
+        initialClassName={clsx(styles.nameLabel, CMF_BUTTON_ICON)}
+      />
+    );
+
+    if (media !== null && mark !== null) {
       return (
-        <ItemRailMark
-          item={item}
-          kind={railKind}
-          alt={ariaLabel}
-          onImgError={onImgError}
-          className={CMF_BUTTON_ICON}
-          initialClassName={clsx(styles.nameLabel, CMF_BUTTON_ICON)}
-        />
+        <>
+          {media}
+          {mark}
+        </>
       );
     }
 
-    if (showItemImg) {
-      return (
-        <ItemMedia
-          item={item}
-          alt={ariaLabel}
-          onImgError={onImgError}
-          className={CMF_BUTTON_ICON}
-        />
-      );
-    }
-
-    return undefined;
-  }, [railMark, railKind, showItemImg, item, ariaLabel, onImgError]);
+    return media ?? mark ?? undefined;
+  }, [showItemImg, railNonImg, railKind, item, ariaLabel, onImgError]);
   const justify: 'flex-start' | 'space-between' = dropdownTrigger ? 'space-between' : 'flex-start';
 
   if (!isRenderableItem(item) || !visible) return null;

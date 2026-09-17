@@ -7,7 +7,8 @@
  * Smoothness rules:
  * - Animate ONLY `width` (never `--app-layout-sidebar-width` / `@property`).
  * - Collapsing + expanding share expanded chrome (labels ellipsize with the track).
- * - Settled collapsed only: rail squares, rail marks, logo wrap, search modal look.
+ * - Settled collapsed only: rail squares, rail marks, search modal look.
+ * - Logo wrap follows tween *direction* (stable mid-flight); height always `--logo-height`.
  */
 
 @layer widget.variant {
@@ -23,10 +24,8 @@
     width: var(--aside-slideout-expanded-width, 15rem);
     overflow: hidden;
 
-    /* Only `width` + shell `padding` — never the custom prop (snaps). */
-    transition:
-      width var(--aside-slideout-duration) var(--aside-slideout-ease),
-      padding var(--aside-slideout-duration) var(--aside-slideout-ease);
+    /* Only `width` — shell pad is constant; padding transition reflowed for nothing. */
+    transition: width var(--aside-slideout-duration) var(--aside-slideout-ease);
 
     &:where([data-aside-slideout-phase='collapsed']),
     &:where([data-aside-slideout-phase='collapsing']) {
@@ -93,8 +92,13 @@
     }
 
     /*
-     * Logo strip — default row. Mid-tween: clip/shift in-row (no full-width rebuild).
-     * Settled collapsed: wrap mark under the burger (same as pre-shift layout).
+     * Logo strip — layout mode is STABLE for the whole tween direction:
+     *   collapsing + collapsed → wrap (mark under burger)
+     *   expanding + expanded   → nowrap (mark beside burger)
+     * Snap happens on click (direction change), never mid-width or on settle.
+     *
+     * Mark size: always `--logo-height` (rail button). AppLogo must not use a
+     * fixed `--logo-width` clamp — image is height-driven + max-width 100%.
      */
     :global(
       [data-sidebar-region='header'] [data-cmf-component='sidebar-header'][data-cmf-key='logo']
@@ -125,20 +129,32 @@
         [data-key='aside_header_logo']
     ) {
       flex: 0 1 auto;
-      min-width: 0;
       max-width: 100%;
-      width: var(--logo-width, auto);
+      width: auto;
+      height: var(--logo-height, var(--aside-slideout-rail-button));
+      min-height: var(--logo-height, var(--aside-slideout-rail-button));
+      max-height: var(--logo-height, var(--aside-slideout-rail-button));
+      min-width: 0;
+      flex-shrink: 1;
       box-sizing: border-box;
       overflow: hidden;
 
       :global(.cmf-Button-section) {
+        flex: 1 1 auto;
         justify-content: center;
+        align-items: center;
+        min-width: 0;
+        min-height: 0;
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
       }
 
       :global(.cmf-Button-image),
       :global(img) {
+        width: auto;
+        height: 100%;
         max-width: 100%;
-        height: auto;
         max-height: 100%;
         object-fit: contain;
         object-position: center;
@@ -146,30 +162,9 @@
       }
     }
 
-    /* Mid-tween (collapse + expand) — in-row clip/shift; no wrap flash. */
-    &:where([data-aside-slideout-phase='collapsing']),
-    &:where([data-aside-slideout-phase='expanding']) {
-      :global(
-        [data-sidebar-region='header']
-          [data-cmf-component='sidebar-header'][data-cmf-key='logo']
-          [data-key='aside_header_logo']
-      ) {
-        flex: 0 1 auto;
-        width: auto;
-        max-width: 100%;
-      }
-    }
-
-    /*
-     * Settled rail — mark on its own row under the burger (restores visible logo).
-     * Button fills the rail track; mark sizes to the *content* box so
-     * `--cmf-button-sidebar-header-logo-padding*` actually insets.
-     * Do not set `--logo-width: 100%` — AppLogo `.image` uses it as explicit
-     * width/height and paints edge-to-edge over padding.
-     */
-    &:where([data-aside-slideout-phase='collapsed']) {
-      --logo-height: var(--aside-slideout-rail-button);
-
+    /* Collapse direction — wrap from click; stable while width tweens. */
+    &:where([data-aside-slideout-phase='collapsed']),
+    &:where([data-aside-slideout-phase='collapsing']) {
       :global(
         [data-sidebar-region='header'] [data-cmf-component='sidebar-header'][data-cmf-key='logo']
       ) {
@@ -186,33 +181,6 @@
         flex-basis: 100%;
         width: 100%;
         max-width: 100%;
-        min-width: 0;
-        height: var(--aside-slideout-rail-button);
-        min-height: var(--aside-slideout-rail-button);
-
-        :global(.cmf-Button-section) {
-          flex: 1 1 auto;
-          width: 100%;
-          height: 100%;
-          min-width: 0;
-          min-height: 0;
-          max-width: 100%;
-          max-height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        /* Match Logo `.mark` inset — AppLogo `.image` otherwise fills 100%. */
-        :global(.cmf-Button-image),
-        :global(img) {
-          width: 70%;
-          height: 70%;
-          max-width: 70%;
-          max-height: 70%;
-          object-fit: contain;
-          object-position: center;
-        }
       }
     }
 
@@ -292,21 +260,21 @@
       ) {
         box-sizing: border-box;
         flex: 0 0 auto;
-        width: min(
-          100cqw,
-          calc(
-            var(--button-height, 1.25rem) *
-              var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
-          )
+
+        /*
+         * Fixed mark size from Mantine button height × scale — NOT `100cqw`.
+         * cqw tracked aside width mid-tween → icons breathed / looked like reload.
+         */
+        width: calc(
+          var(--button-height, var(--aside-slideout-rail-button, 2.625rem)) *
+            var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
         );
-        height: min(
-          100cqw,
-          calc(
-            var(--button-height, 1.25rem) *
-              var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
-          )
+        height: calc(
+          var(--button-height, var(--aside-slideout-rail-button, 2.625rem)) *
+            var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
         );
         max-width: 100%;
+        max-height: 100%;
         overflow: hidden;
         display: inline-flex;
         align-items: center;
@@ -314,7 +282,9 @@
       }
 
       :global(.cmf-Button-icon),
-      :global([data-cmf-icon-src]) {
+      :global([data-cmf-icon-src]),
+      :global(.cmf-Button-section-icon svg),
+      :global(.cmf-ActionIcon-icon-svg) {
         box-sizing: border-box;
         flex-shrink: 1;
         overflow: hidden;

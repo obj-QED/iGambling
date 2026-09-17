@@ -12,8 +12,8 @@ import { ItemRailMark } from '../../items/ItemRailMark/ItemRailMark';
 import headerStyles from '../../../styles/blocks/SidebarHeader.module.scss';
 
 /**
- * Header rows for slideout — rail mark only when settled collapsed.
- * Expanding mirrors collapsing (full header row + labels).
+ * Header rows for slideout — rail glyph/initial only when settled collapsed.
+ * ItemMedia stays mounted in HeaderLink (parked) so SVG/img never refetch.
  */
 function SlideoutHeaderLinkComponent({ item }: BlockProps) {
   const { phase } = useSidebarSlideout();
@@ -21,14 +21,16 @@ function SlideoutHeaderLinkComponent({ item }: BlockProps) {
   const rail = phase === 'collapsed';
   const railKind = resolveSidebarRailMedia(item, showItemImg);
   const label = resolveItemLabel(item);
+  const railNonImg = rail && railKind !== 'img';
 
   return (
     <SidebarHeaderLink
       item={item}
       hideRightSection={rail}
       railIconOnly={rail}
+      parkItemMedia={railNonImg}
       leftSection={
-        rail ? (
+        railNonImg ? (
           <ItemRailMark
             item={item}
             kind={railKind}

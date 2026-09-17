@@ -14,6 +14,14 @@
     border-right: 1px solid var(--aside-shell-border-color, var(--mantine-color-dark-4));
     background: var(--aside-shell-bg, var(--mantine-color-body));
 
+    /*
+     * Slideout owns animated `width` endpoints in SlideoutType — do not also
+     * bind width to `--app-layout-sidebar-width` (custom props snap, dual drivers jerk).
+     */
+    &:where([data-type='slideout']) {
+      width: var(--aside-slideout-expanded-width, 15rem);
+    }
+
     @media (max-width: $tablet) {
       width: 100%;
 
@@ -49,7 +57,8 @@
  */
 .viewport {
   --_scroll-pad-inline: var(--scrollarea-padding-inline, 4px);
-  padding-inline: var(--scrollarea-padding-start, var(--_scroll-pad-inline)) var(--scrollarea-padding-end, var(--_scroll-pad-inline));
+  padding-inline: var(--scrollarea-padding-start, var(--_scroll-pad-inline))
+    var(--scrollarea-padding-end, var(--_scroll-pad-inline));
 
   /* Prefer explicit `--scrollarea-padding-end` (slideout rail gutter) over inline pad. */
   transition: padding-inline-end var(--aside-scroll-gutter-duration, 280ms)

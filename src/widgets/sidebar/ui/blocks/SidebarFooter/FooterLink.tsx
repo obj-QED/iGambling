@@ -2,6 +2,8 @@ import type { BlockProps } from '../../../types';
 
 import { memo } from 'react';
 
+import clsx from 'clsx';
+
 import { useMediaState } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
 import { AppButton } from '@/shared/ui';
@@ -15,6 +17,10 @@ import {
 } from '../../../lib';
 import { ItemMedia } from '../../items/ItemMedia/ItemMedia';
 
+/** On `.cmf-Button-section` / media — match menu ItemButton sizing contract. */
+const CMF_BUTTON_SECTION_ICON = 'cmf-Button-section-icon';
+const CMF_BUTTON_ICON = 'cmf-Button-icon';
+
 /** Default-type footer row. Compact overrides via typePack.FooterLink. */
 function SidebarFooterLinkComponent({ item }: BlockProps) {
   const { onImgError, showItemImg } = useMediaState(item);
@@ -23,9 +29,13 @@ function SidebarFooterLinkComponent({ item }: BlockProps) {
   const label = resolveItemLabel(item);
 
   const leftSection = showItemImg ? (
-    <ItemMedia item={item} alt={label} onImgError={onImgError} />
+    <ItemMedia item={item} alt={label} onImgError={onImgError} className={CMF_BUTTON_ICON} />
   ) : (
-    (renderSidebarFooterIcon(item, { size: 20, stroke: 1.5 }) ?? undefined)
+    (renderSidebarFooterIcon(item, {
+      size: 22,
+      stroke: 1.5,
+      className: clsx(CMF_BUTTON_ICON, 'cmf-ActionIcon-icon-svg'),
+    }) ?? undefined)
   );
 
   return (
@@ -37,6 +47,9 @@ function SidebarFooterLinkComponent({ item }: BlockProps) {
       fullscreen
       justify="flex-start"
       leftSection={leftSection}
+      sectionClassNames={{
+        left: leftSection !== undefined ? CMF_BUTTON_SECTION_ICON : undefined,
+      }}
       active={item.active}
       matchRoute={item.matchRoute}
       activeMatch={item.activeMatch}

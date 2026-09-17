@@ -1,16 +1,6 @@
 @layer widget.component {
   .markHost {
     position: relative;
-
-    /* AppLogo paints via `.cmf-Button-image` — same inset contract as `.mark`. */
-    :global(.cmf-Button-image) {
-      width: 70%;
-      height: 70%;
-      max-width: 70%;
-      max-height: 70%;
-      object-fit: contain;
-      object-position: center;
-    }
   }
 
   .mark {

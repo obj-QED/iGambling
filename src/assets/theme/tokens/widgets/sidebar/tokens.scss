@@ -167,9 +167,26 @@
    */
   &[data-type='slideout'] {
     --cmf-action-icon-sidebar-header-logo-trigger-padding: var(--mantine-spacing-md);
-    --logo-width: clamp(100px, 80%, 150px);
+
+    /*
+     * Logo geometry is STABLE for every phase — no clamp(100px) ↔ rail snap.
+     * AppLogo reads `--logo-height` / `--logo-width`; keep height = rail control,
+     * width fluid (`auto`) so the mark scales with the track instead of jerking.
+     */
+    --aside-slideout-rail-button: var(--button-height-md);
+    --logo-height: var(--aside-slideout-rail-button);
+    --logo-width: auto;
     --cmf-button-sidebar-padding-x: var(--mantine-spacing-md);
     --cmf-button-sidebar-padding-y: var(--mantine-spacing-sm);
+
+    /* Stable logo inset every phase (Mantine spacing — not phase-snapped). */
+    --cmf-button-sidebar-header-logo-padding-x: var(--mantine-spacing-sm);
+    --cmf-button-sidebar-header-logo-padding-y: var(--mantine-spacing-sm);
+    --cmf-button-sidebar-header-logo-padding: var(--mantine-spacing-sm);
+
+    /* Same mark scale expanded + rail — phase snap looked like icon reload. */
+    --cmf-button-sidebar-icon-scale: 0.5;
+    --cmf-icon-scale: 0.7;
 
     --aside-slideout-transition: 0.4s;
     --aside-slideout-timing: cubic-bezier(0.22, 1, 0.36, 1);
@@ -177,7 +194,6 @@
     /* Expanded SoT — settings may override `--aside-slideout-expanded-width` inline. */
     --aside-slideout-expanded-width: 15rem;
     --app-layout-sidebar-width: var(--aside-slideout-expanded-width);
-    --aside-slideout-rail-button: var(--button-height-md);
 
     /* Fixed pads baked into collapsed width — do not retarget mid-tween. */
     --aside-slideout-rail-shell-pad: calc(var(--mantine-spacing-sm) + var(--mantine-spacing-xs));
@@ -188,19 +204,22 @@
         var(--aside-slideout-rail-scroll-start) + var(--aside-slideout-rail-scroll-end)
     );
 
+    /*
+     * Shell pad is constant for all phases — switching pad on collapse/expand
+     * reflows content while width tweens (jank). Collapsed width already bakes
+     * `--aside-slideout-rail-shell-pad`.
+     */
+    --aside-shell-padding: var(--aside-slideout-rail-shell-pad);
+
     /* Width target for collapse direction (collapsing + settled rail). */
     &:where([data-aside-slideout-phase='collapsed']),
     &:where([data-aside-slideout-phase='collapsing']) {
       --app-layout-sidebar-width: var(--aside-slideout-collapsed-width);
     }
 
-    /*
-     * Shell/scroll pads while width targets the rail (collapsed + collapsing).
-     * Expanding uses expanded chrome — same as reverse of collapsing.
-     */
+    /* Scroll gutter tightens on rail track only (collapsed + collapsing). */
     &:where([data-aside-slideout-phase='collapsed']),
     &:where([data-aside-slideout-phase='collapsing']) {
-      --aside-shell-padding: var(--aside-slideout-rail-shell-pad);
       --aside-scrollbar-size: 1px;
       --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
       --scrollarea-padding-inline: var(--aside-slideout-rail-scroll-start);
@@ -221,30 +240,17 @@
       --cmf-button-sidebar-timer-bg: var(--mantine-color-dark-6);
       --cmf-button-sidebar-wheel_mdl-bg: var(--mantine-color-dark-6);
       --cmf-button-sidebar-header-logo-bg: var(--mantine-color-dark-6);
-      --cmf-button-sidebar-header-padding-x: var(--mantine-spacing-md);
-
-      --logo-height: var(--aside-slideout-rail-button);
 
       --cmf-button-sidebar-gap: 0;
-      --cmf-button-sidebar-padding: var(--mantine-spacing-sm);
+      --cmf-button-sidebar-padding: var(--mantine-spacing-xs);
 
-      /*
-       * Logo mark keeps inset while menu rows are pad-0.
-       * Shorthand must be set: `--button-padding` prefers key → parent
-       * (`--cmf-button-sidebar-padding: 0`) and axes never apply.
-       */
-      --cmf-button-sidebar-header-logo-padding-x: var(--mantine-spacing-sm);
-      --cmf-button-sidebar-header-logo-padding-y: var(--mantine-spacing-sm);
-      --cmf-button-sidebar-header-logo-padding: var(--mantine-spacing-sm);
+      /* Logo padding stays on the slideout base tokens (stable across phases). */
       --cmf-button-sidebar-justify: center;
       --cmf-button-sidebar-align: center;
 
       --cmf-search-sidebar-icon-color: var(--brand-color-6);
       --cmf-search-sidebar-section-color: var(--brand-color-6);
       --cmf-action-icon-sidebar-header-logo-trigger-hover: var(--brand-color-6);
-
-      --cmf-button-sidebar-icon-scale: 0.8;
-      --cmf-button-sidebar-footer-icon-scale: 0.8;
 
       --cmf-button-sidebar-active-size: 0;
       --cmf-button-sidebar-active-width: 0px;

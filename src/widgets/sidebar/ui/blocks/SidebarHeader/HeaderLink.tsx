@@ -5,6 +5,7 @@ import { memo, useMemo } from 'react';
 
 import { Badge } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
+import clsx from 'clsx';
 
 import { useMediaState } from '@/shared/hooks';
 import { controlAttrs, resolveCmfScope } from '@/shared/lib';
@@ -15,14 +16,24 @@ import { resolveItemHref, resolveItemLabel, resolveMenuItemButtonVariant } from 
 import { ItemMedia } from '../../items/ItemMedia/ItemMedia';
 
 import styles from '../../../styles/blocks/SidebarHeader.module.scss';
+import itemStyles from '../../../styles/items/ItemButton.module.scss';
 
 function hasAccountSubtitle(subtitle: string | undefined): subtitle is string {
   return subtitle !== undefined && subtitle.length > 0;
 }
 
+/** On `.cmf-Button-section` (slot) — same sizing contract as menu ItemButton. */
+const CMF_BUTTON_SECTION_ICON = 'cmf-Button-section-icon';
+const CMF_BUTTON_ICON = 'cmf-Button-icon';
+
 export type SidebarHeaderLinkProps = BlockProps & {
-  /** Override left chrome (e.g. slideout collapsed `IconUserScan`). */
+  /**
+   * Extra left chrome (e.g. slideout rail glyph). Composed *with* ItemMedia —
+   * never replaces it, so SVG/img stay mounted across expand/collapse.
+   */
   leftSection?: ReactNode;
+  /** When true with `leftSection`, park ItemMedia (keep mounted, hide). */
+  parkItemMedia?: boolean;
   /** Collapsed slideout rail — drop account chevron / badge. */
   hideRightSection?: boolean;
   /** Collapsed slideout rail — icon-only (hide label flex, center mark). */
@@ -32,7 +43,8 @@ export type SidebarHeaderLinkProps = BlockProps & {
 /** Default-type header row. Compact overrides via typePack.HeaderLink. */
 function SidebarHeaderLinkComponent({
   item,
-  leftSection: leftSectionOverride,
+  leftSection: leftSectionExtra,
+  parkItemMedia = false,
   hideRightSection = false,
   railIconOnly = false,
 }: SidebarHeaderLinkProps) {
@@ -44,17 +56,32 @@ function SidebarHeaderLinkComponent({
   const subtitle = item.subtitle;
   const badge = item.badge;
   const isAccountProfile = hasAccountSubtitle(subtitle);
-  const avatar = useMemo(() => {
-    if (leftSectionOverride !== undefined) return leftSectionOverride;
-    return showItemImg ? (
+
+  const leftSection = useMemo(() => {
+    const media = showItemImg && (
       <ItemMedia
         item={item}
         alt={label}
         onImgError={onImgError}
-        className={isAccountProfile ? styles.mainLinkAvatar : styles.mainLinkIcon}
+        className={clsx(
+          CMF_BUTTON_ICON,
+          isAccountProfile ? styles.mainLinkAvatar : styles.mainLinkIcon,
+          parkItemMedia && leftSectionExtra !== undefined && itemStyles.mediaParked,
+        )}
       />
-    ) : undefined;
-  }, [leftSectionOverride, showItemImg, item, label, onImgError, isAccountProfile]);
+    );
+
+    if (media !== null && leftSectionExtra !== undefined) {
+      return (
+        <>
+          {media}
+          {leftSectionExtra}
+        </>
+      );
+    }
+
+    return media ?? leftSectionExtra ?? undefined;
+  }, [showItemImg, item, label, onImgError, isAccountProfile, parkItemMedia, leftSectionExtra]);
 
   const labelContent = railIconOnly ? (
     // Keep accessible name; visual label collapsed via `[data-sidebar-header-rail]`.
@@ -87,8 +114,11 @@ function SidebarHeaderLinkComponent({
       fullscreen
       justify={hideRightSection || railIconOnly ? 'center' : 'space-between'}
       className={styles.mainLink}
-      leftSection={avatar}
+      leftSection={leftSection}
       rightSection={rightSection}
+      sectionClassNames={{
+        left: leftSection !== undefined ? CMF_BUTTON_SECTION_ICON : undefined,
+      }}
       active={item.active}
       matchRoute={item.matchRoute}
       activeMatch={item.activeMatch}
