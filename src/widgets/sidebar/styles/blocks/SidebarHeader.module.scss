@@ -38,17 +38,36 @@
     flex: 1 1 auto;
     width: 100%;
     min-width: 0;
-    justify-content: var(--aside-header-account-justify, space-between);
+
+    /* Prefer AppButton `--button-justify` (e.g. rail `center`) over a hard space-between. */
+    justify-content: var(--button-justify, var(--aside-header-account-justify, space-between));
     border-radius: var(--aside-menu-radius, var(--radius-sm, 0.5rem));
     min-height: var(--button-height, calc(2.25rem * var(--mantine-scale, 1)));
     height: auto;
-    padding-block: 0;
-    padding-inline: var(--button-padding-x, var(--mantine-spacing-sm));
+
+    /* SoT: AppButton `--button-padding` / `-y` / `-x` — do not zero block axis. */
+    padding: var(
+      --button-padding,
+      var(--button-padding-y, 0) var(--button-padding-x, var(--mantine-spacing-sm))
+    );
 
     :global(.cmf-Button-label) {
       flex: 1 1 auto;
       min-width: 0;
       text-align: start;
+    }
+
+    /* Rail icon-only — keep mark centered; label flex must not steal space. */
+    &:where([data-sidebar-header-rail='true']) {
+      :global(.cmf-Button-label) {
+        flex: 0 0 0;
+        width: 0;
+        min-width: 0;
+        max-width: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
     }
   }
 
@@ -61,7 +80,7 @@
 
   .mainLinkTitle {
     overflow: hidden;
-    font-size: var(--aside-menu-fz, var(--mantine-font-size-md, 1rem));
+    font-size: var(--button-fz, var(--mantine-font-size-md, 1rem));
     font-weight: 600;
     line-height: 1.2;
     text-overflow: ellipsis;

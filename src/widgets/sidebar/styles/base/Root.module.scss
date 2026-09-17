@@ -49,8 +49,9 @@
  */
 .viewport {
   --_scroll-pad-inline: var(--scrollarea-padding-inline, 4px);
-  padding-inline: var(--scrollarea-padding-start, var(--_scroll-pad-inline))
-    var(--_scroll-pad-inline);
+  padding-inline: var(--scrollarea-padding-start, var(--_scroll-pad-inline)) var(--scrollarea-padding-end, var(--_scroll-pad-inline));
+
+  /* Prefer explicit `--scrollarea-padding-end` (slideout rail gutter) over inline pad. */
   transition: padding-inline-end var(--aside-scroll-gutter-duration, 280ms)
     var(--aside-scroll-gutter-ease, cubic-bezier(0.22, 1, 0.36, 1))
     var(--aside-scroll-gutter-delay, 60ms);

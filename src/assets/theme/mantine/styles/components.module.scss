@@ -363,12 +363,16 @@
    * Ellipsis needs a block BFC (`text-overflow` ignores flex containers), but
    * `display:block` alone leaves Mantine `height:100%` → text sticks to the top.
    * Reset height and self-align so the label hugs the line box again.
+   *
+   * Mantine root uses `line-height: 1` — with `overflow: hidden` that clips glyph
+   * ink (ascenders/descenders). Use a real line box on the label.
    */
   .buttonLabel {
     text-box-trim: none;
     text-box-edge: auto;
     display: block;
     height: auto;
+    line-height: var(--button-lh, var(--mantine-line-height, normal));
     align-self: center;
     flex: 0 1 auto;
     min-width: 0;
@@ -413,30 +417,39 @@
   }
 
   /*
-   * Mantine always emits `.cmf-Button-inner`. Collapse it so section + label
-   * are flex children of `.button` — `gap` / justify live on the root.
+   * Keep Mantine `.cmf-Button-inner` as the flex row.
+   * `display: contents` made section/label children of the root and broke
+   * `justify-content: var(--button-justify)` on the inner (Mantine SoT).
    */
   .buttonInner {
-    display: contents;
+    display: flex;
+    align-items: var(--button-align, center);
+    justify-content: var(--button-justify, center);
+    gap: var(--button-gap, 0);
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
   }
 
   .button {
     /* `Button component={AppLink}` — no browser underline on the `<a>` root. */
     text-decoration: none;
-
-    /* Own flex row — was on `.cmf-Button-inner` before `display: contents`. */
-    display: inline-flex;
-    align-items: var(--button-align, center);
-    justify-content: var(--button-justify, center);
-    gap: var(--button-gap, 0);
     min-width: 0;
     max-width: 100%;
 
+    /* Cross-axis SoT (pair with `--button-justify` on `.buttonInner`). */
+    align-items: var(--button-align, center);
+
     /*
-     * CMF `--button-padding` (all sides) when set via tokens; else block 0 +
-     * Mantine `--button-padding-x` (overrides Mantine `padding-inline` only).
+     * CMF `--button-padding` (all sides) when set via tokens; else
+     * `--button-padding-y` + `--button-padding-x` (block / inline).
      */
-    padding: var(--button-padding, 0 var(--button-padding-x, var(--button-padding-x-sm)));
+    padding: var(
+      --button-padding,
+      var(--button-padding-y, 0) var(--button-padding-x, var(--button-padding-x-sm))
+    );
 
     /*
      * Mantine Button section margins (left `margin-inline-end` / right `margin-inline-start`).

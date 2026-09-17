@@ -59,8 +59,10 @@ const CLEAR_BUTTON_PAINT_INLINE_VARS = {
  */
 const CLEAR_BUTTON_INLINE_VARS = {
   '--button-justify': null,
+  '--button-align': null,
   '--button-height': null,
   '--button-padding-x': null,
+  '--button-padding-y': null,
   '--button-padding': null,
   '--button-gap': null,
   '--button-fz': null,

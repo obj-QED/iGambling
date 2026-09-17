@@ -6,7 +6,7 @@ import { AdapterBoundary, LazyHost, preloadAdapters, useAdapter } from '@/shared
 import { isCapabilityEnabled } from '@/shared/schema';
 import { preloadSearchType, useAppSearchTrigger } from '@/shared/ui';
 
-import { useSidebarConfig } from '../../../context';
+import { useSidebarConfig, useSidebarSlideout } from '../../../context';
 import { SEARCH_ADAPTER_KEYS, SEARCH_ADAPTERS } from './adapters';
 
 import styles from '../../../styles/blocks/SearchRow.module.scss';
@@ -14,19 +14,24 @@ import styles from '../../../styles/blocks/SearchRow.module.scss';
 /**
  * Aside search trigger (`search_leftmenu`) — opens global AppSearch.
  * `blockVariants.search`: `icon` → ActionIcon; `row` → TextInput slot.
+ * Slideout collapsed rail forces overlay (`modal`) so CSS-hidden field still opens the host.
  */
 function SearchComponent({ item, className }: BlockProps) {
   const { blockVariants, behaviors, capabilities } = useSidebarConfig();
+  const { enabled: slideoutOn, phase } = useSidebarSlideout();
   const Adapter = useAdapter(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
   const enabled = isCapabilityEnabled(capabilities, 'search');
-  const { searchQuery, onActivate, onSearchQueryChange, showHotkeyBadge } = useAppSearchTrigger(
-    behaviors.search,
-  );
+  /** Collapsed / collapsing rail — icon look via SlideoutType CSS; open as modal, not inline input. */
+  const railOverlay =
+    slideoutOn && (phase === 'collapsed' || phase === 'collapsing') ? 'modal' : undefined;
+  const searchBehavior = railOverlay ?? behaviors.search;
+  const { searchQuery, onActivate, onSearchQueryChange, showHotkeyBadge } =
+    useAppSearchTrigger(searchBehavior);
 
   const preload = useCallback(() => {
     preloadAdapters(SEARCH_ADAPTERS, blockVariants.search, SEARCH_ADAPTER_KEYS);
-    preloadSearchType(behaviors.search);
-  }, [blockVariants.search, behaviors.search]);
+    preloadSearchType(searchBehavior);
+  }, [blockVariants.search, searchBehavior]);
 
   useLayoutEffect(() => {
     if (!enabled) return;

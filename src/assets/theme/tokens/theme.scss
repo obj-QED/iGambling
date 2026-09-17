@@ -180,6 +180,16 @@
       var(--brand-color-9) 100%
     );
 
+    /*
+     * Size table on the aside host (Mantine defines these only on `.cmf-Button-root`).
+     * @see @mantine/core Button.css
+     */
+    --button-height-xs: calc(1.875rem * var(--mantine-scale, 1));
+    --button-height-sm: calc(2.25rem * var(--mantine-scale, 1));
+    --button-height-md: calc(2.625rem * var(--mantine-scale, 1));
+    --button-height-lg: calc(3.125rem * var(--mantine-scale, 1));
+    --button-height-xl: calc(3.75rem * var(--mantine-scale, 1));
+
     [data-widget='header'] {
       @include header.header-root-tokens;
     }

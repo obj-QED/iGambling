@@ -16,20 +16,22 @@ function isAccountHeaderItem(item: BlockProps['item']): boolean {
   return itemKey(item) === 'account';
 }
 
-/** Same header rows as `default`; settled collapsed account → `IconUserScan`. */
+/** Same header rows as `default`; collapsed account → `IconUserScan`, no chevron. */
 function SlideoutHeaderLinkComponent({ item }: BlockProps) {
   const { phase, settled } = useSidebarSlideout();
-  const railAccount = phase === 'collapsed' && settled && isAccountHeaderItem(item);
-
-  if (!railAccount) {
-    return <SidebarHeaderLink item={item} />;
-  }
+  const isAccount = isAccountHeaderItem(item);
+  const rail = phase === 'collapsed' || phase === 'collapsing';
+  const railAccount = phase === 'collapsed' && settled && isAccount;
 
   return (
     <SidebarHeaderLink
       item={item}
+      hideRightSection={rail && isAccount}
+      railIconOnly={railAccount}
       leftSection={
-        <IconUserScan className={headerStyles.mainLinkIcon} size={22} stroke={1.5} aria-hidden />
+        railAccount ? (
+          <IconUserScan className={headerStyles.mainLinkIcon} size={22} stroke={1.5} aria-hidden />
+        ) : undefined
       }
     />
   );

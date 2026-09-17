@@ -139,7 +139,7 @@
        * Tokens: compact + non-compact `[data-control-fit]` blocks separately.
        */
       /**
-       * slideout — logo-trigger toggles width (~0.4s), desktop only (`> 1024` / tablet).
+       * slideout — logo-trigger toggles width (~4s), desktop only (`> 1024` / tablet).
        * Open/closed in localStorage (`igambling:sidebar:slideout-expanded`); default open.
        * Phases on aside: `data-aside-slideout-phase` = expanded|collapsing|collapsed|expanding.
        * Same row markup as `default` (Button / TextInput) — CSS compresses labels/field only.

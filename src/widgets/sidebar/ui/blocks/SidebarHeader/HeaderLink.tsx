@@ -23,12 +23,18 @@ function hasAccountSubtitle(subtitle: string | undefined): subtitle is string {
 export type SidebarHeaderLinkProps = BlockProps & {
   /** Override left chrome (e.g. slideout collapsed `IconUserScan`). */
   leftSection?: ReactNode;
+  /** Collapsed slideout rail — drop account chevron / badge. */
+  hideRightSection?: boolean;
+  /** Collapsed slideout rail — icon-only (hide label flex, center mark). */
+  railIconOnly?: boolean;
 };
 
 /** Default-type header row. Compact overrides via typePack.HeaderLink. */
 function SidebarHeaderLinkComponent({
   item,
   leftSection: leftSectionOverride,
+  hideRightSection = false,
+  railIconOnly = false,
 }: SidebarHeaderLinkProps) {
   const { onImgError, showItemImg } = useMediaState(item);
   const size = useAsideMenuButtonSize();
@@ -50,7 +56,10 @@ function SidebarHeaderLinkComponent({
     ) : undefined;
   }, [leftSectionOverride, showItemImg, item, label, onImgError, isAccountProfile]);
 
-  const labelContent = isAccountProfile ? (
+  const labelContent = railIconOnly ? (
+    // Keep accessible name; visual label collapsed via `[data-sidebar-header-rail]`.
+    label
+  ) : isAccountProfile ? (
     <div className={styles.mainLinkText}>
       <span className={styles.mainLinkTitle}>{label}</span>
       <span className={styles.mainLinkSubtitle}>{subtitle}</span>
@@ -59,28 +68,31 @@ function SidebarHeaderLinkComponent({
     label
   );
 
-  const rightSection = isAccountProfile ? (
-    <IconChevronRight className={styles.mainLinkChevron} size={16} stroke={1.5} aria-hidden />
-  ) : badge !== undefined && String(badge).length > 0 ? (
-    <Badge size="sm" variant="filled" className={styles.mainLinkBadge}>
-      {badge}
-    </Badge>
-  ) : undefined;
+  const rightSection =
+    hideRightSection || railIconOnly ? undefined : isAccountProfile ? (
+      <IconChevronRight className={styles.mainLinkChevron} size={16} stroke={1.5} aria-hidden />
+    ) : badge !== undefined && String(badge).length > 0 ? (
+      <Badge size="sm" variant="filled" className={styles.mainLinkBadge}>
+        {badge}
+      </Badge>
+    ) : undefined;
 
   return (
     <AppButton
       href={href}
       label={labelContent}
+      aria-label={railIconOnly ? label : undefined}
       variant={resolveMenuItemButtonVariant(item)}
       size={size}
       fullscreen
-      justify="space-between"
+      justify={hideRightSection || railIconOnly ? 'center' : 'space-between'}
       className={styles.mainLink}
       leftSection={avatar}
       rightSection={rightSection}
       active={item.active}
       matchRoute={item.matchRoute}
       activeMatch={item.activeMatch}
+      {...(railIconOnly ? { 'data-sidebar-header-rail': true } : {})}
       {...controlAttrs(item, resolveCmfScope(item, { widget: 'sidebar', chrome: 'header' }))}
     />
   );

@@ -5,7 +5,7 @@ type MenuItemVariantSource = Pick<HeaderMenuItem, 'key' | 'type' | 'variant'>;
 
 export type SidebarMenuButtonVariant = CmfButtonVariant;
 
-const DEFAULT_CONTROL_VARIANT = 'filled' as const;
+const DEFAULT_CONTROL_VARIANT = 'subtle' as const;
 
 /** Explicit menu `variant` string, if non-empty. */
 export function resolveMenuItemExplicitVariant(

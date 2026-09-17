@@ -12,6 +12,7 @@ import {
 } from '@/shared/lib';
 import { AppButton } from '@/shared/ui';
 
+import { useSidebarSlideout } from '../../../context';
 import { useAsideMenuButtonSize, useMenuItemRenderable } from '../../../hooks';
 import {
   hasItemName,
@@ -44,11 +45,14 @@ function ItemButtonComponent({
   'aria-haspopup': ariaHaspopup,
 }: ItemButtonProps) {
   const { visible, onImgError, showItemImg, iconControlAttrs } = useMenuItemRenderable(item);
+  const { enabled: slideoutOn, phase: slideoutPhase } = useSidebarSlideout();
   const size = useAsideMenuButtonSize();
 
   const iconOnly = isIconOnlyItem(item);
   const displayLabel = hasItemName(item) ? item.name : undefined;
   const ariaLabel = resolveItemLabel(item);
+  /** Letter fallback only on settled collapsed rail — not mid collapsing (avoids flash). */
+  const showNameInitial = slideoutOn && slideoutPhase === 'collapsed';
   const leftSection = useMemo(() => {
     if (showItemImg) {
       return (
@@ -61,6 +65,8 @@ function ItemButtonComponent({
       );
     }
 
+    if (!showNameInitial) return undefined;
+
     const initial = resolveItemNameInitial(item);
     if (!initial) return undefined;
 
@@ -69,7 +75,7 @@ function ItemButtonComponent({
         {initial}
       </span>
     );
-  }, [showItemImg, item, ariaLabel, onImgError]);
+  }, [showItemImg, showNameInitial, item, ariaLabel, onImgError]);
   const justify: 'flex-start' | 'space-between' = dropdownTrigger ? 'space-between' : 'flex-start';
 
   if (!isRenderableItem(item) || !visible) return null;

@@ -28,8 +28,7 @@
   --aside-header-border-color: #636363;
 
   /* Header region chrome */
-  --header-logo-width: 120px;
-  --aside-header-gap: var(--mantine-spacing-xs, 0.25rem);
+  --aside-header-gap: var(--mantine-spacing-sm, 0.5rem);
   --aside-header-color: inherit;
   --aside-header-avatar-size: 1.5rem;
   --cmf-button-sidebar-header-logo-bg: light-dark(#111, transparent);
@@ -41,6 +40,7 @@
 
   --cmf-button-sidebar-header-account-height: 3.5rem;
   --cmf-button-sidebar-header-account-padding-x: 10px;
+  --cmf-button-sidebar-header-account-padding-y: 10px;
 
   /*
    * Active bar — public: position + size (+ color + radius).
@@ -154,40 +154,105 @@
 
   /*
    * Slideout — expanded width is a fixed token (not `var(--app-layout-…)` — avoids circular ref).
-   * Collapsed = rail icon + 2×shell pad + 2×scrollarea inline pad.
+   * Collapsed = square button-height + 2×shell + scroll start/end (border-box aside).
+   * Button pad is zeroed in collapsed phase so controls stay square, not padded rectangles.
    * `--app-layout-sidebar-width` switches by phase so aside + layout stay in sync.
    */
   &[data-type='slideout'] {
-    --aside-slideout-transition: 0.4s;
-    --aside-slideout-timing: cubic-bezier(0.4, 0, 0.2, 1);
-    --aside-slideout-settled-timing: ease;
-    --aside-shell-padding: var(--mantine-spacing-sm);
-    --scrollarea-padding-inline: var(--mantine-spacing-xs);
-    --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
+    --aside-slideout-transition: 4s;
+    --cmf-action-icon-sidebar-header-logo-trigger-padding: var(--mantine-spacing-md);
+    --logo-width: clamp(100px, 80%, 150px);
+    --cmf-button-sidebar-padding-x: var(--mantine-spacing-sm);
 
-    --aside-slideout-expanded-width: 15rem;
-    --aside-slideout-collapsed-width: 3rem;
-    --app-layout-sidebar-width: var(--aside-slideout-expanded-width);
+    /*
+     * Collapsed rail (border-box aside) =
+     *   square button-height
+     *   + 2×shell pad
+     *   + viewport pad-start + pad-end
+     * Viewport end uses the same SoT as Root.module.scss `.viewport` when the
+     * vertical scrollbar gutter is reserved (`2 × --scrollarea-scrollbar-size`).
+     */
+    --app-layout-sidebar-width: 15rem;
+    --aside-slideout-rail-button: var(--button-height-md);
+    --aside-slideout-collapsed-width: calc(
+      var(--aside-slideout-rail-button) + 2 *
+        var(--aside-shell-padding-x, var(--aside-shell-padding, var(--mantine-spacing-sm))) +
+        var(--scrollarea-padding-start, var(--scrollarea-padding-inline, 4px)) +
+        var(--scrollarea-padding-end, calc(2 * var(--scrollarea-scrollbar-size, 6px)))
+    );
 
-    /* Collapsed / collapsing — rail width + search glyph brand. */
+    /* Collapsed / collapsing — square rail width. */
     &:where([data-aside-slideout-phase='collapsed']),
     &:where([data-aside-slideout-phase='collapsing']) {
+      --cmf-button-sidebar-timer-bg: var(--mantine-color-dark-6);
+      --cmf-button-sidebar-wheel_mdl-bg: var(--mantine-color-dark-6);
+
+      /*
+       * Must define `--scrollarea-scrollbar-size` here — it otherwise lives only on
+       * `.scroll`. A missing var invalidates `calc(4 * var(--scrollarea-scrollbar-size))`.
+       */
+      --cmf-button-sidebar-header-padding-x: var(--mantine-spacing-md);
+      --aside-scrollbar-size: 1px;
+      --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
+      --scrollarea-padding-inline: 1px;
+      --scrollarea-padding-end: calc(4 * var(--scrollarea-scrollbar-size));
+
+      /*
+       * `auto` → intrinsic img (~150px) spills past the rail.
+       * Fill the logo control box (≤ track) instead.
+       */
+      --logo-height: var(--aside-slideout-rail-button);
+      --logo-height: var(--aside-slideout-rail-button);
+      --aside-shell-padding: calc(var(--mantine-spacing-sm) + var(--mantine-spacing-xs));
+
       --app-layout-sidebar-width: var(--aside-slideout-collapsed-width);
       --cmf-button-sidebar-gap: 0;
+      --cmf-button-sidebar-padding-x: var(--mantine-spacing-xs);
+      --cmf-button-sidebar-padding: var(--mantine-spacing-xs);
+      --cmf-button-sidebar-justify: center;
+      --cmf-button-sidebar-align: center;
+      --cmf-search-sidebar-height: var(--aside-slideout-rail-button);
+      --cmf-search-sidebar-search-height: var(--aside-slideout-rail-button);
+      --cmf-search-sidebar-search_leftmenu-height: var(--aside-slideout-rail-button);
 
-      [data-key='aside_header_logo'] {
-        display: none;
-      }
+      /*
+       * Account chrome normally uses `--cmf-button-sidebar-header-account-height: 3.5rem`
+       * (wins over `data-size` → `--button-height-md`). On the rail, match menu size.
+       */
+      --cmf-button-sidebar-header-account-height: var(--aside-slideout-rail-button);
+      --cmf-button-sidebar-header-height: var(--aside-slideout-rail-button);
+
+      /*
+       * Active on rail — outline only (no left ::after bar).
+       * Bar killed via zero geometry; paint/radius via `--aside-slideout-active-*`
+       * (consumed in SlideoutType for `[data-active]`).
+       */
+      --cmf-button-sidebar-active-size: 0;
+      --cmf-button-sidebar-active-width: 0px;
+      --cmf-button-sidebar-active-height: 0px;
+      --cmf-button-sidebar-active-color: transparent;
+
+      /* Full corners again — rail had square tl/bl for the left bar. */
+      --cmf-button-sidebar-radius: var(--mantine-radius-sm);
+      --cmf-button-sidebar-active-radius: var(--mantine-radius-sm);
+      --cmf-button-sidebar-active-radius-tl: var(--mantine-radius-sm);
+      --cmf-button-sidebar-active-radius-tr: var(--mantine-radius-sm);
+      --cmf-button-sidebar-active-radius-br: var(--mantine-radius-sm);
+      --cmf-button-sidebar-active-radius-bl: var(--mantine-radius-sm);
+
+      --aside-slideout-active-bd: var(--brand-color-6);
+      --aside-slideout-active-bd-width: 1px;
+      --aside-slideout-active-radius: var(
+        --cmf-button-sidebar-active-radius,
+        var(--cmf-button-sidebar-radius, var(--mantine-radius-sm))
+      );
     }
 
     &:where([data-aside-slideout-phase='collapsed']) {
+      --cmf-button-sidebar-header-logo-bg: var(--mantine-color-dark-6);
       --cmf-search-sidebar-icon-color: var(--brand-color-6);
       --cmf-search-sidebar-section-color: var(--brand-color-6);
-      --cmf-action-icon-sidebar-header-logo-trigger-bg: var(--brand-color-6);
-
-      /* Theme layer — overrides widget CSS. Thick transparent bd ate the rail squares. */
-      --cmf-button-sidebar-bd-width: 1px;
-      --cmf-action-icon-sidebar-bd-width: 1px;
+      --cmf-action-icon-sidebar-header-logo-trigger-hover: var(--brand-color-6);
 
       /* CmfIcon: box = button-height × scale (stroke needs room; overflow fixed in SlideoutType). */
       --cmf-button-sidebar-icon-scale: 0.8;
@@ -197,11 +262,6 @@
 
   @media (max-width: $laptop) {
     --app-layout-sidebar-width: 25vw;
-
-    &[data-type='slideout'] {
-      --aside-slideout-expanded-width: 25vw;
-      --app-layout-sidebar-width: var(--aside-slideout-expanded-width);
-    }
   }
 
   @media (max-width: $tablet) {

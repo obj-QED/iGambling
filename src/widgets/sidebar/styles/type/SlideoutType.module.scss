@@ -1,359 +1,452 @@
 /**
- * Slideout — same row markup as `default` (Button / TextInput).
- * Width follows `--app-layout-sidebar-width` (phase tokens); labels compress.
+ * Slideout — aside width transition + label hide.
+ * Duration / easing SoT: sidebar tokens (`--aside-slideout-transition` / `-timing`).
+ * Collapsed width SoT: `--app-layout-sidebar-width` by phase.
  *
- * Phases (`data-aside-slideout-phase`): expanded | collapsing | collapsed | expanding
- * Duration SoT: `--aside-slideout-transition` (sidebar tokens).
+ * Smoothness rules:
+ * - Animate only width on the aside + label opacity/flex during the phase.
+ * - Non-animatable layout (logo column, dropdown stack, search chrome) applies
+ *   only on settled `collapsed` — not mid `collapsing` / `expanding`.
  */
 
-@keyframes aside-slideout-rail-blink-in {
-  0% {
-    opacity: 0;
-  }
-
-  40% {
-    opacity: 1;
-  }
-
-  70% {
-    opacity: 0.35;
-  }
-
-  100% {
-    opacity: 1;
-  }
+@property --app-layout-sidebar-width {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 15rem;
 }
 
 @layer widget.variant {
   .root {
+    --aside-slideout-ease: var(--aside-slideout-timing, cubic-bezier(0.22, 1, 0.36, 1));
     --aside-slideout-duration: var(--aside-slideout-transition, 0.4s);
-    --aside-slideout-ease: var(--aside-slideout-timing, cubic-bezier(0.4, 0, 0.2, 1));
-    --aside-slideout-rail-ease: var(--aside-slideout-settled-timing, ease);
     align-items: stretch;
     width: var(--app-layout-sidebar-width);
     overflow: hidden;
-    transition: width var(--aside-slideout-duration) var(--aside-slideout-ease);
+    transition:
+      width var(--aside-slideout-duration) var(--aside-slideout-ease),
+      --app-layout-sidebar-width var(--aside-slideout-duration) var(--aside-slideout-ease);
 
     @media (max-width: $tablet) {
       width: 100%;
     }
 
-    /* ---- Same row geometry as default (stable during width phase) ---- */
+    /* Flex/scroll children must shrink with the aside (not keep expanded min-content). */
     :global([data-sidebar-region='header']),
-    :global([data-sidebar-region='footer']) {
-      align-items: stretch;
-      min-width: 0;
-    }
-
-    :global(nav[data-section-key] ul) {
-      align-items: stretch;
-      min-width: 0;
-    }
-
+    :global([data-sidebar-region='footer']),
+    :global(.cmf-ScrollArea-root),
+    :global(.cmf-ScrollArea-viewport),
+    :global(.cmf-ScrollArea-content),
+    :global(nav[data-section-key]),
+    :global(nav[data-section-key] ul),
     :global(nav[data-section-key] li),
-    :global(nav[data-section-key] li > *) {
+    :global(nav[data-section-key] li > *),
+    :global([data-sidebar-dropdown]),
+    :global(.cmf-TextInput-root),
+    :global(.cmf-TextInput-wrapper),
+    :global(.cmf-Group-root) {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    /*
+     * AppTooltip wraps ItemButton in `inline-flex` — when the label collapses that
+     * shrink-wraps to glyph+pad while icon rows stay full track.
+     * Header/footer Groups stay row by default — logo stacks only when settled collapsed.
+     */
+    :global(nav[data-section-key] li) {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /*
+     * Stretch wrappers (tooltip target, dropdown root) — never the Button itself.
+     * `li > .cmf-Button-root` must keep Mantine row flex + `--button-align`.
+     */
+    :global(nav[data-section-key] li > :not(.cmf-Button-root)) {
+      width: 100%;
       display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      box-sizing: border-box;
+    }
+
+    :global(nav[data-section-key] li > .cmf-Button-root) {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    :global([data-sidebar-region='header'] > *),
+    :global([data-sidebar-region='footer'] > *) {
       width: 100%;
       min-width: 0;
       max-width: 100%;
+      box-sizing: border-box;
     }
 
-    :global([data-sidebar-dropdown]) {
-      width: 100%;
-      min-width: 0;
-    }
-
-    :global([data-sidebar-dropdown] ul[role='menu']) {
-      padding-left: 0;
-    }
-
-    /* ---- Logo group — mark compresses away; trigger stays ---- */
-    :global([data-cmf-component='sidebar-header'][data-cmf-key='logo']) {
-      flex-wrap: nowrap;
-      width: 100%;
-      min-width: 0;
-      max-width: 100%;
-      overflow: hidden;
-    }
-
+    /*
+     * Logo strip — always `row wrap` (animatable). Collapsed forces the mark onto the
+     * next line via `min-width: 100%` / `flex-basis: 100%` instead of `flex-direction`
+     * (column cannot tween). Mark fills the available track width.
+     */
     :global(
-      [data-cmf-component='sidebar-header'][data-cmf-key='logo']
-        > :is(a, button)[data-cmf-key='logo']
+      [data-sidebar-region='header'] [data-cmf-component='sidebar-header'][data-cmf-key='logo']
     ) {
-      flex: 1 1 auto;
-      min-width: 0;
-      max-width: 100%;
-      overflow: hidden;
-      opacity: 1;
-      transition:
-        flex-basis var(--aside-slideout-duration) var(--aside-slideout-ease),
-        max-width var(--aside-slideout-duration) var(--aside-slideout-ease),
-        opacity calc(var(--aside-slideout-duration) * 0.5) var(--aside-slideout-ease);
-    }
-
-    :global(
-      [data-cmf-component='sidebar-header'][data-cmf-key='logo']
-        > :is(a, button)[data-cmf-key='logo-trigger']
-    ) {
-      flex: 0 0 auto;
-      margin-inline-start: 0;
-      transition: margin-inline-start calc(var(--aside-slideout-duration) * 0.5)
-        var(--aside-slideout-rail-ease);
-    }
-
-    &[data-aside-slideout-expanded='false']
-      :global(
-        [data-cmf-component='sidebar-header'][data-cmf-key='logo']
-          > :is(a, button)[data-cmf-key='logo']
-      ) {
-      flex: 0 0 0;
-      flex-basis: 0;
-      max-width: 0;
-      min-width: 0;
-      padding-inline: 0;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* ---- Buttons stay full-track rows (not square ActionIcon) ---- */
-    :global(.cmf-Button-root) {
-      display: flex;
-      flex-flow: row nowrap;
+      flex-flow: row wrap;
       align-items: center;
       justify-content: flex-start;
       width: 100%;
-      min-width: 0;
-      max-width: 100%;
-      overflow: hidden;
-
-      /* Size → min-height; all-sides `--button-padding` can grow the box. */
-      height: auto;
-      min-height: var(--button-height);
-      transition:
-        justify-content 0s,
-        padding-inline var(--aside-slideout-duration) var(--aside-slideout-ease);
+      gap: var(
+        --cmf-group-sidebar-header-logo-gap,
+        var(--cmf-group-sidebar-header-gap, var(--mantine-spacing-sm))
+      );
     }
 
-    :global(.cmf-Button-root[data-cmf-key='logo']) {
-      width: auto;
-      max-width: 100%;
-    }
-
-    :global(.cmf-Button-section.cmf-Button-section-icon) {
+    :global(
+      [data-sidebar-region='header']
+        [data-cmf-component='sidebar-header'][data-cmf-key='logo']
+        [data-cmf-key='logo-trigger']
+    ) {
       flex: 0 0 auto;
     }
 
-    :global(.cmf-Button-label [class*='mainLinkTitle']),
-    :global(.cmf-Button-label [class*='mainLinkSubtitle']),
-    :global(.cmf-Button-label [class*='mainLinkText']) {
+    :global(
+      [data-sidebar-region='header']
+        [data-cmf-component='sidebar-header'][data-cmf-key='logo']
+        [data-key='aside_header_logo']
+    ) {
+      flex: 1 1 0%;
       min-width: 0;
       max-width: 100%;
+      width: auto;
+      box-sizing: border-box;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      flex-shrink: 1;
+      transition:
+        flex-basis var(--aside-slideout-duration) var(--aside-slideout-ease),
+        min-width var(--aside-slideout-duration) var(--aside-slideout-ease),
+        width var(--aside-slideout-duration) var(--aside-slideout-ease),
+        max-width var(--aside-slideout-duration) var(--aside-slideout-ease);
+
+      :global(.cmf-Button-section) {
+        justify-content: center;
+      }
+
+      /* AppLogo mark — never wider than the control (contain in rail). */
+      :global(.cmf-Button-image),
+      :global(img) {
+        max-width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: contain;
+        object-position: center;
+        flex-shrink: 1;
+      }
     }
 
-    :global(.cmf-Button-root > .cmf-Button-label),
-    :global(.cmf-Button-root .cmf-Button-label) {
-      display: block;
-      flex: 1 1 0%;
-      align-self: center;
+    /* Collapsing / collapsed — wrap mark to its own row at full available width. */
+    &:where([data-aside-slideout-phase='collapsed']),
+    &:where([data-aside-slideout-phase='collapsing']) {
+      :global(
+        [data-sidebar-region='header'] [data-cmf-component='sidebar-header'][data-cmf-key='logo']
+      ) {
+        justify-content: center;
+      }
+
+      :global(
+        [data-sidebar-region='header']
+          [data-cmf-component='sidebar-header'][data-cmf-key='logo']
+          [data-key='aside_header_logo']
+      ) {
+        flex: 1 1 100%;
+        flex-basis: 100%;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    :global(.cmf-Button-root):not([data-key='aside_header_logo']),
+    :global(.cmf-TextInput-root),
+    :global(.cmf-TextInput-wrapper) {
+      width: 100%;
       min-width: 0;
       max-width: 100%;
+      flex: 0 0 auto;
+      align-self: stretch;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      /* Width + padding tween with phase token swaps (sm ↔ xs). */
+      transition:
+        width var(--aside-slideout-duration) var(--aside-slideout-ease),
+        padding var(--aside-slideout-duration) var(--aside-slideout-ease),
+        border-color var(--aside-slideout-duration) var(--aside-slideout-ease),
+        border-width var(--aside-slideout-duration) var(--aside-slideout-ease),
+        border-radius var(--aside-slideout-duration) var(--aside-slideout-ease);
+    }
+
+    /*
+     * Rail active — brand outline (tokens: `--aside-slideout-active-bd*` / `-radius`).
+     * Left ::after bar geometry is zeroed in sidebar tokens for these phases.
+     */
+    &:where([data-aside-slideout-phase='collapsed']),
+    &:where([data-aside-slideout-phase='collapsing']) {
+      :global(
+        .cmf-Button-root[data-active='true']:where(
+            :not(:disabled, [data-disabled], [aria-disabled='true'], [data-variant='button-link'])
+          )
+      ) {
+        border-color: var(--aside-slideout-active-bd, var(--brand-color-6));
+        border-width: var(
+          --aside-slideout-active-bd-width,
+          var(--button-bd-width, calc(0.0625rem * var(--mantine-scale)))
+        );
+        border-style: solid;
+        border-radius: var(
+          --aside-slideout-active-radius,
+          var(--button-radius, var(--mantine-radius-sm))
+        );
+
+        &::after {
+          content: none;
+        }
+
+        :global([data-cmf-active-line]) {
+          display: none;
+        }
+      }
+    }
+
+    /*
+     * Menu glyphs: size from tokens; button grows with content.
+     * `container-type: size` applies size containment → children cannot stretch the
+     * control (height stuck at --button-height). Use `inline-size` only (cqw).
+     */
+    :global(.cmf-Button-root):not([data-key='aside_header_logo']) {
+      container-type: inline-size;
+
+      /* Floor = token height; grow when icon / chevron / padding / fz increase. */
+      height: auto;
+      min-height: var(--button-height, var(--aside-slideout-rail-button, 2.625rem));
+      max-height: none;
+
+      :global(.cmf-Button-inner) {
+        min-width: 0;
+        max-width: 100%;
+
+        /* Fill the control so `--button-align` can vertically center the label. */
+        height: 100%;
+        max-height: none;
+        overflow: visible;
+      }
+
+      :global(.cmf-Button-section.cmf-Button-section-icon),
+      :global(
+        .cmf-Button-section[data-position='left']:has(
+            [data-cmf-icon-src],
+            .cmf-Button-icon,
+            [data-sidebar-item-label],
+            svg,
+            img
+          )
+      ) {
+        box-sizing: border-box;
+        flex: 0 0 auto;
+        width: min(
+          100cqw,
+          calc(
+            var(--button-height, 1.25rem) *
+              var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
+          )
+        );
+        height: min(
+          100cqw,
+          calc(
+            var(--button-height, 1.25rem) *
+              var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
+          )
+        );
+        max-width: 100%;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      :global(.cmf-Button-icon),
+      :global([data-cmf-icon-src]) {
+        box-sizing: border-box;
+        flex-shrink: 1;
+
+        /* Clip stroke bleed inside the slot (CmfIcon defaults to visible). */
+        overflow: hidden;
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    /*
+     * Labels stay visible during expand/collapse and ellipsize as width tweens.
+     * Hide only on settled collapsed rail (letter/icon takes over).
+     */
+    :global(.cmf-Button-root .cmf-Button-label) {
+      display: block;
+      align-self: var(--button-align, center);
+      min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      text-align: start;
-      line-height: 1.25;
+      flex: 1 1 0%;
+      flex-basis: auto;
+      width: auto;
+      max-width: 100%;
       opacity: 1;
+      visibility: visible;
       transition:
         flex-basis var(--aside-slideout-duration) var(--aside-slideout-ease),
         max-width var(--aside-slideout-duration) var(--aside-slideout-ease),
         width var(--aside-slideout-duration) var(--aside-slideout-ease),
-        opacity calc(var(--aside-slideout-duration) * 0.65) var(--aside-slideout-ease),
+        opacity calc(var(--aside-slideout-duration) * 0.2) var(--aside-slideout-ease),
         visibility 0s linear 0s;
     }
 
-    :global(.cmf-Button-label > *) {
-      min-width: 0;
-      max-width: 100%;
-      overflow: hidden;
-    }
-
-    :global(.cmf-Button-label > * > *) {
-      display: block;
-      min-width: 0;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    &[data-aside-slideout-expanded='false'] :global(.cmf-Button-root > .cmf-Button-label),
-    &[data-aside-slideout-expanded='false'] :global(.cmf-Button-root .cmf-Button-label) {
+    /* Settled rail — collapse label slot so icon/letter + chevron own the control. */
+    &:where([data-aside-slideout-phase='collapsed']) :global(.cmf-Button-root .cmf-Button-label) {
       flex: 0 0 0;
       flex-basis: 0;
       width: 0;
-      min-width: 0;
       max-width: 0;
       margin: 0;
       padding: 0;
       opacity: 0;
       visibility: hidden;
+      text-overflow: clip;
       transition:
         flex-basis var(--aside-slideout-duration) var(--aside-slideout-ease),
         max-width var(--aside-slideout-duration) var(--aside-slideout-ease),
         width var(--aside-slideout-duration) var(--aside-slideout-ease),
-        opacity calc(var(--aside-slideout-duration) * 0.55) var(--aside-slideout-ease),
-        visibility 0s linear var(--aside-slideout-duration);
-    }
-
-    &[data-aside-slideout-expanded='true'] :global(.cmf-Button-root > .cmf-Button-label),
-    &[data-aside-slideout-expanded='true'] :global(.cmf-Button-root .cmf-Button-label) {
-      visibility: visible;
-      transition-delay: 0s, 0s, 0s, calc(var(--aside-slideout-duration) * 0.15), 0s;
-    }
-
-    /* Chevron / trailing sections — row when expanded; hide while collapsing */
-    :global(.cmf-Button-section.cmf-Button-section-chevron),
-    :global(.cmf-Button-root > .cmf-Button-section:last-child:not(.cmf-Button-section-icon)) {
-      flex: 0 0 auto;
-      margin-inline-start: auto;
-      max-width: 2rem;
-      opacity: 1;
-      overflow: hidden;
-      transition:
-        max-width calc(var(--aside-slideout-duration) * 0.6) var(--aside-slideout-rail-ease),
-        opacity calc(var(--aside-slideout-duration) * 0.6) var(--aside-slideout-rail-ease),
-        margin calc(var(--aside-slideout-duration) * 0.6) var(--aside-slideout-rail-ease);
-    }
-
-    /* Hide trailing chrome while collapsed/collapsing; settled dropdown restores below. */
-    &[data-aside-slideout-expanded='false'] :global(.cmf-Button-section.cmf-Button-section-chevron),
-    &[data-aside-slideout-expanded='false']
-      :global(.cmf-Button-root > .cmf-Button-section:last-child:not(.cmf-Button-section-icon)) {
-      max-width: 0;
-      margin: 0;
-      opacity: 0;
-      pointer-events: none;
+        opacity calc(var(--aside-slideout-duration) * 0.15) var(--aside-slideout-ease),
+        visibility 0s linear calc(var(--aside-slideout-duration) * 0.15);
     }
 
     /*
-     * Settled collapsed rail — dropdown chevron below icon (column), blink-in.
-     * Do not leave chevron forever hidden when collapsed.
+     * Letter / rail glyph — mounts on collapsed; fade in after width settle + 0.2s.
+     * Phase already waits `--aside-slideout-transition`, so only +0.2s here.
      */
-    &[data-aside-slideout-phase='collapsed'][data-aside-slideout-settled='true'] {
-      :global(.cmf-Button-root[data-sidebar-dropdown-trigger]) {
-        flex-flow: column nowrap;
-        justify-content: center;
-        align-items: center;
-        height: auto;
-        gap: var(--mantine-spacing-xs, 0.25rem);
-      }
-
-      /* Mantine sections live in `.cmf-Button-inner` — column there, not only on root. */
-      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-inner) {
-        flex-flow: column nowrap;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        gap: var(--mantine-spacing-xs, 0.25rem);
-      }
-
-      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-section-icon),
-      :global(
-        .cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-section[data-position='left']
-      ) {
-        order: 1;
-        margin-inline: 0;
-      }
-
-      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] > .cmf-Button-label),
-      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-label) {
-        order: 2;
-      }
-
-      :global(.cmf-Button-root[data-sidebar-dropdown-trigger] .cmf-Button-section-chevron),
-      :global(
-        .cmf-Button-root[data-sidebar-dropdown-trigger]
-          > .cmf-Button-section:last-child:not(.cmf-Button-section-icon)
-      ) {
-        order: 3;
-        max-width: none;
-        margin: 0;
-        opacity: 1;
-        pointer-events: auto;
-        animation: aside-slideout-rail-blink-in calc(var(--aside-slideout-duration) * 0.75)
-          var(--aside-slideout-rail-ease) both;
-      }
-
-      /* Account IconUserScan (leftSection swap) — same blink-in */
-      :global([data-cmf-key='account'] .cmf-Button-section-icon),
-      :global([data-cmf-key='account'] .cmf-Button-section[data-position='left']) {
-        animation: aside-slideout-rail-blink-in calc(var(--aside-slideout-duration) * 0.75)
-          var(--aside-slideout-rail-ease) both;
-      }
+    :global([data-sidebar-item-label]) {
+      opacity: 0;
+      transition: opacity 0.2s var(--aside-slideout-ease);
+      transition-delay: 0s;
     }
 
-    /* ---- Search TextInput stays TextInput — field fades, left icon remains ---- */
-    :global(.cmf-TextInput-root),
-    :global([data-search-part='field']) {
-      width: 100%;
-      min-width: 0;
-      max-width: 100%;
-      overflow: hidden;
-    }
-
-    :global(.cmf-TextInput-wrapper) {
-      overflow: hidden;
-    }
-
-    :global(.cmf-TextInput-input),
-    :global([data-search-part='field'] input) {
-      min-width: 0;
-      transition:
-        opacity calc(var(--aside-slideout-duration) * 0.55) var(--aside-slideout-ease),
-        padding-inline var(--aside-slideout-duration) var(--aside-slideout-ease);
-    }
-
-    :global([data-search-part='code']),
-    :global([data-search-part='clear']) {
+    &:where([data-aside-slideout-phase='collapsed'][data-aside-slideout-settled='true'])
+      :global([data-sidebar-item-label]) {
       opacity: 1;
-      max-width: 4rem;
-      overflow: hidden;
-      transition:
-        opacity calc(var(--aside-slideout-duration) * 0.4) var(--aside-slideout-ease),
-        max-width calc(var(--aside-slideout-duration) * 0.4) var(--aside-slideout-ease);
+      transition-delay: 0.2s;
     }
 
-    &[data-aside-slideout-expanded='false'] {
+    /*
+     * Mid collapse/expand — only size the rail (width already switching via tokens).
+     * Keep logo row + dropdown row until settled so flex-direction does not snap mid-tween.
+     */
+    &:where([data-aside-slideout-phase='collapsed']),
+    &:where([data-aside-slideout-phase='collapsing']) {
+      :global(
+        .cmf-Button-root:not([data-sidebar-dropdown-trigger], [data-key='aside_header_logo'])
+      ) {
+        min-height: var(--aside-slideout-rail-button);
+        height: auto;
+        align-items: var(--button-align, center);
+      }
+
+      :global(nav[data-section-key] ul) {
+        padding: 0;
+      }
+
+      :global(.cmf-TextInput-root),
+      :global(.cmf-TextInput-wrapper) {
+        height: var(--aside-slideout-rail-button);
+        min-height: var(--aside-slideout-rail-button);
+      }
+    }
+
+    /*
+     * Collapsed / collapsing — wrap chevron under mark when icon+chevron do not fit.
+     * Expanding/expanded stay row (label needs the inline track).
+     */
+    &:where([data-aside-slideout-phase='collapsed']),
+    &:where([data-aside-slideout-phase='collapsing']) {
+      :global(button.cmf-Button-root[data-sidebar-dropdown-trigger]) {
+        min-height: var(--aside-slideout-rail-button);
+        height: auto;
+        max-height: none;
+        align-items: var(--button-align, center);
+
+        :global(.cmf-Button-inner) {
+          flex-flow: row wrap;
+          justify-content: center;
+          align-items: var(--button-align, center);
+          height: auto;
+          max-height: none;
+          overflow: visible;
+        }
+
+        :global(.cmf-Button-section.cmf-Button-section-chevron) {
+          /* Stay in-row when it fits; wrap under the mark when the rail is too narrow. */
+          flex: 0 0 auto;
+          margin-inline-start: 0;
+          width: auto;
+          height: auto;
+          max-width: none;
+          max-height: none;
+        }
+
+        :global(.cmf-Button-section.cmf-Button-section-icon),
+        :global(
+          .cmf-Button-section[data-position='left']:has(
+              [data-cmf-icon-src],
+              .cmf-Button-icon,
+              [data-sidebar-item-label],
+              svg,
+              img
+            )
+        ) {
+          flex: 0 0 auto;
+          width: min(
+            100cqw,
+            calc(
+              var(--button-height, 1.25rem) *
+                var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
+            )
+          );
+          height: min(
+            100cqw,
+            calc(
+              var(--button-height, 1.25rem) *
+                var(--cmf-control-icon-scale, var(--cmf-icon-scale, 0.7))
+            )
+          );
+          max-width: 100%;
+          max-height: none;
+        }
+      }
+    }
+
+    /*
+     * Settled collapsed — search modal look.
+     * Logo wrap is handled above (collapsing + collapsed) via flex-basis/min-width.
+     */
+    &:where([data-aside-slideout-phase='collapsed']) {
+      :global([data-search-slot='input']),
+      :global(.cmf-TextInput-root),
+      :global(.cmf-TextInput-wrapper),
+      :global([data-search-part='field']),
       :global(.cmf-TextInput-input),
       :global([data-search-part='field'] input) {
-        opacity: 0;
-        color: transparent;
-        caret-color: transparent;
-      }
-
-      :global([data-search-part='code']),
-      :global([data-search-part='clear']) {
-        opacity: 0;
-        max-width: 0;
-        pointer-events: none;
-      }
-    }
-
-    /*
-     * Collapsed idle — center remaining chrome (icon) in the same Button/TextInput.
-     * Still the same markup; only justify/padding.
-     */
-    &[data-aside-slideout-phase='collapsed'] {
-      :global([data-cmf-component='sidebar-header'][data-cmf-key='logo']) {
-        justify-content: center;
-      }
-
-      :global(.cmf-Button-section.cmf-Button-section-icon),
-      :global(.cmf-Button-section[data-position='left']) {
-        margin-inline: 0;
+        cursor: pointer;
       }
 
       :global(.cmf-TextInput-wrapper) {
@@ -362,26 +455,27 @@
       }
 
       :global(.cmf-TextInput-section[data-position='left']) {
-        position: static;
-        inset: auto;
-        transform: none;
-        margin-inline: 0;
+        inset-inline-start: 50%;
+        transform: translateX(-50%);
         pointer-events: none;
       }
 
       :global(.cmf-TextInput-input),
       :global([data-search-part='field'] input) {
-        width: 0;
-        min-width: 0;
-        max-width: 0;
-        flex: 0 0 0;
-        padding: 0;
+        color: transparent;
+        caret-color: transparent;
         opacity: 0;
-        pointer-events: none;
+        user-select: none;
       }
 
+      :global([data-search-part='code']),
+      :global([data-search-part='clear']),
       :global(.cmf-TextInput-section[data-position='right']) {
-        display: none;
+        opacity: 0;
+        max-width: 0;
+        overflow: hidden;
+        pointer-events: none;
+        visibility: hidden;
       }
     }
   }
