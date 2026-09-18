@@ -1,8 +1,7 @@
 /**
- * Slidein — whole-block appear / disappear.
+ * Slidein — menu panels crossfade; logo shelf is a single fixed strip.
  *
- * Two full chrome stacks in one stage. Active face: opacity 1.
- * Idle face: opacity 0. Same duration on aside width — one motion, no track.
+ * Logo: one instance. Collapse → wrap mark under burger from click (slideout pattern).
  */
 
 @layer widget.variant {
@@ -43,6 +42,136 @@
         transition: none;
         pointer-events: auto;
       }
+    }
+  }
+
+  .shell {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+    width: 100%;
+  }
+
+  /*
+   * Single logo strip — outside menu panels.
+   * Direction-stable wrap (like slideout): collapsing/collapsed → mark under burger
+   * from click; expanding/expanded → beside. No dual faces / no mid-tween swap.
+   */
+  .logoShelf {
+    /* Expanded default — collapse phases override to rail control below. */
+    --logo-height: var(--aside-slidein-rail-button, var(--button-height-md));
+    --logo-width: auto;
+    --aside-slidein-logo-control: var(--logo-height);
+    position: relative;
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: var(--logo-height);
+    margin-bottom: var(--aside-shell-header-spacing, var(--mantine-spacing-sm));
+    overflow: hidden;
+  }
+
+  .logoRow {
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-width: 0;
+    min-height: var(--logo-height);
+    overflow: hidden;
+    gap: var(
+      --cmf-group-sidebar-header-logo-gap,
+      var(--cmf-group-sidebar-header-gap, var(--mantine-spacing-sm))
+    );
+  }
+
+  .logoRow :global([data-cmf-key='logo-trigger']) {
+    flex: 0 0 auto;
+    width: var(--aside-slidein-logo-control);
+    min-width: var(--aside-slidein-logo-control);
+    max-width: var(--aside-slidein-logo-control);
+    height: var(--aside-slidein-logo-control);
+    min-height: var(--aside-slidein-logo-control);
+    max-height: var(--aside-slidein-logo-control);
+    --ai-size: var(--aside-slidein-logo-control);
+    box-sizing: border-box;
+
+    :global(.cmf-ActionIcon-icon-svg),
+    :global(svg) {
+      width: calc(var(--aside-slidein-logo-control) * 0.5);
+      height: calc(var(--aside-slidein-logo-control) * 0.5);
+      max-width: 50%;
+      max-height: 50%;
+    }
+  }
+
+  .logoRow :global([data-key='aside_header_logo']) {
+    flex: 0 1 auto;
+    max-width: 100%;
+    width: auto;
+    height: var(--logo-height);
+    min-height: var(--logo-height);
+    max-height: var(--logo-height);
+    min-width: 0;
+    flex-shrink: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    :global(.cmf-Button-section) {
+      flex: 1 1 auto;
+      justify-content: center;
+      align-items: center;
+      min-width: 0;
+      min-height: 0;
+      max-width: 100%;
+      max-height: 100%;
+      height: 100%;
+    }
+
+    :global(.cmf-Button-image),
+    :global(img) {
+      width: auto;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+      flex-shrink: 1;
+    }
+  }
+
+  /*
+   * Collapse direction — same control square as panel rail ActionIcons (~35px).
+   * Burger + mark each on own row, centered; size matches `--aside-slidein-control`.
+   */
+  .root:where([data-aside-slidein-phase='collapsed'], [data-aside-slidein-phase='collapsing']) {
+    .logoShelf {
+      --aside-slidein-logo-control: var(
+        --aside-slidein-control,
+        var(--cmf-action-icon-sidebar-size)
+      );
+      --logo-height: var(--aside-slidein-logo-control);
+      --logo-width: var(--aside-slidein-logo-control);
+      --cmf-action-icon-sidebar-header-logo-trigger-size: var(--aside-slidein-logo-control);
+      --cmf-action-icon-sidebar-header-logo-size: var(--aside-slidein-logo-control);
+    }
+
+    .logoRow {
+      flex-flow: row wrap;
+      place-content: flex-start center;
+    }
+
+    .logoRow :global([data-cmf-key='logo-trigger']),
+    .logoRow :global([data-key='aside_header_logo']) {
+      flex: 0 0 100%;
+      width: var(--aside-slidein-logo-control);
+      min-width: var(--aside-slidein-logo-control);
+      max-width: var(--aside-slidein-logo-control);
+      height: var(--aside-slidein-logo-control);
+      min-height: var(--aside-slidein-logo-control);
+      max-height: var(--aside-slidein-logo-control);
+      margin-inline: auto;
+      box-sizing: border-box;
     }
   }
 
@@ -94,7 +223,20 @@
 
     --app-layout-sidebar-width: var(--aside-slidein-collapsed-width);
     --scrollarea-padding-inline: var(--mantine-spacing-xs);
+
+    /* Gutter visually on the right; size still uses compact (symmetric) formula. */
+    --scrollarea-padding-start: 0;
+    --scrollarea-padding-end: var(
+      --aside-slidein-rail-nudge-inline,
+      var(--scrollarea-padding-inline, 4px)
+    );
     --aside-scrollbar-size: 1px;
+    --aside-menu-dropdown-indent: 0;
+
+    /*
+     * Compact rail size — fit shell + scroll gutter.
+     * `width − 2×shell` alone (~44px) overflows the padded viewport.
+     */
     --cmf-action-icon-sidebar-size: calc(
       var(--aside-slidein-collapsed-width) - 2 *
         var(--aside-shell-padding-x, var(--aside-shell-padding, var(--mantine-spacing-sm))) - 2 *
@@ -109,6 +251,8 @@
     --cmf-search-sidebar-search_leftmenu-height: var(--aside-slidein-control);
     --cmf-action-icon-sidebar-header-logo-size: var(--aside-slidein-control);
     --cmf-action-icon-sidebar-header-logo-trigger-size: var(--aside-slidein-control);
+    --cmf-action-icon-sidebar-padding: var(--mantine-spacing-xs) 0;
+    --cmf-action-icon-icon-scale: 0.5;
 
     :global([data-sidebar-region='header']),
     :global([data-sidebar-region='footer']) {
@@ -137,9 +281,29 @@
       max-width: 100%;
     }
 
-    :global(.cmf-ActionIcon-root),
-    :global([data-sidebar-region] .cmf-ActionIcon-root),
-    :global(nav[data-section-key] .cmf-ActionIcon-root) {
+    /* Nested dropdown — no indent; same center column as logo / parents. */
+    :global([data-sidebar-dropdown]) {
+      align-items: center;
+      width: 100%;
+    }
+
+    :global([data-sidebar-dropdown] ul[role='menu']) {
+      padding: 0;
+      align-items: center;
+      width: 100%;
+    }
+
+    :global([data-sidebar-dropdown-item]) {
+      margin-left: 0;
+    }
+
+    :global(.cmf-ActionIcon-root):not(:global([data-sidebar-dropdown-trigger])),
+    :global([data-sidebar-region] .cmf-ActionIcon-root):not(
+      :global([data-sidebar-dropdown-trigger])
+    ),
+    :global(nav[data-section-key] .cmf-ActionIcon-root):not(
+      :global([data-sidebar-dropdown-trigger])
+    ) {
       width: var(--aside-slidein-control);
       min-width: var(--aside-slidein-control);
       max-width: var(--aside-slidein-control);
@@ -151,16 +315,76 @@
       box-sizing: border-box;
     }
 
-    :global([data-sidebar-dropdown-trigger]) {
-      height: var(--aside-slidein-control);
+    /*
+     * Dropdown parent — mark + chevron stacked in flow (compact rail).
+     * Must grow past the square; nameLabel must not eat 100% height.
+     */
+    :global(.cmf-ActionIcon-root[data-sidebar-dropdown-trigger]) {
+      --aside-menu-dropdown-indicator-position: relative;
+      --aside-menu-dropdown-indicator-inset: unset;
+      width: var(--aside-slidein-control);
+      min-width: var(--aside-slidein-control);
+      max-width: var(--aside-slidein-control);
+      height: auto;
       min-height: var(--aside-slidein-control);
-      max-height: var(--aside-slidein-control);
+      max-height: none;
+      margin-left: 0;
+      flex-shrink: 0;
+      --ai-size: var(--aside-slidein-control);
+      box-sizing: border-box;
+      overflow: visible;
     }
 
     :global([data-sidebar-dropdown-trigger] .cmf-ActionIcon-icon) {
-      flex-flow: row nowrap;
+      position: relative;
+      display: flex;
+      width: 100%;
+      height: auto;
+      min-height: var(--aside-slidein-control);
+      flex-flow: column nowrap;
       flex-wrap: nowrap;
-      overflow: hidden;
+      justify-content: center;
+      align-items: center;
+      gap: var(--aside-compact-dropdown-trigger-gap, var(--spacing-xs, 0.375rem));
+      overflow: visible;
+    }
+
+    :global([data-sidebar-dropdown-trigger] [data-sidebar-item-label]) {
+      width: auto;
+      height: auto;
+      flex: 0 0 auto;
+    }
+
+    :global([data-sidebar-dropdown-trigger] [data-sidebar-dropdown-indicator]) {
+      position: relative !important;
+      inset: unset;
+      flex: 0 0 auto;
+      display: inline-flex;
+      line-height: 0;
+      pointer-events: none;
+    }
+
+    /*
+     * Rail active — brand outline around the control (not a bottom active-line).
+     */
+    :global(
+      .cmf-ActionIcon-root[data-active='true']:where(
+          :not(:disabled, [data-disabled], [aria-disabled='true'])
+        )
+    ) {
+      border-color: var(--aside-slidein-active-bd, var(--brand-color-6));
+      border-width: var(
+        --aside-slidein-active-bd-width,
+        var(--ai-bd-width, calc(0.0625rem * var(--mantine-scale)))
+      );
+      border-style: solid;
+      border-radius: var(--aside-slidein-active-radius, var(--ai-radius, var(--mantine-radius-sm)));
+      box-sizing: border-box;
+      overflow: visible;
+
+      :global([data-cmf-active-line]) {
+        display: none;
+      }
     }
   }
 

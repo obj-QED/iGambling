@@ -8,6 +8,19 @@
 
     /* Compact: 0 (token). Never nudge the square — clips under aside overflow. */
     margin-left: var(--aside-menu-compact-dropdown-trigger-margin-left, 0);
+
+    /* Mark + chevron stack — label must not fill the square and clip the chevron. */
+    .nameLabel {
+      width: auto;
+      height: auto;
+      flex: 0 0 auto;
+    }
+
+    .indicator {
+      position: relative;
+      inset: unset;
+      flex: 0 0 auto;
+    }
   }
 
   .indicator {
