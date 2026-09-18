@@ -335,12 +335,13 @@
       --cmf-search-sidebar-search_leftmenu-height: var(--aside-slidein-control);
       --cmf-action-icon-sidebar-header-logo-size: var(--aside-slidein-control);
       --cmf-action-icon-sidebar-header-logo-trigger-size: var(--aside-slidein-control);
+      --cmf-action-icon-sidebar-header-logo-trigger-padding: 0;
 
       /* Rail dropdown — in-flow chevron; no nested indent (align with logo column). */
       --aside-menu-dropdown-indicator-position: relative;
       --aside-menu-dropdown-indicator-inset: unset;
       --aside-menu-dropdown-indent: 0;
-      --cmf-action-icon-sidebar-padding: var(--mantine-spacing-xs) 0;
+      --cmf-action-icon-sidebar-padding: var(--mantine-spacing-sm);
       --cmf-action-icon-icon-scale: 0.5;
 
       --cmf-button-sidebar-timer-bg: var(--mantine-color-dark-6);
