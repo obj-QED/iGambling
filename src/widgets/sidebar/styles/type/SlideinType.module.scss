@@ -163,8 +163,7 @@
     .logoRow {
       --group-wrap: wrap;
       --group-justify: center;
-      flex-flow: row wrap;
-      flex-wrap: wrap !important;
+      flex-flow: column nowrap;
       place-content: flex-start center;
       align-items: center;
     }
