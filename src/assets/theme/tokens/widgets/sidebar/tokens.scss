@@ -185,7 +185,7 @@
     --cmf-button-sidebar-header-logo-padding: var(--mantine-spacing-sm);
 
     /* Same mark scale expanded + rail — phase snap looked like icon reload. */
-    --cmf-button-sidebar-icon-scale: 0.5;
+    --cmf-button-sidebar-icon-scale: 1;
 
     --aside-slideout-transition: 0.4s;
     --aside-slideout-timing: cubic-bezier(0.22, 1, 0.36, 1);
@@ -274,21 +274,20 @@
 
   /*
    * Slidein — default ↔ compact morph.
-   * Expanded matches default width; collapsed matches compact rail width.
-   * Labels slide left (SlideinType); animate only `width` (same snap rules as slideout).
+   * SoT for ALL tunable values lives here. SlideinType only consumes tokens
+   * (structure / motion / wrap) — do not redefine pads, sizes, or scales there.
+   *
+   * Expanded = default chrome; collapsed rail width derives from rail-button.
    */
   &[data-type='slidein'] {
+    /* --- sizes / motion --- */
     --aside-slidein-rail-button: var(--button-height-md);
+    --aside-slidein-control: var(--aside-slidein-rail-button);
+    --aside-slidein-logo-control: var(--aside-slidein-rail-button);
+    --aside-slidein-mark-scale: 0.5;
+
     --logo-height: var(--aside-slidein-rail-button);
     --logo-width: auto;
-    --cmf-button-sidebar-padding-x: var(--mantine-spacing-md);
-    --cmf-button-sidebar-padding-y: var(--mantine-spacing-sm);
-
-    --cmf-button-sidebar-header-logo-padding-x: var(--mantine-spacing-sm);
-    --cmf-button-sidebar-header-logo-padding-y: var(--mantine-spacing-sm);
-    --cmf-button-sidebar-header-logo-padding: var(--mantine-spacing-sm);
-
-    --cmf-button-sidebar-icon-scale: 0.5;
 
     --aside-slidein-transition: 0.85s;
     --aside-slidein-timing: cubic-bezier(0.22, 1, 0.36, 1);
@@ -296,53 +295,92 @@
     --aside-slidein-expanded-width: 15rem;
     --app-layout-sidebar-width: var(--aside-slidein-expanded-width);
 
-    /* Compact SoT — same formula as `[data-type='compact']`. */
-    --aside-slidein-collapsed-width: calc(3.75rem * var(--mantine-scale));
-
+    /* Fixed pads baked into collapsed width — control stays rail-button. */
     --aside-slidein-rail-shell-pad: var(--mantine-spacing-sm);
+    --aside-slidein-rail-scroll-start: var(--mantine-spacing-xs);
+    --aside-slidein-rail-scroll-end: var(--mantine-spacing-xs);
+    --aside-slidein-collapsed-width: calc(
+      var(--aside-slidein-rail-button) + 2 * var(--aside-slidein-rail-shell-pad) +
+        var(--aside-slidein-rail-scroll-start) + var(--aside-slidein-rail-scroll-end)
+    );
     --aside-shell-padding: var(--aside-slidein-rail-shell-pad);
 
-    /* Width tokens follow shell during collapse direction (synced with track). */
-    &:where([data-aside-slidein-phase='collapsed']),
-    &:where([data-aside-slidein-phase='collapsing']) {
+    /* --- expanded chrome (stable across expand/collapse tween) --- */
+    --cmf-button-sidebar-padding-x: var(--mantine-spacing-md);
+    --cmf-button-sidebar-padding-y: var(--mantine-spacing-sm);
+    --cmf-button-sidebar-header-logo-padding: var(--mantine-spacing-sm);
+    --cmf-button-sidebar-header-logo-padding-x: var(--mantine-spacing-sm);
+    --cmf-button-sidebar-header-logo-padding-y: var(--mantine-spacing-sm);
+    --cmf-button-sidebar-icon-scale: var(--aside-slidein-mark-scale);
+    --cmf-action-icon-icon-scale: var(--aside-slidein-mark-scale);
+    --cmf-control-icon-scale: var(--aside-slidein-mark-scale);
+    --cmf-icon-scale: var(--aside-slidein-mark-scale);
+
+    /* Active / focus ring (both faces — panel overflow clips outline). */
+    --aside-slidein-active-bd: var(--brand-color-6);
+    --aside-slidein-active-bd-width: 1px;
+    --aside-slidein-active-radius: var(--cmf-button-sidebar-radius, var(--mantine-radius-sm));
+    --aside-slidein-focus-bd: var(--aside-slidein-active-bd);
+    --aside-slidein-focus-bd-width: var(--aside-slidein-active-bd-width);
+    --aside-slidein-focus-radius: var(--aside-slidein-active-radius);
+
+    /* Kill left active-line — ring tokens own active chrome. */
+    --cmf-button-sidebar-active-size: 0;
+    --cmf-button-sidebar-active-width: 0px;
+    --cmf-button-sidebar-active-height: 0px;
+    --cmf-button-sidebar-active-color: transparent;
+    --cmf-action-icon-sidebar-active-size: 0;
+    --cmf-action-icon-sidebar-active-height: 0px;
+    --cmf-action-icon-sidebar-active-width: 0px;
+    --cmf-action-icon-sidebar-active-color: transparent;
+
+    /* --- collapsed + collapsing rail --- */
+    &:where([data-aside-slidein-phase='collapsed'], [data-aside-slidein-phase='collapsing']) {
       --app-layout-sidebar-width: var(--aside-slidein-collapsed-width);
+
       --aside-scrollbar-size: 1px;
       --scrollarea-scrollbar-size: var(--aside-scrollbar-size, var(--cmf-scrollbar-size, 6px));
-      --scrollarea-padding-inline: var(--mantine-spacing-xs);
-      --scrollarea-padding-start: 0;
-      --scrollarea-padding-end: var(
-        --aside-slidein-rail-nudge-inline,
-        var(--scrollarea-padding-inline, 4px)
+      --scrollarea-padding-inline: var(--aside-slidein-rail-scroll-start);
+      --scrollarea-padding-start: var(--aside-slidein-rail-scroll-start);
+      --scrollarea-padding-end: max(
+        var(--aside-slidein-rail-scroll-end),
+        calc(var(--scrollarea-scrollbar-size, var(--aside-scrollbar-size, 1px)) + 2px)
       );
 
-      /* Compact rail size — fit shell + scroll gutter (avoid ~44px overflow). */
-      --cmf-action-icon-sidebar-size: calc(
-        var(--app-layout-sidebar-width) - 2 *
-          var(--aside-shell-padding-x, var(--aside-shell-padding, var(--mantine-spacing-sm))) - 2 *
-          var(--scrollarea-padding-inline, 4px)
-      );
-    }
+      /* Same chrome as expanded md — never shrink glyphs to fit a narrow rail. */
+      --cmf-action-icon-sidebar-size: var(--aside-slidein-rail-button);
+      --aside-slidein-control: var(--aside-slidein-rail-button);
+      --aside-slidein-logo-control: var(--aside-slidein-control);
+      --ai-size: var(--aside-slidein-control);
+      --ai-padding: var(--cmf-action-icon-sidebar-padding, var(--mantine-spacing-sm));
 
-    &:where([data-aside-slidein-phase='collapsed']),
-    &:where([data-aside-slidein-phase='collapsing']) {
-      --aside-slidein-control: var(--cmf-action-icon-sidebar-size);
       --logo-height: var(--aside-slidein-control);
       --logo-width: var(--aside-slidein-control);
+
       --cmf-button-sidebar-header-account-height: var(--aside-slidein-control);
       --cmf-button-sidebar-header-height: var(--aside-slidein-control);
+      --cmf-button-sidebar-header-logo-height: var(--aside-slidein-control);
       --cmf-search-sidebar-height: var(--aside-slidein-control);
       --cmf-search-sidebar-search-height: var(--aside-slidein-control);
       --cmf-search-sidebar-search_leftmenu-height: var(--aside-slidein-control);
       --cmf-action-icon-sidebar-header-logo-size: var(--aside-slidein-control);
       --cmf-action-icon-sidebar-header-logo-trigger-size: var(--aside-slidein-control);
-      --cmf-action-icon-sidebar-header-logo-trigger-padding: 0;
+      --cmf-action-icon-sidebar-header-logo-trigger-padding: var(--mantine-spacing-sm);
 
-      /* Rail dropdown — in-flow chevron; no nested indent (align with logo column). */
+      --cmf-button-sidebar-header-logo-padding: var(--mantine-spacing-sm);
+      --cmf-button-sidebar-header-logo-padding-x: var(--mantine-spacing-sm);
+      --cmf-button-sidebar-header-logo-padding-y: var(--mantine-spacing-sm);
+
+      /* Rail dropdown — in-flow chevron; align with logo column. */
       --aside-menu-dropdown-indicator-position: relative;
       --aside-menu-dropdown-indicator-inset: unset;
       --aside-menu-dropdown-indent: 0;
-      --cmf-action-icon-sidebar-padding: var(--mantine-spacing-sm);
-      --cmf-action-icon-icon-scale: 0.5;
+
+      --cmf-action-icon-sidebar-padding: var(--mantine-spacing-xs);
+      --cmf-action-icon-icon-scale: var(--aside-slidein-mark-scale);
+      --cmf-button-sidebar-icon-scale: var(--aside-slidein-mark-scale);
+      --cmf-control-icon-scale: var(--aside-slidein-mark-scale);
+      --cmf-icon-scale: var(--aside-slidein-mark-scale);
 
       --cmf-button-sidebar-timer-bg: var(--mantine-color-dark-6);
       --cmf-button-sidebar-wheel_mdl-bg: var(--mantine-color-dark-6);
@@ -350,18 +388,12 @@
 
       --cmf-button-sidebar-gap: 0;
       --cmf-button-sidebar-padding: var(--mantine-spacing-xs);
-
       --cmf-button-sidebar-justify: center;
       --cmf-button-sidebar-align: center;
 
       --cmf-search-sidebar-icon-color: var(--brand-color-6);
       --cmf-search-sidebar-section-color: var(--brand-color-6);
       --cmf-action-icon-sidebar-header-logo-trigger-hover: var(--brand-color-6);
-
-      --cmf-button-sidebar-active-size: 0;
-      --cmf-button-sidebar-active-width: 0px;
-      --cmf-button-sidebar-active-height: 0px;
-      --cmf-button-sidebar-active-color: transparent;
 
       --cmf-button-sidebar-radius: var(--mantine-radius-sm);
       --cmf-button-sidebar-active-radius: var(--mantine-radius-sm);
@@ -370,18 +402,17 @@
       --cmf-button-sidebar-active-radius-br: var(--mantine-radius-sm);
       --cmf-button-sidebar-active-radius-bl: var(--mantine-radius-sm);
 
-      --aside-slidein-active-bd: var(--brand-color-6);
-      --aside-slidein-active-bd-width: 1px;
       --aside-slidein-active-radius: var(
         --cmf-action-icon-sidebar-radius,
         var(--mantine-radius-sm)
       );
+      --aside-slidein-focus-radius: var(--aside-slidein-active-radius);
+    }
 
-      /* Prefer outline ring — kill bottom active-line on rail ActionIcons. */
-      --cmf-action-icon-sidebar-active-size: 0;
-      --cmf-action-icon-sidebar-active-height: 0px;
-      --cmf-action-icon-sidebar-active-width: 0px;
-      --cmf-action-icon-sidebar-active-color: transparent;
+    /* Expanded face — button radius for account ring. */
+    &:where([data-aside-slidein-phase='expanded'], [data-aside-slidein-phase='expanding']) {
+      --aside-slidein-active-radius: var(--cmf-button-sidebar-radius, var(--mantine-radius-sm));
+      --aside-slidein-focus-radius: var(--aside-slidein-active-radius);
     }
   }
 
